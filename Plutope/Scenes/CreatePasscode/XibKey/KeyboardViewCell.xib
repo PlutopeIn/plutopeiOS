@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_medium.ttf">
+            <string>SFProDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="KeyboardViewCell" customModule="Plutope" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="50" height="67.666666666666671"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="50" height="67.666666666666671"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tx4-A2-fbp">
+                        <rect key="frame" x="0.0" y="8.6666666666666679" width="50" height="50.333333333333329"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftU-8S-ciK">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50.333333333333336"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="fsr-8u-MH3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="27"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2W-5d-N53">
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="50.333333333333336"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yht-a8-9bf">
+                                        <rect key="frame" x="-25" y="0.3333333333333357" width="50" height="50"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete.backward" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="jKb-Nr-b40">
+                                                <rect key="frame" x="15" y="18.666666666666664" width="20" height="13.000000000000007"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="16" id="jFS-Xd-sqx"/>
+                                                    <constraint firstAttribute="width" constant="20" id="uu8-nO-nqm"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" name="#202148"/>
+                                        <constraints>
+                                            <constraint firstItem="jKb-Nr-b40" firstAttribute="centerY" secondItem="Yht-a8-9bf" secondAttribute="centerY" id="0uW-QE-uaq"/>
+                                            <constraint firstAttribute="height" constant="50" id="g8X-7h-hXq"/>
+                                            <constraint firstItem="jKb-Nr-b40" firstAttribute="centerX" secondItem="Yht-a8-9bf" secondAttribute="centerX" id="pnr-ek-Z5D"/>
+                                            <constraint firstAttribute="width" constant="50" id="xiO-af-LLe"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Yht-a8-9bf" firstAttribute="centerY" secondItem="v2W-5d-N53" secondAttribute="centerY" id="FXY-BX-5y8"/>
+                                    <constraint firstItem="Yht-a8-9bf" firstAttribute="centerX" secondItem="v2W-5d-N53" secondAttribute="centerX" id="X9W-dC-JZ8"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50.329999999999998" id="QXv-mu-ZOd"/>
+                        </constraints>
+                    </stackView>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="tx4-A2-fbp" secondAttribute="trailing" id="ISk-l7-oS5"/>
+                <constraint firstAttribute="bottom" secondItem="tx4-A2-fbp" secondAttribute="bottom" constant="8.75" id="Yq8-at-gTw"/>
+                <constraint firstItem="tx4-A2-fbp" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8.75" id="bPn-7t-cdG"/>
+                <constraint firstItem="tx4-A2-fbp" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="l41-e0-z1p"/>
+            </constraints>
+            <size key="customSize" width="198" height="155"/>
+            <connections>
+                <outlet property="txtNumber" destination="ftU-8S-ciK" id="9No-Av-BUM"/>
+                <outlet property="viewCancel" destination="v2W-5d-N53" id="k98-nK-8dg"/>
+            </connections>
+            <point key="canvasLocation" x="33.587786259541986" y="4.5774647887323949"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="delete.backward" catalog="system" width="128" height="102"/>
+        <namedColor name="#202148">
+            <color red="0.125" green="0.1289999932050705" blue="0.28200000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

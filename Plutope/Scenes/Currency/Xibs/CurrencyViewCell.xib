@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_semibold.ttf">
+            <string>SFProDisplay-Semibold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="76" id="KGk-i7-Jjw" customClass="CurrencyViewCell" customModule="Plutope" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="228" height="76"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="228" height="76"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JnW-2W-gnY">
+                        <rect key="frame" x="0.0" y="2.6666666666666679" width="228" height="50"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AMD - Armenian Dram" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Xa-ak-sN2">
+                                <rect key="frame" x="12" y="17.333333333333332" width="181" height="15.333333333333332"/>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Semibold" family="SF Pro Display" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="oR4-J3-drH">
+                                <rect key="frame" x="201" y="19.666666666666664" width="15" height="11.000000000000007"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="Aom-9q-bVk"/>
+                                    <constraint firstAttribute="width" constant="15" id="TUC-vj-QjK"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" name="#202148"/>
+                        <constraints>
+                            <constraint firstItem="4Xa-ak-sN2" firstAttribute="centerY" secondItem="JnW-2W-gnY" secondAttribute="centerY" id="0p7-ip-61I"/>
+                            <constraint firstAttribute="height" constant="50" id="Gt8-YK-9Zs"/>
+                            <constraint firstItem="4Xa-ak-sN2" firstAttribute="leading" secondItem="JnW-2W-gnY" secondAttribute="leading" constant="12" id="XWM-OF-1C9"/>
+                            <constraint firstAttribute="trailing" secondItem="oR4-J3-drH" secondAttribute="trailing" constant="12" id="d6j-jg-IsS"/>
+                            <constraint firstItem="oR4-J3-drH" firstAttribute="centerY" secondItem="JnW-2W-gnY" secondAttribute="centerY" id="doz-Ls-8Qe"/>
+                            <constraint firstItem="oR4-J3-drH" firstAttribute="leading" secondItem="4Xa-ak-sN2" secondAttribute="trailing" constant="8" id="y5T-UK-tqr"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="JnW-2W-gnY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2.5" id="7V4-9l-dtk"/>
+                    <constraint firstItem="JnW-2W-gnY" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="XYR-ZH-vP6"/>
+                    <constraint firstAttribute="trailing" secondItem="JnW-2W-gnY" secondAttribute="trailing" id="i4B-CJ-fJ4"/>
+                    <constraint firstAttribute="bottom" secondItem="JnW-2W-gnY" secondAttribute="bottom" constant="2.5" id="xaS-W6-kjS"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="ivSelected" destination="oR4-J3-drH" id="pzT-CG-FKf"/>
+                <outlet property="lblCurrency" destination="4Xa-ak-sN2" id="Szk-P6-1ja"/>
+            </connections>
+            <point key="canvasLocation" x="-4.5801526717557248" y="9.8591549295774659"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="checkmark" catalog="system" width="128" height="114"/>
+        <namedColor name="#202148">
+            <color red="0.125" green="0.1289999932050705" blue="0.28200000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

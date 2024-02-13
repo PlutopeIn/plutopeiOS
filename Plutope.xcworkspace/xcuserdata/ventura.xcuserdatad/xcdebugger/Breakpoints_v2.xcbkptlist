@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "CE7AB168-8BF2-4C7A-8796-EC3EE75B55C8"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4657BE5E-21EC-4490-B174-F9CC3F727421"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/Swap/Controller/Swap+APIs.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "662"
+            endingLineNumber = "662"
+            landmarkName = "rangoSwap()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2AA88E52-937B-4535-BB9D-EA4C1F4F3C88"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/PreviewSwapForDiffrentChain/Controller/PreviewSwap1ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "setSwapDetail()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2AA88E52-937B-4535-BB9D-EA4C1F4F3C88 - 13da919062947a2a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Bool, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Web3.EthereumData&gt;) -&gt; () in Plutope.PreviewSwap1ViewController.setSwapDetail() -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ventura/Desktop/trupti/Projects/plutope/Plutope/Scenes/PreviewSwapForDiffrentChain/Controller/PreviewSwap1ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "3489">
+               </Location>
+               <Location
+                  uuid = "2AA88E52-937B-4535-BB9D-EA4C1F4F3C88 - 13da919062947a2a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Bool, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Web3.EthereumData&gt;) -&gt; () in Plutope.PreviewSwap1ViewController.setSwapDetail() -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ventura/Desktop/trupti/Projects/plutope/Plutope/Scenes/PreviewSwapForDiffrentChain/Controller/PreviewSwap1ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "3744">
+               </Location>
+               <Location
+                  uuid = "2AA88E52-937B-4535-BB9D-EA4C1F4F3C88 - 13da919062947a49"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Bool, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Web3.EthereumData&gt;) -&gt; () in Plutope.PreviewSwap1ViewController.setSwapDetail() -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ventura/Desktop/trupti/Projects/plutope/Plutope/Scenes/PreviewSwapForDiffrentChain/Controller/PreviewSwap1ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "76"
+                  endingLineNumber = "76"
+                  offsetFromSymbolStart = "3461">
+               </Location>
+               <Location
+                  uuid = "2AA88E52-937B-4535-BB9D-EA4C1F4F3C88 - 13da919062947a49"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Bool, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Web3.EthereumData&gt;) -&gt; () in Plutope.PreviewSwap1ViewController.setSwapDetail() -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ventura/Desktop/trupti/Projects/plutope/Plutope/Scenes/PreviewSwapForDiffrentChain/Controller/PreviewSwap1ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "76"
+                  endingLineNumber = "76"
+                  offsetFromSymbolStart = "3725">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B061B3BA-6F53-482C-8CF5-AF4A85955606"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/PreviewSwapForDiffrentChain/Controller/PreviewSwap1ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "setSwapDetail()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

@@ -1,0 +1,6 @@
+framework module SSPlaceHolderTableView {
+  umbrella header "SSPlaceHolderTableView-umbrella.h"
+
+  export *
+  module * { export * }
+}

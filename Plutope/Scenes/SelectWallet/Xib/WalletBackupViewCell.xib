@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_bold.ttf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+        <array key="SFPro_regular.ttf">
+            <string>SFProDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="80" id="KGk-i7-Jjw" customClass="WalletBackupViewCell" customModule="Plutope" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="319" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="319" height="80"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mvg-fU-6DU">
+                        <rect key="frame" x="16" y="2.6666666666666643" width="287" height="75"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main Wallet 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XWM-YE-mKI">
+                                <rect key="frame" x="16" y="26.333333333333329" width="83.333333333333329" height="22"/>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="xv0-8w-8FV">
+                                <rect key="frame" x="212" y="22.333333333333329" width="57" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="26 May 2023" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6X-Ri-l7b">
+                                        <rect key="frame" x="0.0" y="0.0" width="57" height="12"/>
+                                        <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="10"/>
+                                        <color key="textColor" name="#75769D"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2:12 PM" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="59B-bx-m7v">
+                                        <rect key="frame" x="0.0" y="18" width="57" height="12"/>
+                                        <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="10"/>
+                                        <color key="textColor" name="#75769D"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" name="#202148"/>
+                        <constraints>
+                            <constraint firstItem="XWM-YE-mKI" firstAttribute="top" secondItem="mvg-fU-6DU" secondAttribute="top" constant="26.5" id="6Xf-b4-kHv"/>
+                            <constraint firstItem="XWM-YE-mKI" firstAttribute="centerY" secondItem="mvg-fU-6DU" secondAttribute="centerY" id="O3w-Zb-Ztk"/>
+                            <constraint firstItem="XWM-YE-mKI" firstAttribute="leading" secondItem="mvg-fU-6DU" secondAttribute="leading" constant="16" id="OqY-40-P4l"/>
+                            <constraint firstAttribute="bottom" secondItem="XWM-YE-mKI" secondAttribute="bottom" constant="26.5" id="Szs-f1-Xp8"/>
+                            <constraint firstItem="xv0-8w-8FV" firstAttribute="centerY" secondItem="mvg-fU-6DU" secondAttribute="centerY" id="Ylb-lB-6N4"/>
+                            <constraint firstItem="xv0-8w-8FV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="XWM-YE-mKI" secondAttribute="trailing" constant="5" id="ZzU-Gj-cJS"/>
+                            <constraint firstAttribute="trailing" secondItem="xv0-8w-8FV" secondAttribute="trailing" constant="18" id="lFE-et-ZC9"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="mvg-fU-6DU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2.5" id="5a2-dT-7ew"/>
+                    <constraint firstItem="mvg-fU-6DU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="5bE-Gc-xC1"/>
+                    <constraint firstAttribute="bottom" secondItem="mvg-fU-6DU" secondAttribute="bottom" constant="2.5" id="eGi-Z0-UV0"/>
+                    <constraint firstAttribute="trailing" secondItem="mvg-fU-6DU" secondAttribute="trailing" constant="16" id="eya-xA-vHo"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="lblDate" destination="n6X-Ri-l7b" id="8B8-Ee-wLm"/>
+                <outlet property="lblTime" destination="59B-bx-m7v" id="kDD-iV-KWA"/>
+                <outlet property="lblWalletName" destination="XWM-YE-mKI" id="9CR-V6-BqB"/>
+            </connections>
+            <point key="canvasLocation" x="67.938931297709928" y="-19.718309859154932"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="#202148">
+            <color red="0.125" green="0.1289999932050705" blue="0.28200000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#75769D">
+            <color red="0.45899999141693115" green="0.46299999952316284" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

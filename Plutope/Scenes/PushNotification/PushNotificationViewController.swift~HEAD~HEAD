@@ -1,0 +1,25 @@
+//
+//  PushNotificationViewController.swift
+//  Plutope
+//
+//  Created by Priyanka Poojara on 09/06/23.
+//
+
+import UIKit
+
+class PushNotificationViewController: UIViewController {
+    @IBOutlet weak var ivInfo: UIImageView!
+  
+    @IBOutlet weak var lblMessage: UILabel!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func actionCancel(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
+
+}

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_regular.ttf">
+            <string>SFProDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SelectWalletBackUpViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="headerView" destination="0t0-qA-PyU" id="lZu-uu-DHS"/>
+                <outlet property="lblChooseBackup" destination="W2A-kc-shl" id="12l-dL-uOr"/>
+                <outlet property="tbvBackup" destination="kW7-p9-mNG" id="IId-fA-Wn5"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0t0-qA-PyU">
+                    <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="LLX-r2-EoY"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose the backup for the wallet you want to restore" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W2A-kc-shl">
+                    <rect key="frame" x="16" y="140" width="361" height="55"/>
+                    <color key="backgroundColor" name="#46443C"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="55" id="ygt-EU-bX4"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="12"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" name="#FADF68"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="0.5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="12"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kW7-p9-mNG">
+                    <rect key="frame" x="0.0" y="210" width="393" height="593"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="#0C0D2D"/>
+            <constraints>
+                <constraint firstItem="kW7-p9-mNG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="5qc-OF-BwW"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0t0-qA-PyU" secondAttribute="trailing" id="F1n-bW-6Cx"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="W2A-kc-shl" secondAttribute="trailing" constant="16" id="HYg-GK-Ijt"/>
+                <constraint firstItem="kW7-p9-mNG" firstAttribute="top" secondItem="W2A-kc-shl" secondAttribute="bottom" constant="15" id="HwX-gg-6aS"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="kW7-p9-mNG" secondAttribute="bottom" constant="15" id="ch3-1n-f8C"/>
+                <constraint firstItem="W2A-kc-shl" firstAttribute="top" secondItem="0t0-qA-PyU" secondAttribute="bottom" constant="31" id="oCG-mX-0nb"/>
+                <constraint firstItem="0t0-qA-PyU" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="qhb-CQ-gRP"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="kW7-p9-mNG" secondAttribute="trailing" id="vfu-1h-nq8"/>
+                <constraint firstItem="0t0-qA-PyU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="zBq-VN-2hV"/>
+                <constraint firstItem="W2A-kc-shl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="zLI-sr-nns"/>
+            </constraints>
+            <point key="canvasLocation" x="68" y="-32"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="#0C0D2D">
+            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#46443C">
+            <color red="0.27500000596046448" green="0.2669999897480011" blue="0.23499999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#FADF68">
+            <color red="0.98000001907348633" green="0.875" blue="0.40799999237060547" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

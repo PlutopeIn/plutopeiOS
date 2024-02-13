@@ -1,0 +1,72 @@
+PODS:
+  - ABSteppedProgressBar (0.2.3)
+  - ActiveLabel (1.1.0)
+  - Charts (4.1.0):
+    - Charts/Core (= 4.1.0)
+  - Charts/Core (4.1.0):
+    - SwiftAlgorithms (~> 1.0)
+  - CryptoSwift (1.7.1)
+  - DGNetworkingServices (1.0.23)
+  - IQKeyboardManagerSwift (6.5.11)
+  - lottie-ios (4.3.4)
+  - MaterialShowcase (0.8.0)
+  - QRScanner (0.1.1)
+  - SDWebImage (5.15.8):
+    - SDWebImage/Core (= 5.15.8)
+  - SDWebImage/Core (5.15.8)
+  - ShapeQRCode (0.9.2)
+  - SSPlaceHolderTableView (2.0.1)
+  - SwiftAlgorithms (1.0.0)
+  - SwiftLint (0.52.2)
+
+DEPENDENCIES:
+  - ABSteppedProgressBar
+  - ActiveLabel (~> 1.1.0)
+  - Charts
+  - CryptoSwift (~> 1.7.1)
+  - DGNetworkingServices
+  - IQKeyboardManagerSwift
+  - lottie-ios
+  - MaterialShowcase
+  - QRScanner
+  - SDWebImage
+  - ShapeQRCode
+  - SSPlaceHolderTableView
+  - SwiftLint
+
+SPEC REPOS:
+  trunk:
+    - ABSteppedProgressBar
+    - ActiveLabel
+    - Charts
+    - CryptoSwift
+    - DGNetworkingServices
+    - IQKeyboardManagerSwift
+    - lottie-ios
+    - MaterialShowcase
+    - QRScanner
+    - SDWebImage
+    - ShapeQRCode
+    - SSPlaceHolderTableView
+    - SwiftAlgorithms
+    - SwiftLint
+
+SPEC CHECKSUMS:
+  ABSteppedProgressBar: 8080d620b2c5dc427f7df155b3c08cdcc74d6fad
+  ActiveLabel: 5e3f4de79a1952d4604b845a0610d4776e4b82b3
+  Charts: ce0768268078eee0336f122c3c4ca248e4e204c5
+  CryptoSwift: d3d18dc357932f7e6d580689e065cf1f176007c1
+  DGNetworkingServices: 7a1f94ba2598f2e1b0b990c15633b34ac19489b5
+  IQKeyboardManagerSwift: c7955c0bdbf7b2eb29bb7daaa44e3d90f55a9a85
+  lottie-ios: 3d98679b41fa6fd6aff2352b3953dbd3df8a397e
+  MaterialShowcase: 0c0cef713a6504cd2a76a5d047bcb2787944a318
+  QRScanner: ba312fb61ea8f1b094e489b8a539ce99bf41b80b
+  SDWebImage: cb032eba469c54e0000e78bcb0a13cdde0a52798
+  ShapeQRCode: 643a06ffcad8a7a58a43331a8e65abbe5f4c1416
+  SSPlaceHolderTableView: 23bb3672c59acd0859b99a74966685d475bbdb64
+  SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
+  SwiftLint: 1ac76dac888ca05cb0cf24d0c85887ec1209961d
+
+PODFILE CHECKSUM: 253607a6cc7960ef5f5c0d6378180cfc6e2749ed
+
+COCOAPODS: 1.13.0

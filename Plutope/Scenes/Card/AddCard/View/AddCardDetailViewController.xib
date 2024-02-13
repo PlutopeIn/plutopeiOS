@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddCardDetailViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="detailView" destination="GDh-TY-ya7" id="q5C-is-Q0r"/>
+                <outlet property="headerView" destination="13V-m7-guQ" id="big-9W-AjD"/>
+                <outlet property="progressBar" destination="Xeo-f4-xsm" id="ygK-tP-NwZ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="13V-m7-guQ">
+                    <rect key="frame" x="0.0" y="59" width="393" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="vq4-at-kbb"/>
+                    </constraints>
+                </view>
+                <view clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xeo-f4-xsm" customClass="ABSteppedProgressBar" customModule="ABSteppedProgressBar">
+                    <rect key="frame" x="35" y="154" width="323" height="12"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="12" id="c0u-RU-TiA"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GDh-TY-ya7">
+                    <rect key="frame" x="0.0" y="216" width="393" height="602"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="#0C0D2D"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Xeo-f4-xsm" secondAttribute="trailing" constant="35" id="34w-MI-OXy"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="13V-m7-guQ" secondAttribute="trailing" id="3sm-6g-iKC"/>
+                <constraint firstItem="13V-m7-guQ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="CU8-7Q-Bza"/>
+                <constraint firstItem="13V-m7-guQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Gr9-Fd-kVI"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="GDh-TY-ya7" secondAttribute="trailing" id="JpE-ub-tDI"/>
+                <constraint firstItem="Xeo-f4-xsm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="35" id="OKd-vf-13l"/>
+                <constraint firstItem="GDh-TY-ya7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="OKj-W6-3UL"/>
+                <constraint firstItem="GDh-TY-ya7" firstAttribute="top" secondItem="Xeo-f4-xsm" secondAttribute="bottom" constant="50" id="lLi-j7-HEz"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="GDh-TY-ya7" secondAttribute="bottom" id="oG6-ZV-188"/>
+                <constraint firstItem="Xeo-f4-xsm" firstAttribute="top" secondItem="13V-m7-guQ" secondAttribute="bottom" constant="25" id="wa2-L2-VP5"/>
+            </constraints>
+            <point key="canvasLocation" x="57" y="-32"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="#0C0D2D">
+            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

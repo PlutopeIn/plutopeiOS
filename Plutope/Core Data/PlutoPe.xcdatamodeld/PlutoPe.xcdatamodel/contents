@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22G74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Contacts" representedClassName="Contacts" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="contact_Id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Currencies" representedClassName="Currencies" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isPrimary" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="sign" optional="YES" attributeType="String"/>
+        <attribute name="symbol" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Token" representedClassName="Token" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="balance" optional="YES" attributeType="String"/>
+        <attribute name="decimals" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isUserAdded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lastPriceChangeImpact" optional="YES" attributeType="String"/>
+        <attribute name="logoURI" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="price" optional="YES" attributeType="String"/>
+        <attribute name="symbol" optional="YES" attributeType="String"/>
+        <attribute name="tokenId" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Wallets" representedClassName="Wallets" syncable="YES">
+        <attribute name="fileName" optional="YES" attributeType="String"/>
+        <attribute name="isCloudBackup" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isManualBackup" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isPrimary" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="mnemonic" optional="YES" attributeType="String"/>
+        <attribute name="wallet_id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="wallet_name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="WalletTokens" representedClassName="WalletTokens" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="wallet_id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="tokens" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Token"/>
+    </entity>
+</model>

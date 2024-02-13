@@ -1,0 +1,6 @@
+framework module ShapeQRCode {
+  umbrella header "ShapeQRCode-umbrella.h"
+
+  export *
+  module * { export * }
+}

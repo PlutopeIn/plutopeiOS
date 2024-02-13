@@ -1,0 +1,1201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "2CED4A9D-67DC-4DCC-99E9-4EF199A88FF4"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "59BDDFAD-08FA-411F-A587-6C4752E353B1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Extensions/DGExtensions.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2298"
+            endingLineNumber = "2298"
+            landmarkName = "setTabBarHidden(hidden:animated:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "59BDDFAD-08FA-411F-A587-6C4752E353B1 - 59f6b15c42311808"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[2] = Value Promoted from Box&gt; of closure #1 () -&gt; () in __C.UIViewController.setTabBarHidden(hidden: Swift.Bool, animated: Swift.Bool) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Extensions/DGExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2298"
+                  endingLineNumber = "2298"
+                  offsetFromSymbolStart = "1688">
+               </Location>
+               <Location
+                  uuid = "59BDDFAD-08FA-411F-A587-6C4752E353B1 - 59f6b15c42311808"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[2] = Value Promoted from Box&gt; of closure #1 () -&gt; () in __C.UIViewController.setTabBarHidden(hidden: Swift.Bool, animated: Swift.Bool) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Extensions/DGExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2298"
+                  endingLineNumber = "2298"
+                  offsetFromSymbolStart = "1344">
+               </Location>
+               <Location
+                  uuid = "59BDDFAD-08FA-411F-A587-6C4752E353B1 - 59f6b15c42311808"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[2] = Value Promoted from Box&gt; of closure #1 () -&gt; () in __C.UIViewController.setTabBarHidden(hidden: Swift.Bool, animated: Swift.Bool) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Extensions/DGExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2298"
+                  endingLineNumber = "2298"
+                  offsetFromSymbolStart = "1621">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "291179E1-29C0-4207-99EB-F10A7D99F15A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Extensions/DGExtensions.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "668"
+            endingLineNumber = "668"
+            landmarkName = "stringTodictionary()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "291179E1-29C0-4207-99EB-F10A7D99F15A - 932468dfa826b63e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift.String.AttributedHashtags(FontColor: __C.UIColor, lineSpacing: Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; __C.NSAttributedString"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Web3.0/plutope/Plutope/Extensions/DGExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "668"
+                  endingLineNumber = "668"
+                  offsetFromSymbolStart = "1744">
+               </Location>
+               <Location
+                  uuid = "291179E1-29C0-4207-99EB-F10A7D99F15A - 932468dfa826b63e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift.String.AttributedHashtags(FontColor: __C.UIColor, lineSpacing: Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; __C.NSAttributedString"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Web3.0/plutope/Plutope/Extensions/DGExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "668"
+                  endingLineNumber = "668"
+                  offsetFromSymbolStart = "1272">
+               </Location>
+               <Location
+                  uuid = "291179E1-29C0-4207-99EB-F10A7D99F15A - 9ff8b033646c686f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift.String.stringTodictionary() -&gt; Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Extensions/DGExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "668"
+                  endingLineNumber = "668"
+                  offsetFromSymbolStart = "1360">
+               </Location>
+               <Location
+                  uuid = "291179E1-29C0-4207-99EB-F10A7D99F15A - 9ff8b033646c686f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift.String.stringTodictionary() -&gt; Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Extensions/DGExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "668"
+                  endingLineNumber = "668"
+                  offsetFromSymbolStart = "1344">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0F3D4381-068F-400D-9F09-3E7F27A23B8F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Extensions/DGExtensions.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "933"
+            endingLineNumber = "933"
+            landmarkName = "ContentMode"
+            landmarkType = "13">
+            <Locations>
+               <Location
+                  uuid = "0F3D4381-068F-400D-9F09-3E7F27A23B8F - da8e5bfb6a97f890"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__C.UILabel.addSpacing(spacingValue: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, CharacterSpacing: Swift.Optional&lt;Swift.Double&gt;, range: Swift.Optional&lt;__C._NSRange&gt;) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Web3.0/plutope/Plutope/Extensions/DGExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "933"
+                  endingLineNumber = "933"
+                  offsetFromSymbolStart = "633">
+               </Location>
+               <Location
+                  uuid = "0F3D4381-068F-400D-9F09-3E7F27A23B8F - da8e5bfb6a97f890"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__C.UILabel.addSpacing(spacingValue: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, CharacterSpacing: Swift.Optional&lt;Swift.Double&gt;, range: Swift.Optional&lt;__C._NSRange&gt;) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Web3.0/plutope/Plutope/Extensions/DGExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "933"
+                  endingLineNumber = "933"
+                  offsetFromSymbolStart = "452">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CF1A8F8F-4412-4922-B57E-2444DFA97857"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/WalletDashboard/Controller/WalletDashboardViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "getPrice(_:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B90D97D4-E765-4489-B49A-046BE5AD9613"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/WalletDashboard/Controller/WalletDashboardViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
+            landmarkName = "unknown"
+            landmarkType = "0">
+            <Locations>
+               <Location
+                  uuid = "B90D97D4-E765-4489-B49A-046BE5AD9613 - fa1f02d67deb4af6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Plutope.WalletDashboardViewController.selectEnabledToken(Plutope.Token) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Web3.0/plutope/Plutope/Scenes/WalletDashboard/Controller/WalletDashboardViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "262"
+                  endingLineNumber = "262"
+                  offsetFromSymbolStart = "45">
+               </Location>
+               <Location
+                  uuid = "B90D97D4-E765-4489-B49A-046BE5AD9613 - 99e3511ea59c2233"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 () -&gt; () in Plutope.WalletDashboardViewController.selectEnabledToken(Plutope.Token) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Web3.0/plutope/Plutope/Scenes/WalletDashboard/Controller/WalletDashboardViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "263"
+                  endingLineNumber = "263"
+                  offsetFromSymbolStart = "22">
+               </Location>
+               <Location
+                  uuid = "B90D97D4-E765-4489-B49A-046BE5AD9613 - 701df8061ef461cc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.WalletDashboardViewController.selectEnabledToken(Plutope.Token) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Web3.0/plutope/Plutope/Scenes/WalletDashboard/Controller/WalletDashboardViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "262"
+                  endingLineNumber = "262"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "B90D97D4-E765-4489-B49A-046BE5AD9613 - fa1f02d67deb4909"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Plutope.WalletDashboardViewController.selectEnabledToken(Plutope.Token) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Web3.0/plutope/Plutope/Scenes/WalletDashboard/Controller/WalletDashboardViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "263"
+                  endingLineNumber = "263"
+                  offsetFromSymbolStart = "45">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2A9ED4CF-2C16-4EF6-9768-6EB97BBDBC9E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/BuyCoinList/Controller/BuyCoinList+Delegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2A9ED4CF-2C16-4EF6-9768-6EB97BBDBC9E - 105bae3fd849112d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinListViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoinList/Controller/BuyCoinList+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "584">
+               </Location>
+               <Location
+                  uuid = "2A9ED4CF-2C16-4EF6-9768-6EB97BBDBC9E - 105bae3fd849112d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinListViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoinList/Controller/BuyCoinList+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "772">
+               </Location>
+               <Location
+                  uuid = "2A9ED4CF-2C16-4EF6-9768-6EB97BBDBC9E - cdafcfa0214dc5c7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Plutope.CoinPrice&gt;, Swift.Bool, Swift.String) -&gt; () in Plutope.BuyCoinListViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoinList/Controller/BuyCoinList+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "488">
+               </Location>
+               <Location
+                  uuid = "2A9ED4CF-2C16-4EF6-9768-6EB97BBDBC9E - 105bae3fd849112d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinListViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoinList/Controller/BuyCoinList+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "600">
+               </Location>
+               <Location
+                  uuid = "2A9ED4CF-2C16-4EF6-9768-6EB97BBDBC9E - 105bae3fd849112d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinListViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoinList/Controller/BuyCoinList+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "788">
+               </Location>
+               <Location
+                  uuid = "2A9ED4CF-2C16-4EF6-9768-6EB97BBDBC9E - 105bae3fd849112d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinListViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoinList/Controller/BuyCoinList+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "560">
+               </Location>
+               <Location
+                  uuid = "2A9ED4CF-2C16-4EF6-9768-6EB97BBDBC9E - 105bae3fd849112d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinListViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoinList/Controller/BuyCoinList+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "709">
+               </Location>
+               <Location
+                  uuid = "2A9ED4CF-2C16-4EF6-9768-6EB97BBDBC9E - cdafcfa0214dc5c7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Plutope.CoinPrice&gt;, Swift.Bool, Swift.String) -&gt; () in Plutope.BuyCoinListViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoinList/Controller/BuyCoinList+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "378">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2A2A808D-003F-4015-A1B9-CAAAB79BD861"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/Providers/Controller/Provider+Delegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2A2A808D-003F-4015-A1B9-CAAAB79BD861 - 1965b08fd8cb590a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.ProvidersViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/Providers/Controller/Provider+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "704">
+               </Location>
+               <Location
+                  uuid = "2A2A808D-003F-4015-A1B9-CAAAB79BD861 - 1965b08fd8cb590a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.ProvidersViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/Providers/Controller/Provider+Delegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "866">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D6CB9B57-8506-49E8-9861-35C6EFEB23CE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "valuesTobePassed(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D6CB9B57-8506-49E8-9861-35C6EFEB23CE - 898132416de2a90f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.valuesTobePassed(Plutope.BuyCrypto.Domain) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "136"
+                  endingLineNumber = "136"
+                  offsetFromSymbolStart = "752">
+               </Location>
+               <Location
+                  uuid = "D6CB9B57-8506-49E8-9861-35C6EFEB23CE - 898132416de2a90f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.valuesTobePassed(Plutope.BuyCrypto.Domain) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "136"
+                  endingLineNumber = "136"
+                  offsetFromSymbolStart = "716">
+               </Location>
+               <Location
+                  uuid = "D6CB9B57-8506-49E8-9861-35C6EFEB23CE - 898132416de2a90f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.valuesTobePassed(Plutope.BuyCrypto.Domain) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "136"
+                  endingLineNumber = "136"
+                  offsetFromSymbolStart = "873">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EB5315D4-5375-455E-B454-B3142B555736"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "actionNext(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EB5315D4-5375-455E-B454-B3142B555736 - 48b7a6ba40bf407"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94"
+                  offsetFromSymbolStart = "2520">
+               </Location>
+               <Location
+                  uuid = "EB5315D4-5375-455E-B454-B3142B555736 - 48b7a6ba40bf407"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94"
+                  offsetFromSymbolStart = "1956">
+               </Location>
+               <Location
+                  uuid = "EB5315D4-5375-455E-B454-B3142B555736 - 48b7a6ba40bf407"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94"
+                  offsetFromSymbolStart = "2390">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "53C1054A-6BD4-4A38-8C73-4CD8A5410402"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "actionNext(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "53C1054A-6BD4-4A38-8C73-4CD8A5410402 - 48b7a6ba40bf5fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87"
+                  offsetFromSymbolStart = "148">
+               </Location>
+               <Location
+                  uuid = "53C1054A-6BD4-4A38-8C73-4CD8A5410402 - 48b7a6ba40bf5fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87"
+                  offsetFromSymbolStart = "628">
+               </Location>
+               <Location
+                  uuid = "53C1054A-6BD4-4A38-8C73-4CD8A5410402 - 48b7a6ba40bf5dd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "144">
+               </Location>
+               <Location
+                  uuid = "53C1054A-6BD4-4A38-8C73-4CD8A5410402 - 48b7a6ba40bf5dd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "356">
+               </Location>
+               <Location
+                  uuid = "53C1054A-6BD4-4A38-8C73-4CD8A5410402 - 48b7a6ba40bf5dd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "226">
+               </Location>
+               <Location
+                  uuid = "53C1054A-6BD4-4A38-8C73-4CD8A5410402 - 48b7a6ba40bf5dd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "442">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CE972D0C-2B89-49A7-8204-294491EDA636"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "actionNext(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CE972D0C-2B89-49A7-8204-294491EDA636 - 48b7a6ba40bf70f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "102"
+                  endingLineNumber = "102"
+                  offsetFromSymbolStart = "3428">
+               </Location>
+               <Location
+                  uuid = "CE972D0C-2B89-49A7-8204-294491EDA636 - 48b7a6ba40bf70f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.BuyCoinViewController.actionNext(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/BuyCoin/Controller/BuyCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "102"
+                  endingLineNumber = "102"
+                  offsetFromSymbolStart = "4511">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "38F3BC8B-116C-4AA0-846C-DBC8F04D7967"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Extensions/DGExtensions.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1555"
+            endingLineNumber = "1555"
+            landmarkName = "showTextFieldAlertAndPerform(Title:Placeholder:action:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "32B8FF9E-76FB-4B4A-B087-A5E9E2C70A93"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/SendCoin/ViewController/SendCoinViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "textFieldDidChangeSelection(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "32B8FF9E-76FB-4B4A-B087-A5E9E2C70A93 - 430158751900b63a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.SendCoinViewController.textFieldDidChangeSelection(__C.UITextField) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "364">
+               </Location>
+               <Location
+                  uuid = "32B8FF9E-76FB-4B4A-B087-A5E9E2C70A93 - 430158751900b63a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.SendCoinViewController.textFieldDidChangeSelection(__C.UITextField) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "408">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D91B0468-9E31-455D-9557-C442D5B278F9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/SendCoin/ViewController/SendCoinViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "textFieldDidChangeSelection(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D91B0468-9E31-455D-9557-C442D5B278F9 - 430158751900b678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.SendCoinViewController.textFieldDidChangeSelection(__C.UITextField) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  uuid = "D91B0468-9E31-455D-9557-C442D5B278F9 - 430158751900b678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.SendCoinViewController.textFieldDidChangeSelection(__C.UITextField) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "152">
+               </Location>
+               <Location
+                  uuid = "D91B0468-9E31-455D-9557-C442D5B278F9 - 430158751900b678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.SendCoinViewController.textFieldDidChangeSelection(__C.UITextField) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "106">
+               </Location>
+               <Location
+                  uuid = "D91B0468-9E31-455D-9557-C442D5B278F9 - 430158751900b678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.SendCoinViewController.textFieldDidChangeSelection(__C.UITextField) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "167">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1DDFA6D4-978C-41A8-9005-C8A5D8630DDC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "setAmountAction(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1DDFA6D4-978C-41A8-9005-C8A5D8630DDC - 6e5950ad8012fca9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.String) -&gt; () in Plutope.ReceiveCoinViewController.setAmountAction(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "2229">
+               </Location>
+               <Location
+                  uuid = "1DDFA6D4-978C-41A8-9005-C8A5D8630DDC - 6e5950ad8012fca9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.String) -&gt; () in Plutope.ReceiveCoinViewController.setAmountAction(Any) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "1904">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FEE5DF0E-CE73-41DF-9BE1-8C17683F560F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/SendCoin/ViewController/SendCoin+ScannerDelegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "qrScannerDidSuccess(scanner:result:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FEE5DF0E-CE73-41DF-9BE1-8C17683F560F - ff75e1d7d30e523a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Plutope.SendCoinViewController.qrScannerDidSuccess(scanner: QRScanner.QRScannerViewController, result: Swift.String) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoin+ScannerDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "1302">
+               </Location>
+               <Location
+                  uuid = "FEE5DF0E-CE73-41DF-9BE1-8C17683F560F - ff75e1d7d30e523a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Plutope.SendCoinViewController.qrScannerDidSuccess(scanner: QRScanner.QRScannerViewController, result: Swift.String) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoin+ScannerDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "1260">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B9463045-FA2A-4E12-9165-E5EF08FA9210"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/SendCoin/ViewController/SendCoin+ScannerDelegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "qrScannerDidSuccess(scanner:result:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B9463045-FA2A-4E12-9165-E5EF08FA9210 - ff75e1d7d30e5259"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Plutope.SendCoinViewController.qrScannerDidSuccess(scanner: QRScanner.QRScannerViewController, result: Swift.String) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoin+ScannerDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "360">
+               </Location>
+               <Location
+                  uuid = "B9463045-FA2A-4E12-9165-E5EF08FA9210 - ff75e1d7d30e5259"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Plutope.SendCoinViewController.qrScannerDidSuccess(scanner: QRScanner.QRScannerViewController, result: Swift.String) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoin+ScannerDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "620">
+               </Location>
+               <Location
+                  uuid = "B9463045-FA2A-4E12-9165-E5EF08FA9210 - ff75e1d7d30e5259"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Plutope.SendCoinViewController.qrScannerDidSuccess(scanner: QRScanner.QRScannerViewController, result: Swift.String) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoin+ScannerDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "231">
+               </Location>
+               <Location
+                  uuid = "B9463045-FA2A-4E12-9165-E5EF08FA9210 - ff75e1d7d30e5259"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Plutope.SendCoinViewController.qrScannerDidSuccess(scanner: QRScanner.QRScannerViewController, result: Swift.String) -&gt; ()"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/SendCoin/ViewController/SendCoin+ScannerDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "509">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "561CAA78-AC21-4E59-99FD-46B87FC2146D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "generateQRCode(from:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "561CAA78-AC21-4E59-99FD-46B87FC2146D - 94933413c5b9ad56"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.ReceiveCoinViewController.generateQRCode(from: Swift.String) -&gt; Swift.Optional&lt;__C.UIImage&gt;"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "392">
+               </Location>
+               <Location
+                  uuid = "561CAA78-AC21-4E59-99FD-46B87FC2146D - 94933413c5b9ad56"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.ReceiveCoinViewController.generateQRCode(from: Swift.String) -&gt; Swift.Optional&lt;__C.UIImage&gt;"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "468">
+               </Location>
+               <Location
+                  uuid = "561CAA78-AC21-4E59-99FD-46B87FC2146D - 94933413c5b9ad56"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.ReceiveCoinViewController.generateQRCode(from: Swift.String) -&gt; Swift.Optional&lt;__C.UIImage&gt;"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "309">
+               </Location>
+               <Location
+                  uuid = "561CAA78-AC21-4E59-99FD-46B87FC2146D - 94933413c5b9ad56"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.ReceiveCoinViewController.generateQRCode(from: Swift.String) -&gt; Swift.Optional&lt;__C.UIImage&gt;"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "383">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A1ACD7C9-55D1-489B-917D-0E7693A79EEA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "generateQRCode(from:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A1ACD7C9-55D1-489B-917D-0E7693A79EEA - 94933413c5b9acd2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.ReceiveCoinViewController.generateQRCode(from: Swift.String) -&gt; Swift.Optional&lt;__C.UIImage&gt;"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "948">
+               </Location>
+               <Location
+                  uuid = "A1ACD7C9-55D1-489B-917D-0E7693A79EEA - 94933413c5b9acd2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Plutope.ReceiveCoinViewController.generateQRCode(from: Swift.String) -&gt; Swift.Optional&lt;__C.UIImage&gt;"
+                  moduleName = "Plutope"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/admin/Documents/Projects/plutope/Plutope/Scenes/ReceiveCoin/Controller/ReceiveCoinViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "863">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

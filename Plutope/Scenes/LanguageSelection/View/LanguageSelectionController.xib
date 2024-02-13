@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LanguageSelectionController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="headerView" destination="pr4-xM-mF2" id="5vs-MU-Har"/>
+                <outlet property="tblLanguages" destination="sbm-LH-nhR" id="Lvk-aC-FMc"/>
+                <outlet property="view" destination="iN0-l3-epB" id="dJs-sY-PVm"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pr4-xM-mF2">
+                    <rect key="frame" x="0.0" y="59" width="393" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="TEs-bp-qqz"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sbm-LH-nhR">
+                    <rect key="frame" x="0.0" y="129" width="393" height="669"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" name="#0C0D2D"/>
+            <constraints>
+                <constraint firstItem="sbm-LH-nhR" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="1ax-C5-KAV"/>
+                <constraint firstItem="pr4-xM-mF2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="692-Hb-a8X"/>
+                <constraint firstItem="pr4-xM-mF2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Dwm-Jh-DeR"/>
+                <constraint firstItem="sbm-LH-nhR" firstAttribute="top" secondItem="pr4-xM-mF2" secondAttribute="bottom" id="Juu-RE-4iE"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="sbm-LH-nhR" secondAttribute="bottom" constant="20" id="KQg-fy-4Y2"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="pr4-xM-mF2" secondAttribute="trailing" id="aJt-E3-vQ9"/>
+                <constraint firstItem="sbm-LH-nhR" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="onT-qe-Ec7"/>
+            </constraints>
+            <point key="canvasLocation" x="35.877862595419849" y="-11.267605633802818"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="#0C0D2D">
+            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

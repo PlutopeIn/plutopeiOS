@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_bold.ttf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardDesignDetailViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="02A-b7-QE2">
+                    <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Card Design" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IV7-0O-JKC">
+                            <rect key="frame" x="16" y="41" width="361" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="ZgK-lO-mlQ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hEd-0i-4LA">
+                            <rect key="frame" x="25" y="83" width="343" height="215"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cardBackground" translatesAutoresizingMaskIntoConstraints="NO" id="zHR-Y4-yvG">
+                                    <rect key="frame" x="-10" y="-6" width="363" height="221"/>
+                                </imageView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IG1-iL-eoO" customClass="GradientButton" customModule="Plutope" customModuleProvider="target">
+                                    <rect key="frame" x="107.66666666666666" y="82.666666666666657" width="128" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="128" id="KGl-7g-KUw"/>
+                                        <constraint firstAttribute="height" constant="50" id="zy3-Dq-bfG"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="15"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Get Card">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
+                                            <color key="value" name="#121C3D"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
+                                            <color key="value" name="#00C6FB"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornderRadius">
+                                            <real key="value" value="25"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="215" id="2oj-Yf-qgA"/>
+                                <constraint firstAttribute="trailing" secondItem="zHR-Y4-yvG" secondAttribute="trailing" constant="-10" id="IOs-GC-q1X"/>
+                                <constraint firstItem="IG1-iL-eoO" firstAttribute="centerX" secondItem="hEd-0i-4LA" secondAttribute="centerX" id="N07-wd-aIr"/>
+                                <constraint firstItem="IG1-iL-eoO" firstAttribute="centerY" secondItem="hEd-0i-4LA" secondAttribute="centerY" id="S0f-11-Eg1"/>
+                                <constraint firstItem="zHR-Y4-yvG" firstAttribute="leading" secondItem="hEd-0i-4LA" secondAttribute="leading" constant="-10" id="dl0-w6-PZx"/>
+                                <constraint firstAttribute="bottom" secondItem="zHR-Y4-yvG" secondAttribute="bottom" id="xJI-qu-Igl"/>
+                                <constraint firstItem="zHR-Y4-yvG" firstAttribute="top" secondItem="hEd-0i-4LA" secondAttribute="top" constant="-6" id="xe6-mO-OVR"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="hEd-0i-4LA" secondAttribute="trailing" constant="25" id="GWj-ck-QDD"/>
+                        <constraint firstItem="IV7-0O-JKC" firstAttribute="top" secondItem="02A-b7-QE2" secondAttribute="top" constant="41" id="GtC-Hy-Gek"/>
+                        <constraint firstItem="IV7-0O-JKC" firstAttribute="leading" secondItem="02A-b7-QE2" secondAttribute="leading" constant="16" id="LDx-t6-9Y1"/>
+                        <constraint firstAttribute="trailing" secondItem="IV7-0O-JKC" secondAttribute="trailing" constant="16" id="QkP-wp-NMo"/>
+                        <constraint firstItem="hEd-0i-4LA" firstAttribute="leading" secondItem="02A-b7-QE2" secondAttribute="leading" constant="25" id="dTF-wq-wCS"/>
+                        <constraint firstItem="hEd-0i-4LA" firstAttribute="top" secondItem="IV7-0O-JKC" secondAttribute="bottom" constant="21" id="zP7-Wi-ha9"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="#0C0D2D"/>
+            <constraints>
+                <constraint firstItem="02A-b7-QE2" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="GcA-Wq-P5l"/>
+                <constraint firstItem="02A-b7-QE2" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Lnq-pE-gWD"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="02A-b7-QE2" secondAttribute="bottom" id="aGP-1V-ubM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="02A-b7-QE2" secondAttribute="trailing" id="pSu-aG-gTR"/>
+            </constraints>
+            <point key="canvasLocation" x="11" y="-32"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="IG1-iL-eoO">
+            <size key="intrinsicContentSize" width="61" height="30"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="cardBackground" width="241.33332824707031" height="167.33332824707031"/>
+        <namedColor name="#00C6FB">
+            <color red="0.0" green="0.77600002288818359" blue="0.98400002717971802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#0C0D2D">
+            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#121C3D">
+            <color red="0.071000002324581146" green="0.10999999940395355" blue="0.23899999260902405" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

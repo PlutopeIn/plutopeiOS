@@ -116,7 +116,7 @@ struct Route: Codable {
     let from, to: From?
     let fee: [Fee]?
     let feeUsd: Double?
-    let amountRestriction: String?
+//    let amountRestriction: String?
     let estimatedTimeInSeconds: Int?
     let path: [Path]?
 }
@@ -179,7 +179,7 @@ struct RangoSwapingData: Codable {
     }
 }
 
-// MARK: - Route
+// MARK: - Routes
 struct Routes: Codable {
     let outputAmount, outputAmountMin: String?
     let outputAmountUsd: Double?
@@ -187,7 +187,7 @@ struct Routes: Codable {
     let from, to: Froms?
     let fee: [Fees]?
     let feeUsd: Double?
-    let amountRestriction: String?
+ //   let amountRestriction: String?
     let estimatedTimeInSeconds: Int?
     let path: [Paths]?
 }

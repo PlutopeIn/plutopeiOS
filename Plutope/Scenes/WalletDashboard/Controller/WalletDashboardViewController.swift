@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import WalletCore
 import CoreData
 import SwiftUI
 import MaterialShowcase
@@ -30,9 +29,8 @@ class WalletDashboardViewController: UIViewController, Reusable {
     @IBOutlet weak var btnReceiveNFTS: UIButton!
     @IBOutlet weak var btnReceive: UIButton!
  
-   
     lazy var viewModel: TokenListViewModel = {
-        TokenListViewModel { status,message in
+        TokenListViewModel { status,_ in
             if status == false {
               //  self.showToast(message: message, font: AppFont.regular(15).value)
             }
@@ -40,7 +38,7 @@ class WalletDashboardViewController: UIViewController, Reusable {
     }()
     
     lazy var nftViewModel: NFTListViewModel = {
-        NFTListViewModel { status, message in
+        NFTListViewModel { status, _ in
             if status == false {
                // self.showToast(message: message, font: AppFont.regular(15).value)
             }
@@ -48,7 +46,7 @@ class WalletDashboardViewController: UIViewController, Reusable {
     }()
     
     lazy var currencyViewModel: CurrencyViewModel = {
-        CurrencyViewModel { status, message in
+        CurrencyViewModel { status, _ in
             if status == false {
                // self.showToast(message: message, font: AppFont.regular(15).value)
             }
@@ -56,7 +54,7 @@ class WalletDashboardViewController: UIViewController, Reusable {
     }()
     
     lazy var coinGeckoViewModel: CoinGraphViewModel = {
-        CoinGraphViewModel { _ ,message in
+        CoinGraphViewModel { _ ,_ in
            // self.showToast(message: message, font: .systemFont(ofSize: 15))
         }
     }()
@@ -64,10 +62,13 @@ class WalletDashboardViewController: UIViewController, Reusable {
     var currencyData = DatabaseHelper.shared.retrieveData("Currencies") as? [Currencies]
     var primaryCurrency: Currencies?
     var chainTokenList: [Token]? = []
+    var tokenList: [Token]? = []
     var arrNftData: [NFTList]? = []
+    var activeToken: [ActiveTokens]? = []
     var primaryWallet: Wallets?
     var nftDescription: String = String()
     var imageUrl: URL = URL(fileURLWithPath: "")
+    var isImport = false
     /// Ring hostingview swiftUI
     var hostingView: UIHostingController<GradientRingView>?
     
@@ -88,7 +89,7 @@ class WalletDashboardViewController: UIViewController, Reusable {
         
         /// Table Register
         tableRegister()
-        getChainList()
+       
         /// NFT Collection Register
         nftViewRegister()
         
@@ -96,23 +97,31 @@ class WalletDashboardViewController: UIViewController, Reusable {
         tbvAssets.isHidden = false
         scrollViewNft.isHidden = true
         viewNullNFT.isHidden = true
-        
+       
         clvNFTs.addRefreshControl(target: self, action: #selector(refreshNFTs))
         tbvAssets.addRefreshControl(target: self, action: #selector(refreshCoinList))
         /// Currency set up
         currencySetUp()
+      
         /// Segment Setup
         segmentSetup()
     }
-    
+    func getActiveTokens(walletAddress : String){
+        viewModel.apiGetActiveTokens(walletAddress: walletAddress) { data, status in
+            self.activeToken = data
+            //            print("Active token",self.activeToken)
+        }
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    //getChainList()
         NotificationCenter.default.addObserver(forName: Notification.Name("LanguageDidChange"), object: nil, queue: .main) { (notification) in
             (self.headerView.subviews.first as? NavigationView)?.lblTitle.text =  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.wallet, comment: "")
             self.tbvAssets.reloadData()
         }
+       
         multiLanguageSetUp()
-        updateTableViewData()
+      
         // MARK: Ring Animation
         if #available(iOS 15.0, *) {
             /// Check if the subRingView already exists
@@ -194,6 +203,8 @@ class WalletDashboardViewController: UIViewController, Reusable {
     
     @objc func refreshCoinList() {
         getChainList()
+       // let button = UIButton()
+        //exploreNewTapped(button)
         tbvAssets.endRefreshing()
     }
     @objc func refreshNFTs() {
@@ -247,7 +258,7 @@ class WalletDashboardViewController: UIViewController, Reusable {
     /// Navigation bar configuration
     private func configureNavigationBar() {
         /// Navigation Header
-        //defineHeader(headerView: headerView, titleText: StringConstants.wallet, btnBackHidden: true)
+      
         defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.wallet, comment: ""), btnBackHidden: true)
         
         self.navigationController?.setNavigationBarHidden(true, animated: true)
@@ -278,7 +289,6 @@ class WalletDashboardViewController: UIViewController, Reusable {
         segmentControl.layer.masksToBounds = true
         segmentControl.clipsToBounds = true
     }
-    
     private func currencySetUp() {
         let dispatchGroup = DispatchGroup()
         let isEmpty = DatabaseHelper.shared.entityIsEmpty("Currencies")
@@ -301,14 +311,11 @@ class WalletDashboardViewController: UIViewController, Reusable {
                             currencyEntity.isPrimary = false
                         }
                         DatabaseHelper.shared.saveData(currencyEntity) { _ in
-                            dispatchGroup.leave()
                         }
                     })
                     
                     /// To get assets list
-                    dispatchGroup.notify(queue: .main) {
-                        self.getChainList()
-                    }
+                    self.getChainList()
                     
                 } else {
                     self.showToast(message: "Currency data failure", font: AppFont.regular(15).value)
@@ -326,10 +333,11 @@ extension WalletDashboardViewController {
     
     private func getNFTList() {
 //         nftViewModel.apiGetNFTList(WalletData.shared.wallet?.getAddressForCoin(coin: .ethereum))
-        DGProgressView.shared.showLoader(to:scrollViewNft)
+        segmentControl.isUserInteractionEnabled = false
+        DGProgressView.shared.showLoader(to:view)
         nftViewModel.apiGetNFTList(WalletData.shared.myWallet?.address ?? "") { data, status, message in
             if status {
-               
+                self.segmentControl.isUserInteractionEnabled = true
                 self.arrNftData = data
                 if !(self.arrNftData?.isEmpty ?? false) {
                     
@@ -345,15 +353,16 @@ extension WalletDashboardViewController {
                         
                     }
                 } else {
-                    
+                    self.segmentControl.isUserInteractionEnabled = true
                     self.tbvAssets.isHidden = true
                     self.scrollViewNft.isHidden = true
                     self.viewNullNFT.isHidden = false
                     DGProgressView.shared.hideLoader()
+                    
                 }
             } else {
                 print(message)
-                
+                self.segmentControl.isUserInteractionEnabled = true
                 self.tbvAssets.isHidden = true
                 self.scrollViewNft.isHidden = true
                 self.viewNullNFT.isHidden = false
@@ -401,7 +410,7 @@ extension WalletDashboardViewController {
             }
      // implement BTC Chain Get Balance 6-12-13
             if token.type == "BTC" {
-                //"bc1q4ce2w4z6q8m6v7fehau640dpp0fpqqzjqzpgsk"  "n1TKu4ZX7vkyjfvo7RCbjeUZB6Zub8N3fN"token.address
+                // "bc1q4ce2w4z6q8m6v7fehau640dpp0fpqqzjqzpgsk"  "n1TKu4ZX7vkyjfvo7RCbjeUZB6Zub8N3fN"token.address
                 self.viewModel.getBitcoinBalanceAPI(walletAddress: token.address ?? "", completion: { balance in
                     print("token.address", token.address ?? "")
                     print("balance",balance)
@@ -434,7 +443,7 @@ extension WalletDashboardViewController {
         }
         
         for token in allChainToken {
-            
+
 //            self.coinGeckoViewModel.apiMarketVolumeData(primaryCurrency?.symbol ?? "", ids: token.tokenId ?? "") { _,_,data in
             var tokenId = ""
             if token.tokenId == "" {
@@ -442,47 +451,97 @@ extension WalletDashboardViewController {
             } else {
                 tokenId = token.tokenId ?? ""
             }
-            coinGeckoViewModel.apiMarketVolumeData(primaryCurrency?.symbol ?? "", ids: tokenId) { _,_,data in
-                if let data = data, let assets = data.first {
-                    DispatchQueue.main.async {
-                        let symbol = (assets.symbol ?? "").uppercased()
-                        let id = assets.id ?? ""
-                        print("symbol = ",symbol)
-                        print("id = ",id)
-                        DatabaseHelper.shared.updateData(entityName: "Token", predicateFormat: "symbol == %@ AND tokenId == %@", predicateArgs: [symbol ,id]) { object in
-                            if let token = object as? Token {
-                                let price = assets.currentPrice ?? 0.0
-                                token.price = "\(price)"
-                                print("price = ",token.price ?? "")
-                                token.logoURI = assets.image ?? ""
-                                print("logoURI = ",token.logoURI ?? "")
-                                let roundVal = WalletData.shared.formatDecimalString("\(assets.priceChangePercentage24H ?? 0.0)", decimalPlaces: 2)
-                                token.lastPriceChangeImpact = roundVal
-                                print("lastPriceChangeImpact = ",token.lastPriceChangeImpact ?? "")
-                               // if token.isUserAdded {
+        let tokenIds = allChainToken.map { $0.tokenId ?? "" }.filter { !$0.isEmpty }
+            coinGeckoViewModel.apiMarketVolumeData(primaryCurrency?.symbol ?? "", ids: tokenId) { status,message,data in
+            if status {
+                    print("received Response")
+                    if let data = data, let assets = data.first {
+                        DispatchQueue.main.async {
+                            let symbol = (assets.symbol ?? "").uppercased()
+                            let id = assets.id ?? ""
+                            print("symbol = ",symbol)
+                            print("id = ",id)
+                            DatabaseHelper.shared.updateData(entityName: "Token", predicateFormat: "symbol == %@ AND tokenId == %@", predicateArgs: [symbol ,id]) { object in
+                                if let token = object as? Token {
+                                    let price = assets.currentPrice ?? 0.0
+                                    token.price = "\(price)"
+                                    print("price = ",token.price ?? "")
+                                    token.logoURI = assets.image ?? ""
+                                    print("logoURI = ",token.logoURI ?? "")
+                                    let roundVal = WalletData.shared.formatDecimalString("\(assets.priceChangePercentage24H ?? 0.0)", decimalPlaces: 2)
+                                    token.lastPriceChangeImpact = roundVal
+                                    print("lastPriceChangeImpact = ",token.lastPriceChangeImpact ?? "")
+                                    // if token.isUserAdded {
                                     counter -= 1
-                             //   }
-                               
-                                print("counter == ",counter)
-                            } else {
+                                    //   }
 
-                            }
-                            if counter == 0 {
-                                completion()
+                                    print("counter == ",counter)
+                                } else {
+
+                                }
+                                if counter == 0 {
+                                    completion()
+                                }
                             }
                         }
-                     }
-                } else {
-                    counter -= 1
-                    if counter == 0 {
-                        completion()
+                    } else {
+                        counter -= 1
+                        if counter == 0 {
+                            completion()
+                        }
                     }
                 }
             }
         }
+        // Extract token IDs from allChainToken array
+//        let tokenIds = allChainToken.map { $0.tokenId ?? "" }.filter { !$0.isEmpty }
+//        DGProgressView.shared.showLoader(to: self.view)
+//        // Iterate over each token ID and fetch data
+//        tokenIds.forEach { tokenId in
+//            coinGeckoViewModel.apiMarketVolumeData(primaryCurrency?.symbol ?? "", ids: tokenId) { status, message, data in
+//                if status {
+//                    DGProgressView.shared.hideLoader()
+//                    print("received Response for token ID: \(tokenId)")
+//                    if let data = data, let assets = data.first {
+//                        DispatchQueue.main.async {
+//                            let symbol = (assets.symbol ?? "").uppercased()
+//                            let id = assets.id ?? ""
+//                            print("symbol = ", symbol)
+//                            print("id = ", id)
+//                            DatabaseHelper.shared.updateData(entityName: "Token", predicateFormat: "symbol == %@ AND tokenId == %@", predicateArgs: [symbol, id]) { object in
+//                                if let token = object as? Token {
+//                                    let price = assets.currentPrice ?? 0.0
+//                                    token.price = "\(price)"
+//                                    print("price = ", token.price ?? "")
+//                                    token.logoURI = assets.image ?? ""
+//                                    print("logoURI = ", token.logoURI ?? "")
+//                                    let roundVal = WalletData.shared.formatDecimalString("\(assets.priceChangePercentage24H ?? 0.0)", decimalPlaces: 2)
+//                                    token.lastPriceChangeImpact = roundVal
+//                                    print("lastPriceChangeImpact = ", token.lastPriceChangeImpact ?? "")
+//                                    counter -= 1
+//                                    print("counter == ", counter)
+//                                    if counter == 0 {
+//                                        completion()
+//                                    }
+//                                } else {
+//                                    // Handle the case where object is not of type Token
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        counter -= 1
+//                        if counter == 0 {
+//                            completion()
+//                        }
+//                    }
+//                } else {
+//                    print("error")
+//                }
+//            }
+//        }
+
     }
 
-    
     fileprivate func updateTableViewData() {
         DispatchQueue.main.async {
             self.tbvAssets.reloadData()
@@ -491,7 +550,8 @@ extension WalletDashboardViewController {
     }
     
     internal func getChainList() {
-     //     DGProgressView.shared.showLoader(to: self.view)
+      
+              //  self.lblMainBal.text = ""
         if currencyData?.count == 0 {
             currencyData = DatabaseHelper.shared.retrieveData("Currencies") as? [Currencies]
         }
@@ -499,7 +559,7 @@ extension WalletDashboardViewController {
         if primaryWallet == nil {
             let allWallet = DatabaseHelper.shared.retrieveData("Wallets") as? [Wallets]
             primaryWallet = allWallet?.first(where: { $0.isPrimary })
-           // WalletData.shared.wallet = HDWallet(mnemonic: primaryWallet?.mnemonic ?? "", passphrase: "")
+            // WalletData.shared.wallet = HDWallet(mnemonic: primaryWallet?.mnemonic ?? "", passphrase: "")
             WalletData.shared.myWallet = WalletData.shared.parseWalletJson(walletJson: CGWalletGenerateWallet(primaryWallet?.mnemonic ?? "", WalletData.shared.chainETH, nil))
             WalletData.shared.walletBTC = WalletData.shared.parseWalletJson(walletJson: CGWalletGenerateWallet(primaryWallet?.mnemonic ?? "", WalletData.shared.chainBTC, nil))
         }
@@ -508,7 +568,7 @@ extension WalletDashboardViewController {
             // Handle the case when primaryWalletID is nil
             return
         }
-        
+        DGProgressView.shared.showLoader(to: self.view)
         let getPrimaryWalletToken = DatabaseHelper.shared.fetchTokens(withWalletID: primaryWallet.wallet_id?.uuidString ?? "")
         let allChainToken = getPrimaryWalletToken?.compactMap { $0.tokens  }
         
@@ -517,9 +577,16 @@ extension WalletDashboardViewController {
             return
         }
         // change for get fast wallet list 12-12-23
-        if((self.chainTokenList?.isEmpty ?? false)) {
+        if(self.chainTokenList?.isEmpty ?? false) {
 
             self.chainTokenList = allChainToken
+
+            let addressToRemove = "0x0000000000000000000000000000000000001010"
+
+            // Filter out the addressToRemove
+            self.chainTokenList = self.chainTokenList?.filter { token in
+                return token.address != addressToRemove
+            }
             self.chainTokenList?.sort { (token1, token2) -> Bool in
                 // Assuming price is a string that needs to be converted to a numeric value
                 let balance1 = Double(token1.balance ?? "") ?? 0.0
@@ -530,13 +597,21 @@ extension WalletDashboardViewController {
                 return bal1 > bal2
 
             }
+            print("data reloaded.......")
             self.updateTableViewData()
+            DGProgressView.shared.hideLoader()
         }
         // chnage end 12-12-23
       //                 DGProgressView.shared.hideLoader()
         getPrice(allChainToken ?? []) {
             self.getBalance(allChainToken ?? []) {
                 self.chainTokenList = allChainToken
+                let addressToRemove = "0x0000000000000000000000000000000000001010"
+
+                // Filter out the addressToRemove
+                self.chainTokenList = self.chainTokenList?.filter { token in
+                    return token.address != addressToRemove
+                }
                 // Sort the chainTokenList array based on the highest price
                 self.chainTokenList?.sort { (token1, token2) -> Bool in
                     // Assuming price is a string that needs to be converted to a numeric value
@@ -550,14 +625,14 @@ extension WalletDashboardViewController {
                 }
                 print("data reloaded")
                 self.updateTableViewData()
-                DGProgressView.shared.hideLoader()
+               DGProgressView.shared.hideLoader()
             }
         }
     }
     
     /// update Total Balance
     fileprivate func updateTotalBal() {
-        
+        DGProgressView.shared.hideLoader()
         guard let chainTokenList = self.chainTokenList else { return }
         
         let sumOfTotalMainBal = chainTokenList.reduce(0.0) { (result, value) in
@@ -568,11 +643,12 @@ extension WalletDashboardViewController {
             let currencyBal = (balance * price)
             return result + currencyBal
         }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 ) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1 ) {
+           
             let sumOfTotal = WalletData.shared.formatDecimalString("\(sumOfTotalMainBal)", decimalPlaces: 2)
             self.lblMainBal.text = "\(self.primaryCurrency?.sign ?? "")\(sumOfTotal)"
             self.lblWalletName.text = self.primaryWallet?.wallet_name ?? ""
+         
         }
     }
 }

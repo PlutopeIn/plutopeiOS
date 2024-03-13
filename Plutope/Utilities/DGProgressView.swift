@@ -201,7 +201,7 @@ class DGProgressView : UIView {
         loaderLabel.font = UIFont.systemFont(ofSize: 11)
         loaderLabel.text = ""
         
-        loaderImage.image = #imageLiteral(resourceName: "Jobs").withRenderingMode(.alwaysTemplate)
+//        loaderImage.image = #imageLiteral(resourceName: "Jobs").withRenderingMode(.alwaysTemplate)
         
         loaderImage.tintColor = UIColor.white
         

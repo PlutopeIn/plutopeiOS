@@ -12,11 +12,15 @@ class RegisterUserRepo {
     /// Register Repo
     func apiRegister(walletAddress :String,appType:Int,deviceId:String,fcmToken:String,completion: @escaping(_ resStatus:Int, _ message: String) -> ()) {
         let apiUrl = "https://plutope.app/api/user/register-user"
+      //  let apiUrl = "http://192.168.29.77:3011/api/user/register-user"
+        
         var parameter = [String:Any]()
         parameter["walletAddress"] = walletAddress
         parameter["appType"] = appType
         parameter["deviceId"] = deviceId
         parameter["fcmToken"] = fcmToken
+        
+        print("RegisterParam =",parameter)
         //showLoaderHUD()
         DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .post, parameters: parameter, headers: nil) { status, error, data in
             
@@ -25,7 +29,7 @@ class RegisterUserRepo {
                     let data = try JSONSerialization.jsonObject(with: data!) as? [String: Any]
                     let status = data?["status"] as? Int
                     let msg = data?["message"] as? String
-                    //if status == 201 || status == 200 { // data.status == 200 ||
+                    // if status == 201 || status == 200 { // data.status == 200 ||
                         completion(1,msg ?? "")
                   //  } else {
                      //   completion(0,msg ?? "")
@@ -42,15 +46,15 @@ class RegisterUserRepo {
             }
         }
     }
-    
-    
     /// set-wallet-active
     func apiSetWalletActive(walletAddress :String,completion: @escaping(_ resStatus:Int, _ message: String) -> ()) {
         let apiUrl = "https://plutope.app/api/admin/set-wallet-active"
+   //     let apiUrl = "https://plutope.app/api/admin/set-wallet-active"
+        
         var parameter = [String:Any]()
         parameter["walletAddress"] = walletAddress
        
-        //showLoaderHUD()
+        // showLoaderHUD()
         DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .post, parameters: parameter, headers: nil) { status, error, data in
             
             if status {

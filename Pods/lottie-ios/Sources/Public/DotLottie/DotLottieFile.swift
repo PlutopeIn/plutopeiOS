@@ -25,21 +25,19 @@ public final class DotLottieFile {
     try decompress(data: data, to: fileUrl)
   }
 
-  // MARK: Public
+  // MARK: Internal
 
   /// Definition for a single animation within a `DotLottieFile`
-  public struct Animation {
-    public let animation: LottieAnimation
-    public let configuration: DotLottieConfiguration
+  struct Animation {
+    let animation: LottieAnimation
+    let configuration: DotLottieConfiguration
   }
 
   /// List of `LottieAnimation` in the file
-  public private(set) var animations: [Animation] = []
-
-  // MARK: Internal
+  private(set) var animations: [Animation] = []
 
   /// Image provider for animations
-  private(set) var imageProvider: DotLottieImageProvider?
+  private(set) var imageProvider: AnimationImageProvider?
 
   /// Animations folder url
   lazy var animationsUrl: URL = fileUrl.appendingPathComponent("\(DotLottieFile.animationsFolderName)")
@@ -60,12 +58,6 @@ public final class DotLottieFile {
     } else {
       return animations.first
     }
-  }
-
-  /// The `LottieAnimation` and `DotLottieConfiguration` for the given animation index in this file
-  func animation(at index: Int) -> DotLottieFile.Animation? {
-    guard index < animations.count else { return nil }
-    return animations[index]
   }
 
   // MARK: Private
@@ -144,10 +136,3 @@ extension String {
     (self as NSString).deletingPathExtension
   }
 }
-
-// MARK: - DotLottieFile + Sendable
-
-// Mark `DotLottieFile` as `@unchecked Sendable` to allow it to be used when strict concurrency is enabled.
-// In the future, it may be necessary to make changes to the internal implementation of `DotLottieFile`
-// to make it truly thread-safe.
-extension DotLottieFile: @unchecked Sendable { }

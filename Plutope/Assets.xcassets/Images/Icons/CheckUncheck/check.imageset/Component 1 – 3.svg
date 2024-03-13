@@ -1,0 +1,7 @@
+<svg id="Component_1_3" data-name="Component 1 – 3" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <g id="Rectangle_183" data-name="Rectangle 183" fill="none" stroke="#00c6fb" stroke-width="1">
+    <rect width="18" height="18" rx="3" stroke="none"/>
+    <rect x="0.5" y="0.5" width="17" height="17" rx="2.5" fill="none"/>
+  </g>
+  <path id="checkmark-outline" d="M104,128l-5.6,6.4L96,132" transform="translate(-90.5 -121.8)" fill="none" stroke="#00c6fb" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+</svg>

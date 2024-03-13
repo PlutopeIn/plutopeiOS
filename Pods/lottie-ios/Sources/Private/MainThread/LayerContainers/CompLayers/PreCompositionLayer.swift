@@ -16,12 +16,10 @@ final class PreCompositionLayer: CompositionLayer {
     precomp: PreCompLayerModel,
     asset: PrecompAsset,
     layerImageProvider: LayerImageProvider,
-    layerTextProvider: LayerTextProvider,
-    textProvider: AnimationKeypathTextProvider,
+    textProvider: AnimationTextProvider,
     fontProvider: AnimationFontProvider,
     assetLibrary: AssetLibrary?,
-    frameRate: CGFloat,
-    rootAnimationLayer: MainThreadAnimationLayer?)
+    frameRate: CGFloat)
   {
     animationLayers = []
     if let keyframes = precomp.timeRemapping?.keyframes {
@@ -38,14 +36,11 @@ final class PreCompositionLayer: CompositionLayer {
     let layers = asset.layers.initializeCompositionLayers(
       assetLibrary: assetLibrary,
       layerImageProvider: layerImageProvider,
-      layerTextProvider: layerTextProvider,
       textProvider: textProvider,
       fontProvider: fontProvider,
-      frameRate: frameRate,
-      rootAnimationLayer: rootAnimationLayer)
+      frameRate: frameRate)
 
     var imageLayers = [ImageCompositionLayer]()
-    var textLayers = [TextCompositionLayer]()
 
     var mattedLayer: CompositionLayer? = nil
 
@@ -54,9 +49,6 @@ final class PreCompositionLayer: CompositionLayer {
       animationLayers.append(layer)
       if let imageLayer = layer as? ImageCompositionLayer {
         imageLayers.append(imageLayer)
-      }
-      if let textLayer = layer as? TextCompositionLayer {
-        textLayers.append(textLayer)
       }
       if let matte = mattedLayer {
         /// The previous layer requires this layer to be its matte
@@ -77,7 +69,6 @@ final class PreCompositionLayer: CompositionLayer {
     childKeypaths.append(contentsOf: layers)
 
     layerImageProvider.addImageLayers(imageLayers)
-    layerTextProvider.addTextLayers(textLayers)
   }
 
   override init(layer: Any) {
@@ -116,16 +107,12 @@ final class PreCompositionLayer: CompositionLayer {
     } else {
       localFrame = (frame - startFrame) / timeStretch
     }
-    for animationLayer in animationLayers {
-      animationLayer.displayWithFrame(frame: localFrame, forceUpdates: forceUpdates)
-    }
+    animationLayers.forEach { $0.displayWithFrame(frame: localFrame, forceUpdates: forceUpdates) }
   }
 
   override func updateRenderScale() {
     super.updateRenderScale()
-    for animationLayer in animationLayers {
-      animationLayer.renderScale = renderScale
-    }
+    animationLayers.forEach { $0.renderScale = renderScale }
   }
 
   // MARK: Fileprivate

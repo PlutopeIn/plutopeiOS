@@ -26,9 +26,35 @@ class TransactionListRepo {
                 return ""
             }
         }
-        
-        let apiURL = "https://www.oklink.com/api/v5/explorer/address/transaction-list?chainShortName=\(coindetail.chain?.chainName ?? "")&page=\(page)&address=\(coindetail.chain?.walletAddress ?? "")&limit=50&protocolType=\(protocolType)"
+        let apiURL = "https://www.oklink.com/api/v5/explorer/address/transaction-list?chainShortName=\(coindetail.chain?.chainName ?? "")&page=\(page)&address=\(coindetail.chain?.walletAddress ?? "")&limit=50&tokenContractAddress=\(coindetail.address ?? "")&protocolType=\(protocolType)"
+           
+        DGNetworkingServices.main.MakeApiCall(Service: NetworkURL(withURL: apiURL), HttpMethod: .get, parameters: nil, headers: APIKey.okLinkHeader) { result in
             
+            switch result {
+                
+            case .success((_,let response)):
+                do {
+                    let decodedRes = try JSONDecoder().decode(TransactionData.self, from: response)
+                    completion(decodedRes.data?.first?.transactionLists,true,"")
+                  
+                } catch(let error) {
+                    print(error)
+                    completion(nil,false,error.localizedDescription)
+                }
+                
+            case .failure(let error):
+                print(error)
+                completion(nil,false,error.rawValue)
+            }
+        }
+    }
+    
+    /// apiGetInternalTransactionaHistroy
+    func apiGetInternalTransactionaHistroy(_ coindetail: Token,_ page: String,completion: @escaping (([TransactionResult]?,Bool,String) -> Void)) {
+    
+        let protocolType = "internal"
+        let apiURL = "https://www.oklink.com/api/v5/explorer/address/transaction-list?chainShortName=\(coindetail.chain?.chainName ?? "")&page=\(page)&address=\(coindetail.chain?.walletAddress ?? "")&limit=50&tokenContractAddress=\(coindetail.address ?? "")&protocolType=\(protocolType)"
+           
         DGNetworkingServices.main.MakeApiCall(Service: NetworkURL(withURL: apiURL), HttpMethod: .get, parameters: nil, headers: APIKey.okLinkHeader) { result in
             
             switch result {

@@ -7,7 +7,7 @@
 import UIKit
 import QRScanner
 import CoreData
-
+import AVFoundation
 class AddCustomTokenViewController: UIViewController {
     
     @IBOutlet weak var btnSelectChain: UIButton!
@@ -183,6 +183,7 @@ class AddCustomTokenViewController: UIViewController {
                 tokenEntity.lastPriceChangeImpact = "0"
                 tokenEntity.isEnabled = false
                 tokenEntity.tokenId = self.tokenId
+                tokenEntity.tokenId = ""
                 tokenEntity.isUserAdded = true
                 
                 walletTokenEntity.tokens = tokenEntity
@@ -214,6 +215,7 @@ class AddCustomTokenViewController: UIViewController {
                     walletTokenEntity.id = UUID()
                     walletTokenEntity.wallet_id = primaryWallet?.wallet_id
                     walletTokenEntity.tokens = self.coinDetail
+                    // walletTokenEntity.tokens = self.coinDetail
                     DatabaseHelper.shared.saveData(walletTokenEntity) { status in
                         if status {
                             DispatchQueue.main.async {
@@ -242,12 +244,50 @@ class AddCustomTokenViewController: UIViewController {
         }
     }
     
+//    @IBAction func btnScanAction(_ sender: Any) {
+//        let scanner = QRScannerViewController()
+//        scanner.delegate = self
+//        self.present(scanner, animated: true, completion: nil)
+//    }
     @IBAction func btnScanAction(_ sender: Any) {
-        let scanner = QRScannerViewController()
-        scanner.delegate = self
-        self.present(scanner, animated: true, completion: nil)
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        switch status {
+        case .authorized:
+            let scanner = QRScannerViewController()
+            scanner.delegate = self
+            self.present(scanner, animated: true, completion: nil)
+        case .denied, .restricted:
+            self.showCameraSettingsAlert()
+        case .notDetermined:
+            // Request camera permission
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    let scanner = QRScannerViewController()
+                    scanner.delegate = self
+                    DispatchQueue.main.async {
+                        self.present(scanner, animated: true, completion: nil)
+                    }
+                }
+            }
+        @unknown default:
+            break
+        }
     }
-    
+    // showCameraSettingsAlert
+    func showCameraSettingsAlert() {
+        let alert = UIAlertController(title: "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cameraAccessDenied, comment: ""))", message: "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cameraAccess, comment: ""))", preferredStyle: .alert)
+        // Add an action to open the app's settings
+        alert.addAction(UIAlertAction(title: "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.openSetting, comment: ""))", style: .default, handler: { action in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+            }
+        }))
+        // Add a cancel action
+        // alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: ""), style: .cancel, handler: nil))
+        // Present the alert
+        self.present(alert, animated: true, completion: nil)
+    }
     internal func updateButtonAvailability() {
         let allTextFieldsFilled = areAllTextFieldsFilled()
         btnSave.alpha = allTextFieldsFilled ? 1.0 : 0.5

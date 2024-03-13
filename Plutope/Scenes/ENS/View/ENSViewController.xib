@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_regular.ttf">
+            <string>SFProDisplay-Regular</string>
+        </array>
+        <array key="SFPro_semibold.ttf">
+            <string>SFProDisplay-Semibold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ENSViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="btnSearch" destination="spT-MO-lYe" id="RnO-9y-mXI"/>
+                <outlet property="headerView" destination="fGL-zX-TVa" id="xAV-K8-EvU"/>
+                <outlet property="lblMsg" destination="vW6-8D-fCY" id="Jnm-Km-OXY"/>
+                <outlet property="tbvEnsList" destination="bt6-4z-Jc0" id="jbH-HR-ylZ"/>
+                <outlet property="txtSearch" destination="TTD-y4-Eox" id="x6r-AP-9Zl"/>
+                <outlet property="view" destination="WfN-dV-JbE" id="UjK-IY-RD1"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="WfN-dV-JbE">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fGL-zX-TVa">
+                    <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="hvq-b3-T6w"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQ4-Yd-yRn">
+                    <rect key="frame" x="16" y="129" width="361" height="45"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TTD-y4-Eox" customClass="customTextField" customModule="Plutope" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="251" height="45"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="leftSpacing">
+                                    <real key="value" value="15"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
+                                    <color key="value" name="#75769D"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="rightSpacing">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="spT-MO-lYe" customClass="GradientButton" customModule="Plutope" customModuleProvider="target">
+                            <rect key="frame" x="261" y="0.0" width="100" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="WVt-SS-VuM"/>
+                                <constraint firstAttribute="width" constant="100" id="mA8-lR-6BO"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Semibold" family="SF Pro Display" pointSize="14"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Search">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
+                                    <color key="value" name="#121C3D"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
+                                    <color key="value" name="#00C6FB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornderRadius">
+                                    <real key="value" value="22.5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="btnSearchAction:" destination="-1" eventType="touchUpInside" id="f2O-ur-N6Y"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.14508801700000001" green="0.1490231454" blue="0.30195441839999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="MGg-ns-1o8"/>
+                        <constraint firstItem="TTD-y4-Eox" firstAttribute="leading" secondItem="LQ4-Yd-yRn" secondAttribute="leading" id="TBI-0P-ijT"/>
+                        <constraint firstAttribute="trailing" secondItem="spT-MO-lYe" secondAttribute="trailing" id="Vja-PL-I4S"/>
+                        <constraint firstAttribute="bottom" secondItem="TTD-y4-Eox" secondAttribute="bottom" id="Vss-OK-nlO"/>
+                        <constraint firstAttribute="bottom" secondItem="spT-MO-lYe" secondAttribute="bottom" id="WQY-RN-sgG"/>
+                        <constraint firstItem="spT-MO-lYe" firstAttribute="leading" secondItem="TTD-y4-Eox" secondAttribute="trailing" constant="10" id="dNB-yg-7Ng"/>
+                        <constraint firstItem="spT-MO-lYe" firstAttribute="top" secondItem="LQ4-Yd-yRn" secondAttribute="top" id="e14-an-zra"/>
+                        <constraint firstItem="TTD-y4-Eox" firstAttribute="top" secondItem="LQ4-Yd-yRn" secondAttribute="top" id="naC-J5-ap2"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="22.5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="bt6-4z-Jc0">
+                    <rect key="frame" x="16" y="194" width="361" height="604"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please search domain name from Searchbar" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vW6-8D-fCY">
+                    <rect key="frame" x="20" y="472" width="353" height="48"/>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Semibold" family="SF Pro Display" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="tUE-13-DMc"/>
+            <color key="backgroundColor" name="#0C0D2D"/>
+            <constraints>
+                <constraint firstItem="fGL-zX-TVa" firstAttribute="leading" secondItem="tUE-13-DMc" secondAttribute="leading" id="4TX-ic-pBo"/>
+                <constraint firstItem="bt6-4z-Jc0" firstAttribute="leading" secondItem="tUE-13-DMc" secondAttribute="leading" constant="16" id="AzZ-jV-zqW"/>
+                <constraint firstItem="tUE-13-DMc" firstAttribute="trailing" secondItem="fGL-zX-TVa" secondAttribute="trailing" id="D07-Cl-O6D"/>
+                <constraint firstItem="bt6-4z-Jc0" firstAttribute="top" secondItem="LQ4-Yd-yRn" secondAttribute="bottom" constant="20" id="MQL-we-4aS"/>
+                <constraint firstItem="LQ4-Yd-yRn" firstAttribute="leading" secondItem="tUE-13-DMc" secondAttribute="leading" constant="16" id="NDA-J6-22D"/>
+                <constraint firstItem="tUE-13-DMc" firstAttribute="trailing" secondItem="bt6-4z-Jc0" secondAttribute="trailing" constant="16" id="Nvq-8o-0bl"/>
+                <constraint firstItem="LQ4-Yd-yRn" firstAttribute="top" secondItem="fGL-zX-TVa" secondAttribute="bottom" constant="20" id="TBt-XV-RZc"/>
+                <constraint firstItem="tUE-13-DMc" firstAttribute="bottom" secondItem="bt6-4z-Jc0" secondAttribute="bottom" constant="20" id="mIC-nK-H4t"/>
+                <constraint firstItem="vW6-8D-fCY" firstAttribute="leading" secondItem="WfN-dV-JbE" secondAttribute="leading" constant="20" id="ni1-NQ-tIc"/>
+                <constraint firstAttribute="trailing" secondItem="vW6-8D-fCY" secondAttribute="trailing" constant="20" id="rEQ-Mf-Z6E"/>
+                <constraint firstItem="vW6-8D-fCY" firstAttribute="centerY" secondItem="bt6-4z-Jc0" secondAttribute="centerY" id="rb2-3w-R1G"/>
+                <constraint firstItem="tUE-13-DMc" firstAttribute="trailing" secondItem="LQ4-Yd-yRn" secondAttribute="trailing" constant="16" id="rc7-uB-XxZ"/>
+                <constraint firstItem="fGL-zX-TVa" firstAttribute="top" secondItem="tUE-13-DMc" secondAttribute="top" id="zO2-uK-bqk"/>
+            </constraints>
+            <point key="canvasLocation" x="57" y="-32"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="TTD-y4-Eox">
+            <size key="intrinsicContentSize" width="77" height="18.666666666666668"/>
+        </designable>
+        <designable name="spT-MO-lYe">
+            <size key="intrinsicContentSize" width="44" height="29"/>
+        </designable>
+    </designables>
+    <resources>
+        <namedColor name="#00C6FB">
+            <color red="0.0" green="0.77600002288818359" blue="0.98400002717971802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#0C0D2D">
+            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#121C3D">
+            <color red="0.071000002324581146" green="0.10999999940395355" blue="0.23899999260902405" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#75769D">
+            <color red="0.45899999141693115" green="0.46299999952316284" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

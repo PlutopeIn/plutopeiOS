@@ -27,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Ul-bs-1rs">
-                    <rect key="frame" x="0.0" y="241" width="393" height="611"/>
+                    <rect key="frame" x="0.0" y="79" width="393" height="773"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gEN-Jh-lvy">
                             <rect key="frame" x="16" y="33" width="361" height="50"/>
@@ -54,10 +54,11 @@
                                         <userDefinedRuntimeAttribute type="number" keyPath="rightSpacing">
                                             <real key="value" value="43"/>
                                         </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                 </textField>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_search" translatesAutoresizingMaskIntoConstraints="NO" id="ZNs-mI-ixQ">
-                                    <rect key="frame" x="17" y="16.666666666666686" width="17" height="17"/>
+                                    <rect key="frame" x="17" y="16.666666666666657" width="17" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="17" id="063-f6-w8P"/>
                                         <constraint firstAttribute="height" constant="17" id="dDj-i7-Q7c"/>
@@ -87,7 +88,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="WWO-Xi-Fpg">
-                            <rect key="frame" x="16" y="95" width="357" height="504"/>
+                            <rect key="frame" x="16" y="95" width="357" height="666"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
                     </subviews>
@@ -113,7 +114,7 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="6Ul-bs-1rs" secondAttribute="bottom" id="CAf-h3-B6w"/>
                 <constraint firstItem="6Ul-bs-1rs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="JAa-UQ-ttB"/>
-                <constraint firstItem="6Ul-bs-1rs" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="182" id="QG4-dV-VMe"/>
+                <constraint firstItem="6Ul-bs-1rs" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="QG4-dV-VMe"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6Ul-bs-1rs" secondAttribute="trailing" id="wcH-zm-PSe"/>
             </constraints>
             <point key="canvasLocation" x="88" y="-32"/>
@@ -121,7 +122,7 @@
     </objects>
     <designables>
         <designable name="eDn-Zc-Ikr">
-            <size key="intrinsicContentSize" width="63" height="22"/>
+            <size key="intrinsicContentSize" width="154" height="21.666666666666668"/>
         </designable>
     </designables>
     <resources>

@@ -8,6 +8,8 @@ import UIKit
 
 class  SwapViewController: UIViewController, Reusable {
     
+    @IBOutlet weak var viewFindProvider: UIView!
+    @IBOutlet weak var lblFindProvider: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var btnSwapcoins: UIButton!
@@ -48,8 +50,9 @@ class  SwapViewController: UIViewController, Reusable {
     var tokensList: [Token]? = []
     var swapQouteDetail: [Routers] = []
     var rangoSwapQouteDetail: Route?
+    var rangoSwapExchangeDetail : Routes?
+    var amountToGet = ""
     var transactionID: String? = ""
- //   var toNetwork = ["eth"]
     var toNetwork = ["eth","bsc","matic","btc"]
     weak var updatebalDelegate: RefreshDataDelegate?
     var isOkx = false
@@ -64,15 +67,17 @@ class  SwapViewController: UIViewController, Reusable {
     var supportedProviders = [SwapCrypto.SwapCryptoDomain]()
     var primaryCurrency: Currencies?
     var swapperFee = ""
+    var newSwapperFee = ""
+    var networkFee = ""
     var index = 0
     var fromCurrency,fromNetwork: String?
     var encryptedKey = ""
     var decryptedKey = ""
- 
+    var decimalsValue = 0
+    var isFrom = ""
     lazy var viewModel: SwappingViewModel = {
         SwappingViewModel { _, message in
             DGProgressView.shared.hideLoader()
-//            self.setOkxToken()
         }
     }()
     lazy var registerUserViewModel: RegisterUserViewModel = {
@@ -84,21 +89,6 @@ class  SwapViewController: UIViewController, Reusable {
         SendBTCCoinViewModel { _ , _ in
         }
     }()
-  
-    fileprivate func uiSetUp() {
-        self.btnSwap.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.previewswap, comment: ""), for: .normal)
-        self.lblInitiate.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.initiated, comment: "")
-        self.lblSwapping.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swapping, comment: "")
-        self.lblSuccessFail.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.success, comment: "")
-        self.lblBalance.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.balance, comment: "")
-        self.lblBalance2.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.balance, comment: "")
-        self.lblYouGet.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.youget, comment: "")
-        self.lblYouPay.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.youPay, comment: "")
-        self.btnMax.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.max, comment: ""), for: .normal)
-        self.lblbestQuotTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.usingBestQuot, comment: "")
-        self.lblViewQuote.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.viewQuots, comment: "")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         txtPay.delegate = self
@@ -121,13 +111,17 @@ class  SwapViewController: UIViewController, Reusable {
         self.tokensList = DatabaseHelper.shared.retrieveData("Token") as? [Token]
         /// Provider Action
         viewProvider.addTapGesture(target: self, action: #selector(providerTapped))
-   //     getBestPriceFromAllProvider(swapProviders: supportedProviders)
         viewProvider.isHidden = true
-        if payCoinDetail?.type != Chain.oKC.tokenStandard {
-            getExchangePairs()
-        } else {
+        if payCoinDetail?.type == Chain.oKC.tokenStandard { // getExchangePairs()
             /// Filter tokens list for KIP20 type and exclude the selected payCoinDetail
             tokensList = tokensList?.filter { $0.type == Chain.oKC.tokenStandard && $0 != payCoinDetail}
+               if let availableTokens = tokensList, !availableTokens.isEmpty {
+                            self.getCoinDetail = availableTokens[0]
+                            self.setCoinDetail()
+                        }
+        } else {
+
+        tokensList = tokensList?.filter { $0 != payCoinDetail}
             if let availableTokens = tokensList, !availableTokens.isEmpty {
                 self.getCoinDetail = availableTokens[0]
                 self.setCoinDetail()
@@ -156,7 +150,6 @@ class  SwapViewController: UIViewController, Reusable {
     
     /// getBestPriceFromAllProvider
      func getBestPriceFromAllProvider(swapProviders: [SwapCrypto.SwapCryptoDomain]) {
-       
         /// Update Provider name with the name from the provider
          viewProvider.isHidden = true
          let pay = Double(self.txtPay.text ?? "") ?? 0.0
@@ -166,10 +159,11 @@ class  SwapViewController: UIViewController, Reusable {
              self.lblPayMoney.text = ""
          } else {
              let value = payableAmount
-             let formattedValue = WalletData.shared.formatDecimalString("\(value)", decimalPlaces: 4)
+             let formattedValue = WalletData.shared.formatDecimalString("\(value)", decimalPlaces: 8)
              self.lblPayMoney.text = "\(WalletData.shared.primaryCurrency?.sign ?? "") \(formattedValue)"
          }
          txtGet.showLoading()
+         self.viewFindProvider.isHidden = false
          allProviders.removeAll()
                  for idx in 0..<swapProviders.count {
                 if swapProviders[idx] == .okx() {
@@ -185,7 +179,6 @@ class  SwapViewController: UIViewController, Reusable {
         if allProviders.count != 0 {
             callAPIsAfterTaskCompletion()
         }
-    
     }
     func getBestPriceFromAllBestPrices() {
        print("allProviders",allProviders)
@@ -194,11 +187,13 @@ class  SwapViewController: UIViewController, Reusable {
                 self.txtGet.hideLoading()
                 viewProvider.isHidden = true
             } else {
+                
                 providerName = highestPriceProvider.name ?? ""
                 let formattedPrice = WalletData.shared.formatDecimalString("\(highestPriceProvider.bestPrice ?? "")", decimalPlaces: 10)
                 DispatchQueue.main.async {
                     self.viewProvider.isHidden = false
                     self.txtGet.hideLoading()
+                    self.viewFindProvider.isHidden = true
                     self.txtGet.text = formattedPrice
                     self.bestPrice = Double(formattedPrice) ?? 0.0
                     self.bestQuote = formattedPrice
@@ -207,23 +202,29 @@ class  SwapViewController: UIViewController, Reusable {
                     let getAmount = get * getPrice
                     if self.txtGet.text == "" {
                         self.lblGetMoney.text = ""
-                    } else if (Double(self.txtGet.text ?? "") ?? 0.0) == 0.0 {
+                    } else if self.txtGet.text ?? "" == "" {
                         self.showToast(message:"Provider not found!", font: AppFont.regular(15).value)
                      } else {
                         let value = getAmount
-                        let formattedValue = WalletData.shared.formatDecimalString("\(value)", decimalPlaces: 4)
+                        let formattedValue = WalletData.shared.formatDecimalString("\(value)", decimalPlaces: 8)
                         self.lblGetMoney.text = "≈\(WalletData.shared.primaryCurrency?.sign ?? "") \(formattedValue)"
                     }
-                    let estimatePrice = (Double(formattedPrice) ?? 0.0) / (Double(self.txtPay.text ?? "") ?? 0.0)
-                    let estimatePriceTruncatedValue = WalletData.shared.formatDecimalString("\(estimatePrice)", decimalPlaces: 8)
-                    self.lblEstimateAmount.text = "1 \(self.payCoinDetail?.symbol ?? "") ≈ \(estimatePriceTruncatedValue) \(self.getCoinDetail?.symbol ?? "")"
+                    if (Double(self.getCoinDetail?.price ?? "") ?? 0.0)  == 0.0 || (Double(self.payCoinDetail?.price ?? "") ?? 0.0 == 0.0 ) {
+                        self.lblEstimateAmount.isHidden = true
+                    } else {
+                        self.lblEstimateAmount.isHidden = false
+                        let estimatePrice = (Double(formattedPrice) ?? 0.0) / (Double(self.txtPay.text ?? "") ?? 0.0)
+                        let estimatePriceTruncatedValue = WalletData.shared.formatDecimalString("\(estimatePrice)", decimalPlaces: 15)
+                        self.lblEstimateAmount.text = "1 \(self.payCoinDetail?.symbol ?? "") ≈ \(estimatePriceTruncatedValue) \(self.getCoinDetail?.symbol ?? "")"
+                    }
+                 
                 }
             }
         } else {
             viewProvider.isHidden = true
             self.txtGet.hideLoading()
             showToast(message:"Provider not found!", font: AppFont.regular(15).value)
-            print("No providers found")
+           
         }
     }
     // set okx token if token is not swap in change now
@@ -235,7 +236,6 @@ class  SwapViewController: UIViewController, Reusable {
             getCoinDetail = tokensList?.first
             setCoinDetail()
         }
-        
     }
     /// getExchangePairs
     private func getExchangePairs() {
@@ -259,11 +259,9 @@ class  SwapViewController: UIViewController, Reusable {
         }
         self.getExchangePairsToken(fromCurrency: payCoinDetail?.symbol?.lowercased() ?? "", fromNetwork: fromNetwork ?? "", toNetwork: toNetwork[0])
     }
-    
     // setCoinDetail
     func setCoinDetail() {
         DispatchQueue.main.async {
-            
             /// Pay coin detail
             self.ivPayCoin.sd_setImage(with:  URL(string: self.payCoinDetail?.logoURI ?? ""))
             self.lblCoinName.text = self.payCoinDetail?.symbol
@@ -275,7 +273,7 @@ class  SwapViewController: UIViewController, Reusable {
             let payPrice = (Double(self.payCoinDetail?.price ?? "") ?? 0.0)
             let payableAmount = pay * payPrice
             let value = payableAmount
-            let formattedValue = WalletData.shared.formatDecimalString("\(value)", decimalPlaces: 2)
+            let formattedValue = WalletData.shared.formatDecimalString("\(value)", decimalPlaces: 8)
             if self.txtPay.text == "" {
                 self.lblPayMoney.text = ""
             } else {
@@ -298,16 +296,23 @@ class  SwapViewController: UIViewController, Reusable {
                 self.showToast(message:"Provider not found!", font: AppFont.regular(15).value)
              } else {
                 let value = getAmount
-                let formattedValue = WalletData.shared.formatDecimalString("\(value)", decimalPlaces: 2)
+                let formattedValue = WalletData.shared.formatDecimalString("\(value)", decimalPlaces: 4)
                 self.lblGetMoney.text = "≈\(WalletData.shared.primaryCurrency?.sign ?? "") \(formattedValue)"
             }
             // if (Double(self.payCoinDetail?.price ?? "") ?? 0.0) > (Double(self.getCoinDetail?.price ?? "") ?? 0.0) {
+            
+            if (Double(self.getCoinDetail?.price ?? "") ?? 0.0)  == 0.0 || (Double(self.payCoinDetail?.price ?? "") ?? 0.0 == 0.0 ) {
+                self.lblEstimateAmount.isHidden = true
+            } else {
+                self.lblEstimateAmount.isHidden = false
                 let estimatePrice = (Double(self.payCoinDetail?.price ?? "") ?? 0.0) / (Double(self.getCoinDetail?.price ?? "") ?? 0.0)
             let estimatePriceStringValue = String(estimatePrice)
             
-            let estimateValue = WalletData.shared.formatDecimalString("\(estimatePriceStringValue)", decimalPlaces: 8)
+            let estimateValue = WalletData.shared.formatDecimalString("\(estimatePriceStringValue)", decimalPlaces: 15)
             let estimatePriceTruncatedValue = estimateValue
                 self.lblEstimateAmount.text = "1 \(self.payCoinDetail?.symbol ?? "") ≈ \(estimatePriceTruncatedValue) \(self.getCoinDetail?.symbol ?? "")"
+            }
+           
             for views in self.viewProgress {
                 views.backgroundColor = .c75769D
             }
@@ -317,7 +322,6 @@ class  SwapViewController: UIViewController, Reusable {
         }
     }
     @IBAction func actionSwapCoins(_ sender: Any) {
-        
         UIView.animate(withDuration: 0.6, animations: {
             self.btnSwapcoins.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         }, completion: { _ in
@@ -333,32 +337,33 @@ class  SwapViewController: UIViewController, Reusable {
         setCoinDetail()
         
     }
-    
     private func checkChains() {
         btnSwap.setTitle( LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.previewswap, comment: ""), for: .normal)
     }
     
     @IBAction func actionSwap(_ sender: Any) {
         self.registerUserViewModel.setWalletActiveAPI(walletAddress: WalletData.shared.myWallet?.address ?? "") { resStatus, message in
-           // if resStatus == 1 {
                 print(message)
-            //}
         }
+         let  payDoubleScientificNotationString = txtPay.text ?? ""
+         let payDoubleValue = convertScientificToDouble(scientificNotationString: payDoubleScientificNotationString)
+        let payBalanceDoubleScientificNotationString = payCoinDetail?.balance ?? ""
+        let payBalance = convertScientificToDouble(scientificNotationString: payBalanceDoubleScientificNotationString)
+        
         if payCoinDetail?.chain?.coinType == CoinType.bitcoin {
             if txtPay.text ?? "" == "" {
                 showToast(message: ToastMessages.payAmountRequired, font: AppFont.regular(15).value)
                 return
             }
-            if (Double(txtPay.text ?? "") ?? 0.0) >= Double(payCoinDetail?.balance ?? "") ?? 0.0 {
+            if (payDoubleValue ?? 0.0) > (payBalance ?? 0.0) {
                 showToast(message: ToastMessages.lowBalance(payCoinDetail?.symbol ?? ""), font: AppFont.regular(15).value)
                 return
             }
-            if (Double(txtGet.text ?? "") ?? 0.0) == 0.0 {
-                /// showToast(message: ToastMessages.lowBalance(getCoinDetail?.symbol ?? ""), font: AppFont.regular(15).value)
+            if txtGet.text ?? "" == "" {
                 showToast(message:"Provider not found!", font: AppFont.regular(15).value)
                 return
             }
-            if (Double(txtPay.text ?? "") ?? 0.0) > 0.0 {
+            if (payDoubleValue ?? 0.0) > 0.0 {
                 
                 let formattedPrice = WalletData.shared.formatDecimalString("\(self.bestQuote)", decimalPlaces: 10)
                 switch provider {
@@ -384,21 +389,22 @@ class  SwapViewController: UIViewController, Reusable {
             showToast(message: ToastMessages.payAmountRequired, font: AppFont.regular(15).value)
             return
         }
-        if (Double(txtPay.text ?? "") ?? 0.0) >= Double(payCoinDetail?.balance ?? "") ?? 0.0 {
+        if (payDoubleValue ?? 0.0) > (payBalance ?? 0.0) {
             showToast(message: ToastMessages.lowBalance(payCoinDetail?.symbol ?? ""), font: AppFont.regular(15).value)
             return
         }
-        if (Double(txtGet.text ?? "") ?? 0.0) == 0.0 {
+        if txtGet.text ?? "" == "" {
             /// showToast(message: ToastMessages.lowBalance(getCoinDetail?.symbol ?? ""), font: AppFont.regular(15).value)
             showToast(message:"Provider not found!", font: AppFont.regular(15).value)
             return
         }
-        if (Double(txtPay.text ?? "") ?? 0.0) > 0.0 {
+        if (payDoubleValue ?? 0.0) > 0.0 {
             
             let formattedPrice = WalletData.shared.formatDecimalString("\(self.bestQuote)", decimalPlaces: 10)
+            
            swapperFeeValidation(formattedPrice: formattedPrice)
            
-        } else {
+         } else {
             self.showToast(message: ToastMessages.insufficientAmount, font: AppFont.regular(15).value)
         }
     }// else
@@ -410,7 +416,6 @@ class  SwapViewController: UIViewController, Reusable {
         coinListVC.fromCurrency = payCoinDetail?.symbol?.lowercased()
         var fromNetwork: String? {
             switch payCoinDetail?.chain {
-                
             case .ethereum :
                 return "eth"
             case .binanceSmartChain :
@@ -423,27 +428,25 @@ class  SwapViewController: UIViewController, Reusable {
                 return "btc"
             case .none:
                 return ""
-           
             }
         }
+        coinListVC.isFrom = "swap"
         coinListVC.fromNetwork = fromNetwork
         coinListVC.payCoinDetail = self.payCoinDetail
         coinListVC.swapDelegate = self
         self.navigationController?.present(coinListVC, animated: true)
-        
     }
     
     @IBAction func btnSelectPayTokenAction(_ sender: Any) {
         let coinListVC = CoinListViewController()
         coinListVC.isPayCoin = true
+        coinListVC.isFrom = "swap"
         coinListVC.isOkx = self.isOkx
         coinListVC.swapDelegate = self
         self.navigationController?.present(coinListVC, animated: true)
     }
-    
     @IBAction func btnMaxAction(_ sender: UIButton) {
-        let paybalance = Double(self.payCoinDetail?.balance ?? "") ?? 0.0
-        self.txtPay.text = "\( WalletData.shared.formatDecimalString("\(paybalance)", decimalPlaces: 15))"
+        self.txtPay.text = "\(self.payCoinDetail?.balance ?? "")"
         textFieldDidChangeSelection(self.txtPay)
     }
 }
@@ -456,11 +459,8 @@ extension SwapViewController: SwappingCoinDelegate {
             showToast(message: ToastMessages.samecoinError, font: AppFont.regular(15).value)
             return
         }
-        
         /// setup for kip20 tokens
         if coinDetail?.type == Chain.oKC.tokenStandard {
-            
-            // Retrieve token list from the database
             self.tokensList = DatabaseHelper.shared.retrieveData("Token") as? [Token]
             
             // Filter tokens list for KIP20 type and exclude the selected payCoinDetail
@@ -481,13 +481,11 @@ extension SwapViewController: SwappingCoinDelegate {
         self.payCoinDetail = coinDetail
         setCoinDetail()
     }
-    
     func selectGetCoin(_ coinDetail: Token?) {
         guard coinDetail != payCoinDetail else {
             showToast(message: ToastMessages.samecoinError, font: AppFont.regular(15).value)
             return
         }
-        
         self.getCoinDetail = coinDetail
         setCoinDetail()
     }

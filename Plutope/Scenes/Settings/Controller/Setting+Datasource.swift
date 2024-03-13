@@ -30,7 +30,7 @@ extension SettingsViewController: UITableViewDataSource {
         
         if LocalizationSystem.sharedInstance.getLanguage() == "ar" {
             cell.lblSubtitle.textAlignment = .right
-           
+            
         } else {
             cell.lblSubtitle.textAlignment = .left
         }

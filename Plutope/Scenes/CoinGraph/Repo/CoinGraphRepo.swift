@@ -35,8 +35,11 @@ class CoinGraphRepo {
     
     func apiMarketVolumeData(_ vsCurrency: String,ids: String,completion: @escaping ((Bool,String,[MarketData]?) -> Void)) {
         
-       // let apiUrl = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=\(vsCurrency)&ids=\(ids)"
-        let apiUrl = "https://plutope.app/api/markets-price?currency=\(vsCurrency)&ids=\(ids)"
+    //    let apiUrl = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=\(vsCurrency)&ids=\(ids)"
+//        let apiUrl = "https://plutope.app/api/markets-price?currency=\(vsCurrency)&ids=\(ids)"
+     //   let apiUrl = "https://plutope.app/api/markets-price-new?currency=\(vsCurrency)&ids=\(ids)"
+        let apiUrl = "https://plutope.app/api/markets-price-v2-filter?currency=\(vsCurrency)&ids=\(ids)"
+        
         DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .get, parameters: nil, headers: nil) { status, error, data in
             if status {
                 do {

@@ -31,13 +31,13 @@ class SwappingViewModel {
     }
     
     /// apiRangoSwappingQuote
-    func apiRangoQuoteSwapping(address: String,fromToken: Token,toToken: Token,fromAmount: String,fromWalletAddress:String,toWalletAddress:String,completion: @escaping ((Bool,String,[String: Any]?) -> Void)) {
+    func apiRangoQuoteSwapping(address: String,fromToken: Token,toToken: Token,fromAmount: String,fromWalletAddress:String,toWalletAddress:String,completion: @escaping ((Bool,String,String,Route?) -> Void)) {
         
-        repo?.apiRangoQuoteSwapping(walletAddress : address,fromToken: fromToken,toToken: toToken,fromAmount:fromAmount,fromWalletAddress:fromWalletAddress,toWalletAddress:toWalletAddress,completion: { status,error,data  in
+        repo?.apiRangoQuoteSwapping(walletAddress : address,fromToken: fromToken,toToken: toToken,fromAmount:fromAmount,fromWalletAddress:fromWalletAddress,toWalletAddress:toWalletAddress,completion: { status,error,reqType,data  in
             if status {
-                completion(true,error,data)
+                completion(true,error,reqType,data)
             } else {
-                completion(false,error,data)
+                completion(false,error,reqType,data)
             }
         })
     }
@@ -62,7 +62,8 @@ class SwappingViewModel {
             if status {
                 completion(true,error,data)
             } else {
-                self.failblock?(false, error)
+//                self.failblock?(false, error)
+                completion(false,error,data)
             }
         })
     }

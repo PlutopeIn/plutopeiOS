@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_regular.ttf">
+            <string>SFProDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WalletConnectPopupViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="btnConnectWallet" destination="1aH-xm-4fb" id="Qg4-xO-pi2"/>
+                <outlet property="headerView" destination="cUL-gX-jfl" id="U7e-7Z-41m"/>
+                <outlet property="tbvHeight" destination="DXY-fP-zgU" id="2t6-7I-zT6"/>
+                <outlet property="tbvSession" destination="6hl-GM-gFh" id="bNo-aY-acx"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cUL-gX-jfl">
+                    <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="WgQ-ce-S8t"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="6hl-GM-gFh">
+                    <rect key="frame" x="16" y="129" width="361" height="527"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="527" id="DXY-fP-zgU"/>
+                    </constraints>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1aH-xm-4fb">
+                    <rect key="frame" x="71.666666666666686" y="758" width="250" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="250" id="SJh-6c-6QI"/>
+                        <constraint firstAttribute="height" constant="40" id="WUQ-8g-vEE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="19"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Add new connection">
+                        <color key="titleColor" name="#00C6FB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" name="#00C6FB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="btnConnectWalletAction:" destination="-1" eventType="touchUpInside" id="eLk-si-yGq"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="#0C0D2D"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="cUL-gX-jfl" secondAttribute="trailing" id="By0-7j-aDy"/>
+                <constraint firstItem="6hl-GM-gFh" firstAttribute="top" secondItem="cUL-gX-jfl" secondAttribute="bottom" constant="20" id="MR3-NY-Aut"/>
+                <constraint firstItem="1aH-xm-4fb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6hl-GM-gFh" secondAttribute="bottom" constant="20" id="Pca-El-XIp"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="1aH-xm-4fb" secondAttribute="bottom" constant="20" id="Vs9-KF-ML9"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6hl-GM-gFh" secondAttribute="trailing" constant="16" id="Ypu-kn-Rpc"/>
+                <constraint firstItem="1aH-xm-4fb" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="dMs-pK-1cY"/>
+                <constraint firstItem="cUL-gX-jfl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="do2-Hb-07u"/>
+                <constraint firstItem="cUL-gX-jfl" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="iUm-Nh-VHU"/>
+                <constraint firstItem="6hl-GM-gFh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="pUQ-bp-u3m"/>
+            </constraints>
+            <point key="canvasLocation" x="78.625954198473281" y="-39.436619718309863"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="1aH-xm-4fb">
+            <size key="intrinsicContentSize" width="163" height="35"/>
+        </designable>
+    </designables>
+    <resources>
+        <namedColor name="#00C6FB">
+            <color red="0.0" green="0.77600002288818359" blue="0.98400002717971802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#0C0D2D">
+            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

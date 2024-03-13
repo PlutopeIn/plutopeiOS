@@ -26,7 +26,7 @@ struct TransactionResult: Codable {
     let to: String?
     let isFromContract, isToContract: Bool?
     let amount: String?
-    let transactionSymbol: String?
+    var transactionSymbol: String?
     let txFee: String?
     let state: String?
     let tokenID, tokenContractAddress, challengeStatus, l1OriginHash: String?

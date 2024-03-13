@@ -14,7 +14,7 @@ class AppPasscodeHelper: PasscodeVerifyDelegate {
     lazy var passcodeVC: CreatePasscodeViewController? = nil
     var isVerify: Bool = false
     lazy var completion: ((Bool) -> Void)? = nil
-    
+  
     func verifyPasscode(isVerify: Bool) {
         if isVerify {
             passcodeVC?.dismiss(animated: true) {
@@ -71,6 +71,7 @@ class AppPasscodeHelper: PasscodeVerifyDelegate {
     func openPasscodeViewController(in viewController: UIViewController, completion: @escaping (Bool) -> Void) {
         passcodeVC = CreatePasscodeViewController()
         passcodeVC?.isEnterPasscode = true
+        passcodeVC?.isFrom = "Biometric"
         passcodeVC?.modalTransitionStyle = .crossDissolve
         passcodeVC?.modalPresentationStyle = .overFullScreen
         passcodeVC?.verifyPassDelegate = self

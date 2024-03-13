@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - DotLottieAnimation
-
 struct DotLottieAnimation: Codable {
   /// Id of Animation
   var id: String
@@ -23,16 +21,11 @@ struct DotLottieAnimation: Codable {
   var direction: Int? = 1
 
   /// mode - "bounce" | "normal"
-  var mode: DotLottieAnimationMode? = .normal
+  var mode: String? = "normal"
 
   /// Loop mode for animation
   var loopMode: LottieLoopMode {
-    switch mode {
-    case .bounce:
-      return .autoReverse
-    case .normal, nil:
-      return (loop ?? false) ? .loop : .playOnce
-    }
+    mode == "bounce" ? .autoReverse : ((loop ?? false) ? .loop : .playOnce)
   }
 
   /// Animation speed
@@ -47,11 +40,4 @@ struct DotLottieAnimation: Codable {
     let data = try Data(contentsOf: animationUrl)
     return try LottieAnimation.from(data: data)
   }
-}
-
-// MARK: - DotLottieAnimationMode
-
-enum DotLottieAnimationMode: String, Codable {
-  case normal
-  case bounce
 }

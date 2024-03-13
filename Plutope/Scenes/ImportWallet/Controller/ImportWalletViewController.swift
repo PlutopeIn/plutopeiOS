@@ -5,6 +5,8 @@
 //  Created by Priyanka Poojara on 19/06/23.
 //
 import UIKit
+import CoreData
+import IQKeyboardManagerSwift
 class ImportWalletViewController: UIViewController {
     @IBOutlet weak var txtWalletName: customTextField!
     @IBOutlet weak var headerView: UIView!
@@ -13,25 +15,44 @@ class ImportWalletViewController: UIViewController {
     @IBOutlet weak var btnPaste: UIButton!
     @IBOutlet weak var btnWhatIsSecretPhase: UIButton!
     @IBOutlet weak var btnImport: GradientButton!
+    var primaryWallet: Wallets?
+    var tokensList: [Token]? = []
+    var filterTokens: [Token]? = []
+    var activeToken: [ActiveTokens]? = []
     lazy var viewModel: CoinGraphViewModel = {
         CoinGraphViewModel { _ ,message in
             self.showToast(message: message, font: .systemFont(ofSize: 15))
         }
     }()
-    lazy var registerUserViewModel: RegisterUserViewModel = {
-        RegisterUserViewModel { _ ,message in
-            self.showToast(message: message, font: .systemFont(ofSize: 15))
-           // self.btnDone.HideLoader()
+    lazy var tokenListViewModel: TokenListViewModel = {
+        TokenListViewModel { status,message in
+            if status == false {
+                //  self.showToast(message: message, font: AppFont.regular(15).value)
+            }
         }
     }()
-
+    
+    lazy var coinGraphViewModel: CoinGraphViewModel = {
+        CoinGraphViewModel { _ ,message in
+            //  self.showToast(message: message, font: .systemFont(ofSize: 15))
+            DGProgressView.shared.hide()
+        }
+    }()
+    lazy var registerUserViewModel: RegisterUserViewModel = {
+        RegisterUserViewModel { _ ,message in
+            //            self.showToast(message: message, font: .systemFont(ofSize: 15))
+            // self.btnDone.HideLoader()
+        }
+    }()
+    
     fileprivate func uiSetUp() {
         self.txtWalletName.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.mainwallet, comment: "")
         self.lblTypically.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.typically12sometimes1824wordsseparatedbysinglespaces, comment: "")
         self.btnPaste.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.paste, comment: ""), for: .normal)
         self.btnImport.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.imports, comment: ""), for: .normal)
         self.btnWhatIsSecretPhase.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.whatIsSecretPhrase, comment: ""), for: .normal)
-      
+        txtViewPhrase.delegate = self
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -45,12 +66,17 @@ class ImportWalletViewController: UIViewController {
             txtWalletName.textAlignment = .left
         }
     }
+    func getActiveTokens(walletAddress : String){
+        tokenListViewModel.apiGetActiveTokens(walletAddress: walletAddress) { data, status in
+            self.activeToken = data
+            //            print("Active token",self.activeToken)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         /// Navigation header
-        //defineHeader(headerView: headerView, titleText: StringConstants.importMulticoinWalet)
         defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.importmulticoinwallet, comment: ""))
         // uiSetUp
         uiSetUp()
@@ -64,60 +90,90 @@ class ImportWalletViewController: UIViewController {
         
     }
     
+    fileprivate func activeTokenList() {
+        self.tokensList = DatabaseHelper.shared.retrieveData("Token") as? [Token]
+        // Iterate over tokens and set balance to zero
+        self.tokensList?.forEach { $0.balance = "0" }
+        if let tokensList = self.tokensList, let activeTokens = self.activeToken {
+            for enableToken in activeTokens {
+            
+                let token1 =  self.tokensList?.first(where: { $0.address == enableToken.tokenAddress })
+                let getPrimaryWalletToken = DatabaseHelper.shared.fetchTokens(withWalletID: self.primaryWallet?.wallet_id?.uuidString ?? "")
+                let enableTokens = getPrimaryWalletToken?.compactMap { $0.tokens  }
+                let alreadyEnabled = enableTokens?.first(where: { $0.address == enableToken.tokenAddress })
+                if(alreadyEnabled == nil ){
+                    
+                    let entity = NSEntityDescription.entity(forEntityName: "WalletTokens", in: DatabaseHelper.shared.context)!
+                    let walletTokenEntity = WalletTokens(entity: entity, insertInto: DatabaseHelper.shared.context)
+                    walletTokenEntity.id = UUID()
+                    walletTokenEntity.wallet_id = self.primaryWallet?.wallet_id
+                    walletTokenEntity.tokens = token1
+                    DatabaseHelper.shared.saveData(walletTokenEntity) { status in
+                        if status {
+                            print("true")
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+    
     fileprivate func walletCreation(_ coinList: [CoingechoCoinList]?,_ modifiedPhrase: String) {
         WalletData.shared.createWallet(walletName: self.txtWalletName.text ?? "", mnemonicKey: modifiedPhrase, isPrimary: true, isICloudBackup: false, isManualBackup: true,coinList: coinList) { success in
             if success {
+                
+                if self.primaryWallet == nil {
+                              let allWallet = DatabaseHelper.shared.retrieveData("Wallets") as? [Wallets]
+                              self.primaryWallet = allWallet?.first(where: { $0.isPrimary })
+                             
+                          }
+                          guard let primaryWallet = self.primaryWallet else {
+                              // Handle the case when primaryWalletID is nil
+                              return
+                          }
                 /// Root redirection, coinList:
-                ///
-                self.btnImport.HideLoader()
-                guard let fcmtoken = UserDefaults.standard.object(forKey: "fcm_Token") as? String else {
-                    return
-                }
-                var deviceId = ""
-                if let uuid = UIDevice.current.identifierForVendor?.uuidString {
-                   print("Device ID: \(uuid)")
-                    deviceId = uuid
-                } else {
-                   print("Unable to retrieve device ID.")
-                }
-                UserDefaults.standard.setValue(true, forKey: DefaultsKey.isTransactionSignin)
                 
-                print("isTransactionSignin",UserDefaults.standard.string(forKey: DefaultsKey.isTransactionSignin) ?? false)
-                self.registerUserViewModel.registerAPI(walletAddress: WalletData.shared.myWallet?.address ?? "", appType: 1,deviceId: deviceId,fcmToken: fcmtoken) { resStatus, message in
-                    //if resStatus == 1 {
-                       
-//                    } else {
-//                        print("wallet not register")
-//                    } // resstatus if condition end
+                self.tokenListViewModel.apiGetActiveTokens(walletAddress: WalletData.shared.myWallet?.address ?? "" ) { data, status in
+                    self.activeToken = data
+                  self.activeTokenList()
+                    guard let fcmtoken = UserDefaults.standard.object(forKey: "fcm_Token") as? String else {
+                        return
+                    }
+                    var deviceId = ""
+                    if let uuid = UIDevice.current.identifierForVendor?.uuidString {
+                       print("Device ID: \(uuid)")
+                        deviceId = uuid
+                    } else {
+                       print("Unable to retrieve device ID.")
+                    }
+                    UserDefaults.standard.setValue(true, forKey: DefaultsKey.isTransactionSignin)
                     
+                    print("isTransactionSignin",UserDefaults.standard.string(forKey: DefaultsKey.isTransactionSignin) ?? false)
+                    self.registerUserViewModel.registerAPI(walletAddress: WalletData.shared.myWallet?.address ?? "", appType: 1,deviceId: deviceId,fcmToken: fcmtoken) { resStatus, message in
+                        if resStatus == 1 {
+                            self.showToast(message: message, font: .systemFont(ofSize: 15))
+                            print("wallet register")
+                        } else {
+                            print("wallet not register")
+                        } // resstatus if condition end
+                        
+                    }
+                    self.btnImport.HideLoader()
+                    if !(UserDefaults.standard.object(forKey: DefaultsKey.homeButtonTip) as? Bool ?? false) {
+                        let viewToNavigate = WelcomeViewController()
+                        self.navigationController?.pushViewController(viewToNavigate, animated: true)
+                       
+                    } else {
+                        guard let appDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
+                        let walletStoryboard = UIStoryboard(name: "WalletRoot", bundle: nil)
+                        guard let tabBarVC = walletStoryboard.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController else { return }
+                        appDelegate.window?.makeKeyAndVisible()
+                        appDelegate.window?.rootViewController = tabBarVC
+                    }
                 }
-                if !(UserDefaults.standard.object(forKey: DefaultsKey.homeButtonTip) as? Bool ?? false) {
-                    let viewToNavigate = WelcomeViewController()
-                    self.navigationController?.pushViewController(viewToNavigate, animated: true)
-                   
-                } else {
-                    guard let appDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
-                    let walletStoryboard = UIStoryboard(name: "WalletRoot", bundle: nil)
-                    guard let tabBarVC = walletStoryboard.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController else { return }
-                    appDelegate.window?.makeKeyAndVisible()
-                    appDelegate.window?.rootViewController = tabBarVC
-                }
-                
-//                if !(UserDefaults.standard.object(forKey: DefaultsKey.homeButtonTip) as? Bool ?? false) {
-//                    let viewToNavigate = WelcomeViewController()
-//                    self.navigationController?.pushViewController(viewToNavigate, animated: true)
-//                    self.btnImport.HideLoader()
-//                } else {
-//                    guard let appDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
-//                    let walletStoryboard = UIStoryboard(name: "WalletRoot", bundle: nil)
-//                    guard let tabBarVC = walletStoryboard.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController else { return }
-//                    appDelegate.window?.makeKeyAndVisible()
-//                    appDelegate.window?.rootViewController = tabBarVC
-//                }
-            } else {
-                self.showToast(message: ToastMessages.invalidPhrase, font: UIFont.systemFont(ofSize: 15))
-                self.btnImport.HideLoader()
             }
+            
         }
     }
     
@@ -184,7 +240,7 @@ class PlaceholderTextView: UITextView {
         commonInit()
     }
     private func commonInit() {
-        placeholderLabel.font = AppFont.regular(12).value
+        placeholderLabel.font = AppFont.regular(15).value
         placeholderLabel.textColor = UIColor.c75769D
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(placeholderLabel)
@@ -198,4 +254,31 @@ class PlaceholderTextView: UITextView {
     deinit {
         NotificationCenter.default.removeObserver(self, name: UITextView.textDidChangeNotification, object: nil)
     }
+}
+struct TokenPair: Hashable {
+    let tokenAddress1: String
+    let tokenAddress2: String
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(tokenAddress1)
+        hasher.combine(tokenAddress2)
+    }
+    
+    static func == (lhs: TokenPair, rhs: TokenPair) -> Bool {
+        return lhs.tokenAddress1 == rhs.tokenAddress1 && lhs.tokenAddress2 == rhs.tokenAddress2
+    }
+}
+
+extension ImportWalletViewController : UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            return true
+        }
+    func textViewDidChange(_ textView: UITextView) {
+            guard let text = textView.text else {
+                return
+            }
+
+            let newText = (text as NSString).replacingCharacters(in: NSRange(location: 0, length: text.utf16.count), with: text.lowercased())
+            textView.text = newText
+        }
 }

@@ -47,8 +47,8 @@ final class GradientStrokeProperties: NodePropertyMap, KeypathSearchable {
       PropertyName.opacity.rawValue : opacity,
       "Start Point" : startPoint,
       "End Point" : endPoint,
-      PropertyName.gradientColors.rawValue : colors,
-      PropertyName.strokeWidth.rawValue : width,
+      "Colors" : colors,
+      "Stroke Width" : width,
       "Dashes" : dashPattern,
       "Dash Phase" : dashPhase,
     ]

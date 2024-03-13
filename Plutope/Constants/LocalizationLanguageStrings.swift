@@ -265,6 +265,22 @@ struct LocalizationLanguageStrings {
     static let contactUs = "contactUs"
     static let requestforPayment = "requestforPayment"
     static let slippage = "slippage"
+    static let exploreNewToken = "exploreNewToken"
+    static let ens = "ens"
+    static let price = "price"
+    static let ensMsg = "ensMsg"
+    static let searchbtn = "searchbtn"
+    static let walletConnect = "Wallet Connect"
+    static let connectionDetail = "connectionDetail"
+    static let dApp = "dApp"
+    static let signatureRequest = "signatureRequest"
+    static let quots = "quots"
+    static let processing = "processing"
+    static let swapMsg = "swapMsg"
+    static let deletWalletMsg = "deletWalletMsg"
+    static let transaction = "transaction"
+    static let internalText = "internalText"
+    static let about = "about"
     
     
     

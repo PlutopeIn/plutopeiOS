@@ -70,7 +70,7 @@ extension Data {
   ///
   /// Returns nil when the input is not recognized as valid Data URL.
   /// - parameter imageAsset: The image asset that contains Data URL.
-  init?(imageAsset: ImageAsset) {
+  internal init?(imageAsset: ImageAsset) {
     self.init(dataString: imageAsset.name)
   }
 
@@ -79,7 +79,7 @@ extension Data {
   /// Returns nil when the input is not recognized as valid Data URL.
   /// - parameter dataString: The data string to parse.
   /// - parameter options: Options for the string parsing. Default value is `[]`.
-  init?(dataString: String, options: DataURLReadOptions = []) {
+  internal init?(dataString: String, options: DataURLReadOptions = []) {
     let trimmedDataString = dataString.trimmingCharacters(in: .whitespacesAndNewlines)
     guard
       dataString.hasPrefix("data:"),
@@ -103,7 +103,7 @@ extension Data {
 
   // MARK: Internal
 
-  struct DataURLReadOptions: OptionSet {
+  internal struct DataURLReadOptions: OptionSet {
     let rawValue: Int
 
     /// Will read Data URL using Data(contentsOf:)

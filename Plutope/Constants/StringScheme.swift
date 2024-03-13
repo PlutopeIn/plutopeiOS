@@ -52,7 +52,7 @@ struct StringConstants {
     static let buyCoin: String = "Buy Coin"
     
     /// Providers
-    static let providers: String = "Providers"
+    static let providers: String = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.provider, comment: "")
     static let meld: String = "Meld"
     static let changeNow: String = "Change Now"
     static let onMeta: String = "On Meta"

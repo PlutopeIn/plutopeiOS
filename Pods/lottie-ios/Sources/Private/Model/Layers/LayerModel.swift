@@ -27,8 +27,6 @@ extension LayerType: ClassFamily {
       return ShapeLayerModel.self
     case .text:
       return TextLayerModel.self
-    case .unknown:
-      return LayerModel.self
     }
   }
 }
@@ -42,7 +40,6 @@ public enum LayerType: Int, Codable {
   case null
   case shape
   case text
-  case unknown
 
   public init(from decoder: Decoder) throws {
     self = try LayerType(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .null
@@ -102,8 +99,6 @@ class LayerModel: Codable, DictionaryInitializable {
     timeStretch = try container.decodeIfPresent(Double.self, forKey: .timeStretch) ?? 1
     matte = try container.decodeIfPresent(MatteType.self, forKey: .matte)
     hidden = try container.decodeIfPresent(Bool.self, forKey: .hidden) ?? false
-    styles = try container.decodeIfPresent([LayerStyle].self, ofFamily: LayerStyleType.self, forKey: .styles) ?? []
-    effects = try container.decodeIfPresent([LayerEffect].self, ofFamily: LayerEffectType.self, forKey: .effects) ?? []
   }
 
   required init(dictionary: [String: Any]) throws {
@@ -143,16 +138,6 @@ class LayerModel: Codable, DictionaryInitializable {
       matte = nil
     }
     hidden = (try? dictionary.value(for: CodingKeys.hidden)) ?? false
-    if let styleDictionaries = dictionary[CodingKeys.styles.rawValue] as? [[String: Any]] {
-      styles = try [LayerStyle].fromDictionaries(styleDictionaries)
-    } else {
-      styles = []
-    }
-    if let effectDictionaries = dictionary[CodingKeys.effects.rawValue] as? [[String: Any]] {
-      effects = try [LayerEffect].fromDictionaries(effectDictionaries)
-    } else {
-      effects = []
-    }
   }
 
   // MARK: Internal
@@ -195,14 +180,7 @@ class LayerModel: Codable, DictionaryInitializable {
   /// The type of matte if any.
   let matte: MatteType?
 
-  /// Whether or not this layer is hidden, in which case it will not be rendered.
   let hidden: Bool
-
-  /// A list of styles to apply to this layer
-  let styles: [LayerStyle]
-
-  /// A list of effects to apply to this layer
-  let effects: [LayerEffect]
 
   // MARK: Fileprivate
 
@@ -221,8 +199,6 @@ class LayerModel: Codable, DictionaryInitializable {
     case timeStretch = "sr"
     case matte = "tt"
     case hidden = "hd"
-    case styles = "sy"
-    case effects = "ef"
   }
 }
 
@@ -244,17 +220,9 @@ extension Array where Element == LayerModel {
         return try ShapeLayerModel(dictionary: dictionary)
       case .text:
         return try TextLayerModel(dictionary: dictionary)
-      case .unknown:
-        return try LayerModel(dictionary: dictionary)
       case .none:
         return nil
       }
     }
   }
 }
-
-// MARK: - LayerModel + Sendable
-
-/// Since `LayerModel` isn't `final`, we have to use `@unchecked Sendable` instead of `Sendable.`
-/// All `LayerModel` subclasses are immutable `Sendable` values.
-extension LayerModel: @unchecked Sendable { }

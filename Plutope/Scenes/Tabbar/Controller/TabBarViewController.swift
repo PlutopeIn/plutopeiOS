@@ -7,15 +7,32 @@
 import UIKit
 import SDWebImage
 class TabBarViewController: UITabBarController {
-     
+    
     let cardVC = CardViewController()
-    let settingsVC = SettingsViewController()
+    var settingsVC = UIViewController()
     let walletDashboard = WalletDashboardViewController()
     var secondTabAlreadySelected = false
     var selectedTabIndices: [Int] = []
+    
+    func onImport() {
+        guard let account = ImportAccount(input:WalletData.shared.myWallet?.privateKey ?? "" )
+        else { return }
+        self.importAccount(account)
+        print(self.importAccount(account))
+    }
+    func importAccount(_ importAccount: ImportAccount) {
+        let accountStorage = AccountStorage(defaults: UserDefaults.standard)
+        accountStorage.importAccount = importAccount
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        let accountStorage =  AccountStorage(defaults: UserDefaults.standard)
+        onImport()
         self.delegate = self
+        
+        guard let importAccount = accountStorage.importAccount else { return  }
+        settingsVC = SettingsViewController(importAccount: importAccount)
+       
         controllersSetup()
     }
     

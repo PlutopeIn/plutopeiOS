@@ -34,7 +34,7 @@ extension CreatePasscodeViewController: UICollectionViewDelegate {
         
     }
     
-    private func clearPasscode() {
+     func clearPasscode() {
         passcode = ""
         viewSecuredText.forEach { view in
             view.imageTintColor = UIColor.c75769D

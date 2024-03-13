@@ -41,7 +41,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="361" height="50"/>
                             <color key="backgroundColor" name="#25264D"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="10"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="17"/>
                             <textInputTraits key="textInputTraits"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="leftSpacing">
@@ -113,7 +113,7 @@
     </objects>
     <designables>
         <designable name="z7P-gz-yHS">
-            <size key="intrinsicContentSize" width="37" height="13.666666666666666"/>
+            <size key="intrinsicContentSize" width="63" height="22"/>
         </designable>
     </designables>
     <resources>

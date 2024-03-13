@@ -10,7 +10,6 @@ import UIKit
 import IQKeyboardManagerSwift
 // MARK: UITextFieldDelegate
 extension SwapViewController : UITextFieldDelegate {
-    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         
         let text = textField.text ?? ""
@@ -22,7 +21,7 @@ extension SwapViewController : UITextFieldDelegate {
 //            }
             print(supportedProviders)
             lblGetMoney.text = ""
-            
+
             NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(apiCall), object: nil)
             perform(#selector(apiCall), with: nil, afterDelay: 1)
         } else {
@@ -37,6 +36,7 @@ extension SwapViewController : UITextFieldDelegate {
         print("nscancel api call")
         txtGet.showLoading()
         apiCount = 0
+        self.viewFindProvider.isHidden = false
         getBestPriceFromAllProvider(swapProviders: supportedProviders)
     }
 }
@@ -75,8 +75,8 @@ extension SwapViewController : ConfirmSwap1Delegate {
 //                } else {
 //                    btnSwap.HideLoader()
 //                    DGProgressView.shared.hideLoader()
-//                    let msg = "You don't have enough \(payCoinDetail?.symbol ?? "") in your account. Make sure you have to (\(value) + \(getbalance)) = \(payableAmount) \(payCoinDetail?.symbol ?? "") in your account"
-//                    self.showToast(message: msg, font: AppFont.medium(15).value)
+//                   // let msg = "You don't have enough \(payCoinDetail?.symbol ?? "") in your account. Make sure you have to (\(value) + \(getbalance)) = \(payableAmount) \(payCoinDetail?.symbol ?? "") in your account"
+//                   // self.showToast(message: msg, font: AppFont.medium(15).value)
 //                }
 //            } else {
 //                print("Invalid scientific notation string")
@@ -150,13 +150,33 @@ extension SwapViewController {
             swapPreviewVC.swappingFee = ""
             self.navigationController?.present(swapPreviewVC, animated: true)
         case .rango :
-            let swapPreviewVC = PreviewSwap1ViewController()
-            let previewSwapDetail = PreviewSwap(payCoinDetail: self.payCoinDetail,getCoinDetail: self.getCoinDetail,payAmount: txtPay.text ?? "",getAmount: formattedPrice, quote: self.lblEstimateAmount.text ?? "")
-            swapPreviewVC.previewSwapDetail = previewSwapDetail
-            swapPreviewVC.delegate = self
-            swapPreviewVC.isFrom = "rango"
-            swapPreviewVC.swappingFee = self.swapperFee
-            self.navigationController?.present(swapPreviewVC, animated: true)
+            self.btnSwap.ShowLoader()
+            self.rangoSwapExchange { status, swapperfee, outputAmount,error,networkFee  in
+                if status {
+                    self.btnSwap.HideLoader()
+                    self.newSwapperFee = outputAmount
+                    DispatchQueue.main.async {
+                       
+                        let swapPreviewVC = PreviewSwap1ViewController()
+                        let previewSwapDetail = PreviewSwap(payCoinDetail: self.payCoinDetail,getCoinDetail: self.getCoinDetail,payAmount: self.txtPay.text ?? "",getAmount: outputAmount, quote: self.lblEstimateAmount.text ?? "")
+                        swapPreviewVC.previewSwapDetail = previewSwapDetail
+                        swapPreviewVC.delegate = self
+                        swapPreviewVC.isFrom = "rango"
+                        swapPreviewVC.swappingFee = swapperfee
+                        swapPreviewVC.outputAmount = outputAmount
+                        swapPreviewVC.networkFee = networkFee
+                        self.navigationController?.present(swapPreviewVC, animated: true)
+                    }
+                } else {
+                
+                    DispatchQueue.main.async {
+                        self.showToast(message: error , font: .systemFont(ofSize: 15))
+                        self.btnSwap.HideLoader()
+                     
+                    }
+                }
+            }
+            
         }
     }
 }
@@ -170,17 +190,33 @@ extension SwapViewController {
            
             let value = WalletData.shared.formatDecimalString("\(doubleValue)", decimalPlaces: 8)
             let payableAmount = doubleValue  + getbalance
-            if payBalance >= payableAmount {
+           // if payBalance >= payableAmount {
                 selectProvider(formattedPrice,self.providerName)
-            } else {
-                btnSwap.HideLoader()
-                DGProgressView.shared.hideLoader()
-                let msg = "You don't have enough \(payCoinDetail?.symbol ?? "") in your account. Make sure you have to (\(value) + \(getbalance)) = \(payableAmount) \(payCoinDetail?.symbol ?? "") in your account"
-                self.showToast(message: msg, font: AppFont.medium(15).value)
-                return
-            }
+//            } else {
+//                btnSwap.HideLoader()
+//                DGProgressView.shared.hideLoader()
+//                let msg = "You don't have enough \(payCoinDetail?.symbol ?? "") in your account. Make sure you have to (\(value) + \(getbalance)) = \(payableAmount) \(payCoinDetail?.symbol ?? "") in your account"
+//                self.showToast(message: msg, font: AppFont.medium(15).value)
+//                return
+//            }
         } else {
             print("Invalid scientific notation string")
         }
     }
+}
+extension SwapViewController {
+    func uiSetUp() {
+        self.btnSwap.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.previewswap, comment: ""), for: .normal)
+        self.lblInitiate.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.initiated, comment: "")
+        self.lblSwapping.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swapping, comment: "")
+        self.lblSuccessFail.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.success, comment: "")
+        self.lblBalance.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.balance, comment: "")
+        self.lblBalance2.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.balance, comment: "")
+        self.lblYouGet.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.youget, comment: "")
+        self.lblYouPay.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.youPay, comment: "")
+        self.btnMax.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.max, comment: ""), for: .normal)
+        self.lblbestQuotTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.usingBestQuot, comment: "")
+        self.lblViewQuote.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.viewQuots, comment: "")
+    }
+    
 }

@@ -15,7 +15,7 @@ class TransactionDetailRepo {
     func getTransactionDetail(_ chainShortName: String,_ txid: String,completion: @escaping (([TransactionDetails]?,Bool,String) -> Void)) {
         
         let apiURL = "https://www.oklink.com/api/v5/explorer/transaction/transaction-fills?chainShortName=\(chainShortName)&txid=\(txid)"
-            
+            print(apiURL)
         DGNetworkingServices.main.MakeApiCall(Service: NetworkURL(withURL: apiURL), HttpMethod: .get, parameters: nil, headers: APIKey.okLinkHeader) { result in
             
             switch result {

@@ -19,11 +19,11 @@ class RegisterUserViewModel {
     func registerAPI(walletAddress :String,appType:Int,deviceId:String,fcmToken:String,completion: @escaping(_ resStatus:Int, _ message: String) -> ()) {
         
         repo?.apiRegister(walletAddress:walletAddress , appType: appType,deviceId:deviceId,fcmToken:fcmToken,completion: { resStatus, message in
-           // if resStatus == 1 {
+            if resStatus == 1 {
                 completion(1, message)
-            //} else {
-              //  completion(0, message,nil)
-            //}
+            } else {
+               completion(0, message)
+            }
         })
     }
     

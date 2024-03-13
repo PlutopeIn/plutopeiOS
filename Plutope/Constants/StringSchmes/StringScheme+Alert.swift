@@ -61,13 +61,13 @@ enum CustomAlert: CustomAlertOptions {
             //return "Delete Backup"
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.deletebackup, comment: "")
         case .deleteWallet:
-            return "Are you sure you would like to delete this wallet?"
+            return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.deletWalletMsg, comment: "")
         case .sellCryptoWarning:
             return nil
         case .manualBackupWarning:
             return "Manual backup required"
         case .swapping:
-            return "Processing..."
+            return  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.processing, comment: "")
         }
     }
     
@@ -82,7 +82,7 @@ enum CustomAlert: CustomAlertOptions {
         case .manualBackupWarning:
             return StringConstants.askForManualBackup
         case .swapping:
-            return "It might take few minutes..."
+            return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swapMsg, comment: "")
         }
     }
     

@@ -7,32 +7,9 @@
 
 import Foundation
 
-// MARK: - ShapeType
+// MARK: - ShapeType + ClassFamily
 
-enum ShapeType: String, Codable, Sendable {
-  case ellipse = "el"
-  case fill = "fl"
-  case gradientFill = "gf"
-  case group = "gr"
-  case gradientStroke = "gs"
-  case merge = "mm"
-  case rectangle = "rc"
-  case repeater = "rp"
-  case round = "rd"
-  case shape = "sh"
-  case star = "sr"
-  case stroke = "st"
-  case trim = "tm"
-  case transform = "tr"
-  case unknown
-
-  public init(from decoder: Decoder) throws {
-    self = try ShapeType(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
-  }
-}
-
-// MARK: ClassFamily
-
+/// Used for mapping a heterogeneous list to classes for parsing.
 extension ShapeType: ClassFamily {
 
   static var discriminator: Discriminator = .type
@@ -70,6 +47,30 @@ extension ShapeType: ClassFamily {
     default:
       return ShapeItem.self
     }
+  }
+}
+
+// MARK: - ShapeType
+
+enum ShapeType: String, Codable {
+  case ellipse = "el"
+  case fill = "fl"
+  case gradientFill = "gf"
+  case group = "gr"
+  case gradientStroke = "gs"
+  case merge = "mm"
+  case rectangle = "rc"
+  case repeater = "rp"
+  case round = "rd"
+  case shape = "sh"
+  case star = "sr"
+  case stroke = "st"
+  case trim = "tm"
+  case transform = "tr"
+  case unknown
+
+  public init(from decoder: Decoder) throws {
+    self = try ShapeType(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
   }
 }
 
@@ -164,9 +165,3 @@ extension Array where Element == ShapeItem {
     }
   }
 }
-
-// MARK: - ShapeItem + Sendable
-
-/// Since `ShapeItem` isn't `final`, we have to use `@unchecked Sendable` instead of `Sendable.`
-/// All `ShapeItem` subclasses are immutable `Sendable` values.
-extension ShapeItem: @unchecked Sendable { }

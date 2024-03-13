@@ -16,7 +16,8 @@ class CurrencyViewController: UIViewController, Reusable {
     
     weak var delegate: CurrencyUpdateDelegate?
     var isFromSetting: Bool = false
-    
+    var supportedCurrencyList = ["eos", "xrp", "xlm", "link", "dot", "yfi", "usd", "aed", "ars", "aud", "bdt", "bhd", "bmd", "brl", "cad", "chf", "clp", "cny", "czk", "dkk", "eur", "gbp", "gel", "hkd", "idr", "ils", "inr", "jpy", "krw", "kwd", "lkr", "mmk", "mxn", "myr", "ngn", "nok", "nzd", "php", "pkr", "pln", "rub", "sar", "sek", "sgd", "thb", "try", "twd", "uah", "vef", "vnd", "zar", "xdr", "xag", "xau", "bits", "sats"]
+
     lazy var viewModel: CurrencyViewModel = {
         CurrencyViewModel { status, message in
             if status == false {
@@ -40,7 +41,14 @@ class CurrencyViewController: UIViewController, Reusable {
         tableRegister()
         
         txtSearch.delegate = self
-        arrFilteredCurrency = arrCurrency
+        // Assuming arrCurrency is an array of Currencies objects
+        var filteredCurrencies = arrCurrency?.filter { currency in
+            guard let symbol = currency.symbol?.lowercased() else { return false }
+            return supportedCurrencyList.contains(symbol)
+        }
+        arrFilteredCurrency = filteredCurrencies
+        arrCurrency = filteredCurrencies
+        print(arrFilteredCurrency)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

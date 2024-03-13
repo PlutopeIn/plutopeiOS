@@ -37,9 +37,9 @@ class WalletData {
         do {
             let mnemonic = UserDefaults.standard.string(forKey: DefaultsKey.mnemonic)
             myWallet = parseWalletJson(walletJson: CGWalletGenerateWallet(mnemonic, chainETH, nil))
-            print("MYWAllet",myWallet)
+          //  print("MYWAllet",myWallet)
             walletBTC = parseWalletJson(walletJson: CGWalletGenerateWallet(mnemonic, chainBTC, nil))
-            print("MYBTCWAllet",walletBTC)
+          //  print("MYBTCWAllet",walletBTC)
         } catch {
             // Handle the exception, log an error, or perform any necessary actions
             print("Error: \(error)")
@@ -54,7 +54,7 @@ class WalletData {
     let chainETH = "ETH"
     let chainBTC = "BTC"
     var mnemonic = ""
-    
+   
     fileprivate func storeEnabledTokenInWallet(walletEntity: Wallets,completion: @escaping ((Bool) -> Void)) {
         let dispatchGroup = DispatchGroup()
         let enabledToken = (DatabaseHelper.shared.retrieveData("Token") as? [Token])?.filter({ $0.isEnabled })
@@ -76,6 +76,7 @@ class WalletData {
         dispatchGroup.notify(queue: .main) {
             completion(true)
         }
+       
     }
     
     func getPrivateKeyData(coinType: CoinType) -> String {
@@ -156,12 +157,7 @@ class WalletData {
         })
     }
     
-    func processCoinList(_ coinList: [CoingechoCoinList]?, for walletEntity: Wallets, completion: @escaping (Bool) -> Void) {
-        
-        // Process coin list and store tokens in the wallet
-        let supportedChains = ["binance-smart-chain", "ethereum", "polygon-pos", "okex-chain","bitcoin"]
-        let nativeCoins = ["OKT Chain", "Ethereum", "Polygon", "BNB","Bitcoin"]
-        
+    fileprivate func checkEmptyCoin(_ coinList: [CoingechoCoinList]?, _ nativeCoins: [String], _ supportedChains: [String]) {
         for coin in (coinList ?? []) {
             if let name = coin.name, let symbol = coin.symbol, let id = coin.id {
                 if nativeCoins.contains(name) {
@@ -224,6 +220,19 @@ class WalletData {
                 }
             }
         }
+    }
+    
+    fileprivate func checkCoinList(_ coinList: [CoingechoCoinList]?, _ nativeCoins: [String], _ supportedChains: [String]) {
+            checkEmptyCoin(coinList, nativeCoins, supportedChains)
+    }
+    
+    func processCoinList(_ coinList: [CoingechoCoinList]?, for walletEntity: Wallets, completion: @escaping (Bool) -> Void) {
+        
+        // Process coin list and store tokens in the wallet
+        let supportedChains = ["binance-smart-chain", "ethereum", "polygon-pos", "okex-chain","bitcoin"]
+        let nativeCoins = ["OKT Chain", "Ethereum", "Polygon", "BNB","Bitcoin"]
+        
+        self.checkCoinList(coinList, nativeCoins, supportedChains)
         storeEnabledTokenInWallet(walletEntity: walletEntity) { status in
             completion(status)
         }
@@ -238,30 +247,6 @@ class WalletData {
             wallets.forEach { $0.isPrimary = false }
         }
     }
-    //    func formatDecimalString(_ stringValue: String, decimalPlaces: Int) -> String {
-    //        // Convert the string to an NSDecimalNumber
-    //        let decimalNumber = NSDecimalNumber(string: stringValue)
-    //
-    //        // Truncate to the desired number of decimal places
-    //        let truncatedNumber = decimalNumber.rounding(accordingToBehavior: NSDecimalNumberHandler(roundingMode: .down, scale: Int16(decimalPlaces), raiseOnExactness: false, raiseOnOverflow: false, raiseOnUnderflow: false, raiseOnDivideByZero: false))
-    //
-    //        // Create a NumberFormatter to format the NSDecimalNumber
-    //        let numberFormatter = NumberFormatter()
-    //        numberFormatter.minimumFractionDigits = 0
-    //        numberFormatter.maximumFractionDigits = decimalPlaces
-    //
-    //        // Use the NumberFormatter to convert the NSDecimalNumber back to a formatted string
-    //        if let formattedString = numberFormatter.string(from: truncatedNumber) {
-    ////            if !formattedString.hasSuffix(".00") {
-    ////                    return formattedString + ".00"
-    ////                } else {
-    ////                    return formattedString
-    ////                }
-    //            return formattedString
-    //        } else {
-    //            return "Error formatting NSDecimalNumber to string"
-    //        }
-    //    }
     func formatDecimalString(_ stringValue: String, decimalPlaces: Int) -> String {
         // Convert the string to an NSDecimalNumber
         let decimalNumber = NSDecimalNumber(string: stringValue)

@@ -9,6 +9,8 @@ import UIKit
 import DGNetworkingServices
 import FirebaseCore
 import FirebaseMessaging
+import WalletConnectNotify
+import SafariServices
 extension SceneDelegate {
     func apiCheckVerstion() {
         DGNetworkingServices.main.MakeApiCall(Service: NetworkURL(withURL: ""), HttpMethod: .post, parameters: nil, headers: nil) { result in
@@ -57,76 +59,33 @@ extension SceneDelegate {
             }
         }
     }
-}
-// MARK: - Notification Delegate method
-@available(iOS 10, *)
-extension SceneDelegate : UNUserNotificationCenterDelegate {
-    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("Generated the Device Token...")
-        let takeParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
-        let token = takeParts.joined()
-        
-        Messaging.messaging().setAPNSToken(deviceToken, type: .unknown)
+    func resetRootView() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            let rootViewController = setRootViewController()
+            window.rootViewController = rootViewController
+            self.window = window
+            window.makeKeyAndVisible()
+        }
     }
-   
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print(userInfo)
-    }
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Fail notification:\(error.localizedDescription)")
-    }
-    // Handle notification presentation when the app is in the foreground
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-        let userInfo = notification.request.content.userInfo
-       
-        let aps = notification.request.content.userInfo[AnyHashable("aps")] as? NSDictionary
-
-        let type = (notification.request.content.userInfo[AnyHashable("type")] as? String ?? "").lowercased()
-        print(type)
-        
-        print(userInfo)
-        
-        if #available(iOS 14.0, *) {
-            completionHandler([.banner,.sound,.badge])
+    func setRootViewController() -> UIViewController {
+        if UserDefaults.standard.bool(forKey: DefaultsKey.splashVideoPlayed) {
+            let walletStoryboard = UIStoryboard(name: "WalletRoot", bundle: nil)
+            if UserDefaults.standard.string(forKey: DefaultsKey.mnemonic) == nil {
+                let walletSetUpVC = WalletSetUpViewController()
+                let navigationController = UINavigationController(rootViewController: walletSetUpVC)
+                navigationController.setNavigationBarHidden(true, animated: false)
+                return navigationController
+            } else if let tabBarVC = walletStoryboard.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
+                return tabBarVC
+            }
         } else {
-            completionHandler([.alert,.sound,.badge])
+            let avPlayer = VideoPlayerViewController()
+            let navigationController = UINavigationController(rootViewController: avPlayer)
+            navigationController.setNavigationBarHidden(true, animated: false)
+            return navigationController
         }
-        print("Notification arrived")
-        
-       // completionHandler( [.alert, .badge, .sound])
-        }
-    
-    // MARK: - Handle user interaction with the notification
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse,
-                                withCompletionHandler completionHandler: @escaping () -> Void) {
-        
-        let userInfo = response.notification.request.content.userInfo
-        let type = (response.notification.request.content.userInfo[AnyHashable("type")] as? String ?? "").lowercased()
-       
-//        let walletStoryboard = UIStoryboard(name: "WalletRoot", bundle: nil)
-//
-//        if UserDefaults.standard.string(forKey: DefaultsKey.mnemonic) == nil {
-//            let walletSetUpVC = WalletSetUpViewController()
-//            let navigationController = UINavigationController(rootViewController: walletSetUpVC)
-//            navigationController.setNavigationBarHidden(true, animated: false)
-//            window?.rootViewController = navigationController
-//        } else if let tabBarVC = walletStoryboard.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
-//            window?.rootViewController = tabBarVC
-//        }
-//        self.window?.makeKeyAndVisible()
-    
-        completionHandler()
+        return UIViewController()
     }
-}
-// MARK: - MessagingDelegate
-extension SceneDelegate : MessagingDelegate {
     
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        
-        print("DeviceToken:\(fcmToken ?? "")")
-        UserDefaults.standard.setValue(fcmToken, forKey: "fcm_Token")
-    }
 }

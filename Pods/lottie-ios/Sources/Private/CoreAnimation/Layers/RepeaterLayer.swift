@@ -93,6 +93,4 @@ extension RepeaterTransform: TransformModel {
   var _position: KeyframeGroup<LottieVector3D>? { position }
   var _positionX: KeyframeGroup<LottieVector1D>? { nil }
   var _positionY: KeyframeGroup<LottieVector1D>? { nil }
-  var _skew: KeyframeGroup<LottieVector1D>? { nil }
-  var _skewAxis: KeyframeGroup<LottieVector1D>? { nil }
 }

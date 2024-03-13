@@ -8,7 +8,6 @@ import Foundation
 import Web3
 import CoreData
 class ChainFunctions: BlockchainFunctions {
-    
     init(_ data: Token) {
         self.tokenDetails = data
     }
@@ -191,8 +190,6 @@ class ChainFunctions: BlockchainFunctions {
             return
         }
         guard let myWalletAddress = try? EthereumAddress(hex: chain.walletAddress ?? "", eip55: false) else { return  }
-//        guard let gasPriceValue = try? EthereumQuantity(quantity: BigUInt(gasAmount)) else { return  }
-//        guard let nonceValue = try? EthereumQuantity(quantity: BigUInt(nonce)) else { return  }
         web3.eth.getTransactionCount(address: myWalletAddress, block: .latest) { resp in
             
             web3.eth.gasPrice {  gasPriceRes in
@@ -379,6 +376,62 @@ class ChainFunctions: BlockchainFunctions {
                     print(error)
                     completion(false,error.localizedDescription,nil)
                 }
+            }
+        }
+    }
+    // off ramp
+    func getTransactionHash(_ receiverAddress: String?, gasLimit: BigUInt, gasPrice: BigUInt, txValue: BigUInt, rawData: String,isGettingTransactionHash:Bool? ,completion: @escaping ((Bool, String?, EthereumData?) -> Void)) {
+        guard let chain = tokenDetails.chain else { return  }
+        let web3 = Web3(rpcURL: chain.rpcURL)
+        guard let toWalletAddress = try? EthereumAddress(hex: receiverAddress ?? "" , eip55: false) else { return  }
+        guard let myWalletAddress = try? EthereumAddress(hex: chain.walletAddress ?? "", eip55: false) else { return  }
+        
+        web3.eth.getTransactionCount(address: myWalletAddress, block: .latest) { resp in
+           
+            do{
+            web3.eth.gasPrice { gasPriceResponse in
+                _ = gasPriceResponse.result?.quantity ?? BigUInt(100)
+                do {
+                    let transaction = EthereumTransaction(nonce: resp.result, gasPrice: EthereumQuantity(quantity: gasPrice), gasLimit: EthereumQuantity(quantity: gasLimit), from: myWalletAddress, to: toWalletAddress, value: EthereumQuantity(quantity:txValue), data: EthereumData(Bytes(hex: rawData)))
+                    let signedTx = try transaction.sign(with: EthereumPrivateKey(hexPrivateKey: chain.privateKey ?? ""),chainId: EthereumQuantity(quantity: BigUInt(Int(chain.chainId) ?? 0)))
+                    
+                    if isGettingTransactionHash ?? false {
+                    try web3.eth.sendRawTransaction(transaction: signedTx) { (transactionHash) in
+                        if let txHash = transactionHash.result {
+                            fetchTransactionReceiptWithRetry(transactionHash: txHash, web3: web3) { result in
+                                switch result {
+                                case .success(let receiptResponse):
+                                    if receiptResponse.result != nil {
+                                        if receiptResponse.status.result??.status?.quantity == BigUInt(1) {
+                                            completion(true, "Transaction successful", txHash)
+                                        } else {
+                                            completion(false, "Transaction failed", txHash)
+                                        }
+                                    } else {
+                                        completion(false, "Transaction receipt not available", txHash)
+                                    }
+                                case .failure(let error):
+                                    completion(false, error.localizedDescription, txHash)
+                                }
+                            }
+                            
+                        } else if let error = transactionHash.error {
+                            completion(false, error.localizedDescription, nil)
+                        } else {
+                            completion(false, "Transaction hash not available", nil)
+                        }
+                    }
+                    } else {
+                        completion(true,"signedTransaction",signedTx.data)
+                    }
+                } catch(let error) {
+                    print(error)
+                    completion(false,error.localizedDescription,nil)
+                }
+            }
+            } catch(let error) {
+                print(error)
+                completion(false,error.localizedDescription,nil)
             }
         }
     }

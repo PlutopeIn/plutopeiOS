@@ -36,7 +36,7 @@ extension NodePropertyMap {
 
   /// Rebuilds only the local nodes that have an update for the frame
   func updateNodeProperties(frame: CGFloat) {
-    for property in properties {
+    properties.forEach { property in
       property.update(frame: frame)
     }
   }

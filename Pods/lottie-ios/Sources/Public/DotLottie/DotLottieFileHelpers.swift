@@ -20,10 +20,6 @@ extension DotLottieFile {
       dotLottieCache: DotLottieCacheProvider? = DotLottieCache.sharedCache)
       -> Result<DotLottieFile, Error>
     {
-      LottieLogger.shared.assert(
-        !Thread.isMainThread,
-        "`DotLottieFile.SynchronouslyBlockingCurrentThread` methods shouldn't be called on the main thread.")
-
       /// Check cache for lottie
       if
         let dotLottieCache = dotLottieCache,
@@ -59,10 +55,6 @@ extension DotLottieFile {
       dotLottieCache: DotLottieCacheProvider? = DotLottieCache.sharedCache)
       -> Result<DotLottieFile, Error>
     {
-      LottieLogger.shared.assert(
-        !Thread.isMainThread,
-        "`DotLottieFile.SynchronouslyBlockingCurrentThread` methods shouldn't be called on the main thread.")
-
       /// Create a cache key for the lottie.
       let cacheKey = bundle.bundlePath + (subdirectory ?? "") + "/" + name
 
@@ -83,30 +75,6 @@ extension DotLottieFile {
       } catch {
         /// Decoding error.
         LottieLogger.shared.warn("Error when decoding lottie \"\(name)\": \(error)")
-        return .failure(error)
-      }
-    }
-
-    /// Loads an DotLottie from a data synchronously. Returns a `Result<DotLottieFile, Error>`
-    ///
-    /// Please use the asynchronous methods whenever possible. This operation will block the Thread it is running in.
-    ///
-    /// - Parameters:
-    ///   - data: The data(`Foundation.Data`) object to load DotLottie from
-    ///   - filename: The name of the lottie file without the lottie extension. eg. "StarAnimation"
-    public static func loadedFrom(
-      data: Data,
-      filename: String)
-      -> Result<DotLottieFile, Error>
-    {
-      LottieLogger.shared.assert(
-        !Thread.isMainThread,
-        "`DotLottieFile.SynchronouslyBlockingCurrentThread` methods shouldn't be called on the main thread.")
-
-      do {
-        let dotLottieFile = try DotLottieFile(data: data, filename: filename)
-        return .success(dotLottieFile)
-      } catch {
         return .failure(error)
       }
     }
@@ -146,7 +114,7 @@ extension DotLottieFile {
     bundle: Bundle = Bundle.main,
     subdirectory: String? = nil,
     dotLottieCache: DotLottieCacheProvider? = DotLottieCache.sharedCache,
-    dispatchQueue: DispatchQueue = .dotLottie,
+    dispatchQueue: DispatchQueue = .global(),
     handleResult: @escaping (Result<DotLottieFile, Error>) -> Void)
   {
     dispatchQueue.async {
@@ -186,7 +154,7 @@ extension DotLottieFile {
   public static func loadedFrom(
     filepath: String,
     dotLottieCache: DotLottieCacheProvider? = DotLottieCache.sharedCache,
-    dispatchQueue: DispatchQueue = .dotLottie,
+    dispatchQueue: DispatchQueue = .global(),
     handleResult: @escaping (Result<DotLottieFile, Error>) -> Void)
   {
     dispatchQueue.async {
@@ -228,7 +196,7 @@ extension DotLottieFile {
     named name: String,
     bundle: Bundle = Bundle.main,
     dotLottieCache: DotLottieCacheProvider? = DotLottieCache.sharedCache,
-    dispatchQueue: DispatchQueue = .dotLottie,
+    dispatchQueue: DispatchQueue = .global(),
     handleResult: @escaping (Result<DotLottieFile, Error>) -> Void)
   {
     dispatchQueue.async {
@@ -321,58 +289,4 @@ extension DotLottieFile {
     }
   }
 
-  /// Loads an DotLottie from a data asynchronously.
-  ///
-  /// - Parameters:
-  ///   - data: The data(`Foundation.Data`) object to load DotLottie from
-  ///   - filename: The name of the lottie file without the lottie extension. eg. "StarAnimation"
-  ///   - dispatchQueue: A dispatch queue used to load animations. Defaults to `DispatchQueue.global()`. Optional.
-  ///   - handleResult: A closure to be called when the file has loaded.
-  public static func loadedFrom(
-    data: Data,
-    filename: String,
-    dispatchQueue: DispatchQueue = .dotLottie,
-    handleResult: @escaping (Result<DotLottieFile, Error>) -> Void)
-  {
-    dispatchQueue.async {
-      do {
-        let dotLottie = try DotLottieFile(data: data, filename: filename)
-        DispatchQueue.main.async {
-          handleResult(.success(dotLottie))
-        }
-      } catch {
-        DispatchQueue.main.async {
-          handleResult(.failure(error))
-        }
-      }
-    }
-  }
-
-  /// Loads an DotLottie from a data asynchronously.
-  ///
-  /// - Parameters:
-  ///   - data: The data(`Foundation.Data`) object to load DotLottie from
-  ///   - filename: The name of the lottie file without the lottie extension. eg. "StarAnimation"
-  ///   - dispatchQueue: A dispatch queue used to load animations. Defaults to `DispatchQueue.global()`. Optional.
-  @available(iOS 13.0, macOS 10.15, tvOS 13.0, *)
-  public static func loadedFrom(
-    data: Data,
-    filename: String,
-    dispatchQueue: DispatchQueue = .dotLottie)
-    async throws -> DotLottieFile
-  {
-    try await withCheckedThrowingContinuation { continuation in
-      loadedFrom(data: data, filename: filename, dispatchQueue: dispatchQueue) { result in
-        continuation.resume(with: result)
-      }
-    }
-  }
-}
-
-extension DispatchQueue {
-  /// A serial dispatch queue ensures that IO related to loading dot Lottie files don't overlap,
-  /// which can trigger file loading errors due to concurrent unzipping on a single archive.
-  public static let dotLottie = DispatchQueue(
-    label: "com.airbnb.lottie.dot-lottie",
-    qos: .userInitiated)
 }

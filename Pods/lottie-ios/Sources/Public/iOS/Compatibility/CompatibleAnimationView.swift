@@ -30,7 +30,7 @@ public final class CompatibleAnimation: NSObject {
 
   // MARK: Internal
 
-  var animation: LottieAnimation? {
+  internal var animation: LottieAnimation? {
     LottieAnimation.named(name, bundle: bundle, subdirectory: subdirectory)
   }
 
@@ -193,10 +193,8 @@ public final class CompatibleAnimationView: UIView {
     commonInit()
   }
 
-  required init?(coder: NSCoder) {
-    animationView = LottieAnimationView()
-    super.init(coder: coder)
-    commonInit()
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: Public
@@ -535,7 +533,7 @@ public final class CompatibleDictionaryTextProvider: NSObject {
 
   // MARK: Internal
 
-  var textProvider: AnimationKeypathTextProvider? {
+  internal var textProvider: AnimationTextProvider? {
     DictionaryTextProvider(values)
   }
 

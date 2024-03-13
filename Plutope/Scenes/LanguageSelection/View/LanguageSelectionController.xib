@@ -28,21 +28,21 @@
                         <constraint firstAttribute="height" constant="70" id="TEs-bp-qqz"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sbm-LH-nhR">
-                    <rect key="frame" x="0.0" y="129" width="393" height="669"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sbm-LH-nhR">
+                    <rect key="frame" x="16" y="129" width="361" height="669"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" name="#0C0D2D"/>
             <constraints>
-                <constraint firstItem="sbm-LH-nhR" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="1ax-C5-KAV"/>
                 <constraint firstItem="pr4-xM-mF2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="692-Hb-a8X"/>
                 <constraint firstItem="pr4-xM-mF2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Dwm-Jh-DeR"/>
                 <constraint firstItem="sbm-LH-nhR" firstAttribute="top" secondItem="pr4-xM-mF2" secondAttribute="bottom" id="Juu-RE-4iE"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="sbm-LH-nhR" secondAttribute="bottom" constant="20" id="KQg-fy-4Y2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="pr4-xM-mF2" secondAttribute="trailing" id="aJt-E3-vQ9"/>
-                <constraint firstItem="sbm-LH-nhR" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="onT-qe-Ec7"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="sbm-LH-nhR" secondAttribute="trailing" constant="16" id="bRb-Oh-O7Z"/>
+                <constraint firstItem="sbm-LH-nhR" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="onT-qe-Ec7"/>
             </constraints>
             <point key="canvasLocation" x="35.877862595419849" y="-11.267605633802818"/>
         </view>

@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - LineCap
 
-enum LineCap: Int, Codable, Sendable {
+enum LineCap: Int, Codable {
   case none
   case butt
   case round
@@ -18,7 +18,7 @@ enum LineCap: Int, Codable, Sendable {
 
 // MARK: - LineJoin
 
-enum LineJoin: Int, Codable, Sendable {
+enum LineJoin: Int, Codable {
   case none
   case miter
   case round

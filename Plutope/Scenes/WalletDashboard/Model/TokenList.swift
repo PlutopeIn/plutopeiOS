@@ -77,3 +77,18 @@ struct BackendTokenList: Codable {
 struct BitcoinWalletData: Codable {
     let balance: Double?
 }
+// MARK: - WelcomeElement
+struct ActiveTokens: Codable {
+    let tokenAddress, symbol, name: String?
+    let logo: String?
+    let decimals: Int?
+    let balance: String?
+    //let possibleSpam, verifiedContract: Bool?
+
+    enum CodingKeys: String, CodingKey {
+        case tokenAddress = "token_address"
+        case symbol, name, logo, decimals, balance
+      //  case possibleSpam = "possible_spam"
+       // case verifiedContract = "verified_contract"
+    }
+}

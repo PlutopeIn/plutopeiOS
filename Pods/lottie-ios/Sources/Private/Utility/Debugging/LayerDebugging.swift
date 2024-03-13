@@ -90,9 +90,7 @@ extension CALayer {
     }
 
     if let sublayers = sublayers {
-      for sublayer in sublayers {
-        sublayer.setDebuggingState(visible: visible)
-      }
+      sublayers.forEach { $0.setDebuggingState(visible: visible) }
     }
 
     if visible {

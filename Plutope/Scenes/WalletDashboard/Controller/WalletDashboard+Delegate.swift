@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 import CoreData
-//import WalletCore
+// import WalletCore
 import CGWallet
 // MARK: Table view delegate method
 extension WalletDashboardViewController: UITableViewDelegate {
@@ -52,23 +52,27 @@ extension WalletDashboardViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let data = arrNftData?[indexPath.row]
         let jsonString = data?.metadata
-        if let jsonData = jsonString?.data(using: .utf8) {
-            do {
-                if let json = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
-                   let imageUrlString = json["image"] as? String,
-                   let nftName = json["name"] as? String,
-                   let description = json["description"] as? String {
-                    let nftVC = NFTDescriptionViewController()
-                    nftVC.modalPresentationStyle = .overFullScreen
-                    nftVC.modalTransitionStyle = .crossDissolve
-                    nftVC.nftName = nftName
-                    nftVC.nftDescription = description
-                    nftVC.imageURL = imageUrlString
-                    self.present(nftVC, animated: true)
+        if jsonString != "" || jsonString != nil {
+            if let jsonData = jsonString?.data(using: .utf8) {
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
+                       let imageUrlString = json["image"] as? String,
+                       let nftName = json["name"] as? String,
+                       let description = json["description"] as? String {
+                        let nftVC = NFTDescriptionViewController()
+                        nftVC.modalPresentationStyle = .overFullScreen
+                        nftVC.modalTransitionStyle = .crossDissolve
+                        nftVC.nftName = nftName
+                        nftVC.nftDescription = description
+                        nftVC.imageURL = imageUrlString
+                        self.present(nftVC, animated: true)
+                    }
+                } catch {
+                    print("Error parsing JSON: \(error)")
                 }
-            } catch {
-                print("Error parsing JSON: \(error)")
             }
+        } else {
+            print("jsonString = nill")
         }
     }
 }

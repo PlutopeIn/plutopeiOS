@@ -7,9 +7,9 @@
 import UIKit
 
 typealias BindFail = ((_ status: Bool, _ message: String) -> Void)
-
 struct AppConstants {
     static let serverURL: String = "@{serverURL}"
+    static var storedTokensList: [MarketData]?
 }
 
 public var screenWidth = UIScreen.main.bounds.width

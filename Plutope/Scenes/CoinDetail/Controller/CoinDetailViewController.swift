@@ -8,6 +8,7 @@ import UIKit
 
 class CoinDetailViewController: UIViewController, Reusable {
     
+    @IBOutlet weak var segmentHeight: NSLayoutConstraint!
     @IBOutlet weak var lblBuy: UILabel!
     @IBOutlet weak var lblCoinNetwork: DesignableLabel!
     @IBOutlet weak var mainScrollView: UIScrollView!
@@ -29,17 +30,22 @@ class CoinDetailViewController: UIViewController, Reusable {
  //   @IBOutlet weak var lblBuy: UILabel!
     @IBOutlet weak var lblMore: UILabel!
     @IBOutlet weak var lblNoTransactions: UILabel!
-    
   //  @IBOutlet weak var lblSend: UILabel!
    // @IBOutlet weak var lblReceive: UILabel!
   //  @IBOutlet weak var lblMore: UILabel!
     var isFetchingData = false
+    var isInternalFetchingData = false
     var coinDetail: Token?
+    var isToContract  = false
+    var url: String?
+    @IBOutlet weak var segmentTransactions: CustomSegmentedControl!
     var transactionHistory: [TransactionHistory] = []
     weak var refreshWalletDelegate: RefreshDataDelegate?
     var arrTransactionData: [TransactionResult] = []
+    var arrInternalTransactionData: [TransactionResult] = []
     weak var updatebalDelegate: RefreshDataDelegate?
     var isCustomAdded: Bool = false
+    var selectedSegment = String()
     lazy var viewModel: TransactionHistoryViewModel = {
         TransactionHistoryViewModel { _ , _ in
             // self.showToast(message: message, font: .systemFont(ofSize: 15))
@@ -51,11 +57,18 @@ class CoinDetailViewController: UIViewController, Reusable {
     lazy var buyViewModel: CoinMinPriceViewModel = {
         CoinMinPriceViewModel { status, message in
             if status == false {
-                self.showToast(message: message, font: .systemFont(ofSize: 15))
+              //  self.showToast(message: message, font: .systemFont(ofSize: 15))
             }
         }
     }()
+    lazy var registerUserViewModel: RegisterUserViewModel = {
+        RegisterUserViewModel { _ ,message in
+         //   self.showToast(message: message, font: .systemFont(ofSize: 15))
+            // self.btnDone.HideLoader()
+        }
+    }()
     var page = 1
+    var pageInternal = 1
     
     fileprivate func uiSetUp() {
         self.lblTransactions.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transactions, comment: "")
@@ -64,11 +77,13 @@ class CoinDetailViewController: UIViewController, Reusable {
         self.lblBuy.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.buy, comment: "")
         self.lblMore.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.more, comment: "")
         self.lblNoTransactions.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.notransactionsyet, comment: "")
+        self.segmentTransactions.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transaction, comment: ""), forSegmentAt: 0)
+        self.segmentTransactions.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.internalText, comment: ""), forSegmentAt: 1)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        selectedSegment = "Transaction"
         /// Navigation Header
         defineHeader(headerView: headerView, titleText:  coinDetail?.name ?? "", btnBackHidden: false, popToRoot: true, btnRightImage: UIImage.icGraph) {
             let viewToNavigate = CoinGraphViewController()
@@ -94,16 +109,38 @@ class CoinDetailViewController: UIViewController, Reusable {
         /// call setcoin detail
         setCoinDetail()
         
+        // segment
+        segmentSetup()
+       
         /// getTransactionHistory
+        
+        // set segment for only main chains 
+//        if coinDetail?.symbol == "MATIC" && coinDetail?.type == "POLYGON" {
+        if coinDetail?.address == "" {
+            segmentTransactions.isHidden = false
+            segmentHeight.constant = 40
+        } else {
+            segmentTransactions.isHidden = true
+            segmentHeight.constant = 0
+        }
         if DataStore.networkEnv == .mainnet {
-            DGProgressView.shared.showLoader(to: self.view)
             self.getTransactionHistory("\(self.page)")
+//            self.getInternalTransactionHistory("\(self.pageInternal)")
         }
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
     /// setcoin detail
     fileprivate func setCoinDetail() {
         
+        if let coinDetail = self.coinDetail {
+            if coinDetail.symbol == "usdc.e" {
+                coinDetail.symbol = "usdt"
+            }
+        }
+     //   print(coinDetail?.symbol?.lowercased() == "usdc.e")
         if let balanceString = coinDetail?.balance, let balance = Double(balanceString) {
             let formatter = NumberFormatter()
             formatter.minimumFractionDigits = 0
@@ -220,16 +257,61 @@ class CoinDetailViewController: UIViewController, Reusable {
         tbvTransactions.register(TransactionViewCell.nib, forCellReuseIdentifier: TransactionViewCell.reuseIdentifier)
         mainScrollView.delegate = self
     }
+    
+@IBAction func actionSegment(_ sender: Any) {
+        
+        if segmentTransactions.selectedSegmentIndex == 0 {
+            selectedSegment = "Transaction"
+            self.page = 1
+            self.getTransactionHistory("\(self.page)")
+            tbvTransactions.reloadData()
+        } else if segmentTransactions.selectedSegmentIndex == 1 {
+            self.pageInternal = 1
+           selectedSegment = "Internal"
+            self.getInternalTransactionHistory("\(self.pageInternal)")
+          
+        }
+        
+    }
+    /// Segment Setup
+    private func segmentSetup() {
+        let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.c767691, NSAttributedString.Key.font: AppFont.bold(16).value, NSAttributedString.Key.backgroundColor: UIColor.clear]
+        let selectedTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: AppFont.bold(16).value]
+        segmentTransactions.setTitleTextAttributes(selectedTextAttributes, for: .selected)
+        segmentTransactions.setTitleTextAttributes(titleTextAttributes, for: .normal)
+        segmentTransactions.layer.cornerRadius = 50
+        segmentTransactions.layer.masksToBounds = true
+        segmentTransactions.clipsToBounds = true
+    }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         
-        if offsetY > contentHeight - scrollView.frame.height && !isFetchingData {
-            // Check if the refresh control is not already refreshing
+        switch segmentTransactions.selectedSegmentIndex {
+        case 0:
+            if offsetY > contentHeight - scrollView.frame.height && !isFetchingData {
+                // Check if the refresh control is not already refreshing
 
-            self.page += 1
-            self.getTransactionHistory("\(self.page)")
+                self.page += 1
+                self.getTransactionHistory("\(self.page)")
+            }
+        case 1:
+            if offsetY > contentHeight - scrollView.frame.height && !isInternalFetchingData {
+                // Check if the refresh control is not already refreshing
+
+                self.pageInternal += 1
+                self.getInternalTransactionHistory("\(self.pageInternal)")
+            }
+        default:
+            break
         }
+        
+//        if offsetY > contentHeight - scrollView.frame.height && !isFetchingData {
+//            // Check if the refresh control is not already refreshing
+//
+//            self.page += 1
+//            self.getTransactionHistory("\(self.page)")
+//        }
         
     }
     
@@ -251,38 +333,63 @@ class CoinDetailViewController: UIViewController, Reusable {
     
     // getTransactionHistory
     fileprivate func getTransactionHistory(_ page: String) {
-        
+        DGProgressView.shared.showLoader(to: self.view)
         viewModel.apiGetTransactionaHistroy(self.coinDetail!, "\(self.page)") { transactionData, status, _ in
             if status {
+                
+                self.registerUserViewModel.setWalletActiveAPI(walletAddress: WalletData.shared.myWallet?.address ?? "") { resStatus, message in
+                   // if resStatus == 1 {
+                        print(message)
+                    // }
+                }
                 if !(transactionData?.isEmpty ?? false) {
+                    self.arrTransactionData.removeAll()
                     self.arrTransactionData.append(contentsOf: transactionData ?? [])
                    
-                    // Create a dictionary to track txID and isSwap value
                     var txIDToIsSwapMap: [String: Bool] = [:]
+                    var uniqueTransactionsByID: [String: TransactionResult] = [:]
+                    var uniqueTransactionsByTime: [String: TransactionResult] = [:]
 
-                    // Iterate through the array and update the txID to isSwap mapping
                     for transaction in self.arrTransactionData {
                         if let txID = transaction.txID {
-                            if txIDToIsSwapMap[txID] == nil {
+                            // Check if the transaction's txID is unique
+                            if !txIDToIsSwapMap.keys.contains(txID) {
                                 txIDToIsSwapMap[txID] = transaction.isSwap ?? false
+                                uniqueTransactionsByID[txID] = transaction
                             } else {
                                 // If a transaction with the same txID already exists, set isSwap to true
                                 txIDToIsSwapMap[txID] = true
                             }
                         }
-                    }
 
+                        if let timeString = transaction.transactionTime {
+                                // Store the transaction based on timeString
+                                uniqueTransactionsByTime[timeString] = transaction
+                            }
+                    }
+                    // Get unique transactions by time
+                    let sortedTransactions = uniqueTransactionsByTime.values.sorted {
+                        guard let timeStamp1 = TimeInterval($0.transactionTime ?? ""),
+                              let timeStamp2 = TimeInterval($1.transactionTime ?? "") else {
+                            return false
+                        }
+                        return timeStamp1 > timeStamp2
+                    }
+                    // Store the unique filtered transactions back in self.arrTransactionData
+                    self.arrTransactionData = Array(sortedTransactions)
+                    
                     // Update the isSwap value in the arrTransactionData array
                     for idx in 0..<self.arrTransactionData.count {
                         if let txID = self.arrTransactionData[idx].txID {
                             self.arrTransactionData[idx].isSwap = txIDToIsSwapMap[txID]
                         }
                     }
-                    
                     if self.coinDetail?.address != "" {
                         self.arrTransactionData = self.arrTransactionData.filter({ data in
-                            // if data.methodID == "" && data.transactionSymbol == self.coinDetail?.symbol ?? "" {
-                            // chnage tokenContractAddress insted of transactionSymbol in condition 
+//                            let result = formattedSymbol == self.arrTransactionData.first?.transactionSymbol?.lowercased()
+                           //  if data.methodID == "" && data.transactionSymbol == self.coinDetail?.symbol ?? "" {
+                            // chnage tokenContractAddress insted of transactionSymbol in condition
+                            
                             if data.methodID == "" && data.tokenContractAddress == self.coinDetail?.address ?? "" {
                                 return true
                             } else {
@@ -290,6 +397,7 @@ class CoinDetailViewController: UIViewController, Reusable {
                             }
                         })
                     }
+                   // print("arrTransactionData",self.arrTransactionData)
                     
                 } else {
                     self.isFetchingData = true
@@ -300,15 +408,110 @@ class CoinDetailViewController: UIViewController, Reusable {
                 } else {
                     self.viewNoTransaction.isHidden = true
                     self.tbvTransactions.isHidden = false
-                    self.tbvTransactions.reloadData()
+                   
                 }
+               
+                self.tbvTransactions.restore()
+                self.tbvTransactions.reloadData()
                 DGProgressView.shared.hideLoader()
-              
+                
             } else {
                 self.viewNoTransaction.isHidden = false
                 self.tbvTransactions.isHidden = true
                 DGProgressView.shared.hideLoader()
                 self.isFetchingData = true
+            }
+        }
+    }
+    
+    // getInternalTransactionHistory
+    fileprivate func getInternalTransactionHistory(_ page: String) {
+        DGProgressView.shared.showLoader(to: self.view)
+        viewModel.apiGetInternalTransactionaHistroy(self.coinDetail!, "\(self.pageInternal)") { transactionData, status, _ in
+            if status {
+                if !(transactionData?.isEmpty ?? false) {
+                    self.arrInternalTransactionData.removeAll()
+                    self.arrInternalTransactionData.append(contentsOf: transactionData ?? [])
+                   
+                    var txIDToIsSwapMap: [String: Bool] = [:]
+                    var uniqueTransactionsByID: [String: TransactionResult] = [:]
+                    var uniqueTransactionsByTime: [String: TransactionResult] = [:]
+
+                    for transaction in self.arrInternalTransactionData {
+                        if let txID = transaction.txID {
+                            // Check if the transaction's txID is unique
+                            if !txIDToIsSwapMap.keys.contains(txID) {
+                                txIDToIsSwapMap[txID] = transaction.isSwap ?? false
+                                uniqueTransactionsByID[txID] = transaction
+                            } else {
+                                // If a transaction with the same txID already exists, set isSwap to true
+                                txIDToIsSwapMap[txID] = true
+                            }
+                        }
+
+                        if let timeString = transaction.transactionTime {
+                                // Store the transaction based on timeString
+                                uniqueTransactionsByTime[timeString] = transaction
+                            }
+                    }
+                    // Get unique transactions by time
+                    let sortedTransactions = uniqueTransactionsByTime.values.sorted {
+                        guard let timeStamp1 = TimeInterval($0.transactionTime ?? ""),
+                              let timeStamp2 = TimeInterval($1.transactionTime ?? "") else {
+                            return false
+                        }
+                        return timeStamp1 > timeStamp2
+                    }
+                    // Store the unique filtered transactions back in self.arrInternalTransactionData
+                    self.arrInternalTransactionData = Array(sortedTransactions)
+                    
+                    // Update the isSwap value in the arrTransactionData array
+                    for idx in 0..<self.arrInternalTransactionData.count {
+                        if let txID = self.arrInternalTransactionData[idx].txID {
+                            self.arrInternalTransactionData[idx].isSwap = txIDToIsSwapMap[txID]
+                        }
+                    }
+                    if self.coinDetail?.address != "" {
+                        self.arrInternalTransactionData = self.arrInternalTransactionData.filter({ data in
+//                            let result = formattedSymbol == self.arrInternalTransactionData.first?.transactionSymbol?.lowercased()
+                           //  if data.methodID == "" && data.transactionSymbol == self.coinDetail?.symbol ?? "" {
+                            // chnage tokenContractAddress insted of transactionSymbol in condition
+                            
+                            if data.methodID == "" && data.tokenContractAddress == self.coinDetail?.address ?? "" {
+                                return true
+                            } else {
+                                return false
+                            }
+                        })
+                    }
+                   // print("arrInternalTransactionData",self.arrInternalTransactionData)
+                    
+                } else {
+                    self.isInternalFetchingData = true
+                   
+                }
+                if self.arrInternalTransactionData.count == 0 {
+                    self.viewNoTransaction.isHidden = false
+                    self.tbvTransactions.isHidden = true
+                
+                } else {
+                    self.viewNoTransaction.isHidden = true
+                    self.tbvTransactions.isHidden = false
+                    // self.tbvTransactions.restore()
+//                    self.tbvTransactions.reloadData()
+                  
+                }
+              
+                self.tbvTransactions.restore()
+                self.tbvTransactions.reloadData()
+                DGProgressView.shared.hideLoader()
+                
+            } else {
+               
+                self.viewNoTransaction.isHidden = false
+                self.tbvTransactions.isHidden = true
+                DGProgressView.shared.hideLoader()
+                self.isInternalFetchingData = true
             }
         }
     }
@@ -387,4 +590,5 @@ class CustomPopoverViewController: UIViewController {
         // Handle Cancel
         dismiss(animated: true, completion: nil)
     }
+    
 }

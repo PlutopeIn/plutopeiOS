@@ -120,4 +120,22 @@ class TokenListRepo {
             }
         }
     }
+    
+    func apiGetActiveTokens(walletAddress:String,completion: @escaping (([ActiveTokens]?,Bool) -> Void)) {
+  
+        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: "https://plutope.app/api/get-wallet-tokens/\(walletAddress)"), HttpMethod: .get, parameters: nil, headers: nil) { status, error, data in
+            if status {
+                do {
+                    let data = try JSONDecoder().decode([ActiveTokens].self, from: data!)
+                    completion(data,true)
+                    
+                } catch(let error) {
+                    print(error)
+                    completion(nil,false)
+                }
+            } else {
+                completion(nil,false)
+            }
+        }
+    }
 }

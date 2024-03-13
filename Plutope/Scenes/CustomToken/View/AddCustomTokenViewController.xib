@@ -61,13 +61,13 @@
                                     <rect key="frame" x="16" y="50" width="361" height="58"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VeX-5V-TMO">
-                                            <rect key="frame" x="13.999999999999996" y="21.333333333333343" width="50.666666666666657" height="15.666666666666664"/>
+                                            <rect key="frame" x="14" y="21.333333333333343" width="49" height="15.333333333333336"/>
                                             <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="13"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P2a-fx-JWk">
-                                            <rect key="frame" x="260.33333333333331" y="21.333333333333343" width="52.666666666666686" height="15.666666666666664"/>
+                                            <rect key="frame" x="257.33333333333331" y="21.333333333333343" width="55.666666666666686" height="15.333333333333336"/>
                                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="13"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
@@ -105,7 +105,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QvZ-hE-lDx">
-                                    <rect key="frame" x="16" y="137" width="21" height="15"/>
+                                    <rect key="frame" x="15.999999999999998" y="137" width="22.333333333333329" height="15"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="15" id="Eyj-1A-zfO"/>
                                     </constraints>
@@ -120,7 +120,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="361" height="50"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Contract Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e2d-Un-MUD" customClass="customTextField" customModule="Plutope" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="116" height="50"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="122.33333333333333" height="50"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="12"/>
@@ -141,14 +141,14 @@
                                                     </connections>
                                                 </textField>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XrI-11-klq">
-                                                    <rect key="frame" x="278.66666666666669" y="17" width="35" height="16"/>
+                                                    <rect key="frame" x="268.66666666666669" y="17" width="45" height="16"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="35" id="eJy-vm-5Ke"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="BHn-iu-563"/>
                                                         <constraint firstAttribute="height" constant="16" id="oea-PG-aJ6"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="15"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title="Paste">
+                                                    <state key="normal" title="पेस्ट करें">
                                                         <color key="titleColor" systemColor="systemBlueColor"/>
                                                     </state>
                                                     <connections>
@@ -284,7 +284,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anyone can create a token, including fake versions of existing tokens. Learn about scams and security risks." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zra-Dk-wyZ">
-                                            <rect key="frame" x="51" y="17" width="296" height="28.666666666666671"/>
+                                            <rect key="frame" x="51" y="17" width="296" height="28"/>
                                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
@@ -377,7 +377,7 @@
                                     </subviews>
                                 </stackView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9pI-9E-tQU">
-                                    <rect key="frame" x="122.66666666666669" y="654" width="148" height="19"/>
+                                    <rect key="frame" x="116.66666666666669" y="654" width="160" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="19" id="8CT-Gn-Xq4"/>
                                     </constraints>
@@ -439,16 +439,16 @@
     </objects>
     <designables>
         <designable name="Opw-wS-vuF">
-            <size key="intrinsicContentSize" width="66.666666666666671" height="16"/>
+            <size key="intrinsicContentSize" width="69" height="15.666666666666666"/>
         </designable>
         <designable name="U6R-do-ScK">
-            <size key="intrinsicContentSize" width="58.333333333333336" height="16"/>
+            <size key="intrinsicContentSize" width="60" height="15.666666666666666"/>
         </designable>
         <designable name="e2d-Un-MUD">
-            <size key="intrinsicContentSize" width="116" height="16"/>
+            <size key="intrinsicContentSize" width="122.33333333333333" height="15.666666666666666"/>
         </designable>
         <designable name="gIi-la-dhq">
-            <size key="intrinsicContentSize" width="74.666666666666671" height="16"/>
+            <size key="intrinsicContentSize" width="77.666666666666671" height="15.666666666666666"/>
         </designable>
         <designable name="zRj-38-qSY">
             <size key="intrinsicContentSize" width="34" height="30"/>

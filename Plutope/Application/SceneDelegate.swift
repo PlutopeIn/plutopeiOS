@@ -10,12 +10,32 @@ import LocalAuthentication
 import FirebaseCore
 import FirebaseMessaging
 import DGNetworkingServices
+import Starscream
+import Web3Wallet
+import Combine
+import WalletConnectNotify
+import Auth
+import WalletConnectPairing
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     var context = LAContext()
     var appCurrentVersion : Int = 1
     var appOldVersion : Int? = 0
     var forcefullyUpdate : Bool?
+    let projectId = Secrets.load().projectID
+    var uri: WalletConnectURI?
+    var requestSent = false
+    private let app = Application()
+//    func onImport() {
+//        guard let account = ImportAccount(input:WalletData.shared.myWallet?.privateKey ?? "" )
+//        else { return }
+//        self.importAccount(account)
+//        print(self.importAccount(account))
+//    }
+//    func importAccount(_ importAccount: ImportAccount) {
+//        let accountStorage = AccountStorage(defaults: UserDefaults.standard)
+//        app.accountStorage.importAccount = importAccount
+//    }
      func setRootView() {
         
         // ROOT
@@ -42,24 +62,52 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
          window?.makeKeyAndVisible()
     }
-    
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let sceneConfig = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+        sceneConfig.delegateClass = SceneDelegate.self
+        return sceneConfig
+    }
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
+      
         ///  app version check  Api Call
         apiCheckVerstion()
+        
+        do {
+            let uri = try WalletConnectURI(connectionOptions: connectionOptions)
+            app.uri = uri
+        } catch {
+            print("Error initializing WalletConnectURI: \(error.localizedDescription)")
+        }
+
+        app.requestSent = (connectionOptions.urlContexts.first?.url.absoluteString.replacingOccurrences(of: "plutope://wc?", with: "") == "requestSent")
+       
         if UserDefaults.standard.string(forKey: DefaultsKey.appLockMethod) == nil {
             UserDefaults.standard.set("Passcode/Touch ID/Face ID", forKey: DefaultsKey.appLockMethod)
         }
         /// Enable IQKeyboardManager
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = true
-         /// configure fierbase
-        FirebaseApp.configure()
-        Messaging.messaging().delegate = self
+        
         // Root set up
         setRootView()
-        self.registerForPushNotifications()
+        //resetRootView()
+       
     }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let context = URLContexts.first else { return }
+
+        do {
+            let uri = try WalletConnectURI(urlContext: context)
+            Task {
+                try await Web3Wallet.instance.pair(uri: uri)
+            }
+        } catch {
+            // Handle the error here
+            print("Error: \(error)")
+        }
+    }
+     
     // Add this method to your class where you set up your UI
     func updateSemanticContentAttribute() {
         if LocalizationSystem.sharedInstance.getLanguage() == "ar" {
@@ -67,23 +115,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else {
             inputView?.semanticContentAttribute = .forceLeftToRight
         }
-    }
-    func registerForPushNotifications() {
-        if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
-           
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: {_, _ in })
-            // For iOS 10 data message (sent via FCM)
-        } else {
-            let settings: UIUserNotificationSettings =
-            UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            UIApplication.shared.registerUserNotificationSettings(settings)
-        }
-        UIApplication.shared.registerForRemoteNotifications()
-        UNUserNotificationCenter.current().delegate = self
     }
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

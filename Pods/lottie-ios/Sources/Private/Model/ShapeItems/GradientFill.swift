@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - GradientType
 
-enum GradientType: Int, Codable, Sendable {
+enum GradientType: Int, Codable {
   case none
   case linear
   case radial

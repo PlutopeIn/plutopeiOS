@@ -47,7 +47,6 @@ final class LayerImageProvider {
     for imageLayer in imageLayers {
       if let asset = imageAssets[imageLayer.imageReferenceID] {
         imageLayer.image = imageProvider.imageForAsset(asset: asset)
-        imageLayer.imageContentsGravity = imageProvider.contentsGravity(for: asset)
       }
     }
   }

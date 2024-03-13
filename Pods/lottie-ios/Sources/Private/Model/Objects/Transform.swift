@@ -154,7 +154,8 @@ final class Transform: Codable, DictionaryInitializable {
       let rotation = try? KeyframeGroup<LottieVector1D>(dictionary: rotationDictionary)
     {
       rotationZ = rotation
-    } else {
+    }
+    else {
       rotationZ = KeyframeGroup(LottieVector1D(0))
     }
     rotation = nil

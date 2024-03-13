@@ -45,4 +45,9 @@ class TokenListViewModel {
         })
     }
     
+    func apiGetActiveTokens(walletAddress:String,completion: @escaping (([ActiveTokens]?,Bool) -> Void)) {
+        repo?.apiGetActiveTokens(walletAddress: walletAddress, completion: { data, status in
+            completion(data,status)
+        })
+    }
 }

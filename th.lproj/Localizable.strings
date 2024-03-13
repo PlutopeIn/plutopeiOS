@@ -29,7 +29,7 @@
 "done" = "เสร็จแล้ว";
 "invalidordertryagain" = "สั่งซื้อไม่ถูกต้องลองอีกครั้ง!";
 "wallet" = "กระเป๋าสตางค์";
-"nfts" = "nfts";
+"nfts" = "เอ็นเอฟที";
 "assets" = "สินทรัพย์";
 "search" = "ค้นหา...";
 "send" = "ส่ง";
@@ -211,7 +211,7 @@
 "gasLimit" = "ขีด จำกัด ของก๊าซ";
 "gasPrice" = "ราคาก๊าซ(Gwei)";
 "advance" = "ตัวเลือกขั้นสูง";
-"swapperfee" = "Swapper ค่าธรรมเนียม";
+"swapperfee" = "ค่าสวาปเปอร์";
 "fail" = "ล้มเหลว";
 "addthisaddresstoyouraddressbook" = "เพิ่มที่อยู่นี้ลงในสมุดที่อยู่ของคุณ";
 "editPriority" = "เบิกค่าน้ำมัน";
@@ -262,3 +262,22 @@
 "contactUs" = "ติดต่อเรา";
 "requestforPayment" = "ขอชำระเงิน";
 "slippage" = "การเลื่อนหลุด";
+"exploreNewToken" = "สำรวจโทเค็นใหม่";
+"ens" = "อีเอ็นเอส";
+"price" = "ราคา";
+"ensMsg" = "กรุณาค้นหาชื่อโดเมนจากแถบค้นหา";
+"searchbtn" = "ค้นหา";
+"walletConnect" =  "กระเป๋าสตางค์ เชื่อมต่อ";
+"requestforPayment" = "ขอชำระเงิน";
+"slippage" = "การเลื่อนหลุด";
+"connectionDetail" = "รายละเอียดการเชื่อมต่อ";
+"dApp" = "Dแอป";
+"signatureRequest" = "คำขอลงนาม";
+"quots" = "ใบเสนอราคา";
+"processing" = "กำลังประมวลผล...";
+"swapMsg" = "อาจใช้เวลาไม่กี่นาที..";
+"deletWalletMsg" = "คุณแน่ใจหรือไม่ว่าต้องการลบกระเป๋าเงินนี้";
+"transaction" = "ธุรกรรม";
+"internalText" = "ภายใน";
+"about" = "เกี่ยวกับ";
+

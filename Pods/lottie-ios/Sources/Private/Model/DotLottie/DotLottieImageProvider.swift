@@ -6,9 +6,9 @@
 //
 
 import Foundation
-#if canImport(UIKit)
+#if os(iOS) || os(tvOS) || os(watchOS) || targetEnvironment(macCatalyst)
 import UIKit
-#elseif canImport(AppKit)
+#elseif os(macOS)
 import AppKit
 #endif
 
@@ -51,36 +51,23 @@ class DotLottieImageProvider: AnimationImageProvider {
   private var images = [String: CGImage]()
 
   private func loadImages() {
-    for url in filepath.urls {
+    filepath.urls.forEach {
       #if os(iOS) || os(tvOS) || os(watchOS) || targetEnvironment(macCatalyst)
       if
-        let data = try? Data(contentsOf: url),
+        let data = try? Data(contentsOf: $0),
         let image = UIImage(data: data)?.cgImage
       {
-        images[url.lastPathComponent] = image
+        images[$0.lastPathComponent] = image
       }
       #elseif os(macOS)
       if
-        let data = try? Data(contentsOf: url),
+        let data = try? Data(contentsOf: $0),
         let image = NSImage(data: data)?.lottie_CGImage
       {
-        images[url.lastPathComponent] = image
+        images[$0.lastPathComponent] = image
       }
       #endif
     }
-  }
-
-}
-
-// MARK: Hashable
-
-extension DotLottieImageProvider: Hashable {
-  static func ==(_ lhs: DotLottieImageProvider, _ rhs: DotLottieImageProvider) -> Bool {
-    lhs.filepath == rhs.filepath
-  }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(filepath)
   }
 
 }

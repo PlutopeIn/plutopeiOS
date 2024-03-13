@@ -33,7 +33,7 @@ extension ConfirmPasscodeViewController: UICollectionViewDelegate {
         
     }
     
-    private func clearPasscode() {
+     func clearPasscode() {
         passcode = ""
         viewSecureText.forEach { view in
             view.imageTintColor = UIColor.c75769D

@@ -44,113 +44,13 @@ class TransactionDetailViewController: UIViewController {
     var coinDetail: Token?
     var txId: String? = ""
     var isSwap = false
+    var isToContract :Bool? = false
+    var priceSsymbol = ""
+    var headerTitle = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        stackViewSwap.isHidden = true
-        stackViewAmountinFiat.isHidden = true
-        lblCoinAmount.isHidden = true
         
-        self.lblDateText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.date, comment: "")
-        self.lblStatusText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.status, comment: "")
-        self.lblNonceText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.nonce, comment: "")
-        self.lblNetworkFeeText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.networkfee, comment: "")
-        self.lblReceiptText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.recipient, comment: "")
-        self.btnMoreDetail.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.moredetails, comment: ""), for: .normal)
-        
-        /// getTransactionDetail
-        getTransactionDetail(txId ?? "")
-        
-    }
-    
-    // setDetails of transaction
-    private func setTransactionDetail() {
-        guard let firstTransaction = transactionDetail?.first else {
-            return
-        }
-        
-        if firstTransaction.state == "success" {
-            setTransactionStatus(status: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.completed, comment: ""), color: UIColor.c099817)
-        } else {
-            setTransactionStatus(status: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.fail, comment: ""), color: .red)
-        }
-        let unixTimeStamp: Double = Double(TimeInterval(firstTransaction.transactionTime ?? "") ?? 0) / 1000.0
-        lblDate.text = unixTimeStamp.formatDate("MMM dd yyyy, hh:mm a")
-        lblNonce.text = firstTransaction.nonce ?? ""
-        if firstTransaction.tokenTransferDetails?.count == 0 {
-            if coinDetail?.address != "" {
-                setTokenTransferDetails(firstTransaction: firstTransaction)
-            } else {
-                setCoinAmountDetails(firstTransaction: firstTransaction)
-            }
-        } else {
-            if (firstTransaction.tokenTransferDetails?.count ?? 0) > 1 {
-                if isSwap {
-                    setSwapAmountDetail(firstTransaction: firstTransaction)
-                } else {
-                    setTokenTransferDetails(firstTransaction: firstTransaction)
-                }
-            //    setSwapAmountDetail(firstTransaction: firstTransaction)
-                
-            } else {
-                setTokenTransferDetails(firstTransaction: firstTransaction)
-            }
-        }
-        
-        let convertedGasValue = firstTransaction.txfee ?? ""
-        if coinDetail?.address == "" {
-            let gasPrice = ((Double(convertedGasValue) ?? 0.0) * (Double(coinDetail?.price ?? "") ?? 0.0)) / 1
-            
-            let estimateValue = WalletData.shared.formatDecimalString("\(gasPrice)", decimalPlaces: 2)
-            lblNetworkFee.text = "\(convertedGasValue) \(firstTransaction.transactionSymbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue))"
-            DGProgressView.shared.hideLoader()
-        } else {
-            var allCoin = DatabaseHelper.shared.retrieveData("Token") as? [Token]
-            allCoin = allCoin?.filter{ $0.address == "" && $0.type == coinDetail?.type && $0.symbol == self.coinDetail?.chain?.symbol ?? "" }
-            let gasPrice = ((Double(convertedGasValue) ?? 0.0) * (Double(allCoin?.first?.price ?? "") ?? 0.0))
-            
-            let estimateValue = WalletData.shared.formatDecimalString("\(gasPrice)", decimalPlaces: 2)
-            lblNetworkFee.text = "\(convertedGasValue) \(firstTransaction.transactionSymbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue))"
-            DGProgressView.shared.hideLoader()
-        }
-    }
-    
-    // SwapDetail set
-    func setSwapDetail() {
-        guard let firstTransaction = transactionDetail?.first else {
-            return
-        }
-        if (firstTransaction.tokenTransferDetails?.count ?? 0) > 1 {
-            if isSwap {
-                stackViewSwap.isHidden = false
-                stackViewAmountinFiat.isHidden = true
-                lblCoinAmount.isHidden = true
-            } else {
-                stackViewSwap.isHidden = true
-                stackViewAmountinFiat.isHidden = false
-                lblCoinAmount.isHidden = false
-            }
-//            stackViewSwap.isHidden = false
-//            stackViewAmountinFiat.isHidden = true
-//            lblCoinAmount.isHidden = true
-            
-        } else {
-            stackViewSwap.isHidden = true
-            stackViewAmountinFiat.isHidden = false
-            lblCoinAmount.isHidden = false
-            
-        }
-        var header = ""
-       
-        if(firstTransaction.tokenTransferDetails?.count ?? 0) > 1 {
-            if isSwap {
-               header =  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: "")
-            } else {
-                header = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
-            }
-            
-        } else {
-            header =  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
-        }
+        var header = headerTitle
         /// Navigation Header
         defineHeader(headerView: headerView, titleText: header,btnRightImage: UIImage.share,btnRightAction: {
             // Create a URL to share
@@ -183,6 +83,110 @@ class TransactionDetailViewController: UIViewController {
                 self.present(activityViewController, animated: true, completion: nil)
             }
         })
+        stackViewSwap.isHidden = true
+        stackViewAmountinFiat.isHidden = true
+        lblCoinAmount.isHidden = true
+        
+        self.lblDateText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.date, comment: "")
+        self.lblStatusText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.status, comment: "")
+        self.lblNonceText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.nonce, comment: "")
+        self.lblNetworkFeeText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.networkfee, comment: "")
+        self.lblReceiptText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.recipient, comment: "")
+        self.btnMoreDetail.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.moredetails, comment: ""), for: .normal)
+        
+        if let coinDetail = self.coinDetail {
+            if coinDetail.symbol?.lowercased() == "usdc.e" {
+                coinDetail.symbol = "usdt"
+            }
+        }
+        /// getTransactionDetail
+        getTransactionDetail(txId ?? "")
+        
+    }
+    
+    // setDetails of transaction
+    private func setTransactionDetail() {
+        guard let firstTransaction = transactionDetail?.first else {
+            return
+        }
+        
+        if firstTransaction.state == "success" {
+            setTransactionStatus(status: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.completed, comment: ""), color: UIColor.c099817)
+        } else {
+            setTransactionStatus(status: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.fail, comment: ""), color: .red)
+        }
+        let unixTimeStamp: Double = Double(TimeInterval(firstTransaction.transactionTime ?? "") ?? 0) / 1000.0
+        lblDate.text = unixTimeStamp.formatDate("MMM dd yyyy, hh:mm a")
+        lblNonce.text = firstTransaction.nonce ?? ""
+        if firstTransaction.tokenTransferDetails?.count == 0 {
+            if coinDetail?.address != "" {
+                setTokenTransferDetails(firstTransaction: firstTransaction)
+            } else {
+                self.setCoinAmountDetails(firstTransaction: firstTransaction)
+            }
+        } else {
+            if (firstTransaction.tokenTransferDetails?.count ?? 0) > 1 {
+                if isSwap {
+                    setSwapAmountDetail(firstTransaction: firstTransaction)
+                } else {
+                    if coinDetail?.address == "" {
+                        self.setCoinAmountDetails(firstTransaction: firstTransaction)
+                    } else {
+                        setTokenTransferDetails(firstTransaction: firstTransaction)
+                    }
+                }
+            //    setSwapAmountDetail(firstTransaction: firstTransaction)
+                
+            } else {
+                setTokenTransferDetails(firstTransaction: firstTransaction)
+            }
+        }
+        
+        let convertedGasValue = firstTransaction.txfee ?? ""
+      
+        if coinDetail?.address == "" {
+            let gasPrice = ((Double(convertedGasValue) ?? 0.0) * (Double(coinDetail?.price ?? "") ?? 0.0)) / 1
+            
+            let estimateValue = WalletData.shared.formatDecimalString("\(gasPrice)", decimalPlaces: 2)
+            lblNetworkFee.text = "\(convertedGasValue) \(firstTransaction.transactionSymbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue))"
+            DGProgressView.shared.hideLoader()
+        } else {
+            var allCoin = DatabaseHelper.shared.retrieveData("Token") as? [Token]
+            allCoin = allCoin?.filter { $0.address == "" && $0.type == coinDetail?.type && $0.symbol == self.coinDetail?.chain?.symbol ?? "" }
+            let gasPrice = ((Double(convertedGasValue) ?? 0.0) * (Double(allCoin?.first?.price ?? "") ?? 0.0))
+            
+            let estimateValue = WalletData.shared.formatDecimalString("\(gasPrice)", decimalPlaces: 3)
+            lblNetworkFee.text = "\(convertedGasValue) \(firstTransaction.transactionSymbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue))"
+            DGProgressView.shared.hideLoader()
+        }
+    }
+    
+    // SwapDetail set
+    func setSwapDetail() {
+        guard let firstTransaction = transactionDetail?.first else {
+            return
+        }
+        if (firstTransaction.tokenTransferDetails?.count ?? 0) > 1 {
+            if isSwap {
+                stackViewSwap.isHidden = false
+                stackViewAmountinFiat.isHidden = true
+                lblCoinAmount.isHidden = true
+            } else {
+                stackViewSwap.isHidden = true
+                stackViewAmountinFiat.isHidden = false
+                lblCoinAmount.isHidden = false
+            }
+//            stackViewSwap.isHidden = false
+//            stackViewAmountinFiat.isHidden = true
+//            lblCoinAmount.isHidden = true
+            
+        } else {
+            stackViewSwap.isHidden = true
+            stackViewAmountinFiat.isHidden = false
+            lblCoinAmount.isHidden = false
+            
+        }
+
     }
     
     private func setTransactionStatus(status: String, color: UIColor) {
@@ -195,28 +199,40 @@ class TransactionDetailViewController: UIViewController {
         guard let tokenTransferDetails = firstTransaction.tokenTransferDetails?.first else {
             return
         }
-        
-        let amount = WalletData.shared.formatDecimalString("\(tokenTransferDetails.amount ?? "")", decimalPlaces: 8)
-      //  let amount = String(format: "%.8f", (Double(tokenTransferDetails.amount ?? "") ?? 0.0))
+ 
+        if coinDetail?.address == "" && Double(firstTransaction.amount ?? "") ?? 0.0 <= 0.0 {
+            
+            let amount = WalletData.shared.formatDecimalString("\(Double(firstTransaction.txfee ?? "") ?? 0.0)", decimalPlaces: 4)
+            setAmountLabel(text: "\(self.priceSsymbol)\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
+        } else {
+            let amount = WalletData.shared.formatDecimalString("\(Double(tokenTransferDetails.amount ?? "") ?? 0.0)", decimalPlaces: 4)
+            setAmountLabel(text: "\(self.priceSsymbol)\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
+        }
         if tokenTransferDetails.from == coinDetail?.chain?.walletAddress?.lowercased() {
             lblReceipt.text = tokenTransferDetails.to ?? ""
-            setAmountLabel(text: "-\(amount) \(coinDetail?.symbol ?? "")", color: .white)
         } else {
             lblReceipt.text = tokenTransferDetails.from ?? ""
-            setAmountLabel(text: "+\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
         }
     }
     
-    private func setCoinAmountDetails(firstTransaction: TransactionDetails) {
-        let amount = WalletData.shared.formatDecimalString("\(firstTransaction.amount ?? "")", decimalPlaces: 8)
-       // let amount = String(format: "%.8f",(Double(firstTransaction.amount ?? "") ?? 0.0))
+     func setCoinAmountDetails(firstTransaction: TransactionDetails) {
         if firstTransaction.inputDetails?.first?.inputHash == coinDetail?.chain?.walletAddress?.lowercased() {
             lblReceipt.text = firstTransaction.outputDetails?.first?.outputHash ?? ""
-            setAmountLabel(text: "-\(amount) \(coinDetail?.symbol ?? "")", color: .white)
+          
         } else {
             lblReceipt.text = firstTransaction.inputDetails?.first?.inputHash ?? ""
-            setAmountLabel(text: "+\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
+       
         }
+        
+        if coinDetail?.address == "" && Double(firstTransaction.amount ?? "") ?? 0.0 <= 0.0 {
+            
+            let amount = WalletData.shared.formatDecimalString("\(Double(firstTransaction.txfee ?? "") ?? 0.0)", decimalPlaces: 4)
+            setAmountLabel(text: "\(self.priceSsymbol)\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
+        } else {
+            let amount = WalletData.shared.formatDecimalString("\(Double(firstTransaction.amount ?? "") ?? 0.0)", decimalPlaces: 4)
+            setAmountLabel(text: "\(self.priceSsymbol)\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
+        }
+
     }
     
     private func setSwapAmountDetail(firstTransaction: TransactionDetails) {
@@ -263,7 +279,7 @@ class TransactionDetailViewController: UIViewController {
             if convertedValue != 0.0 {
                 
                 let price = (coinPrice * convertedValue)
-                let estimateValue = WalletData.shared.formatDecimalString("\(price)", decimalPlaces: 3)
+                let estimateValue = WalletData.shared.formatDecimalString("\(price)", decimalPlaces: 2)
                 lblCoinPrice.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue)"
                 lblCoinAmount.text = text
                 ivEqualSign.isHidden = false

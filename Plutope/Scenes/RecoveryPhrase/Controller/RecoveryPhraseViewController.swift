@@ -10,6 +10,7 @@ import CloudKit
 
 class RecoveryPhraseViewController: UIViewController, Reusable {
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackSecretKey: UIStackView!
     @IBOutlet weak var btnDeleteBackup: UIButton!
     @IBOutlet weak var viewMain: UIView!
@@ -106,6 +107,9 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
     
     private func setupLongPressGestureRecognizer() {
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        longPressGestureRecognizer.numberOfTouchesRequired = 1
+        longPressGestureRecognizer.allowableMovement = 10
+        longPressGestureRecognizer.minimumPressDuration = 0.5
         blurView.addGestureRecognizer(longPressGestureRecognizer)
     }
     
@@ -245,3 +249,5 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
         }
     }
 }
+
+

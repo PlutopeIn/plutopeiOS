@@ -69,13 +69,13 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="₹" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWb-WU-kBX">
-                                    <rect key="frame" x="90.000000000000014" y="71" width="22.333333333333329" height="43"/>
+                                    <rect key="frame" x="91.666666666666671" y="71" width="19" height="42"/>
                                     <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="36"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ino-Ra-eFa">
-                                    <rect key="frame" x="61.000000000000007" y="114" width="80.666666666666686" height="14.333333333333343"/>
+                                    <rect key="frame" x="57.666666666666671" y="113" width="87.000000000000014" height="14"/>
                                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -115,10 +115,11 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="I1F-bS-qUu" customClass="CustomSegmentedControl" customModule="Plutope" customModuleProvider="target">
-                            <rect key="frame" x="63" y="264" width="267" height="41"/>
+                            <rect key="frame" x="50" y="264" width="271" height="41"/>
                             <color key="backgroundColor" name="#0C0D2D"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="h30-QT-6Mh"/>
+                                <constraint firstAttribute="width" constant="271" id="mgS-s6-vaf"/>
                             </constraints>
                             <segments>
                                 <segment title="Assets"/>
@@ -139,7 +140,7 @@
                             </connections>
                         </segmentedControl>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pU6-6A-vZ0">
-                            <rect key="frame" x="16" y="321" width="361" height="385"/>
+                            <rect key="frame" x="16" y="321" width="361" height="372"/>
                             <subviews>
                                 <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="eUV-Fy-7Xc">
                                     <rect key="frame" x="0.0" y="0.0" width="361" height="0.0"/>
@@ -168,7 +169,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learn More" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9i3-f5-tQV">
-                                                    <rect key="frame" x="76.333333333333329" y="78.666666666666629" width="47.333333333333329" height="20"/>
+                                                    <rect key="frame" x="74.333333333333329" y="78.666666666666629" width="51.333333333333329" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="fLZ-mZ-paa"/>
                                                     </constraints>
@@ -237,7 +238,7 @@
                                     </constraints>
                                 </view>
                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JBX-fD-bUM">
-                                    <rect key="frame" x="0.0" y="0.0" width="361" height="385"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="361" height="372"/>
                                     <subviews>
                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="TuU-JL-FK7">
                                             <rect key="frame" x="0.0" y="0.0" width="361" height="150"/>
@@ -304,11 +305,11 @@
                                 </scrollView>
                             </subviews>
                         </stackView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lIH-x5-aQO">
-                            <rect key="frame" x="352" y="278" width="12" height="12"/>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lIH-x5-aQO">
+                            <rect key="frame" x="343" y="259" width="50" height="50"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="12" id="NmQ-sL-xZk"/>
-                                <constraint firstAttribute="height" constant="12" id="hrz-FC-FWs"/>
+                                <constraint firstAttribute="width" constant="50" id="NmQ-sL-xZk"/>
+                                <constraint firstAttribute="height" constant="50" id="hrz-FC-FWs"/>
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="ic_plus"/>
@@ -338,10 +339,10 @@
                         <constraint firstItem="vBP-oC-Gg5" firstAttribute="centerX" secondItem="6A4-2o-2a6" secondAttribute="centerX" id="Nl9-uy-6gW"/>
                         <constraint firstAttribute="trailing" secondItem="wYh-0C-EdQ" secondAttribute="trailing" id="dOg-ZR-vog"/>
                         <constraint firstAttribute="trailing" secondItem="pU6-6A-vZ0" secondAttribute="trailing" constant="16" id="deB-bl-naw"/>
-                        <constraint firstItem="I1F-bS-qUu" firstAttribute="leading" secondItem="6A4-2o-2a6" secondAttribute="leading" constant="63" id="ghf-rQ-HtW"/>
+                        <constraint firstItem="I1F-bS-qUu" firstAttribute="leading" secondItem="6A4-2o-2a6" secondAttribute="leading" constant="50" id="ghf-rQ-HtW"/>
                         <constraint firstItem="wYh-0C-EdQ" firstAttribute="top" secondItem="vBP-oC-Gg5" secondAttribute="bottom" constant="11.300000000000001" id="gnp-tz-hL2"/>
-                        <constraint firstAttribute="trailing" secondItem="lIH-x5-aQO" secondAttribute="trailing" constant="29" id="hhb-3h-XUo"/>
-                        <constraint firstAttribute="bottom" secondItem="pU6-6A-vZ0" secondAttribute="bottom" constant="17" id="iPw-5y-7fD"/>
+                        <constraint firstAttribute="trailing" secondItem="lIH-x5-aQO" secondAttribute="trailing" id="hhb-3h-XUo"/>
+                        <constraint firstAttribute="bottom" secondItem="pU6-6A-vZ0" secondAttribute="bottom" constant="30" id="iPw-5y-7fD"/>
                         <constraint firstItem="pU6-6A-vZ0" firstAttribute="leading" secondItem="6A4-2o-2a6" secondAttribute="leading" constant="16" id="nqU-cX-sIf"/>
                     </constraints>
                 </view>
@@ -400,10 +401,10 @@
     </objects>
     <designables>
         <designable name="6ha-fN-3bO">
-            <size key="intrinsicContentSize" width="68" height="27"/>
+            <size key="intrinsicContentSize" width="69" height="26"/>
         </designable>
         <designable name="ra6-0F-nS2">
-            <size key="intrinsicContentSize" width="44" height="27"/>
+            <size key="intrinsicContentSize" width="43" height="26"/>
         </designable>
     </designables>
     <resources>

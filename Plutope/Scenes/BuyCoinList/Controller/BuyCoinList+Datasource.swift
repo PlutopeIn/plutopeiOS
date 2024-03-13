@@ -21,17 +21,20 @@ extension BuyCoinListViewController: UITableViewDataSource {
         let coinData = isSearching ? tokensList?[indexPath.row] : sortedTokens?[indexPath.row]
         
         coinListCell.ivCoin.sd_setImage(with: URL(string: coinData?.logoURI ?? ""))
-        coinListCell.lblCoinName.text = coinData?.symbol
-//        if isFrom == .addCustomToken || isFrom == .receiveNFT {
-//        let balance = Double(coinData?.balance ?? "")?.rounded(toPlaces: 6)
-//        coinListCell.lblCoinQuantity.text = "\(balance ?? 0.0)"
-        
-        // let getbalance = Double(coinData?.balance ?? "") ?? 0.0
-        let getbalance = WalletData.shared.formatDecimalString(coinData?.balance ?? "", decimalPlaces: 5)
+        if (coinData?.symbol != nil) {
+            coinListCell.lblCoinName.text = coinData?.symbol
+        } else {
+            coinListCell.lblCoinName.text = ""
+        }
+        let getbalance = WalletData.shared.formatDecimalString(coinData?.balance ?? "", decimalPlaces: 10)
         coinListCell.lblCoinQuantity.text = "\(getbalance)"
         coinListCell.lblType.isHidden = false
-       
-        coinListCell.lblType.text = coinData?.type
+        if (coinData?.type != nil) {
+            coinListCell.lblType.text = coinData?.type
+        } else {
+            coinListCell.lblType.text = ""
+        }
+//        coinListCell.lblType.text = coinData?.type
 //        } else {
 //            coinListCell.lblCoinQuantity.text = "\(coinData?.balance ?? "") \(coinData?.symbol ?? "")"
 //        }

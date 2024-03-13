@@ -86,7 +86,13 @@ class CoinGraphViewController: UIViewController, Reusable {
         chartView.doubleTapToZoomEnabled = false
         chartView.pinchZoomEnabled = false
         btnDays[1].backgroundColor = .c202148
-        lblAboutCoin.text = "About \(coinDetail?.name ?? "")"
+        
+        if LocalizationSystem.sharedInstance.getLanguage() == "hi" {
+            lblAboutCoin.text = "\(coinDetail?.name ?? "") \(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.about, comment: ""))"
+        } else {
+            lblAboutCoin.text = "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.about, comment: "")) \(coinDetail?.name ?? "")"
+        }
+      
     }
     
     @IBAction func selectDaysAction(_ sender: UIButton) {

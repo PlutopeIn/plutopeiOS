@@ -40,6 +40,8 @@ class PreviewSwap1ViewController: UIViewController {
     var swapQouteDetail: [Routers] = []
     var previewSwapDetail: PreviewSwap?
     var swappingFee = ""
+    var outputAmount = ""
+    var networkFee = ""
     weak var delegate: ConfirmSwap1Delegate?
     
     override func viewDidLoad() {
@@ -49,7 +51,8 @@ class PreviewSwap1ViewController: UIViewController {
         defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: ""))
         
         self.lblFromText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.from, comment: "")
-      
+        self.lblQuoteText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.quots, comment: "")
+        self.lblSwapperFeeText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swapperfee, comment: "")
         self.lblNetworkFeeText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.networkfee, comment: "")
         self.lblSlippageText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.maxslipage, comment: "")
         self.lblSwapperFeeText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swapperfee, comment: "")
@@ -60,31 +63,48 @@ class PreviewSwap1ViewController: UIViewController {
     }
     // setSwapDetail
     func setSwapDetail() {
-        
+//        DGProgressView.shared.show(to: view)
         if previewSwapDetail?.payCoinDetail?.chain?.coinType == CoinType.bitcoin {
-            lblPayCoinAmount.text = "\(previewSwapDetail?.payAmount ?? "") \(previewSwapDetail?.payCoinDetail?.symbol ?? "")"
+            let payPrice = ((Double(previewSwapDetail?.payAmount ?? "") ?? 0.0) * (Double(previewSwapDetail?.payCoinDetail?.price ?? "") ?? 0.0))
+            let payPriceValue =  WalletData.shared.formatDecimalString("\(payPrice)", decimalPlaces: 2)
+            let payAmount = WalletData.shared.formatDecimalString("\(previewSwapDetail?.payAmount ?? "")", decimalPlaces: 4)
+            lblPayCoinAmount.text = "\(payAmount) \(previewSwapDetail?.payCoinDetail?.symbol ?? "")"
             ivPayCoin.sd_setImage(with: URL(string: previewSwapDetail?.payCoinDetail?.logoURI ?? ""))
-            
-            lblGetCoinAmount.text = "\(previewSwapDetail?.getAmount ?? "") \(previewSwapDetail?.getCoinDetail?.symbol ?? "")"
+            lblPayCoinType.text = "\(self.previewSwapDetail?.payCoinDetail?.type ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(payPriceValue))"
+
+            let getPrice = ((Double(previewSwapDetail?.getAmount ?? "") ?? 0.0) * (Double(previewSwapDetail?.getCoinDetail?.price ?? "") ?? 0.0))
+            let getPriceValue =  WalletData.shared.formatDecimalString("\(getPrice)", decimalPlaces: 2)
+            let getAmount = WalletData.shared.formatDecimalString("\(previewSwapDetail?.getAmount ?? "")", decimalPlaces: 4)
+            lblGetCoinAmount.text = "\(getAmount) \(previewSwapDetail?.getCoinDetail?.symbol ?? "")"
             ivGetCoin.sd_setImage(with: URL(string: previewSwapDetail?.getCoinDetail?.logoURI ?? ""))
-            lblPayCoinType.text = self.previewSwapDetail?.payCoinDetail?.type ?? ""
-            lblGetCoinType.text = self.previewSwapDetail?.getCoinDetail?.type ?? ""
+            lblGetCoinType.text = "\(self.previewSwapDetail?.getCoinDetail?.type ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(getPriceValue))"
             self.viewFee.isHidden = true
             lblFrom.text = previewSwapDetail?.payCoinDetail?.chain?.walletAddress ?? ""
             self.viewQuote.isHidden = true
         } else {
         if isFrom == "rango" {
-            self.viewSwapperFee.isHidden = false
+            if  self.swappingFee == "0" {
+                self.viewSwapperFee.isHidden = true
+            } else {
+                
+                self.viewSwapperFee.isHidden = false
+            }
+//            self.viewSwapperFee.isHidden = false
         } else {
             self.viewSwapperFee.isHidden = true
         }
-        lblPayCoinAmount.text = "\(previewSwapDetail?.payAmount ?? "") \(previewSwapDetail?.payCoinDetail?.symbol ?? "")"
-        ivPayCoin.sd_setImage(with: URL(string: previewSwapDetail?.payCoinDetail?.logoURI ?? ""))
-        
-        lblGetCoinAmount.text = "\(previewSwapDetail?.getAmount ?? "") \(previewSwapDetail?.getCoinDetail?.symbol ?? "")"
-        ivGetCoin.sd_setImage(with: URL(string: previewSwapDetail?.getCoinDetail?.logoURI ?? ""))
-        lblPayCoinType.text = self.previewSwapDetail?.payCoinDetail?.type ?? ""
-        lblGetCoinType.text = self.previewSwapDetail?.getCoinDetail?.type ?? ""
+            let payPrice = ((Double(previewSwapDetail?.payAmount ?? "") ?? 0.0) * (Double(previewSwapDetail?.payCoinDetail?.price ?? "") ?? 0.0))
+            let payPriceValue =  WalletData.shared.formatDecimalString("\(payPrice)", decimalPlaces: 2)
+            let payAmount = WalletData.shared.formatDecimalString("\(previewSwapDetail?.payAmount ?? "")", decimalPlaces: 10)
+            lblPayCoinAmount.text = "\(payAmount) \(previewSwapDetail?.payCoinDetail?.symbol ?? "")"
+            ivPayCoin.sd_setImage(with: URL(string: previewSwapDetail?.payCoinDetail?.logoURI ?? ""))
+            lblPayCoinType.text = "\(self.previewSwapDetail?.payCoinDetail?.type ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(payPriceValue))"
+            let getPrice = ((Double(previewSwapDetail?.getAmount ?? "") ?? 0.0) * (Double(previewSwapDetail?.getCoinDetail?.price ?? "") ?? 0.0))
+            let getPriceValue =  WalletData.shared.formatDecimalString("\(getPrice)", decimalPlaces: 2)
+            let getAmount = WalletData.shared.formatDecimalString("\(previewSwapDetail?.getAmount ?? "")", decimalPlaces: 10)
+            lblGetCoinAmount.text = "\(getAmount) \(previewSwapDetail?.getCoinDetail?.symbol ?? "")"
+            ivGetCoin.sd_setImage(with: URL(string: previewSwapDetail?.getCoinDetail?.logoURI ?? ""))
+            lblGetCoinType.text = "\(self.previewSwapDetail?.getCoinDetail?.type ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(getPriceValue))"
         if let allToken = DatabaseHelper.shared.retrieveData("Token") as? [Token] {
             let allCoin = allToken.filter { $0.address == "" && $0.type == self.previewSwapDetail?.payCoinDetail?.type && $0.symbol == self.previewSwapDetail?.payCoinDetail?.chain?.symbol ?? "" }
             let tokenamount = Double(previewSwapDetail?.payAmount ?? "") ?? 0.0
@@ -97,25 +117,41 @@ class PreviewSwap1ViewController: UIViewController {
                         let convertedValue = UnitConverter.convertWeiToEther(fee,self.previewSwapDetail?.payCoinDetail?.chain?.decimals ?? 0) ?? ""
                         let gasPrice = ((Double(convertedValue) ?? 0.0) * (Double(allCoin.first?.price ?? "") ?? 0.0))
                         let originalString = convertedValue
+                        
+                        if self.isFrom == "rango" {
+                         let networkPrice = ((Double(self.networkFee) ?? 0.0) * (Double(allCoin.first?.price ?? "") ?? 0.0))
+                            let originalNetworkString = self.networkFee
+                            if let originalNetworkFeeNumber = Double(originalNetworkString) {
+                                let formattedNetworkFeeString = WalletData.shared.formatDecimalString("\(originalNetworkFeeNumber)", decimalPlaces: 10)
+                                 print(formattedNetworkFeeString)
+                                
+                                DispatchQueue.main.async {
+                                      DGProgressView.shared.hideLoader()
+                                    let networkValue = WalletData.shared.formatDecimalString("\(networkPrice)", decimalPlaces: 2)
+                                    self.lblNetworkFee.text = "\(formattedNetworkFeeString) \(self.previewSwapDetail?.payCoinDetail?.chain?.symbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(networkValue))"
+                                }
+                            }
+                        } else {
                         if Double(originalString) != nil {
                             let formattedString = WalletData.shared.formatDecimalString("\(originalString)", decimalPlaces: 10)
                             print(formattedString)
                             DispatchQueue.main.async {
-                                // DGProgressView.shared.hideLoader()
+                                DGProgressView.shared.hideLoader()
                                 let priceValue = WalletData.shared.formatDecimalString("\(gasPrice)", decimalPlaces: 2)
                                 self.lblNetworkFee.text = "\(formattedString) \(self.previewSwapDetail?.payCoinDetail?.chain?.symbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(priceValue))"
                             }
                         }
+                    }
                         let swapPrice = ((Double(self.swappingFee) ?? 0.0) * (Double(allCoin.first?.price ?? "") ?? 0.0))
                         let originalSwapString = self.swappingFee
                         if let originalSwapNumber = Double(originalSwapString) {
                             let formattedSwapString = WalletData.shared.formatDecimalString("\(originalSwapNumber)", decimalPlaces: 10)
-                            //let formattedSwapString = String(format: "%.8f", originalSwapNumber)
+                           
                             print(formattedSwapString)
                             
                             DispatchQueue.main.async {
-                                //  DGProgressView.shared.hideLoader()
-                                let sawpValue = WalletData.shared.formatDecimalString("\(swapPrice)", decimalPlaces: 4)
+                                  DGProgressView.shared.hideLoader()
+                                let sawpValue = WalletData.shared.formatDecimalString("\(swapPrice)", decimalPlaces: 2)
                                 self.lblSwapperFee.text = "\(formattedSwapString) \(self.previewSwapDetail?.payCoinDetail?.chain?.symbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(sawpValue))"
                             }
                         }

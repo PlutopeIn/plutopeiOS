@@ -28,6 +28,10 @@ class ConfirmPasscodeViewController: UIViewController, Reusable {
         keyboardRegister()
        
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        clearPasscode()
+    }
     /// Keyboard Register
     func keyboardRegister() {
         clvKeyboard.delegate = self

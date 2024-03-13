@@ -32,6 +32,7 @@ class PushNotificationViewController: UIViewController {
         super.viewDidLoad()
         self.btnCancel.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: ""), for: .normal)
         self.btnDelete.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.deletewallet, comment: ""), for: .normal)
+        
         configureUIElements()
     }
     
@@ -53,7 +54,7 @@ class PushNotificationViewController: UIViewController {
         
             btnCancel.isHidden = data.hideButtons || data.hideCancel
             
-            btnCross.isHidden = data.hideIcon
+           // btnCross.isHidden = data.hideIcon
             
             btnDelete.setTitle(data.deleteTitle, for: .normal)
             

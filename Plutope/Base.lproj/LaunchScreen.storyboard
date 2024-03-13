@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,17 +22,33 @@
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pluto-logo" translatesAutoresizingMaskIntoConstraints="NO" id="wro-aZ-jqO">
                                 <rect key="frame" x="166.66666666666666" y="371" width="60" height="110"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="110" id="BVt-mG-iR3">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="220"/>
+                                    </constraint>
+                                    <constraint firstAttribute="width" constant="60" id="MKO-FE-C65">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="120"/>
+                                    </constraint>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="wro-aZ-jqO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="0Co-y7-ASy"/>
-                            <constraint firstItem="GA0-vW-1IX" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="40S-SV-d5c"/>
+                            <constraint firstItem="GA0-vW-1IX" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="40S-SV-d5c">
+                                <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                            </constraint>
                             <constraint firstItem="wro-aZ-jqO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="5ge-cH-gTA"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GA0-vW-1IX" secondAttribute="trailing" id="V3f-0c-pfd"/>
-                            <constraint firstAttribute="bottom" secondItem="GA0-vW-1IX" secondAttribute="bottom" id="hUk-gr-SFv"/>
-                            <constraint firstItem="GA0-vW-1IX" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="yxp-8a-uzy"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GA0-vW-1IX" secondAttribute="trailing" id="V3f-0c-pfd">
+                                <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                            </constraint>
+                            <constraint firstAttribute="bottom" secondItem="GA0-vW-1IX" secondAttribute="bottom" id="hUk-gr-SFv">
+                                <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                            </constraint>
+                            <constraint firstItem="GA0-vW-1IX" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="yxp-8a-uzy">
+                                <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                            </constraint>
                         </constraints>
                     </view>
                 </viewController>

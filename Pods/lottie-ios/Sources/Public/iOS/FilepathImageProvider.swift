@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if canImport(UIKit)
+#if os(iOS) || os(tvOS) || os(watchOS) || targetEnvironment(macCatalyst)
 import UIKit
 
 /// Provides an image for a lottie animation from a provided Bundle.
@@ -17,21 +17,13 @@ public class FilepathImageProvider: AnimationImageProvider {
   /// Initializes an image provider with a specific filepath.
   ///
   /// - Parameter filepath: The absolute filepath containing the images.
-  /// - Parameter contentsGravity: The contents gravity to use when rendering the images.
   ///
-  public init(filepath: String, contentsGravity: CALayerContentsGravity = .resize) {
+  public init(filepath: String) {
     self.filepath = URL(fileURLWithPath: filepath)
-    self.contentsGravity = contentsGravity
   }
 
-  /// Initializes an image provider with a specific filepath.
-  ///
-  /// - Parameter filepath: The absolute filepath containing the images.
-  /// - Parameter contentsGravity: The contents gravity to use when rendering the images.
-  ///
-  public init(filepath: URL, contentsGravity: CALayerContentsGravity = .resize) {
+  public init(filepath: URL) {
     self.filepath = filepath
-    self.contentsGravity = contentsGravity
   }
 
   // MARK: Public
@@ -60,19 +52,8 @@ public class FilepathImageProvider: AnimationImageProvider {
     return nil
   }
 
-  public func contentsGravity(for _: ImageAsset) -> CALayerContentsGravity {
-    contentsGravity
-  }
-
   // MARK: Internal
 
   let filepath: URL
-  let contentsGravity: CALayerContentsGravity
-}
-
-extension FilepathImageProvider: Equatable {
-  public static func ==(_ lhs: FilepathImageProvider, _ rhs: FilepathImageProvider) -> Bool {
-    lhs.filepath == rhs.filepath
-  }
 }
 #endif

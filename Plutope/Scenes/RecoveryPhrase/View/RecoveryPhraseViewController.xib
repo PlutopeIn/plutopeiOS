@@ -29,6 +29,7 @@
                 <outlet property="lblHideshow" destination="tig-8E-Sq6" id="oU2-4m-LB1"/>
                 <outlet property="lblNeverShare" destination="auz-sd-XoR" id="W7T-Ze-qEt"/>
                 <outlet property="lblNeverShareDetail" destination="5Rq-Vs-gGQ" id="Lgz-Ud-d7M"/>
+                <outlet property="scrollView" destination="vgz-3I-8PE" id="wEE-v4-bLf"/>
                 <outlet property="stackSecretKey" destination="aGc-9y-eNa" id="eQj-oK-Tdd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewMain" destination="Z0M-A7-hWX" id="Wa2-4q-dre"/>

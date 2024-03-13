@@ -34,8 +34,8 @@ final class LayerFontProvider {
   }
 
   func reloadTexts() {
-    for textLayer in textLayers {
-      textLayer.fontProvider = fontProvider
+    textLayers.forEach {
+      $0.fontProvider = fontProvider
     }
   }
 }

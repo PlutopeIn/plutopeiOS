@@ -17,7 +17,7 @@ final class CoreAnimationLayer: BaseAnimationLayer {
   init(
     animation: LottieAnimation,
     imageProvider: AnimationImageProvider,
-    textProvider: AnimationKeypathTextProvider,
+    textProvider: AnimationTextProvider,
     fontProvider: AnimationFontProvider,
     maskAnimationToBounds: Bool,
     compatibilityTrackerMode: CompatibilityTracker.Mode,
@@ -94,8 +94,8 @@ final class CoreAnimationLayer: BaseAnimationLayer {
     }
   }
 
-  /// The parent `LottieAnimationLayer` that manages this layer
-  weak var lottieAnimationLayer: LottieAnimationLayer?
+  /// The parent `LottieAnimationView` that manages this layer
+  weak var animationView: LottieAnimationView?
 
   /// A closure that is called after this layer sets up its animation.
   /// If the animation setup was unsuccessful and encountered compatibility issues,
@@ -108,9 +108,9 @@ final class CoreAnimationLayer: BaseAnimationLayer {
     didSet { reloadImages() }
   }
 
-  /// The `AnimationKeypathTextProvider` that `TextLayer`'s use to retrieve texts,
+  /// The `AnimationTextProvider` that `TextLayer`'s use to retrieve texts,
   /// that they should use to render their text context
-  var textProvider: AnimationKeypathTextProvider {
+  var textProvider: AnimationTextProvider {
     didSet {
       // We need to rebuild the current animation after updating the text provider,
       // since this is used in `TextLayer.setupAnimations(context:)`
@@ -209,7 +209,6 @@ final class CoreAnimationLayer: BaseAnimationLayer {
   private let valueProviderStore: ValueProviderStore
   private let compatibilityTracker: CompatibilityTracker
   private let logger: LottieLogger
-  private let loggingState = LoggingState()
 
   /// The current playback state of the animation that is displayed in this layer
   private var currentPlaybackState: PlaybackState? {
@@ -266,7 +265,6 @@ final class CoreAnimationLayer: BaseAnimationLayer {
       valueProviderStore: valueProviderStore,
       compatibilityTracker: compatibilityTracker,
       logger: logger,
-      loggingState: loggingState,
       currentKeypath: AnimationKeypath(keys: []),
       textProvider: textProvider,
       recordHierarchyKeypath: configuration.recordHierarchyKeypath)
@@ -318,7 +316,7 @@ final class CoreAnimationLayer: BaseAnimationLayer {
     else { return }
 
     if isAnimationPlaying == true {
-      lottieAnimationLayer?.updateInFlightAnimation()
+      animationView?.updateInFlightAnimation()
     } else {
       let currentFrame = currentFrame
       removeAnimations()
@@ -451,9 +449,7 @@ extension CoreAnimationLayer: RootAnimationLayer {
   }
 
   func forceDisplayUpdate() {
-    // Unimplemented
-    //  - We can't call `display()` here, because it would cause unexpected frame animations:
-    //    https://github.com/airbnb/lottie-ios/issues/2193
+    // Unimplemented / unused
   }
 
   func logHierarchyKeypaths() {

@@ -112,7 +112,11 @@ extension UIImage {
     static let icTransaction2 = UIImage(named: "ic_Transaction2") ?? UIImage()
     
     // settings
-    
     static let icUnCheckedRadio = UIImage(named: "ic_UnCheckedRadio") ?? UIImage()
     static let icCheckedRadio = UIImage(named: "ic_CheckedRadio") ?? UIImage()
+    static let icENS = UIImage(named: "ic_ens") ?? UIImage()
+    
+    // wallet Connect
+    static let icwalletConnectIcon = UIImage(named: "ic_walletConnectIcon") ?? UIImage()
+    static let icConnected = UIImage(named: "ic_connected") ?? UIImage()
 }

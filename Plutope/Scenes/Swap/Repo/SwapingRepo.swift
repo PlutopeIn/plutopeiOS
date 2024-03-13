@@ -41,7 +41,7 @@ class SwappingRepo {
         }
     }
     /// apiRangoQuoteSwapping
-    func apiRangoQuoteSwapping(walletAddress: String,fromToken: Token,toToken: Token,fromAmount: String,fromWalletAddress:String,toWalletAddress:String,completion: @escaping ((Bool,String,[String: Any]?) -> Void)) {
+    func apiRangoQuoteSwapping(walletAddress: String,fromToken: Token,toToken: Token,fromAmount: String,fromWalletAddress:String,toWalletAddress:String,completion: @escaping ((Bool,String,String,Route?) -> Void)) {
         
                 var fromNetwork: String? {
                     switch fromToken.chain {
@@ -49,7 +49,7 @@ class SwappingRepo {
                     case .ethereum :
                         return "ETH"
                     case .binanceSmartChain :
-                        return "BSC"
+                        return "BNB"
                     case .oKC:
                         return "OKT"
                     case .polygon:
@@ -67,7 +67,7 @@ class SwappingRepo {
                     case .ethereum :
                         return "ETH"
                     case .binanceSmartChain :
-                        return "BSC"
+                        return "BNB"
                     case .oKC:
                         return "OKT"
                     case .polygon:
@@ -108,14 +108,16 @@ class SwappingRepo {
         DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL:"https://plutope.app/api/rango-swap-quote"), HttpMethod: .post, parameters: param as [String : Any], headers: nil) { status, error, data in
             if status {
                 do {
-                    let data = try JSONSerialization.jsonObject(with: data!)
-                    completion(true,"",data as? [String: Any])
+                    let jsonData = try JSONDecoder().decode(RangoSwapData.self, from: data ?? Data())
+                    
+                   // let data = try JSONSerialization.jsonObject(with: data!)
+                    completion(true,jsonData.error ?? "",jsonData.resultType ?? "",jsonData.route)
                 } catch(let error) {
                     print(error)
-                    completion(false,error.localizedDescription,nil)
+                    completion(false,error.localizedDescription,"",nil)
                 }
             } else {
-                completion(false,error?.rawValue ?? "",nil)
+                completion(false,error?.rawValue ?? "","",nil)
             }
         }
     }
@@ -289,8 +291,11 @@ class SwappingRepo {
     }
     
     func apiGetExchangePairs(fromCurrency: String,fromNetwork: String,toNetwork: String,completion: @escaping (([ExchangePairsData]?,Bool,String) -> Void)) {
-        
-        let apiUrl = "https://api.changenow.io/v2/exchange/available-pairs?fromCurrency=\(fromCurrency)&fromNetwork=\(fromNetwork)&toNetwork=\(toNetwork)"
+        var fromCurrencyUpdate = fromCurrency
+        if(fromCurrencyUpdate == "bsc-usd") {
+            fromCurrencyUpdate = "usdt"
+        }
+        let apiUrl = "https://api.changenow.io/v2/exchange/available-pairs?fromCurrency=\(fromCurrencyUpdate)&fromNetwork=\(fromNetwork)&toNetwork=\(toNetwork)"
         
         DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .get, parameters: nil, headers: APIKey.changeNowAPIHeader) { status, error, data in
             if status {

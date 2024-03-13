@@ -32,7 +32,8 @@ class CoinGraphViewModel {
             if status == true {
                 completion(status,err,marketData)
             } else {
-                self.failblock?(false, err)
+//                self.failblock?(false, err)
+             completion(status,err,marketData)
             }
         })
     }

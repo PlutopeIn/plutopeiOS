@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class AssetLibrary: Codable, AnyInitializable, Sendable {
+final class AssetLibrary: Codable, AnyInitializable {
 
   // MARK: Lifecycle
 
@@ -44,7 +44,7 @@ final class AssetLibrary: Codable, AnyInitializable, Sendable {
     var decodedAssets = [String : Asset]()
     var imageAssets = [String : ImageAsset]()
     var precompAssets = [String : PrecompAsset]()
-    for dictionary in dictionaries {
+    try dictionaries.forEach { dictionary in
       if dictionary[PrecompAsset.CodingKeys.layers.rawValue] != nil {
         let asset = try PrecompAsset(dictionary: dictionary)
         decodedAssets[asset.id] = asset

@@ -34,6 +34,7 @@ class WalletRecoveryViewController: UIViewController {
         self.lblManualBackup.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.manualbackup, comment: "")
         self.lblICloudBackup.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.manualbackup, comment: "")
         self.lblBackUpOptions.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.backupoptions, comment: "")
+        
         self.txtWalletName.text = wallet?.wallet_name ?? ""
         self.txtWalletName.delegate = self
         self.btnSaveChanges.isHidden = true
@@ -76,10 +77,10 @@ class WalletRecoveryViewController: UIViewController {
         let isManualBackupActive = wallet?.isManualBackup ?? false
         let isCloudBackup = wallet?.fileName
         
-        //lblIcloudActive.text = isCloudBackupActive ? StringConstants.backUpActive : StringConstants.backUpNotActive
-        //lblManualActive.text = isManualBackupActive ? StringConstants.backUpActive : StringConstants.backUpNotActive
-        lblIcloudActive.text = isCloudBackupActive ? LocalizationLanguageStrings.active : LocalizationLanguageStrings.notactive
-        lblManualActive.text = isManualBackupActive ? LocalizationLanguageStrings.active : LocalizationLanguageStrings.notactive
+        // lblIcloudActive.text = isCloudBackupActive ? StringConstants.backUpActive : StringConstants.backUpNotActive
+        // lblManualActive.text = isManualBackupActive ? StringConstants.backUpActive : StringConstants.backUpNotActive
+        lblIcloudActive.text = isCloudBackupActive ? LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.active, comment: "") : LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.notactive, comment: "")
+        lblManualActive.text = isManualBackupActive ? LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.active, comment: "") : LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.notactive, comment: "")
         lblIcloudActive.textColor = isCloudBackupActive ? .c00C6FB : .c75769D
         lblManualActive.textColor = isManualBackupActive ? .c00C6FB : .c75769D
     }

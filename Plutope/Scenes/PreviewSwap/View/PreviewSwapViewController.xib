@@ -35,9 +35,12 @@
                 <outlet property="lblPayCoinAmount" destination="F4Q-qd-cKk" id="hQh-xl-uTG"/>
                 <outlet property="lblPayCoinType" destination="Vck-br-hBI" id="c1s-9y-BZb"/>
                 <outlet property="lblQoute" destination="28B-8F-O6e" id="Yea-E1-tPL"/>
+                <outlet property="lblQuoteText" destination="Xu7-E3-eqF" id="LtQ-kg-kNR"/>
                 <outlet property="lblSlippage" destination="xwJ-xp-Sr9" id="Hmd-CV-LEL"/>
                 <outlet property="lblSlippageText" destination="FVd-MY-xoR" id="nKC-ON-2lA"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="viewFee" destination="EGZ-KT-gvH" id="SRM-ZU-Iab"/>
+                <outlet property="viewQuote" destination="FjZ-rL-iCK" id="Ebj-R5-TVL"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -217,7 +220,7 @@
                                             <rect key="frame" x="0.0" y="38" width="337" height="18"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quote" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xu7-E3-eqF">
-                                                    <rect key="frame" x="0.0" y="0.0" width="36.333333333333336" height="18"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="38.666666666666664" height="18"/>
                                                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -406,7 +409,7 @@
     </objects>
     <designables>
         <designable name="fGY-dx-HqN">
-            <size key="intrinsicContentSize" width="97" height="30"/>
+            <size key="intrinsicContentSize" width="96" height="30"/>
         </designable>
     </designables>
     <resources>

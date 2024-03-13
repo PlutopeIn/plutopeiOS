@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - Asset
-
 public class Asset: Codable, DictionaryInitializable {
 
   // MARK: Lifecycle
@@ -43,9 +41,3 @@ public class Asset: Codable, DictionaryInitializable {
     case id
   }
 }
-
-// MARK: Sendable
-
-/// Since `Asset` isn't `final`, we have to use `@unchecked Sendable` instead of `Sendable.`
-/// All `Asset` subclasses are immutable `Sendable` values.
-extension Asset: @unchecked Sendable { }

@@ -10,7 +10,9 @@ class TransactionViewCell: UITableViewCell, Reusable {
     @IBOutlet weak var lblDescription: UILabel!
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var lblDuration: UILabel!
-    
+    var isToContract  = false
+    var priceSsymbol = ""
+    var headerTitle = ""
     @IBOutlet weak var ivTansaction: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()

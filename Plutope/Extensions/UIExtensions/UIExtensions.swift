@@ -682,10 +682,38 @@ extension UILabel {
 
 /// Remove Child View
 extension UIViewController {
+    var topController: UIViewController {
+        var topController = self
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+        return topController
+    }
     func removeChildViewController(_ childViewController: UIViewController) {
         childViewController.willMove(toParent: nil)
         childViewController.view.removeFromSuperview()
         childViewController.removeFromParent()
+    }
+    func wrapToNavigationController() -> UINavigationController {
+        let navigationController = UINavigationController(rootViewController: self)
+        navigationController.navigationBar.prefersLargeTitles = true
+        return navigationController
+    }
+    func presentFullScreen(from viewController: UIViewController, transparentBackground: Bool = false) {
+        if transparentBackground {
+            view.backgroundColor = .clear
+        }
+        modalPresentationStyle = .overCurrentContext
+        viewController.present(self, animated: true, completion: nil)
+    }
+    func push(from viewController: UIViewController) {
+        viewController.navigationController?.pushViewController(self, animated: true)
+    }
+    func present(from viewController: UIViewController) {
+        viewController.present(self, animated: true, completion: nil)
+    }
+    func present() {
+        UIApplication.currentWindow.rootViewController = self
     }
 }
 

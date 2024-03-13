@@ -78,7 +78,7 @@ class SendCoinViewController: UIViewController, Reusable {
         defineHeader(headerView: headerView, titleText:"\(titleText) \(coinDetail?.symbol ?? "")")
         
         uiSetUp()
-       
+        self.checkForCameraPermission()
         let privateKey = WalletData.shared.walletBTC?.privateKey ?? ""
      //   let privateKey = "cRxJ9jx3cUBGpY9teQPAJ541Cp4LJscY5agNgxTPv4PfZCeN4SJB"
         let encryptionManager = EncryptionManager()
@@ -121,11 +121,29 @@ class SendCoinViewController: UIViewController, Reusable {
     
     //    actionScan
     @IBAction func actionScan(_ sender: Any) {
-        checkForCameraPermission()
         self.coinType = ""
-        let scanner = QRScannerViewController()
-        scanner.delegate = self
-        self.present(scanner, animated: true, completion: nil)
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        switch status {
+        case .authorized:
+            let scanner = QRScannerViewController()
+            scanner.delegate = self
+            self.present(scanner, animated: true, completion: nil)
+        case .denied, .restricted:
+            self.showCameraSettingsAlert()
+        case .notDetermined:
+            // Request camera permission
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    let scanner = QRScannerViewController()
+                    scanner.delegate = self
+                    DispatchQueue.main.async {
+                        self.present(scanner, animated: true, completion: nil)
+                    }
+                }
+            }
+        @unknown default:
+            break
+        }
     }
     
     //    actionPaste
@@ -298,7 +316,7 @@ class SendCoinViewController: UIViewController, Reusable {
         }))
         // Add a cancel action
         // alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.card, comment: ""), style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: ""), style: .cancel, handler: nil))
         // Present the alert
         self.present(alert, animated: true, completion: nil)
     }

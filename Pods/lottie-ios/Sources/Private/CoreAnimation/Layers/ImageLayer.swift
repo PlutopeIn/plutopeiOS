@@ -48,7 +48,6 @@ final class ImageLayer: BaseCompositionLayer {
 
     self.imageAsset = imageAsset
     contentsLayer.contents = image
-    contentsLayer.contentsGravity = context.imageProvider.contentsGravity(for: imageAsset)
     setNeedsLayout()
   }
 

@@ -95,7 +95,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="POLYGON" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ahD-ie-h9V" customClass="DesignableLabel" customModule="Plutope" customModuleProvider="target">
-                                                            <rect key="frame" x="73.666666666666686" y="0.0" width="52.666666666666657" height="18"/>
+                                                            <rect key="frame" x="73.666666666666686" y="0.0" width="44.666666666666657" height="18"/>
                                                             <color key="backgroundColor" red="0.46274054050000002" green="0.46274679899999999" blue="0.56862211230000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="18" id="Cai-fb-5XX"/>
@@ -595,7 +595,7 @@
     </objects>
     <designables>
         <designable name="ahD-ie-h9V">
-            <size key="intrinsicContentSize" width="52.666666666666664" height="12"/>
+            <size key="intrinsicContentSize" width="44.666666666666664" height="12"/>
         </designable>
         <designable name="kJX-f3-YfS">
             <size key="intrinsicContentSize" width="52.666666666666664" height="12"/>

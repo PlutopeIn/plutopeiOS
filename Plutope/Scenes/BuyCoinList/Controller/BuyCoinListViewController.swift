@@ -34,6 +34,8 @@ class BuyCoinListViewController: UIViewController, Reusable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         txtSearch.textAlignment = (LocalizationSystem.sharedInstance.getLanguage() == "ar") ? .right : .left
+        /// getTokensListFromCoredata
+        getTokensListFromCoredata()
             }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +64,7 @@ class BuyCoinListViewController: UIViewController, Reusable {
            
             defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.network, comment: ""))
             
-        case .some(.swap):
+        case .swap:
         
             defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: ""))
             
@@ -73,10 +75,6 @@ class BuyCoinListViewController: UIViewController, Reusable {
         
         /// Table Register
         tableRegister()
-        
-        /// getTokensListFromCoredata
-        getTokensListFromCoredata()
-        
         txtSearch.delegate = self
         
     }
@@ -100,49 +98,82 @@ class BuyCoinListViewController: UIViewController, Reusable {
     fileprivate func getTokensListFromCoredata() {
         self.tokensList = DatabaseHelper.shared.retrieveData("Token") as? [Token]
         
-        switch isFrom {
-        case .receiveNFT :
-            self.tokensList = tokensList?.filter({ token in
-                if (token.address == "" && token.type != "KIP20") && (token.symbol == "ETH" || token.symbol == "MATIC" || token.symbol == "BNB") {
-                    return true
-                } else {
-                    return false
-                }
-            })
-            
-        case .addCustomToken :
-            
-            self.tokensList = tokensList?.filter({ token in
-                if (token.address == "") && (token.symbol == "ETH" || token.symbol == "MATIC" || token.symbol == "BNB" || token.symbol == "OKT") {
-                    return true
-                } else {
-                    return false
-                }
-            })
-            
-        default: break
-            
-        }
-        // Check if any balance is greater than 0
-        let hasPositiveBalance = tokensList?.contains { Double($0.balance ?? "") ?? 0.0 > 0.0 } ?? false
-
-        // Use the filter method based on the condition
-        if hasPositiveBalance {
-            self.sortedTokens = tokensList?.filter { Double($0.balance ?? "") ?? 0.0 > 0.0 }
+        if (tokensList == nil) {
+            self.showToast(message: "No Data", font: AppFont.medium(15).value)
         } else {
-            self.sortedTokens = self.tokensList
-            // Show all data if all balances are zero
-            // No need to filter in this case
-        }
-        let addressToRemove = "0x0000000000000000000000000000000000001010"
-
-        self.sortedTokens = self.sortedTokens?.filter { token in
-            return token.address != addressToRemove
+            switch isFrom {
+            case .receiveNFT :
+                self.tokensList = tokensList?.filter({ token in
+                    if (token.address == "" && token.type != "KIP20") && (token.symbol == "ETH" || token.symbol == "MATIC" || token.symbol == "BNB") {
+                        return true
+                    } else {
+                        return false
+                    }
+                })
+                
+            case .addCustomToken :
+                
+                self.tokensList = tokensList?.filter({ token in
+                    if (token.address == "") && (token.symbol == "ETH" || token.symbol == "MATIC" || token.symbol == "BNB" || token.symbol == "OKT") {
+                        return true
+                    } else {
+                        return false
+                    }
+                })
+                
+            default: break
+                
+            }
         }
         
+        if primaryWallet == nil {
+            let allWallet = DatabaseHelper.shared.retrieveData("Wallets") as? [Wallets]
+            primaryWallet = allWallet?.first(where: { $0.isPrimary })
+            // WalletData.shared.wallet = HDWallet(mnemonic: primaryWallet?.mnemonic ?? "", passphrase: "")
+        }
+        
+        guard let primaryWallet = primaryWallet else {
+            // Handle the case when primaryWalletID is nil
+            return
+        }
+        let getPrimaryWalletToken = DatabaseHelper.shared.fetchTokens(withWalletID: self.primaryWallet?.wallet_id?.uuidString ?? "")
+        let enableTokens = getPrimaryWalletToken?.compactMap { $0.tokens  }
+        
+        let alreadyEnabled = enableTokens?.first(where: { $0.address == tokensList?.first?.address })
+        if let tokensList = tokensList, let enableTokens = enableTokens {
+            let isAnyTokenEnabled = tokensList.contains { token in
+                enableTokens.contains { $0.address == token.address }
+            }
+
+            if isAnyTokenEnabled {
+                self.sortedTokens = enableTokens
+                let addressToRemove = "0x0000000000000000000000000000000000001010"
+
+                // Filter out the addressToRemove
+                self.sortedTokens = self.sortedTokens?.filter { token in
+                    return token.address != addressToRemove
+                }
+
+                // Sort by balance from high to low
+                self.sortedTokens = self.sortedTokens?.sorted(by: { $0.balance ?? "" > $1.balance ?? "" })
+
+                // Print the sorted tokens
+                if let sortedTokens = self.sortedTokens {
+                    for token in sortedTokens {
+                        print(token.balance)
+                    }
+                }
+            } else {
+                self.tokensList = tokensList
+            }
+        }
+
+        let addressToRemove = "0x0000000000000000000000000000000000001010"
+
         self.tokensList = self.tokensList?.filter { token in
             return token.address != addressToRemove
         }
+        print(tokensList)
         self.filterTokens = self.tokensList
         self.tbvBuyCoin.reloadData()
         
@@ -168,11 +199,11 @@ extension BuyCoinListViewController: UITextFieldDelegate {
     func filterAssets(with searchText: String) {
         self.tokensList = filterTokens?.filter { asset in
             let type = asset.type
-            let symbol = asset.name
+            let symbol = asset.symbol
             
             // Match the entered text with name or symbol
             return type?.localizedCaseInsensitiveContains(searchText) ?? false ||
-            symbol?.localizedCaseInsensitiveContains(searchText) ?? false
+            symbol?.localizedCaseInsensitiveContains(searchText) ?? false 
         }
     }
     

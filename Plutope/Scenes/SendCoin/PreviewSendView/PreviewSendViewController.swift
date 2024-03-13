@@ -282,6 +282,7 @@ class PreviewSendViewController: UIViewController {
                     } else {
                         // Handle the case where the error message is not found
                         print("Error message not found")
+                        self.showToast(message:"Coin not Send" , font: AppFont.regular(15).value)
                         DGProgressView.shared.hideLoader()
                     }
 //                    self.showSimpleAlert(Message: errMsg ?? "")
@@ -337,11 +338,12 @@ class PreviewSendViewController: UIViewController {
                         print(errorMessage)
                       //  self.showSimpleAlert(Message: errorMessage)
                         DGProgressView.shared.hideLoader()
-                        self.showToast(message: errorMessage , font: AppFont.regular(15).value)
+                        self.showToast(message: errMsg ?? "" , font: AppFont.regular(15).value)
                         
                     } else {
                         // Handle the case where the error message is not found
                         print("Error message not found")
+                        self.showToast(message:"Coin not Send" , font: AppFont.regular(15).value)
                         DGProgressView.shared.hideLoader()
                     }
                     

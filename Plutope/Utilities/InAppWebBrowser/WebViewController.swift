@@ -6,6 +6,11 @@
 //
 import UIKit
 import WebKit
+import WalletConnectSign
+import WalletConnectUtils
+import Web3Wallet
+import Web3
+import Combine
 class WebViewController: UIViewController {
     
     @IBOutlet weak var webView: WKWebView!
@@ -15,14 +20,18 @@ class WebViewController: UIViewController {
     var jsCode = ""
     var isOnMeta: Bool = Bool()
     var webViewTitle: String = String()
-    
+    var isFrom = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         
         webView.uiDelegate = self
         webView.navigationDelegate = self
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-        
+        if isFrom == "coinDetail" {
+            let configuration = WKWebViewConfiguration()
+              configuration.preferences.javaScriptEnabled = true
+               configuration.urlSchemeHandler(forURLScheme: "plutope")
+        }
         /// Navigation Header
         defineHeader(headerView: headerView, titleText: webViewTitle)
         
@@ -50,7 +59,115 @@ extension WebViewController: WKUIDelegate, WKNavigationDelegate {
             webView.evaluateJavaScript(jsCode, completionHandler: nil)
         }
     }
+//    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+//
+//        if let url = navigationAction.request.url {
+//            print(url)
+//            print(url.host)
+//        }
+////           if navigationAction.navigationType == .linkActivated {
+////               // Open links in current WKWebView
+////               webView.load(navigationAction.request)
+////               decisionHandler(.cancel)
+////           } else {
+////               decisionHandler(.allow)
+////           }
+//        decisionHandler(.allow)
+//       }
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+            guard let url = navigationAction.request.url else {
+                decisionHandler(.cancel)
+                return
+            }
+            print(url.path)
+            // Check if the URL contains the wallet connect button click event
+            if url.absoluteString.contains("useWalletConnect=true") {
+                // Handle the click event here
+                print("Wallet Connect button clicked")
+            }
+
+            decisionHandler(.allow)
+        }
+       func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+           if let url = webView.url {
+               print("Current URL: \(url)")
+           }
+       }
+       
+       func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+           print("Failed to load URL: \(error)")
+       }
     
+    
+    
+//    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+//        if let url = navigationAction.request.url, url.scheme == "wc" {
+//            print("[WALLET] Pairing to: \(url)")
+//            guard let uri = WalletConnectURI(string: url.absoluteString) else { return decisionHandler(.cancel)  }
+//            Task {
+//                do {
+//                    try await Web3Wallet.instance.pair(uri: uri)
+//
+//                } catch {
+//
+//                    print("[DAPP] Pairing connect error: \(error)")
+//                }
+//
+//        }
+//            // Handle the deep link URL here
+//            // You can also decide whether to continue loading the request or not
+//
+//        }
+//
+//        decisionHandler(.allow)
+//    }
+    /// pair to client
+    func pairClient(uri: String) {
+        print("[WALLET] Pairing to: \(uri)")
+        guard let uri = WalletConnectURI(string: uri) else {
+            return
+        }
+        Task {
+            do {
+                try await Web3Wallet.instance.pair(uri: uri)
+                
+            } catch {
+               
+                print("[DAPP] Pairing connect error: \(error)")
+            }
+        }
+    }
+
+    
+//    // Intercept URL requests to handle deep linking
+//        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+//            guard let url = navigationAction.request.url else {
+//                decisionHandler(.cancel)
+//                return
+//            }
+//
+//            if url.scheme == "plutope://wc?" {
+//                handleDeepLink(url: url)
+//                decisionHandler(.cancel)
+//                return
+//            }
+//
+//            decisionHandler(.allow)
+//        }
+//    
+//    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+//        print("00000")
+//    }
+//    // Handle deep linking based on the URL
+//        func handleDeepLink(url: URL) {
+//            // Extract any parameters from the URL if needed
+////            let parameters = url.queryParameters
+//
+//            // Handle the deep link logic here
+//            print("Deep link detected: \(url.absoluteString)")
+//          //  print("Parameters: \(parameters)")
+//        }
+//   
 //    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
 //        if isOnMeta {
 ////            webView.evaluateJavaScript(jsCode, completionHandler: nil)

@@ -223,7 +223,7 @@
                                             <rect key="frame" x="0.0" y="38" width="358" height="18"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quote" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xu7-E3-eqF">
-                                                    <rect key="frame" x="0.0" y="0.0" width="38.5" height="18"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="36.5" height="18"/>
                                                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -273,16 +273,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="18"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Slippage" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVd-MY-xoR">
-                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="18"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="18"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="80" id="kZi-ht-1qd"/>
+                                                        <constraint firstAttribute="width" constant="150" id="kZi-ht-1qd"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xwJ-xp-Sr9">
-                                                    <rect key="frame" x="180" y="0.0" width="178" height="18"/>
+                                                    <rect key="frame" x="250" y="0.0" width="108" height="18"/>
                                                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="14"/>
                                                     <color key="textColor" name="#75769D"/>
                                                     <nil key="highlightedColor"/>
@@ -303,10 +303,10 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EGZ-KT-gvH">
                                             <rect key="frame" x="0.0" y="38" width="358" height="18"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SVy-6A-FWu">
-                                                    <rect key="frame" x="0.0" y="0.0" width="74.5" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ค่าธรรมเนียมเครือข่าย" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SVy-6A-FWu">
+                                                    <rect key="frame" x="0.0" y="0.0" width="128.5" height="18"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="74.329999999999998" id="Dus-Vy-gqk"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="74.329999999999998" id="Dus-Vy-gqk"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -443,7 +443,7 @@
     </objects>
     <designables>
         <designable name="fGY-dx-HqN">
-            <size key="intrinsicContentSize" width="96" height="30"/>
+            <size key="intrinsicContentSize" width="97" height="30"/>
         </designable>
     </designables>
     <resources>

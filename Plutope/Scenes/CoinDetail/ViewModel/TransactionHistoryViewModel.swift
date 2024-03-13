@@ -28,4 +28,15 @@ class TransactionHistoryViewModel {
             }
         })
     }
+    /// getInternalTransactionHistory
+    func apiGetInternalTransactionaHistroy(_ coindetail: Token,_ page: String,completion: @escaping (([TransactionResult]?,Bool,String) -> Void)) {
+     
+        repo?.apiGetInternalTransactionaHistroy(coindetail,page,completion: { transactionList, status, err in
+            if status == true {
+                completion(transactionList,status,err)
+            } else {
+                completion(transactionList,status,err)
+            }
+        })
+    }
 }

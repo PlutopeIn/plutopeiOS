@@ -39,6 +39,10 @@ enum SettingData: Setting {
             return 20
         case .languages:
             return 20
+        case .ens:
+            return 20
+        case .walletConnect:
+            return 20
         }
     }
     
@@ -60,9 +64,12 @@ enum SettingData: Setting {
             return 20
         case .languages:
             return 20
+        case .ens:
+            return 20
+        case .walletConnect:
+            return 20
         }
     }
-    
     
     case wallets
     case currency
@@ -72,7 +79,8 @@ enum SettingData: Setting {
     case aboutPlutope
     case contacts
     case languages
-  
+    case ens
+    case walletConnect
     var image: UIImage {
         switch self {
         case .wallets:
@@ -91,6 +99,10 @@ enum SettingData: Setting {
             return UIImage.icUser.sd_tintedImage(with: .white) ?? UIImage()
         case .languages:
             return UIImage.icLanguage.sd_tintedImage(with: .white) ?? UIImage()
+        case .ens:
+            return UIImage.icENS.withRoundedCorners() ?? UIImage()
+        case .walletConnect:
+           return UIImage.icwalletConnectIcon.sd_tintedImage(with: .white) ?? UIImage()
         }
     }
     
@@ -98,28 +110,32 @@ enum SettingData: Setting {
         switch self {
         case .wallets:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.wallets, comment: "")
-            //return StringConstants.wallets
+            
         case .currency:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.currency, comment: "")
-            //return StringConstants.currency
+            
         case .security:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.security, comment: "")
-            //return StringConstants.security
+          
         case .pushNotification:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.pushnotifications, comment: "")
-            //return StringConstants.pushNotifications
+           
         case .helpCenter:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.helpcentre, comment: "")
-            //return StringConstants.helpCenter
+           
         case .aboutPlutope:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.aboutplutope, comment: "")
-            //return StringConstants.aboutPlutoPe
+            
         case .contacts:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.contacts, comment: "")
-            //return StringConstants.contacts
+           
         case .languages:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.language, comment: "")
-            //return StringConstants.languages
+          
+        case .ens:
+            return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.ens, comment: "")
+        case .walletConnect:
+            return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.walletConnect, comment: "")
         }
     }
     
@@ -135,7 +151,7 @@ enum SettingData: Setting {
         switch self {
         case .wallets, .currency:
             return false
-        case .security, .pushNotification, .helpCenter, .aboutPlutope, .contacts, .languages:
+        case .security, .pushNotification, .helpCenter, .aboutPlutope, .contacts, .languages,.ens,.walletConnect:
             return true
         }
     }

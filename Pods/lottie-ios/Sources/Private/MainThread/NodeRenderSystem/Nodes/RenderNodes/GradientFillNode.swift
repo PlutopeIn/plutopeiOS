@@ -27,7 +27,7 @@ final class GradientFillProperties: NodePropertyMap, KeypathSearchable {
       PropertyName.opacity.rawValue : opacity,
       "Start Point" : startPoint,
       "End Point" : endPoint,
-      PropertyName.gradientColors.rawValue : colors,
+      "Colors" : colors,
     ]
     properties = Array(keypathProperties.values)
   }

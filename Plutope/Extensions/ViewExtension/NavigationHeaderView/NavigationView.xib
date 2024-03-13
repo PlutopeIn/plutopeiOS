@@ -26,10 +26,10 @@
                             <rect key="frame" x="0.0" y="0.0" width="722" height="81"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NNp-ZD-p4k">
-                                    <rect key="frame" x="0.0" y="0.0" width="60" height="81"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="70" height="81"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4N8-Ce-b0O">
-                                            <rect key="frame" x="0.0" y="0.0" width="60" height="81"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="70" height="81"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                             <state key="normal" image="Back"/>
                                             <connections>
@@ -41,13 +41,13 @@
                                     <constraints>
                                         <constraint firstItem="4N8-Ce-b0O" firstAttribute="leading" secondItem="NNp-ZD-p4k" secondAttribute="leading" id="98U-OQ-SFc"/>
                                         <constraint firstAttribute="bottom" secondItem="4N8-Ce-b0O" secondAttribute="bottom" id="IDE-8F-fSD"/>
-                                        <constraint firstAttribute="width" constant="60" id="Q87-vf-Wgo"/>
+                                        <constraint firstAttribute="width" constant="70" id="Q87-vf-Wgo"/>
                                         <constraint firstItem="4N8-Ce-b0O" firstAttribute="top" secondItem="NNp-ZD-p4k" secondAttribute="top" id="WUa-et-0fF"/>
                                         <constraint firstAttribute="trailing" secondItem="4N8-Ce-b0O" secondAttribute="trailing" id="bbk-22-GGS"/>
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Lv-8g-kCl">
-                                    <rect key="frame" x="60" y="0.0" width="602" height="81"/>
+                                    <rect key="frame" x="70" y="0.0" width="592" height="81"/>
                                     <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>

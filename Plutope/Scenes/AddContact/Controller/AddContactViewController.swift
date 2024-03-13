@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 import QRScanner
-
+import AVFoundation
 class AddContactViewController: UIViewController {
     
     @IBOutlet weak var btnDelete: UIButton!
@@ -22,7 +22,7 @@ class AddContactViewController: UIViewController {
     var selectedContact: Contacts?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       
         self.txtName.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.name, comment: "")
         self.txtAddress.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.publicaddress0x, comment: "")
         self.btnPaste.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.paste, comment: ""), for: .normal)
@@ -137,9 +137,43 @@ class AddContactViewController: UIViewController {
     }
     /// btnScanAction
     @IBAction func btnScanAction(_ sender: Any) {
-        let scanner = QRScannerViewController()
-        scanner.delegate = self
-        self.present(scanner, animated: true, completion: nil)
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        switch status {
+        case .authorized:
+            let scanner = QRScannerViewController()
+            scanner.delegate = self
+            self.present(scanner, animated: true, completion: nil)
+        case .denied, .restricted:
+            self.showCameraSettingsAlert()
+        case .notDetermined:
+            // Request camera permission
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    let scanner = QRScannerViewController()
+                    scanner.delegate = self
+                    DispatchQueue.main.async {
+                        self.present(scanner, animated: true, completion: nil)
+                    }
+                }
+            }
+        @unknown default:
+            break
+        }
+    }
+    // showCameraSettingsAlert
+    func showCameraSettingsAlert() {
+        let alert = UIAlertController(title: "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cameraAccessDenied, comment: ""))", message: "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cameraAccess, comment: ""))", preferredStyle: .alert)
+        // Add an action to open the app's settings
+        alert.addAction(UIAlertAction(title: "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.openSetting, comment: ""))", style: .default, handler: { action in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+            }
+        }))
+        // Add a cancel action
+        // alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: ""), style: .cancel, handler: nil))
+        // Present the alert
+        self.present(alert, animated: true, completion: nil)
     }
     /// btnDeleteAction
     @IBAction func btnDeleteAction(_ sender: Any) {

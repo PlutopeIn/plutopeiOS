@@ -5,6 +5,7 @@
 //  Created by Priyanka Poojara on 09/06/23.
 //
 import UIKit
+import WalletConnectSign
 extension SettingsViewController: UITableViewDelegate {
     
     @MainActor
@@ -16,6 +17,25 @@ extension SettingsViewController: UITableViewDelegate {
         navVC.modalPresentationStyle = .overFullScreen
         navVC.modalTransitionStyle = .crossDissolve
         onVC.present(navVC, animated: true)
+    }
+    
+    fileprivate func passcodeAction() {
+        /// Biometrics
+        if UserDefaults.standard.object(forKey: DefaultsKey.appPasscode) != nil {
+            guard let sceneDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
+            guard let viewController = sceneDelegate.window?.rootViewController else { return }
+            AppPasscodeHelper().handleAppPasscodeIfNeeded(in: self, completion: { status in
+                if status {
+                    let viewToNavigate = SecurityViewController()
+                    viewToNavigate.hidesBottomBarWhenPushed = true
+                    self.navigationController?.pushViewController(viewToNavigate, animated: true)
+                }
+            })
+        } else {
+            let viewToNavigate = SecurityViewController()
+            viewToNavigate.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(viewToNavigate, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -44,24 +64,17 @@ extension SettingsViewController: UITableViewDelegate {
         case 1 :
             switch indexPath.row {
             case 0:
-                /// Biometrics
-                if UserDefaults.standard.object(forKey: DefaultsKey.appPasscode) != nil {
-                    guard let sceneDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
-                    guard let viewController = sceneDelegate.window?.rootViewController else { return }
-                    AppPasscodeHelper().handleAppPasscodeIfNeeded(in: self, completion: { status in
-                        if status {
-                            let viewToNavigate = SecurityViewController()
-                            viewToNavigate.hidesBottomBarWhenPushed = true
-                            self.navigationController?.pushViewController(viewToNavigate, animated: true)
-                        }
-                    })
-                } else {
-                    let viewToNavigate = SecurityViewController()
-                    viewToNavigate.hidesBottomBarWhenPushed = true
-                    self.navigationController?.pushViewController(viewToNavigate, animated: true)
-                }
+                passcodeAction()
             case 1:
                 let viewToNavigate = AddressContactsViewController()
+                viewToNavigate.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(viewToNavigate, animated: true)
+//            case 2:
+//                let viewToNavigate = ENSViewController()
+//                viewToNavigate.hidesBottomBarWhenPushed = true
+//                self.navigationController?.pushViewController(viewToNavigate, animated: true)
+            case 2:
+                let viewToNavigate = WalletConnectPopupViewController()
                 viewToNavigate.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(viewToNavigate, animated: true)
                 

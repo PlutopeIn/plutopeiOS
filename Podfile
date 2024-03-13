@@ -27,7 +27,11 @@ target 'Plutope' do
   pod 'Firebase/CoreOnly'
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Messaging'
- 
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '8.18.0'
+  pod 'SDWebImage', '~> 5.0'
+#  pod 'Web3Modal', '~> 1.0'
+  pod 'CoinbaseWalletSDK'
+  pod 'Mixpanel-swift'
   target 'PlutopeTests' do
     inherit! :search_paths
     # Pods for testing

@@ -21,31 +21,32 @@ extension CoinDetailViewController: UITableViewDataSource {
     //    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        arrTransactionData.count
+        if selectedSegment == "Transaction" {
+            return arrTransactionData.count
+        } else {
+            return arrInternalTransactionData.count
+        }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tbvTransactions.dequeueReusableCell(indexPath: indexPath) as TransactionViewCell
-        let data = arrTransactionData[indexPath.row]
-        cell.selectionStyle = .none
-        
-        guard let number = Double(data.amount ?? "") else { return UITableViewCell() }
+    fileprivate func setTableViewData(_ number: Double, _ data: TransactionResult, _ cell: TransactionViewCell) {
         let multiplier = 10000.0
         let truncatedValue = trunc(number * multiplier) / multiplier
         let amount = WalletData.shared.formatDecimalString("\(truncatedValue)", decimalPlaces: 4)
-      //  let amount = String(format: "%.4f", truncatedValue)
+        //  let amount = String(format: "%.4f", truncatedValue)
         if data.from?.lowercased() == self.coinDetail?.chain?.walletAddress?.lowercased() {
             
             cell.lblPrice.text = "-\(amount) \(coinDetail?.symbol ?? "")"
             cell.lblPrice.textColor = .red
             cell.lblDescription.text = data.to
             cell.ivTansaction.image = UIImage.icTransaction2
+            cell.priceSsymbol = "-"
         } else {
             
             cell.lblPrice.text = "+\(amount) \(coinDetail?.symbol ?? "")"
             cell.lblPrice.textColor = UIColor.c099817
             cell.lblDescription.text = data.from
             cell.ivTansaction.image = UIImage.icTransaction1
+            cell.priceSsymbol = "+"
         }
         if let timeStamp = TimeInterval(data.transactionTime ?? "") {
             let unixTimeStamp = (timeStamp / 1000.0).getReadableDate()
@@ -54,23 +55,139 @@ extension CoinDetailViewController: UITableViewDataSource {
         if data.isSwap ?? false {
             
             cell.lblTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: "")
+            cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: "")
         } else {
             if data.methodID == "" && data.isToContract ?? false {
-               
                 cell.lblTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
             } else {
-                 if (Double(amount) ?? 0.0) <= 0 && coinDetail?.address == "" {
-                     cell.lblTitle.text =  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.samartcontractcall, comment: "")
+                
+                if coinDetail?.address == "" && (Double(amount) ?? 0.0) <= 0 {
+                    cell.lblTitle.text =  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.samartcontractcall, comment: "")
                     cell.lblPrice.text = "-0.00 \(coinDetail?.symbol ?? "")"
                     cell.lblPrice.textColor = .red
                     cell.lblDescription.text = data.to
                     cell.ivTansaction.image = UIImage.transaction
+                    cell.isToContract = true
+                    cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.samartcontractcall, comment: "")
                 } else {
-                  
+                    cell.isToContract = false
                     cell.lblTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                    cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
                 }
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tbvTransactions.dequeueReusableCell(indexPath: indexPath) as TransactionViewCell
+       
+        cell.selectionStyle = .none
+      
+        if selectedSegment == "Transaction" {
+            let data = arrTransactionData[indexPath.row]
+            guard let number = Double(data.amount ?? "") else { return UITableViewCell() }
+            let multiplier = 10000.0
+            let truncatedValue = trunc(number * multiplier) / multiplier
+            let amount = WalletData.shared.formatDecimalString("\(truncatedValue)", decimalPlaces: 4)
+            //  let amount = String(format: "%.4f", truncatedValue)
+            if data.from?.lowercased() == self.coinDetail?.chain?.walletAddress?.lowercased() {
+                
+                cell.lblPrice.text = "-\(amount) \(coinDetail?.symbol ?? "")"
+                cell.lblPrice.textColor = .red
+                cell.lblDescription.text = data.to
+                cell.ivTansaction.image = UIImage.icTransaction2
+                cell.priceSsymbol = "-"
+            } else {
+                
+                cell.lblPrice.text = "+\(amount) \(coinDetail?.symbol ?? "")"
+                cell.lblPrice.textColor = UIColor.c099817
+                cell.lblDescription.text = data.from
+                cell.ivTansaction.image = UIImage.icTransaction1
+                cell.priceSsymbol = "+"
+            }
+            if let timeStamp = TimeInterval(data.transactionTime ?? "") {
+                let unixTimeStamp = (timeStamp / 1000.0).getReadableDate()
+                cell.lblDuration.text = unixTimeStamp ?? ""
+            }
+            if data.isSwap ?? false {
+                
+                cell.lblTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: "")
+                cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: "")
+            } else {
+                if data.methodID == "" && data.isToContract ?? false {
+                    cell.lblTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                    cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                } else {
+                    
+                    if coinDetail?.address == "" && (Double(amount) ?? 0.0) <= 0 {
+                        cell.lblTitle.text =  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.samartcontractcall, comment: "")
+                        cell.lblPrice.text = "-0.00 \(coinDetail?.symbol ?? "")"
+                        cell.lblPrice.textColor = .red
+                        cell.lblDescription.text = data.to
+                        cell.ivTansaction.image = UIImage.transaction
+                        cell.isToContract = true
+                        cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.samartcontractcall, comment: "")
+                    } else {
+                        cell.isToContract = false
+                        cell.lblTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                        cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                    }
+                }
+            }
+        } else {
+            let data = arrInternalTransactionData[indexPath.row]
+            guard let number = Double(data.amount ?? "") else { return UITableViewCell() }
+            let multiplier = 10000.0
+            let truncatedValue = trunc(number * multiplier) / multiplier
+            let amount = WalletData.shared.formatDecimalString("\(truncatedValue)", decimalPlaces: 4)
+            //  let amount = String(format: "%.4f", truncatedValue)
+            if data.from?.lowercased() == self.coinDetail?.chain?.walletAddress?.lowercased() {
+                
+                cell.lblPrice.text = "-\(amount) \(coinDetail?.symbol ?? "")"
+                cell.lblPrice.textColor = .red
+                cell.lblDescription.text = data.to
+                cell.ivTansaction.image = UIImage.icTransaction2
+                cell.priceSsymbol = "-"
+            } else {
+                
+                cell.lblPrice.text = "+\(amount) \(coinDetail?.symbol ?? "")"
+                cell.lblPrice.textColor = UIColor.c099817
+                cell.lblDescription.text = data.from
+                cell.ivTansaction.image = UIImage.icTransaction1
+                cell.priceSsymbol = "+"
+            }
+            if let timeStamp = TimeInterval(data.transactionTime ?? "") {
+                let unixTimeStamp = (timeStamp / 1000.0).getReadableDate()
+                cell.lblDuration.text = unixTimeStamp ?? ""
+            }
+            if data.isSwap ?? false {
+                
+                cell.lblTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: "")
+                cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: "")
+            } else {
+                if data.methodID == "" && data.isToContract ?? false {
+                    cell.lblTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                    cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                } else {
+                    
+                    if coinDetail?.address == "" && (Double(amount) ?? 0.0) <= 0 {
+                        cell.lblTitle.text =  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.samartcontractcall, comment: "")
+                        cell.lblPrice.text = "-0.00 \(coinDetail?.symbol ?? "")"
+                        cell.lblPrice.textColor = .red
+                        cell.lblDescription.text = data.to
+                        cell.ivTansaction.image = UIImage.transaction
+                        cell.isToContract = true
+                        cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.samartcontractcall, comment: "")
+                    } else {
+                        cell.isToContract = false
+                        cell.lblTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                        cell.headerTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transfer, comment: "")
+                    }
+                }
+            }
+        }
+        
         return cell
     }
     

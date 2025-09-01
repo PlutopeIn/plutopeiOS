@@ -38,10 +38,17 @@ class AddFiatAmountViewController: UIViewController {
                 self.txtCoinQuantity.textAlignment = .left
             }
         }
-        
+        lblTitle.font = AppFont.violetRegular(24).value
+        txtCoinQuantity.font = AppFont.regular(13).value
+        lblYourCoinBal.font = AppFont.regular(13).value
+        lblAmountCoin.font = AppFont.regular(13).value
+        btnCurruncy.titleLabel?.font = AppFont.regular(12).value
+        btnToken.titleLabel?.font = AppFont.regular(12).value
+        btnConfirm.titleLabel?.font = AppFont.violetRegular(16).value
         ivClose.addTapGesture {
+            HapticFeedback.generate(.light)
             self.navigationController?.popViewController(animated: true)
-//            self.dismiss(animated: true)
+            self.dismiss(animated: true)
         }
         // Do any additional setup after loading the view.
     }
@@ -67,7 +74,7 @@ class AddFiatAmountViewController: UIViewController {
             
         }
     @IBAction func btnConfirmAction(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
 //        if isIPAD {
 //            showBottonSheetIniPad()
 //        } else {
@@ -92,6 +99,7 @@ class AddFiatAmountViewController: UIViewController {
         if !btnToken.isHidden {
 
             self.delegate?.addFiatAmount(tokenAmount: self.txtCoinQuantity.text ?? "",type: "coin", value: "", walletType: "other")
+            self.dismiss(animated: true)
             self.navigationController?.popViewController(animated: true)
         } else {
             let str = lblYourCoinBal.text ?? ""
@@ -100,6 +108,7 @@ class AddFiatAmountViewController: UIViewController {
             if let result = extractSubstringBetweenWhitespaces(stringWithoutPrefix) {
                 print(result)
                 self.delegate?.addFiatAmount(tokenAmount: result,type: "currency",value: self.txtCoinQuantity.text ?? "", walletType: "other")
+                self.dismiss(animated: true)
                 self.navigationController?.popViewController(animated: true)
             }
         }
@@ -107,7 +116,7 @@ class AddFiatAmountViewController: UIViewController {
     }
     //    actionCoinTap
     @IBAction func btnTokenAction(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
         btnToken.isHidden = true
         btnCurruncy.isHidden = false
         txtCoinQuantity.text = ""
@@ -117,7 +126,7 @@ class AddFiatAmountViewController: UIViewController {
     }
     //    actionCurrencyTap
     @IBAction func btnCurruncyAction(_ sender: Any) {
-       
+        HapticFeedback.generate(.light)
         btnToken.isHidden = false
         btnCurruncy.isHidden = true
         txtCoinQuantity.text = ""
@@ -138,17 +147,36 @@ extension AddFiatAmountViewController : UITextFieldDelegate {
                 /// Will show payable amount
                 
                 let getbalance = WalletData.shared.formatDecimalString("\(payableAmount)", decimalPlaces: 10)
-                lblYourCoinBal.text = "~ \(WalletData.shared.primaryCurrency?.sign ?? "") \(getbalance)"
+//                lblYourCoinBal.text = "~ \(WalletData.shared.primaryCurrency?.sign ?? "") \(getbalance)"
+                
+                lblYourCoinBal.text = "= \(WalletData.shared.primaryCurrency?.sign ?? "")\(getbalance)"
             } else {
                 /// Will show payable token/coin
                 let amount = (Double(text) ?? 0) / (Double(coinDetail?.price ?? "") ?? 0.0)
                 let stringValue = String(amount)
                 
                 let getbalance = WalletData.shared.formatDecimalString("\(stringValue)", decimalPlaces: 8)
-                lblYourCoinBal.text = "~ \(getbalance) \(coinDetail?.symbol ?? "")"
+                lblYourCoinBal.text = "= \(getbalance) \(coinDetail?.symbol ?? "")"
             }
         }
     }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == txtCoinQuantity {
+            // Get the current text
+            let currentText = textField.text ?? ""
+            
+            // Try to add the new input
+            if let textRange = Range(range, in: currentText) {
+                let updatedText = currentText.replacingCharacters(in: textRange, with: string)
+                
+                // Check if there's already a decimal point in the text
+                if updatedText.components(separatedBy: ".").count > 2 {
+                    return false // Block if there are more than one decimal points
+                }
+            }
+        }
+            return true // Allow input if it's valid
+        }
     
 //    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 //           // This method is called whenever the user types or pastes characters
@@ -214,6 +242,7 @@ extension AddFiatAmountViewController {
             if !self.btnToken.isHidden {
                
                 self.delegate?.addFiatAmount(tokenAmount: self.txtCoinQuantity.text ?? "",type: "coin", value: "", walletType: "metaMask")
+                self.dismiss(animated: true)
                 self.navigationController?.popViewController(animated: true)
             } else {
                 let str = self.lblYourCoinBal.text ?? ""
@@ -222,6 +251,7 @@ extension AddFiatAmountViewController {
                 if let result = self.extractSubstringBetweenWhitespaces(stringWithoutPrefix) {
                     print(result)
                     self.delegate?.addFiatAmount(tokenAmount: result,type: "currency",value: self.txtCoinQuantity.text ?? "",walletType: "metaMask")
+                    self.dismiss(animated: true)
                     self.navigationController?.popViewController(animated: true)
                 }
             }
@@ -250,14 +280,16 @@ extension AddFiatAmountViewController {
             if !self.btnToken.isHidden {
                
                 self.delegate?.addFiatAmount(tokenAmount: self.txtCoinQuantity.text ?? "",type: "coin", value: "", walletType: "other")
+                self.dismiss(animated: true)
                 self.navigationController?.popViewController(animated: true)
             } else {
                 let str = self.lblYourCoinBal.text ?? ""
-                let stringWithoutPrefix = str.replacingOccurrences(of: "~", with: "")
+                let stringWithoutPrefix = str.replacingOccurrences(of: "=", with: "")
                 print(stringWithoutPrefix)
                 if let result = self.extractSubstringBetweenWhitespaces(stringWithoutPrefix) {
                     print(result)
                     self.delegate?.addFiatAmount(tokenAmount: result,type: "currency",value: self.txtCoinQuantity.text ?? "",walletType: "other")
+                    self.dismiss(animated: true)
                     self.navigationController?.popViewController(animated: true)
                 }
             }
@@ -312,6 +344,7 @@ extension AddFiatAmountViewController {
                 if !self.btnToken.isHidden {
                    
                     self.delegate?.addFiatAmount(tokenAmount: self.txtCoinQuantity.text ?? "",type: "coin", value: "", walletType: "metaMask")
+                    self.dismiss(animated: true)
                     self.navigationController?.popViewController(animated: true)
                 } else {
                     let str = self.lblYourCoinBal.text ?? ""
@@ -320,6 +353,7 @@ extension AddFiatAmountViewController {
                     if let result = self.extractSubstringBetweenWhitespaces(stringWithoutPrefix) {
                         print(result)
                         self.delegate?.addFiatAmount(tokenAmount: result,type: "currency",value: self.txtCoinQuantity.text ?? "",walletType: "metaMask")
+                        self.dismiss(animated: true)
                         self.navigationController?.popViewController(animated: true)
                     }
                 }
@@ -346,6 +380,7 @@ extension AddFiatAmountViewController {
                 if !self.btnToken.isHidden {
                    
                     self.delegate?.addFiatAmount(tokenAmount: self.txtCoinQuantity.text ?? "",type: "coin", value: "", walletType: "other")
+                    self.dismiss(animated: true)
                     self.navigationController?.popViewController(animated: true)
                 } else {
                     let str = self.lblYourCoinBal.text ?? ""
@@ -354,6 +389,7 @@ extension AddFiatAmountViewController {
                     if let result = self.extractSubstringBetweenWhitespaces(stringWithoutPrefix) {
                         print(result)
                         self.delegate?.addFiatAmount(tokenAmount: result,type: "currency",value: self.txtCoinQuantity.text ?? "",walletType: "other")
+                        self.dismiss(animated: true)
                         self.navigationController?.popViewController(animated: true)
                     }
                 }

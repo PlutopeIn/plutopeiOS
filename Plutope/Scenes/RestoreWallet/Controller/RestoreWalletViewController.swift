@@ -23,6 +23,10 @@ class RestoreWalletViewController: UIViewController {
         self.lblRestoreWallet12Words.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.restoreyourwalletwiththe12wordsecretphrase, comment: "")
         self.btnRestoreWithSecret.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.restorewithsecretphrase, comment: ""), for: .normal)
         self.btnRestoreWithiCloud.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.restorewithiCloud, comment: ""), for: .normal)
+        
+        lblRestoreWallet.font = AppFont.violetRegular(32).value
+        
+        
     }
     
     override func viewDidLoad() {
@@ -50,13 +54,14 @@ class RestoreWalletViewController: UIViewController {
     }
     
     @IBAction func actionRestoreWithiCloud(_ sender: Any) {
-
+        HapticFeedback.generate(.light)
         let viewToNavigate = SelectWalletBackUpViewController()
         self.navigationController?.pushViewController(viewToNavigate, animated: true)
         
     }
     
     @IBAction func actionRestorePhrase(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = ImportWalletViewController()
         self.navigationController?.pushViewController(viewToNavigate, animated: true)
     }

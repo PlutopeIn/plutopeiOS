@@ -17,7 +17,8 @@ protocol BlockchainFunctions {
     func signAndSendTranscation(_ receiverAddress: String?, gasLimit: BigUInt,gasPrice: BigUInt,txValue: BigUInt,rawData: String,completion: @escaping ((Bool,String?,EthereumData?) -> Void))
     func sendTokenOrCoinWithLavrageFee(_ receiverAddress: String?, tokenAmount: Double,nonce:String,gasAmount:String,gasLimit:String,completion: @escaping ((Bool,String?,EthereumData?) -> Void))
     func getTransactionHash(_ receiverAddress: String?, gasLimit: BigUInt, gasPrice: BigUInt, txValue: BigUInt, rawData: String,isGettingTransactionHash:Bool? ,completion: @escaping ((Bool, String?, EthereumData?) -> Void))
- } 
+    func sendTokenOrCoinFromWalletConect(_ receiverAddress: String?, tokenAmount: Double,gasLimit: BigInt,rawData: String,isGettingTransactionHash:Bool?, completion: @escaping ((Bool, String?,BigInt?,BigInt?,BigInt?, EthereumData?) -> Void))
+ }
 extension String {
     func toHexEncodedString(uppercase: Bool = true, prefix: String = "", separator: String = "") -> String {
         return unicodeScalars.map { prefix + .init($0.value, radix: 16, uppercase: uppercase) } .joined(separator: separator)

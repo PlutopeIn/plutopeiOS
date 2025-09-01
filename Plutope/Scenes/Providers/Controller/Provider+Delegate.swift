@@ -8,9 +8,11 @@ import UIKit
 extension ProvidersViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let data = arrProviderList[indexPath.row]
-        guard let proto = self.delegate else { return }
-        proto.valuesTobePassed(data)
+        HapticFeedback.generate(.light)
+        let data = buyArrProviderList[indexPath.row]
+       
+        self.buydelegate?.valuesTobePassed(data.name ?? "", amount: data.amount ?? "", url: data.url ?? "",imageUrl: data.image ?? "",providerName: data.providerName ?? "")
+        print("proto",data)
         self.navigationController?.popViewController(animated: true)
     }
 }

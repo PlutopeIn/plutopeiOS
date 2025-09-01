@@ -10,6 +10,7 @@ import CGWallet
 
 class BackupWalletViewController: UIViewController, Reusable {
     
+    @IBOutlet weak var tblHeight: NSLayoutConstraint!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var tbvWarnings: UITableView!
     @IBOutlet weak var btnContinue: GradientButton!
@@ -18,12 +19,6 @@ class BackupWalletViewController: UIViewController, Reusable {
     
     var mnemonicArray = [String]()
     var mnemonicKey: String? = ""
-    
-    /*var arrWarnings: [WarningModel] = [
-        WarningModel(isChecked: false, warning: StringConstants.information1),
-        WarningModel(isChecked: false, warning: StringConstants.information2),
-        WarningModel(isChecked: false, warning: StringConstants.information3)
-    ]*/
     var arrWarnings: [WarningModel] = [
         WarningModel(isChecked: false, warning:  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.iflosemysecretphrasemyfundswillbelostforever, comment: "")),
         WarningModel(isChecked: false, warning:  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.ifexposeorsharemysecretphrasetoanybodymyfundscangetstolen, comment: "")),
@@ -36,11 +31,24 @@ class BackupWalletViewController: UIViewController, Reusable {
         super.viewDidLoad()
         
         /// Navigation Header
-        defineHeader(headerView: headerView, titleText: "")
+        defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.backup, comment: ""))
         
-        self.btnContinue.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.continues, comment: ""), for: .normal)
+//        self.btnContinue.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.continues, comment: ""), for: .normal)
+        
+        let title = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.continues, comment: "")
+                let font = AppFont.violetRegular(18).value
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .font: font
+                ]
+
+                let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+                self.btnContinue.setAttributedTitle(attributedTitle, for: .normal)
+        
         self.lblBackUpWallet.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.backupyourwalletnow, comment: "")
         self.lblInTheNextStep.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.inthenextstepyouwillsesecretphrase12wordsAllowRecoverWallet, comment: "")
+        lblBackUpWallet.font = AppFont.violetRegular(32).value
+        lblInTheNextStep.font = AppFont.regular(14).value
+        lblInTheNextStep.addSpacing(LineHeight: 10, CharacterSpacing: nil, range: .none)
         
         /// Table register
         tableRegister()
@@ -55,6 +63,7 @@ class BackupWalletViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionContinue(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = RecoveryPhraseViewController()
         if wallet == nil {
             let mnemonic = CGWalletGenerateMnemonic(12)

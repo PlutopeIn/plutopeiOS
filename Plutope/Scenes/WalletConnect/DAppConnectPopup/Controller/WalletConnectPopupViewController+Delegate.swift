@@ -12,6 +12,7 @@ import WalletConnectSign
 // MARK: UITableViewDelegate Methods
 extension WalletConnectPopupViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        HapticFeedback.generate(.light)
         print("did select row \(indexPath)")
         var session = self.sessions[indexPath.row]
         self.onConnection(session: session)

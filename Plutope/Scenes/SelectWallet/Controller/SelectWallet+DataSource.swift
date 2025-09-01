@@ -39,7 +39,7 @@ extension SelectWalletBackUpViewController: UITableViewDataSource {
         
         //lblInstruction.text = StringConstants.instructionBackup
         lblInstruction.text =  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.choosethebackupforthewalletyouwanttorestore, comment: "")
-        lblInstruction.textColor = UIColor.c75769D
+        lblInstruction.textColor = UIColor.label
         lblInstruction.font = AppFont.regular(10).value
         
         view.addSubview(lblInstruction)

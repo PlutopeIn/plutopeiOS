@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SFPro_medium.ttf">
-            <string>SFProDisplay-Medium</string>
+        <array key="violet_sans.ttf">
+            <string>VioletSans-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -28,10 +29,22 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NNp-ZD-p4k">
                                     <rect key="frame" x="0.0" y="0.0" width="70" height="81"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4N8-Ce-b0O">
-                                            <rect key="frame" x="0.0" y="0.0" width="70" height="81"/>
+                                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4N8-Ce-b0O">
+                                            <rect key="frame" x="15" y="20.666666666666671" width="40" height="40"/>
+                                            <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="40" id="G5x-Lh-3Oa"/>
+                                                <constraint firstAttribute="height" constant="40" id="oik-TK-ZgP"/>
+                                            </constraints>
+                                            <color key="tintColor" systemColor="labelColor"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                             <state key="normal" image="Back"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="20"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                             <connections>
                                                 <action selector="actionBack:" destination="iN0-l3-epB" eventType="touchUpInside" id="bp9-Ub-kc0"/>
                                             </connections>
@@ -39,24 +52,21 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="4N8-Ce-b0O" firstAttribute="leading" secondItem="NNp-ZD-p4k" secondAttribute="leading" id="98U-OQ-SFc"/>
-                                        <constraint firstAttribute="bottom" secondItem="4N8-Ce-b0O" secondAttribute="bottom" id="IDE-8F-fSD"/>
+                                        <constraint firstItem="4N8-Ce-b0O" firstAttribute="centerX" secondItem="NNp-ZD-p4k" secondAttribute="centerX" id="CsH-Av-EXS"/>
                                         <constraint firstAttribute="width" constant="70" id="Q87-vf-Wgo"/>
-                                        <constraint firstItem="4N8-Ce-b0O" firstAttribute="top" secondItem="NNp-ZD-p4k" secondAttribute="top" id="WUa-et-0fF"/>
-                                        <constraint firstAttribute="trailing" secondItem="4N8-Ce-b0O" secondAttribute="trailing" id="bbk-22-GGS"/>
+                                        <constraint firstItem="4N8-Ce-b0O" firstAttribute="centerY" secondItem="NNp-ZD-p4k" secondAttribute="centerY" id="o94-qN-bmn"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Lv-8g-kCl">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Lv-8g-kCl">
                                     <rect key="frame" x="70" y="0.0" width="592" height="81"/>
-                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="18"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" name="VioletSans-Regular" family="Violet Sans" pointSize="20"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="75B-xi-zCb">
                                     <rect key="frame" x="662" y="0.0" width="60" height="81"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="PhL-YI-gr1">
-                                            <rect key="frame" x="5" y="20.666666666666671" width="40" height="40"/>
+                                            <rect key="frame" x="0.0" y="20.666666666666671" width="40" height="40"/>
                                             <subviews>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UmN-Qv-V8c">
                                                     <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -65,7 +75,7 @@
                                                         <constraint firstAttribute="width" constant="40" id="xIf-NI-qd7"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" image="ic_notification"/>
+                                                    <state key="normal" image="ic_new_notification"/>
                                                     <connections>
                                                         <action selector="actionNotification:" destination="iN0-l3-epB" eventType="touchUpInside" id="wUt-IF-27G"/>
                                                     </connections>
@@ -89,7 +99,7 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="60" id="4tF-s7-VJn"/>
                                         <constraint firstItem="PhL-YI-gr1" firstAttribute="centerY" secondItem="75B-xi-zCb" secondAttribute="centerY" id="PT7-wv-oq4"/>
-                                        <constraint firstAttribute="trailing" secondItem="PhL-YI-gr1" secondAttribute="trailing" constant="15" id="ywF-d9-QOG"/>
+                                        <constraint firstAttribute="trailing" secondItem="PhL-YI-gr1" secondAttribute="trailing" constant="20" id="ywF-d9-QOG"/>
                                     </constraints>
                                 </view>
                             </subviews>
@@ -123,7 +133,13 @@
         </view>
     </objects>
     <resources>
-        <image name="Back" width="14" height="14.828000068664551"/>
-        <image name="ic_notification" width="40" height="40"/>
+        <image name="Back" width="40" height="40"/>
+        <image name="ic_new_notification" width="40" height="40"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondarySystemFillColor">
+            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

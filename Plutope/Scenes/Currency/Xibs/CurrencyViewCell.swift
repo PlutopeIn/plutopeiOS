@@ -13,6 +13,7 @@ class CurrencyViewCell: UITableViewCell, Reusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        lblCurrency.font = AppFont.violetRegular(16).value
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

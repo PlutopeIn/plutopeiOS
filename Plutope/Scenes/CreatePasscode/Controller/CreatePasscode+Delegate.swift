@@ -9,7 +9,7 @@ import SDWebImage
 extension CreatePasscodeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        HapticFeedback.generate(.light)
         guard let cell = clvKeyboard.cellForItem(at: indexPath) as? KeyboardViewCell else { return }
         let number = indexPath.row + 1
         
@@ -42,7 +42,7 @@ extension CreatePasscodeViewController: UICollectionViewDelegate {
     }
     private func deletePasscodeDigit() {
         
-        for view in viewSecuredText.reversed() where view.tintColor == UIColor.c00C6FB {
+        for view in viewSecuredText.reversed() where view.tintColor == UIColor.systemBlue {
             view.imageTintColor = UIColor.c75769D
             passcode?.removeLast()
             return
@@ -60,7 +60,7 @@ extension CreatePasscodeViewController: UICollectionViewDelegate {
         let currentIndex = (passcode?.count ?? 0) - 1
         
         if currentIndex >= 0 && currentIndex < viewSecuredText.count {
-            viewSecuredText[currentIndex].imageTintColor = UIColor.c00C6FB
+            viewSecuredText[currentIndex].imageTintColor = UIColor.systemBlue
         }
     }
     private func checkPasscodeValidity() {

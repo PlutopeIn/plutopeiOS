@@ -1,8 +1,8 @@
 import UIKit
 import Combine
 
-import Web3Wallet
-
+//import Web3Wallet
+import ReownWalletKit
 final class SessionRequestPresenter: ObservableObject {
     private let interactor: SessionRequestInteractor
     private let router: SessionRequestRouter

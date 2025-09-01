@@ -17,21 +17,34 @@ class AddContactViewController: UIViewController {
     @IBOutlet weak var txtAddress: customTextField!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var btnPaste: UIButton!
+    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var lblPublicAddress: UILabel!
     
     weak var refreshDataDelegate: RefreshDataDelegate?
     var selectedContact: Contacts?
+    fileprivate func uiSetUp() {
+        self.txtName.placeholder = ""
+        self.lblName.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.name, comment: "")
+        self.txtAddress.placeholder = ""
+        self.lblPublicAddress.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.publicaddress0x, comment: "")
+//        self.btnPaste.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.paste, comment: ""), for: .normal)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        self.txtName.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.name, comment: "")
-        self.txtAddress.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.publicaddress0x, comment: "")
-        self.btnPaste.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.paste, comment: ""), for: .normal)
+        uiSetUp()
     
         setViewAndTarget()
         setContactDetail()
+        
+        lblName.font = AppFont.violetRegular(17.56).value
+        lblPublicAddress.font = AppFont.violetRegular(17.56).value
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        uiSetUp()
         if LocalizationSystem.sharedInstance.getLanguage() == "ar" {
             txtName.textAlignment = .right
             txtAddress.textAlignment = .right
@@ -60,7 +73,7 @@ class AddContactViewController: UIViewController {
             defineHeader(headerView: headerView, titleText: StringConstants.editContact)
         } else {
             btnDelete.isHidden = true
-            btnAddContact.setTitle( LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.addcontact, comment: ""), for: .normal)
+            btnAddContact.setTitle( LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.add, comment: ""), for: .normal)
             /// Navigation Header
             defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.addcontact, comment: ""))
         }
@@ -85,6 +98,7 @@ class AddContactViewController: UIViewController {
     
     // btnAddContactAction
     @IBAction func btnAddContactAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let allContactAddress = DatabaseHelper.shared.retrieveData("Contacts") as? [Contacts]
         
         if allContactAddress?.contains(where: { $0.address?.lowercased() == (self.txtAddress.text ?? "").lowercased() }) == true {
@@ -125,6 +139,7 @@ class AddContactViewController: UIViewController {
     
     // actionPaste
     @IBAction func actionPaste(_ sender: Any) {
+        HapticFeedback.generate(.light)
         txtAddress.text = ""
         if let copiedText = UIPasteboard.general.string, copiedText.validateContractAddress() {
             // Use the copied text here
@@ -137,18 +152,22 @@ class AddContactViewController: UIViewController {
     }
     /// btnScanAction
     @IBAction func btnScanAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         switch status {
         case .authorized:
-            let scanner = QRScannerViewController()
-            scanner.delegate = self
-            self.present(scanner, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                let scanner = QRScannerViewController()
+                scanner.delegate = self
+                self.present(scanner, animated: true, completion: nil)
+            }
         case .denied, .restricted:
             self.showCameraSettingsAlert()
         case .notDetermined:
             // Request camera permission
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
+                    
                     let scanner = QRScannerViewController()
                     scanner.delegate = self
                     DispatchQueue.main.async {
@@ -177,6 +196,7 @@ class AddContactViewController: UIViewController {
     }
     /// btnDeleteAction
     @IBAction func btnDeleteAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let contactObject = self.selectedContact
         let format = "contact_Id == %@"
         let entityName = "Contacts"

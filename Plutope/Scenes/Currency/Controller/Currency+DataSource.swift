@@ -12,6 +12,7 @@ extension CurrencyViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tbvCurrency.dequeueReusableCell(withIdentifier: CurrencyViewCell.reuseIdentifier) as? CurrencyViewCell else { return UITableViewCell() }
+        tableView.separatorStyle = .singleLine
         let data = arrCurrency?[indexPath.row]
         cell.selectionStyle = .none
         if data?.isPrimary ?? false {

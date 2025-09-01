@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_bold.ttf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+        <array key="SFPro_medium.ttf">
+            <string>SFProDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddNewCardActionPopup" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="cryptoView" destination="cWW-aT-8Kg" id="SlK-41-tdT"/>
+                <outlet property="ivClose" destination="v7u-3Z-UUH" id="K8c-2z-qIn"/>
+                <outlet property="ivOrderCard" destination="k68-zm-2hX" id="fTl-h8-Fvf"/>
+                <outlet property="lblMag" destination="hXO-WA-SPb" id="XHk-fN-ZQ0"/>
+                <outlet property="lblTitle" destination="MlZ-UM-Uaf" id="vYj-fC-qfA"/>
+                <outlet property="mainView" destination="CAz-BB-Jwd" id="6OI-rG-pId"/>
+                <outlet property="view" destination="CAz-BB-Jwd" id="myi-Je-MRk"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="CAz-BB-Jwd">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWW-aT-8Kg">
+                    <rect key="frame" x="0.0" y="661" width="393" height="191"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_CancleNew" translatesAutoresizingMaskIntoConstraints="NO" id="v7u-3Z-UUH">
+                            <rect key="frame" x="353" y="10" width="30" height="30"/>
+                            <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="FJZ-5O-JiO"/>
+                                <constraint firstAttribute="height" constant="30" id="GhR-1G-TLW"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="15"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iv_BlankCard" translatesAutoresizingMaskIntoConstraints="NO" id="k68-zm-2hX">
+                            <rect key="frame" x="20" y="45.666666666666629" width="100" height="100"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="53K-TH-aBP"/>
+                                <constraint firstAttribute="height" constant="100" id="llq-9z-eqo"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="15"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The mosst widely accepted card, now connected to your digital assets." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXO-WA-SPb">
+                            <rect key="frame" x="140" y="88.666666666666629" width="233" height="52.333333333333343"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="uwW-u2-261"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="13"/>
+                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Crypto card" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MlZ-UM-Uaf">
+                            <rect key="frame" x="140" y="49.999999999999993" width="233" height="28.666666666666664"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28.670000000000002" id="UnX-A6-aH0"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="24"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="MlZ-UM-Uaf" firstAttribute="leading" secondItem="hXO-WA-SPb" secondAttribute="leading" id="Eav-fz-MNF"/>
+                        <constraint firstItem="v7u-3Z-UUH" firstAttribute="top" secondItem="cWW-aT-8Kg" secondAttribute="top" constant="10" id="Peg-fC-YnE"/>
+                        <constraint firstAttribute="trailing" secondItem="v7u-3Z-UUH" secondAttribute="trailing" constant="10" id="VWY-bX-LBv"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="185" id="alu-nY-h6I"/>
+                        <constraint firstItem="hXO-WA-SPb" firstAttribute="leading" secondItem="k68-zm-2hX" secondAttribute="trailing" constant="20" id="fWS-i7-Ini"/>
+                        <constraint firstItem="MlZ-UM-Uaf" firstAttribute="top" secondItem="v7u-3Z-UUH" secondAttribute="bottom" constant="10" id="g1R-91-Rfd"/>
+                        <constraint firstAttribute="trailing" secondItem="hXO-WA-SPb" secondAttribute="trailing" constant="20" id="m6q-I5-i9F"/>
+                        <constraint firstAttribute="bottom" secondItem="hXO-WA-SPb" secondAttribute="bottom" constant="50" id="p94-s5-3Tg"/>
+                        <constraint firstAttribute="trailing" secondItem="MlZ-UM-Uaf" secondAttribute="trailing" constant="20" id="rcV-Y5-pBR"/>
+                        <constraint firstItem="k68-zm-2hX" firstAttribute="centerY" secondItem="cWW-aT-8Kg" secondAttribute="centerY" id="s8v-NG-hD5"/>
+                        <constraint firstItem="hXO-WA-SPb" firstAttribute="top" secondItem="MlZ-UM-Uaf" secondAttribute="bottom" constant="10" id="tL3-r3-whM"/>
+                        <constraint firstItem="k68-zm-2hX" firstAttribute="leading" secondItem="cWW-aT-8Kg" secondAttribute="leading" constant="20" id="tea-c1-EpQ"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="wpT-TY-LXA"/>
+            <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="cWW-aT-8Kg" secondAttribute="bottom" id="WYa-gc-jPf"/>
+                <constraint firstItem="wpT-TY-LXA" firstAttribute="trailing" secondItem="cWW-aT-8Kg" secondAttribute="trailing" id="fnx-BZ-zvm"/>
+                <constraint firstItem="cWW-aT-8Kg" firstAttribute="top" secondItem="wpT-TY-LXA" secondAttribute="top" constant="602" id="fom-Yu-HgL"/>
+                <constraint firstItem="cWW-aT-8Kg" firstAttribute="leading" secondItem="wpT-TY-LXA" secondAttribute="leading" id="sUc-ec-Yrh"/>
+            </constraints>
+            <point key="canvasLocation" x="22.137404580152669" y="20.422535211267608"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_CancleNew" width="40" height="40"/>
+        <image name="iv_BlankCard" width="2183" height="1858"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemFillColor">
+            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

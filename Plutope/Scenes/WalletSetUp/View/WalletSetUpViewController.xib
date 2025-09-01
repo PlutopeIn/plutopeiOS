@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -30,95 +31,77 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppBackground" translatesAutoresizingMaskIntoConstraints="NO" id="Mya-ID-3Mt">
-                    <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ifZ-2K-5zA">
-                    <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                    <rect key="frame" x="0.0" y="50" width="375" height="50"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="gCV-QU-I9s"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L1j-Ah-HpZ">
-                    <rect key="frame" x="0.0" y="109" width="393" height="709"/>
+                    <rect key="frame" x="0.0" y="100" width="375" height="678"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Setup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DUy-pv-BOU">
-                            <rect key="frame" x="120.33333333333333" y="14" width="152.66666666666669" height="34"/>
+                            <rect key="frame" x="35" y="14" width="152.66666666666666" height="34"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="34" id="2Dy-MB-doM"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="27"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the Financial Freedom" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="poJ-Ax-tlE">
-                            <rect key="frame" x="90" y="78" width="213" height="16"/>
+                            <rect key="frame" x="90" y="78" width="213" height="0.0"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="16" id="gEr-f6-Fmo"/>
+                                <constraint firstAttribute="height" id="gEr-f6-Fmo"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="13"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OnlinePayment" translatesAutoresizingMaskIntoConstraints="NO" id="wTe-Jr-ohc">
-                            <rect key="frame" x="65" y="164" width="251" height="235"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="235" id="ee2-jU-uep"/>
-                            </constraints>
-                        </imageView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Rnm-Yy-qv2">
-                            <rect key="frame" x="30" y="539" width="333" height="120"/>
+                            <rect key="frame" x="25" y="518" width="325" height="120"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MZV-HK-TlU" customClass="GradientButton" customModule="Plutope" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="50"/>
+                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MZV-HK-TlU">
+                                    <rect key="frame" x="0.0" y="0.0" width="325" height="50"/>
+                                    <color key="backgroundColor" systemColor="labelColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="Ncq-q1-LCJ"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="15"/>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" title="Create a new Wallet">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <state key="normal" title="Create New Wallet">
+                                        <color key="titleColor" systemColor="systemBackgroundColor"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
-                                            <color key="value" name="#121C3D"/>
-                                        </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
-                                            <color key="value" name="#00C6FB"/>
-                                        </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="cornderRadius">
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                             <real key="value" value="25"/>
                                         </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="actionCreateNewWallet:" destination="-1" eventType="touchUpInside" id="tq0-3x-XFQ"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DBi-UW-g5w">
-                                    <rect key="frame" x="0.0" y="70" width="333" height="50"/>
+                                    <rect key="frame" x="0.0" y="70" width="325" height="50"/>
+                                    <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="cZp-qz-VbV"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="15"/>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" title="Import using Secret Recovery Phrase">
-                                        <color key="titleColor" name="#00C6FB"/>
+                                    <state key="normal" title="Import Using Secret Phrase">
+                                        <color key="titleColor" systemColor="labelColor"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                            <real key="value" value="1"/>
-                                        </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                             <color key="value" name="#00C6FB"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                             <real key="value" value="25"/>
                                         </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="actionImport:" destination="-1" eventType="touchUpInside" id="rrT-mJ-fJu"/>
@@ -129,46 +112,54 @@
                                 <constraint firstAttribute="height" constant="120" id="Duy-qa-PUv"/>
                             </constraints>
                         </stackView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tcw-ur-gYw" customClass="LottieAnimationView" customModule="Lottie">
-                            <rect key="frame" x="65" y="164" width="251" height="235"/>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tcw-ur-gYw" customClass="LottieAnimationView" customModule="Lottie">
+                            <rect key="frame" x="1" y="53" width="373" height="454"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="walletSetup"/>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="new_onelinwallet" translatesAutoresizingMaskIntoConstraints="NO" id="wTe-Jr-ohc">
+                            <rect key="frame" x="1" y="53" width="373" height="454"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="wTe-Jr-ohc" firstAttribute="top" secondItem="poJ-Ax-tlE" secondAttribute="bottom" constant="70" id="A5R-yn-KcX"/>
+                        <constraint firstItem="DUy-pv-BOU" firstAttribute="leading" secondItem="L1j-Ah-HpZ" secondAttribute="leading" constant="35" id="4IB-pQ-wuu"/>
+                        <constraint firstItem="wTe-Jr-ohc" firstAttribute="top" secondItem="poJ-Ax-tlE" secondAttribute="bottom" id="A5R-yn-KcX"/>
                         <constraint firstItem="Tcw-ur-gYw" firstAttribute="bottom" secondItem="wTe-Jr-ohc" secondAttribute="bottom" id="DWt-R3-oiV"/>
                         <constraint firstAttribute="trailing" secondItem="poJ-Ax-tlE" secondAttribute="trailing" constant="90" id="FCS-NK-dU0"/>
+                        <constraint firstItem="Tcw-ur-gYw" firstAttribute="top" secondItem="DUy-pv-BOU" secondAttribute="bottom" constant="5" id="QEu-Ti-8Wn"/>
                         <constraint firstItem="DUy-pv-BOU" firstAttribute="top" secondItem="L1j-Ah-HpZ" secondAttribute="top" constant="14" id="UHq-0q-4IA"/>
                         <constraint firstItem="poJ-Ax-tlE" firstAttribute="leading" secondItem="L1j-Ah-HpZ" secondAttribute="leading" constant="90" id="W0x-OI-grA"/>
-                        <constraint firstAttribute="bottom" secondItem="Rnm-Yy-qv2" secondAttribute="bottom" constant="50" id="XXm-gd-5XG"/>
-                        <constraint firstAttribute="trailing" secondItem="Rnm-Yy-qv2" secondAttribute="trailing" constant="30" id="bMC-9e-tAH"/>
+                        <constraint firstAttribute="trailing" secondItem="Tcw-ur-gYw" secondAttribute="trailing" constant="1" id="XQ6-Hh-Jhz"/>
+                        <constraint firstAttribute="bottom" secondItem="Rnm-Yy-qv2" secondAttribute="bottom" constant="40" id="XXm-gd-5XG"/>
+                        <constraint firstAttribute="trailing" secondItem="Rnm-Yy-qv2" secondAttribute="trailing" constant="25" id="bMC-9e-tAH"/>
                         <constraint firstItem="Tcw-ur-gYw" firstAttribute="top" secondItem="wTe-Jr-ohc" secondAttribute="top" id="bdY-wK-PYN"/>
-                        <constraint firstItem="DUy-pv-BOU" firstAttribute="centerX" secondItem="L1j-Ah-HpZ" secondAttribute="centerX" id="bwt-AN-i00"/>
-                        <constraint firstItem="Rnm-Yy-qv2" firstAttribute="leading" secondItem="L1j-Ah-HpZ" secondAttribute="leading" constant="30" id="kI6-Se-udV"/>
-                        <constraint firstItem="Rnm-Yy-qv2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="wTe-Jr-ohc" secondAttribute="bottom" constant="50" id="pDB-9r-4gB"/>
+                        <constraint firstItem="Rnm-Yy-qv2" firstAttribute="leading" secondItem="L1j-Ah-HpZ" secondAttribute="leading" constant="25" id="kI6-Se-udV"/>
+                        <constraint firstItem="Rnm-Yy-qv2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="wTe-Jr-ohc" secondAttribute="bottom" constant="10" id="pDB-9r-4gB"/>
                         <constraint firstItem="Tcw-ur-gYw" firstAttribute="trailing" secondItem="wTe-Jr-ohc" secondAttribute="trailing" id="rkL-0H-XUC"/>
-                        <constraint firstItem="wTe-Jr-ohc" firstAttribute="leading" secondItem="L1j-Ah-HpZ" secondAttribute="leading" constant="65" id="rsK-N5-ed9"/>
-                        <constraint firstAttribute="trailing" secondItem="wTe-Jr-ohc" secondAttribute="trailing" constant="77" id="stR-UD-6F8"/>
+                        <constraint firstItem="wTe-Jr-ohc" firstAttribute="leading" secondItem="L1j-Ah-HpZ" secondAttribute="leading" constant="1" id="rsK-N5-ed9"/>
+                        <constraint firstAttribute="trailing" secondItem="wTe-Jr-ohc" secondAttribute="trailing" constant="1" id="stR-UD-6F8"/>
+                        <constraint firstItem="Tcw-ur-gYw" firstAttribute="leading" secondItem="L1j-Ah-HpZ" secondAttribute="leading" constant="1" id="t8I-jP-tTf"/>
                         <constraint firstItem="poJ-Ax-tlE" firstAttribute="top" secondItem="DUy-pv-BOU" secondAttribute="bottom" constant="30" id="vck-g2-jB3"/>
                         <constraint firstItem="Tcw-ur-gYw" firstAttribute="leading" secondItem="wTe-Jr-ohc" secondAttribute="leading" id="xPL-iY-ru9"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="poJ-Ax-tlE"/>
+                        </mask>
+                    </variation>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="Mya-ID-3Mt" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="3zL-an-I21"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="L1j-Ah-HpZ" secondAttribute="bottom" id="Eb5-xT-cxR"/>
-                <constraint firstItem="Mya-ID-3Mt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Hl7-Ot-ZBe"/>
                 <constraint firstItem="ifZ-2K-5zA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="J7c-Gh-HZ5"/>
                 <constraint firstItem="L1j-Ah-HpZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="QxV-UU-HOx"/>
-                <constraint firstItem="Mya-ID-3Mt" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="SX2-ye-RRB"/>
                 <constraint firstItem="L1j-Ah-HpZ" firstAttribute="top" secondItem="ifZ-2K-5zA" secondAttribute="bottom" id="cvT-gl-a7J"/>
-                <constraint firstAttribute="bottom" secondItem="Mya-ID-3Mt" secondAttribute="bottom" id="qAF-e3-Fmu"/>
                 <constraint firstItem="ifZ-2K-5zA" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="wFs-6o-wIg"/>
                 <constraint firstItem="ifZ-2K-5zA" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="x6W-tA-A0E"/>
                 <constraint firstItem="L1j-Ah-HpZ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="xuF-Sa-GlV"/>
@@ -177,19 +168,21 @@
         </view>
     </objects>
     <designables>
-        <designable name="MZV-HK-TlU">
-            <size key="intrinsicContentSize" width="134" height="30"/>
-        </designable>
         <designable name="Tcw-ur-gYw"/>
     </designables>
     <resources>
-        <image name="AppBackground" width="250" height="541.33331298828125"/>
-        <image name="OnlinePayment" width="230" height="235"/>
+        <image name="new_onelinwallet" width="375" height="454"/>
         <namedColor name="#00C6FB">
             <color red="0.0" green="0.77600002288818359" blue="0.98400002717971802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="#121C3D">
-            <color red="0.071000002324581146" green="0.10999999940395355" blue="0.23899999260902405" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

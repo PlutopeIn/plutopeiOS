@@ -73,6 +73,8 @@ extension SellCoinViewController {
                             return "\(coinDetail.symbol?.lowercased() ?? "")"
                         case .oKC:
                             return ""
+//                        case .opMainnet:
+//                            return "\(coinDetail.symbol?.lowercased() ?? "")"
                         default:
                             return ""
                         }
@@ -86,6 +88,8 @@ extension SellCoinViewController {
                             return "\(coinDetail.symbol?.lowercased() ?? "")"
                         case .oKC:
                             return ""
+//                        case .opMainnet:
+//                            return "\(coinDetail.symbol?.lowercased() ?? "")"
                         default:
                             return ""
                         }

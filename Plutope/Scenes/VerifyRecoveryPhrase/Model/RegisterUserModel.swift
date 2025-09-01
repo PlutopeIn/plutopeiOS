@@ -27,3 +27,35 @@ struct RegisterWalletList: Codable {
       //  case v = "__v"
     }
 }
+///
+struct ActiveUserTransaction {
+    var walletAddress: String?
+    var transactionType: TransactionType?
+    var providerType: ProvidersType?
+    var transactionHash: String?
+    var tokenDetailArrayList: [ActiveUserTokenDetail]?
+}
+
+struct ActiveUserTokenDetail {
+    var from: ActiveUserTokenInfo?
+    var to: ActiveUserTokenInfo?
+}
+
+struct ActiveUserTokenInfo {
+    var chainId: String?
+    var address: String?
+    var symbol: String?
+}
+enum TransactionType : String {
+    case send = "Send"
+    case buy = "buy"
+    case swap = "swap"
+    case other = "other"
+}
+enum ProvidersType: String {
+    case okx = "OKX"
+    case changeNow = "ChangeNow"
+    case rango = "Rango"
+    case exodus = "Exodus"
+    
+}

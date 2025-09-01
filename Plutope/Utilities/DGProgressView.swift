@@ -96,7 +96,7 @@ class DGProgressView : UIView {
         blurView.clipsToBounds = true
         blurView.layer.cornerRadius = 8
         activityView.layer.cornerRadius = 8
-        activityView.tintColor = .black
+        activityView.tintColor = .label
         blurView.contentView.addSubview(activityView)
         activityView.translatesAutoresizingMaskIntoConstraints = false
         

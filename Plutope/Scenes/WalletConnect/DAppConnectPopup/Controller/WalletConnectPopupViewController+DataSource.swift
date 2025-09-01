@@ -23,17 +23,51 @@ extension WalletConnectPopupViewController : UITableViewDataSource {
         cell.lblUrl.text = data.peer.url
         cell.lblName.textAlignment = (LocalizationSystem.sharedInstance.getLanguage() == "ar") ? .right : .left
         cell.ivWallet.image = nil
-        
-        if let unwrappedIconURL = URL(string: data.peer.icons.first ?? "") {
-            if let imageData = try? Data(contentsOf: unwrappedIconURL) {
-                DispatchQueue.main.async { [weak self] in
-                    cell.ivWallet.image = UIImage(data: imageData)
-                }
+      //  DispatchQueue.main.async { [weak self] in
+//        if let unwrappedIconURL = URL(string: data.peer.icons.first ?? "") {
+//            DispatchQueue.main.async {
+//                if let imageData = try? Data(contentsOf: unwrappedIconURL) {
+//                    cell.ivWallet.image = UIImage(data: imageData)
+//                }
+//            }
+//           
+//        } else {
+//        }
+        if let unwrappedIconURL = data.peer.icons.first {
+            loadFavicon(for: unwrappedIconURL) { image in
+                cell.ivWallet.image = image // Set image after loading
             }
         } else {
+            cell.ivWallet.image = UIImage(named: "placeholder") // Set a default image if URL is nil
         }
+        
         return cell
     }
+    func loadFavicon(for urlString: String, completion: @escaping (UIImage?) -> Void) {
+        guard let url = URL(string: urlString) else {
+            completion(nil) // Return nil if URL is invalid
+            return
+        }
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("Error loading image:", error.localizedDescription)
+                completion(nil)
+                return
+            }
+
+            if let data = data, let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    completion(image)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
+        }.resume()
+    }
+
     // remove session from index path
     func removeSession(at indexSet: IndexSet) async {
         let localSessions = sessions // Capture sessions in a local variable

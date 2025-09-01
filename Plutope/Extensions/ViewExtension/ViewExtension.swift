@@ -5,7 +5,40 @@
 //  Created by Priyanka Poojara on 02/06/23.
 //
 import UIKit
+import FirebaseAnalytics
+
+
 extension UIViewController {
+    static func swizzleViewDidAppear() {
+        let originalSelector = #selector(viewDidAppear(_:))
+        let swizzledSelector = #selector(swizzled_viewDidAppear(_:))
+
+        let originalMethod = class_getInstanceMethod(UIViewController.self, originalSelector)
+        let swizzledMethod = class_getInstanceMethod(UIViewController.self, swizzledSelector)
+
+        if let originalMethod = originalMethod, let swizzledMethod = swizzledMethod {
+            method_exchangeImplementations(originalMethod, swizzledMethod)
+        }
+    }
+
+    @objc func swizzled_viewDidAppear(_ animated: Bool) {
+        swizzled_viewDidAppear(animated) // Call original `viewDidAppear`
+
+        let screenName = String(describing: type(of: self))
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: screenName,
+            AnalyticsParameterScreenClass: screenName
+        ])
+    }
+}
+
+extension UIViewController {
+    func trackScreenView(screenName: String) {
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: screenName,
+            AnalyticsParameterScreenClass: String(describing: type(of: self))
+        ])
+    }
     
     func defineHeader(headerView: UIView, titleText: String, btnBackHidden: Bool = false, popToRoot: Bool = false, btnRightImage: UIImage? = nil, btnRightAction: ( () -> Void)? = nil, btnBackAction: ( () -> Void)? = nil, completion: ((_ status: Bool, _ message: String) -> Void)? = nil) {
        
@@ -16,11 +49,14 @@ extension UIViewController {
         header?.popRoot = popToRoot
         
         header?.lblTitle.text = titleText
+        header?.lblTitle.textColor = UIColor.label
+        header?.lblTitle.font = AppFont.violetRegular(20).value
         header?.languageUpdateHandler = completion
         header?.btnBack.isHidden = btnBackHidden
-        
+//        header?.btnBack.cornerRadius = header?.btnBack.frame.height ?? 20
         header?.btnRight.setImage(btnRightImage, for: .normal)
-        
+        header?.btnRight.tintColor = UIColor.label
+//        header?.btnRight.backgroundColor = UIColor.secondarySystemFill
         if let rightAction = btnRightAction {
             header?.btnRight.addTarget(self, action: #selector(handleBtnRightTap(_:)), for: .touchUpInside)
             header?.btnRight.tag = 1
@@ -44,6 +80,7 @@ extension UIViewController {
     }
     
     @objc private func handleBtnRightTap(_ sender: UIButton) {
+        HapticFeedback.generate(.light)
         if sender.tag == 1 {
             if let rightAction = objc_getAssociatedObject(self, &AssociatedKeys.rightActionClosure) as? () -> Void {
                 rightAction()
@@ -52,6 +89,7 @@ extension UIViewController {
     }
     
     @objc private func handleBtnBackTap(_ sender: UIButton) {
+        HapticFeedback.generate(.light)
         if sender.tag == 1 {
             if let backAction = objc_getAssociatedObject(self, &AssociatedKeys.backActionClosure) as? () -> Void {
                 backAction()

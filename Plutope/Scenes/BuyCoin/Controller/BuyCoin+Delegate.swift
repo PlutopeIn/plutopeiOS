@@ -5,6 +5,7 @@
 //  Created by Priyanka Poojara on 12/06/23.
 //
 import UIKit
+import SDWebImage
 extension BuyCoinViewController: UICollectionViewDelegate {
     
 //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -72,102 +73,103 @@ extension BuyCoinViewController: UICollectionViewDelegate {
 //       callAPIsAfterTaskCompletion()
 //   }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = clvKeyboard.cellForItem(at: indexPath) as? KeyboardViewCell else { return }
-
-        let number = indexPath.row + 1
-
-        animateCellSelection(cell)
-
-        switch number {
-        case 12:
-            // Delete Action
-            if txtPrice.text?.count ?? 0 > 0 {
-                txtPrice.text?.removeLast()
-            }
-        default:
-            // Number pad action
-            if let currentText = txtPrice.text, currentText.count < 11 {
-                if (txtPrice.text?.contains(".") == true) && cell.txtNumber.text == "." {
-                    // Handle special case if needed
-                } else {
-                    txtPrice.text = currentText + (cell.txtNumber.text ?? "")
-                }
-                lblPrice.adjustsFontSizeToFitWidth = true
-                lblPrice.minimumScaleFactor = 0.5
-            } else {
-                showToast(message: StringConstants.limitText, font: AppFont.regular(15).value)
-                return
-            }
-        }
-
-        // Delay the API call to ensure the text field is fully updated
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.makeAPICallIfValid()
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        guard let cell = clvKeyboard.cellForItem(at: indexPath) as? KeyboardViewCell else { return }
+//
+//        let number = indexPath.row + 1
+//
+//        animateCellSelection(cell)
+//
+//        switch number {
+//        case 12:
+//            // Delete Action
+//            if txtPrice.text?.count ?? 0 > 0 {
+//                txtPrice.text?.removeLast()
+//            }
+//        default:
+//            // Number pad action
+//            if let currentText = txtPrice.text, currentText.count < 11 {
+//                if (txtPrice.text?.contains(".") == true) && cell.txtNumber.text == "." {
+//                    // Handle special case if needed
+//                } else {
+//                    txtPrice.text = currentText + (cell.txtNumber.text ?? "")
+//                }
+//                lblPrice.adjustsFontSizeToFitWidth = true
+//                lblPrice.minimumScaleFactor = 0.5
+//            } else {
+//                showToast(message: StringConstants.limitText, font: AppFont.regular(15).value)
+//                return
+//            }
+//        }
+//
+//        // Delay the API call to ensure the text field is fully updated
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//            self.makeAPICallIfValid()
+//        }
+//    }
 
      func makeAPICallIfValid() {
-        if let price = Double(txtPrice.text ?? "0"), price > 0 {
-            self.btnNext.alpha = 1
-            self.btnNext.isUserInteractionEnabled = true
+         if let price = Double(txtPrice.text ?? "0"), price > 0  {
+             viewProvider.isHidden = true
+             self.lblChooseProvider.isHidden = true
             NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(apiCall), object: nil)
             perform(#selector(apiCall), with: nil, afterDelay: 1)
         } else {
             self.btnNext.alpha = 0.5
             self.btnNext.isUserInteractionEnabled = false
             self.lblCoinQuantity.hideLoading()
-            lblCoinQuantity.text = "Not available!"
+            lblCoinQuantity.text = " Not available! "
             viewProvider.isHidden = true
+            self.lblChooseProvider.isHidden = true
         }
     }
        @objc private func apiCall() {
            print("nscancel api call")
            self.lblCoinQuantity.showLoading()
-           apiCount = 0
-           callAPIsAfterTaskCompletion()
+//           apiCount = 0
+//           callAPIsAfterTaskCompletion()
+           txtPrice.resignFirstResponder()
+           getQuote()
        }
 }
 
 // MARK: - Dismiss Delegate
-extension BuyCoinViewController: ProviderSelectDelegate {
-   
-    func valuesTobePassed(_ provider: BuyProviders) {
-    
-        lblProviderName.text = provider.name
-        let formattedPrice = WalletData.shared.formatDecimalString("\(provider.bestPrice ?? "")", decimalPlaces: 6)
-        lblCoinQuantity.text = "~\(formattedPrice) \(coinDetail?.symbol ?? "")"
-        ivProvider.image = provider.imageUrl
-        
-        switch provider.name {
-            /// temporary hide onMeta code
-        case StringConstants.onMeta:
-            self.provider = .onMeta()
-        case StringConstants.changeNow:
-            self.provider = .changeNow()
-        case StringConstants.onRamp:
-            self.provider = .onRamp()
-        case StringConstants.meld:
-            self.provider = .meld()
-        case StringConstants.unLimit:
-            self.provider = .unlimit()
-        default:
-            break
+extension BuyCoinViewController: BuyProviderSelectDelegate {
+    func valuesTobePassed(_ name: String, amount: String, url: String, imageUrl: String,providerName: String) {
+        DispatchQueue.main.async {
+            
+            self.lblProviderName.text = name
+            self.lblBestPriceTitle.isHidden = true
+            self.providerName = providerName
+            let formattedPrice = WalletData.shared.formatDecimalString("\(amount)", decimalPlaces: 6)
+            self.lblCoinQuantity.text = " ~\(formattedPrice) \(self.coinDetail?.symbol ?? "") "
+            let imgUrl = ServiceNameConstant.BaseUrl.baseUrl + ServiceNameConstant.BaseUrl.clientVersion+ServiceNameConstant.BaseUrl.images + (imageUrl)
+            self.ivProvider.sd_setImage(with: URL(string: imgUrl))
+            self.url = url
+            self.btnNext.alpha = 1
+            self.btnNext.isUserInteractionEnabled = true
         }
+        
     }
+  //  func valuesTobePassed(_ provider: [BuyMeargedDataList]) {
+//        ivProvider.image = provider.imageUrl
+        
+   // }
 }
 
 // MARK: Currency update delegate
 extension BuyCoinViewController: CurrencyUpdateDelegate {
     
     func updateCurrency(currencyObject: Currencies) {
+        viewProvider.isHidden = true
+        lblChooseProvider.isHidden = true
+        self.btnNext.alpha = 0.5
+        self.btnNext.isUserInteractionEnabled = false
         self.lblCurrency.text = currencyObject.sign
         self.btnSelectedCurrency.setTitle(currencyObject.symbol ?? "", for: .normal)
         self.selectedCurrency = currencyObject
-        lblCoinQuantity.showLoading()
-        getBestPriceFromAllProvider(buyProviders: supportedProviders)
-        apiCount = 0
-        // callAPIsAfterTaskCompletion()
+        getBestPriceFromAllProvider()
+
     }
     
 }

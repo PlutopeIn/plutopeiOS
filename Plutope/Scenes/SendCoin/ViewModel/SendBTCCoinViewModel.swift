@@ -14,11 +14,11 @@ class SendBTCCoinViewModel {
     init(_ bindFailure: @escaping BindFail) {
         self.failblock = bindFailure
     }
-    func sendBTCApi(privateKey:String,value:String,toAddress:String,env:String,fromAddress:String,completion:@escaping((_ statusResult:Int,_ message : String,_ resData : [String:Any]?)-> Void)) {
+    func sendBTCApi(privateKey:String,value:String,toAddress:String,env:String,fromAddress:String,completion:@escaping((_ statusResult:Int,_ message : String,_ resData : String?)-> Void)) {
         
         repo?.apiSendBTC(privateKey: privateKey, value: value, toAddress: toAddress, env: env, fromAddress: fromAddress, completion: { statusResult, message, resData in
             if statusResult == 1 {
-                completion(1,message,nil)
+                completion(1,message,resData)
             } else {
                 completion(0,message,nil)
             }

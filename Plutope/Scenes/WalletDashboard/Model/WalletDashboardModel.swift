@@ -72,3 +72,81 @@ enum Symbol: String, Codable {
     case cbeet = "CBEET"
     case pry = "PRY"
 }
+struct DashboardTrnsactions {
+    var image :UIImage
+    var name : String
+}
+// MARK: - NFTDataNewElement
+struct NFTDataNewElement: Codable {
+    let chain: String?
+    let contractType: String?
+    let tokenAddress, tokenID: String?
+    let tokenURI: String?
+    let metadata: MetadataNew?
+    let name, symbol: String?
+    let amount: Int?
+    let blockNumber: String?
+    let ownerOf: String?
+    let tokenHash, lastMetadataSync, lastTokenURISync: String?
+    let possibleSpam: Bool?
+    let blockNumberMinted: String?
+
+    enum CodingKeys: String, CodingKey {
+        case chain, contractType, tokenAddress
+        case tokenID = "tokenId"
+        case tokenURI = "tokenUri"
+        case metadata, name, symbol, amount, blockNumber, ownerOf, tokenHash, lastMetadataSync
+        case lastTokenURISync = "lastTokenUriSync"
+        case possibleSpam, blockNumberMinted
+    }
+}
+
+
+
+// MARK: - Metadata
+struct MetadataNew: Codable {
+    let name, symbol, description: String?
+    let image: String?
+    let externalURL: String?
+    let attributes: [Attribute]?
+    let level: String?
+    let price: Int?
+//    let creators: [JSONAny]?
+    let collection: Collection?
+    let sellerFeeBasisPoints: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case name, symbol, description, image
+        case externalURL = "external_url"
+        case attributes, level, price, collection
+        case sellerFeeBasisPoints = "seller_fee_basis_points"
+        //creators
+    }
+}
+
+// MARK: - Attribute
+struct Attribute: Codable {
+    let traitType: String?
+    let value: String?
+    let key: Key?
+    let energy, durability: Int?
+    let level: String?
+
+    enum CodingKeys: String, CodingKey {
+        case traitType = "trait_type"
+        case value, key, energy, durability, level
+    }
+}
+
+enum Key: String, Codable {
+    case website = "Website :"
+}
+
+// MARK: - Collection
+struct Collection: Codable {
+    let name, family: String?
+}
+
+
+
+typealias NFTDataNew = [NFTDataNewElement]

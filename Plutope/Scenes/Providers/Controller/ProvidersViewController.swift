@@ -9,10 +9,11 @@ class ProvidersViewController: UIViewController, Reusable {
    
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var tbvProviders: UITableView!
-    
     weak var delegate: ProviderSelectDelegate?
+    weak var buydelegate: BuyProviderSelectDelegate?
     var coinDetail: Token?
     var arrProviderList: [BuyProviders] = []
+    var buyArrProviderList: [BuyMeargedDataList] = []
     var providerType : ProviderType = .buy
     var selectedCurrency : Currencies?
     override func viewDidLoad() {
@@ -23,8 +24,8 @@ class ProvidersViewController: UIViewController, Reusable {
         
         /// Table Register
         tableRegister()
-        
-       // self.arrProviderList = coinDetail?.chain!.providers ?? []
+        print(buyArrProviderList)
+//        self.arrProviderList = coinDetail?.chain!.providers ?? []
         
     }
     

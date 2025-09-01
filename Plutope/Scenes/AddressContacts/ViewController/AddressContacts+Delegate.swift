@@ -11,6 +11,7 @@ import UIKit
 // MARK: UITableViewDelegate
 extension AddressContactsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        HapticFeedback.generate(.light)
         if isFromSend {
             let sectionTitle = sectionTitles[indexPath.section]
             let contactsInSection = contactsDictionary[sectionTitle]

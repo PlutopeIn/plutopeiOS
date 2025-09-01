@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_regular.ttf">
+            <string>SFProDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyCardViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="headerHeight" destination="XN2-D9-qQ8" id="zH9-tJ-0WU"/>
+                <outlet property="headerView" destination="DNG-wu-1Gb" id="E5K-Ps-MWE"/>
+                <outlet property="ivAddCard" destination="ZFl-mQ-FNn" id="wZO-U3-iMj"/>
+                <outlet property="tbvCard" destination="U4v-Lk-6xh" id="tPi-YE-5mt"/>
+                <outlet property="txtSearch" destination="caf-nu-m3K" id="IsY-jM-gzg"/>
+                <outlet property="view" destination="xMu-Ei-onn" id="zvM-By-4Bh"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="xMu-Ei-onn">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DNG-wu-1Gb">
+                    <rect key="frame" x="0.0" y="59" width="393" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="XN2-D9-qQ8"/>
+                    </constraints>
+                </view>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_buy 1" translatesAutoresizingMaskIntoConstraints="NO" id="ZFl-mQ-FNn">
+                    <rect key="frame" x="348" y="79" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="1uJ-Nf-X42"/>
+                        <constraint firstAttribute="height" constant="25" id="ttV-sv-Cdg"/>
+                    </constraints>
+                </imageView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="U4v-Lk-6xh">
+                    <rect key="frame" x="20" y="199" width="353" height="619"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UCk-Gc-XXO">
+                    <rect key="frame" x="20" y="139" width="353" height="50"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="caf-nu-m3K" customClass="customTextField" customModule="Plutope" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="17"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="leftSpacing">
+                                    <real key="value" value="43"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="22.5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
+                                    <color key="value" systemColor="placeholderTextColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="semanticContentAttribute">
+                                    <integer key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="rightSpacing">
+                                    <real key="value" value="43"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </textField>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_search" translatesAutoresizingMaskIntoConstraints="NO" id="E4G-XF-tgN">
+                            <rect key="frame" x="17" y="16.666666666666657" width="17" height="17"/>
+                            <color key="tintColor" systemColor="secondaryLabelColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="17" id="HLj-cZ-CHb"/>
+                                <constraint firstAttribute="height" constant="17" id="lxm-tK-P9W"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="caf-nu-m3K" secondAttribute="trailing" id="Ixv-wh-EeQ"/>
+                        <constraint firstItem="E4G-XF-tgN" firstAttribute="centerY" secondItem="UCk-Gc-XXO" secondAttribute="centerY" id="LeK-ju-6qX"/>
+                        <constraint firstItem="caf-nu-m3K" firstAttribute="leading" secondItem="UCk-Gc-XXO" secondAttribute="leading" id="OIA-et-3v5"/>
+                        <constraint firstItem="E4G-XF-tgN" firstAttribute="leading" secondItem="UCk-Gc-XXO" secondAttribute="leading" constant="17" id="Vj5-Ec-nAq"/>
+                        <constraint firstAttribute="bottom" secondItem="caf-nu-m3K" secondAttribute="bottom" id="cvp-lt-X2A"/>
+                        <constraint firstItem="caf-nu-m3K" firstAttribute="top" secondItem="UCk-Gc-XXO" secondAttribute="top" id="kou-hS-qrF"/>
+                        <constraint firstAttribute="height" constant="50" id="zbs-TQ-deB"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" systemColor="systemGray3Color"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="23"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="lng-c7-Xrk"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="UCk-Gc-XXO" firstAttribute="leading" secondItem="lng-c7-Xrk" secondAttribute="leading" constant="20" id="3du-Wh-CzJ"/>
+                <constraint firstItem="DNG-wu-1Gb" firstAttribute="leading" secondItem="xMu-Ei-onn" secondAttribute="leading" id="8Gy-ec-NcZ"/>
+                <constraint firstItem="lng-c7-Xrk" firstAttribute="trailing" secondItem="UCk-Gc-XXO" secondAttribute="trailing" constant="20" id="BI0-Vz-0tC"/>
+                <constraint firstItem="UCk-Gc-XXO" firstAttribute="top" secondItem="DNG-wu-1Gb" secondAttribute="bottom" constant="10" id="BmS-xY-5ct"/>
+                <constraint firstItem="DNG-wu-1Gb" firstAttribute="top" secondItem="lng-c7-Xrk" secondAttribute="top" id="DAG-cs-MSc"/>
+                <constraint firstItem="lng-c7-Xrk" firstAttribute="trailing" secondItem="U4v-Lk-6xh" secondAttribute="trailing" constant="20" id="DJC-A8-hD2"/>
+                <constraint firstItem="lng-c7-Xrk" firstAttribute="trailing" secondItem="ZFl-mQ-FNn" secondAttribute="trailing" constant="20" id="IK2-bV-iQT"/>
+                <constraint firstAttribute="trailing" secondItem="DNG-wu-1Gb" secondAttribute="trailing" id="euw-RI-wDq"/>
+                <constraint firstItem="lng-c7-Xrk" firstAttribute="bottom" secondItem="U4v-Lk-6xh" secondAttribute="bottom" id="gDI-D1-UlQ"/>
+                <constraint firstItem="U4v-Lk-6xh" firstAttribute="top" secondItem="UCk-Gc-XXO" secondAttribute="bottom" constant="10" id="jlo-v8-kYF"/>
+                <constraint firstItem="U4v-Lk-6xh" firstAttribute="leading" secondItem="lng-c7-Xrk" secondAttribute="leading" constant="20" id="t8T-Nd-tvo"/>
+                <constraint firstItem="ZFl-mQ-FNn" firstAttribute="top" secondItem="DNG-wu-1Gb" secondAttribute="top" constant="20" id="tqR-zV-ATn"/>
+            </constraints>
+            <point key="canvasLocation" x="30" y="-11"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="caf-nu-m3K">
+            <size key="intrinsicContentSize" width="67.666666666666671" height="21.666666666666668"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="ic_buy 1" width="49" height="49"/>
+        <image name="ic_search" width="16.294000625610352" height="16.295999526977539"/>
+        <systemColor name="placeholderTextColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29803921570000003" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemFillColor">
+            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray3Color">
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

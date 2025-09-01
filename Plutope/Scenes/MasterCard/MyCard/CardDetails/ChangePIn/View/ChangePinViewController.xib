@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_bold.ttf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangePinViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="btnClose" destination="l2K-n4-KaJ" id="I5c-4F-Yap"/>
+                <outlet property="btnSubmit" destination="zuR-JU-aL3" id="f9n-2N-lDK"/>
+                <outlet property="lblTitle" destination="26t-AO-MHo" id="TG5-y9-QQy"/>
+                <outlet property="lblValidationText" destination="Rto-u0-huW" id="tXR-VA-uOT"/>
+                <outlet property="mainView" destination="kGN-41-Kiu" id="gro-vW-a8K"/>
+                <outlet property="otpViewTextField" destination="HfU-LZ-nWw" id="cJu-5d-igK"/>
+                <outlet property="view" destination="kGN-41-Kiu" id="pOl-mV-6vv"/>
+                <outletCollection property="txtOtp" destination="v4d-aF-yiG" collectionClass="NSMutableArray" id="HUf-zZ-891"/>
+                <outletCollection property="txtOtp" destination="V5H-ii-mWW" collectionClass="NSMutableArray" id="cUX-qj-gko"/>
+                <outletCollection property="txtOtp" destination="cto-ja-EuH" collectionClass="NSMutableArray" id="Pye-uU-xnn"/>
+                <outletCollection property="txtOtp" destination="8Qq-Aa-ueh" collectionClass="NSMutableArray" id="FD0-fg-iBX"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="kGN-41-Kiu">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gkk-Gq-I54">
+                    <rect key="frame" x="0.0" y="549.66666666666663" width="393" height="302.33333333333337"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Come up with a PIN" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26t-AO-MHo">
+                            <rect key="frame" x="20" y="50" width="353" height="28"/>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="24"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="THt-es-ALS">
+                            <rect key="frame" x="66.666666666666686" y="137.33333333333337" width="260" height="50"/>
+                            <subviews>
+                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v4d-aF-yiG">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="50" id="mSO-ac-Jcf">
+                                            <variation key="heightClass=regular-widthClass=regular" constant="80"/>
+                                        </constraint>
+                                    </constraints>
+                                    <color key="textColor" name="#25264D"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="15"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </textField>
+                                <textField opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="V5H-ii-mWW">
+                                    <rect key="frame" x="69.999999999999986" y="0.0" width="50" height="50"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="50" id="bvn-Nn-AgG">
+                                            <variation key="heightClass=regular-widthClass=regular" constant="80"/>
+                                        </constraint>
+                                    </constraints>
+                                    <color key="textColor" name="#25264D"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="15"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </textField>
+                                <textField opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cto-ja-EuH">
+                                    <rect key="frame" x="140" y="0.0" width="50" height="50"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="50" id="p5T-0B-BYN">
+                                            <variation key="heightClass=regular-widthClass=regular" constant="80"/>
+                                        </constraint>
+                                    </constraints>
+                                    <color key="textColor" name="#25264D"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="15"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </textField>
+                                <textField opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8Qq-Aa-ueh">
+                                    <rect key="frame" x="210" y="0.0" width="50" height="50"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="50" id="03o-l9-gXk">
+                                            <variation key="heightClass=regular-widthClass=regular" constant="80"/>
+                                        </constraint>
+                                    </constraints>
+                                    <color key="textColor" name="#25264D"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="15"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </textField>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="pJI-vh-VpB">
+                                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
+                                </constraint>
+                            </constraints>
+                        </stackView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_CancleNew" translatesAutoresizingMaskIntoConstraints="NO" id="l2K-n4-KaJ">
+                            <rect key="frame" x="353" y="10" width="30" height="30"/>
+                            <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="Gs7-JW-OW5"/>
+                                <constraint firstAttribute="width" constant="30" id="yvl-pB-jud"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="15"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zuR-JU-aL3" customClass="GradientButton" customModule="Plutope" customModuleProvider="target">
+                            <rect key="frame" x="96.666666666666686" y="202.33333333333337" width="200" height="50"/>
+                            <color key="backgroundColor" systemColor="labelColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="200" id="1mV-he-syY"/>
+                                <constraint firstAttribute="height" constant="50" id="lSe-Tg-fn7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="15"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Submit">
+                                <color key="titleColor" systemColor="systemBackgroundColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornderRadius">
+                                    <real key="value" value="25"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="btnSubmitAction:" destination="-1" eventType="touchUpInside" id="2b6-vR-5Ju"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="HfU-LZ-nWw" customClass="SVPinView" customModule="SVPinView">
+                            <rect key="frame" x="30" y="108" width="333" height="50"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="02k-fi-NI3"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="activeBorderLineColor">
+                                    <color key="value" systemColor="systemGray3Color"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="activeBorderLineThickness">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderLineThickness">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="interSpace">
+                                    <real key="value" value="14"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                    <color key="value" systemColor="labelColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="shouldSecureText" value="NO"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="allowsWhitespaces" value="NO"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="fieldCornerRadius">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="activeFieldCornerRadius">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="fieldBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="activeFieldBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderLineColor">
+                                    <color key="value" systemColor="systemGray3Color"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Avoid three identical or sequential numbers in a row" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rto-u0-huW">
+                            <rect key="frame" x="20" y="173" width="353" height="14.333333333333343"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" name="light-foreground-negative"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="250" id="2WW-3q-XnJ"/>
+                        <constraint firstAttribute="trailing" secondItem="HfU-LZ-nWw" secondAttribute="trailing" constant="30" id="5zQ-YQ-zPg"/>
+                        <constraint firstItem="zuR-JU-aL3" firstAttribute="centerX" secondItem="gkk-Gq-I54" secondAttribute="centerX" id="74w-Mc-VU1"/>
+                        <constraint firstItem="26t-AO-MHo" firstAttribute="top" secondItem="gkk-Gq-I54" secondAttribute="top" constant="50" id="7vP-fE-r8p"/>
+                        <constraint firstItem="THt-es-ALS" firstAttribute="centerX" secondItem="gkk-Gq-I54" secondAttribute="centerX" id="BQo-Gx-IaE"/>
+                        <constraint firstItem="Rto-u0-huW" firstAttribute="leading" secondItem="gkk-Gq-I54" secondAttribute="leading" constant="20" id="FR1-XW-qGJ"/>
+                        <constraint firstItem="Rto-u0-huW" firstAttribute="top" secondItem="HfU-LZ-nWw" secondAttribute="bottom" constant="15" id="N4J-gc-Sq4"/>
+                        <constraint firstItem="l2K-n4-KaJ" firstAttribute="top" secondItem="gkk-Gq-I54" secondAttribute="top" constant="10" id="OCM-bX-Drm"/>
+                        <constraint firstItem="THt-es-ALS" firstAttribute="top" secondItem="26t-AO-MHo" secondAttribute="bottom" constant="30" id="S6O-RY-c4D"/>
+                        <constraint firstAttribute="bottom" secondItem="zuR-JU-aL3" secondAttribute="bottom" constant="50" id="SV8-71-6cx"/>
+                        <constraint firstAttribute="trailing" secondItem="Rto-u0-huW" secondAttribute="trailing" constant="20" id="eTK-lr-hYn"/>
+                        <constraint firstItem="zuR-JU-aL3" firstAttribute="top" secondItem="Rto-u0-huW" secondAttribute="bottom" constant="15" id="hPO-zI-wLA"/>
+                        <constraint firstItem="HfU-LZ-nWw" firstAttribute="leading" secondItem="gkk-Gq-I54" secondAttribute="leading" constant="30" id="hsY-Rk-D3K"/>
+                        <constraint firstItem="zuR-JU-aL3" firstAttribute="top" secondItem="THt-es-ALS" secondAttribute="bottom" constant="50" id="vRT-wK-2Ot"/>
+                        <constraint firstItem="HfU-LZ-nWw" firstAttribute="top" secondItem="26t-AO-MHo" secondAttribute="bottom" constant="30" id="w6e-3A-2Bm"/>
+                        <constraint firstAttribute="trailing" secondItem="l2K-n4-KaJ" secondAttribute="trailing" constant="10" id="zSk-qG-BXt"/>
+                        <constraint firstItem="26t-AO-MHo" firstAttribute="leading" secondItem="gkk-Gq-I54" secondAttribute="leading" constant="20" id="zkd-3d-gCy"/>
+                        <constraint firstAttribute="trailing" secondItem="26t-AO-MHo" secondAttribute="trailing" constant="20" id="zqo-la-0j9"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="THt-es-ALS"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="zMa-uF-NpM"/>
+            <color key="backgroundColor" systemColor="separatorColor"/>
+            <constraints>
+                <constraint firstItem="gkk-Gq-I54" firstAttribute="leading" secondItem="zMa-uF-NpM" secondAttribute="leading" id="ZdI-Ju-gG1"/>
+                <constraint firstAttribute="bottom" secondItem="gkk-Gq-I54" secondAttribute="bottom" id="hbn-YT-FgG"/>
+                <constraint firstItem="zMa-uF-NpM" firstAttribute="trailing" secondItem="gkk-Gq-I54" secondAttribute="trailing" id="tnB-h9-Wml"/>
+            </constraints>
+            <point key="canvasLocation" x="22.137404580152669" y="20.422535211267608"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="zuR-JU-aL3">
+            <size key="intrinsicContentSize" width="48" height="30"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="ic_CancleNew" width="40" height="40"/>
+        <namedColor name="#25264D">
+            <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="light-foreground-negative">
+            <color red="0.94117647058823528" green="0.31764705882352939" blue="0.25882352941176473" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondarySystemFillColor">
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="separatorColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray3Color">
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

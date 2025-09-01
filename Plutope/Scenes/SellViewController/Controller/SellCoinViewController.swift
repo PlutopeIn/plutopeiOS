@@ -67,6 +67,7 @@ class SellCoinViewController: UIViewController {
         
         /// Present Info warnig before sell asset
         ivInfo.addTapGesture {
+            HapticFeedback.generate(.light)
             let presentInfoVc = PushNotificationViewController()
             presentInfoVc.alertData = .sellCryptoWarning
             presentInfoVc.modalTransitionStyle = .crossDissolve
@@ -85,18 +86,18 @@ class SellCoinViewController: UIViewController {
         /// Update Provider name with the name from the provider
         lblPrice.text = "10"
         
-        for idx in 0..<providers.count {
-            if providers[idx] == .onMeta() {
-                allProviders.append(BuyProviders(imageUrl: UIImage.providerOnMeta, name: StringConstants.onMeta, bestPrice: ""))
-                
-            } else if providers[idx] == .changeNow() {
-                allProviders.append(BuyProviders(imageUrl: UIImage.providerChangeNow, name: StringConstants.changeNow, bestPrice: ""))
-                
-            } else if providers[idx] == .onRamp() {
-                allProviders.append(BuyProviders(imageUrl: UIImage.providerRamp, name: StringConstants.onRamp, bestPrice: ""))
-                
-            }
-        }
+//        for idx in 0..<providers.count {
+//            if providers[idx] == .onMeta() {
+//                allProviders.append(BuyProviders(imageUrl: UIImage.providerOnMeta, name: StringConstants.onMeta, bestPrice: ""))
+//                
+//            } else if providers[idx] == .changeNow() {
+//                allProviders.append(BuyProviders(imageUrl: UIImage.providerChangeNow, name: StringConstants.changeNow, bestPrice: ""))
+//                
+//            } else if providers[idx] == .onRamp() {
+//                allProviders.append(BuyProviders(imageUrl: UIImage.providerRamp, name: StringConstants.onRamp, bestPrice: ""))
+//                
+//            }
+//        }
        
         if Double(coinDetail?.balance ?? "") ?? 0.0 > 0 {
             let roundedValue = Double(coinDetail?.balance ?? "0") ?? 0.0
@@ -162,6 +163,7 @@ class SellCoinViewController: UIViewController {
     
     /// Will open provider list
     @objc func providerTapped(_ sender: UITapGestureRecognizer) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = ProvidersViewController()
         viewToNavigate.coinDetail = self.coinDetail
         var sortedProviders = allProviders.sorted(by: { provider1, provider2 in
@@ -185,6 +187,7 @@ class SellCoinViewController: UIViewController {
         clvKeyboard.register(KeyboardViewCell.nib, forCellWithReuseIdentifier: KeyboardViewCell.reuseIdentifier)
     }
     @IBAction func actionCurrency(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = CurrencyViewController()
         viewToNavigate.delegate = self
         self.navigationController?.pushViewController(viewToNavigate, animated: true)
@@ -192,6 +195,7 @@ class SellCoinViewController: UIViewController {
     
     /// actionNext
     @IBAction func actionNext(_ sender: Any) {
+        HapticFeedback.generate(.light)
         // guard let priceval = Double(lblPrice.text ?? ""), priceval <= minimumAmount,
         guard let price = lblPrice.text,
               let walletAddress = coinDetail?.chain?.walletAddress,
@@ -209,7 +213,7 @@ class SellCoinViewController: UIViewController {
                 if coinDetail?.address != "" {
                     switch coinDetail?.chain {
                     case .polygon:
-                        return "\(currencyToBuy)matic"
+                        return "\(currencyToBuy)pol"
                     case .binanceSmartChain:
                         return "\(currencyToBuy)bsc"
                     case .ethereum:

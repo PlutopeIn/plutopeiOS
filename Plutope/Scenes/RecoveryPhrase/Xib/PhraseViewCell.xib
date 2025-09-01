@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -33,12 +33,11 @@
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="18"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IwB-65-BEE">
-                                                <rect key="frame" x="28" y="0.0" width="22" height="18"/>
+                                                <rect key="frame" x="25" y="0.0" width="25" height="18"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="22" id="3CM-eK-RMN"/>
+                                                    <constraint firstAttribute="width" constant="25" id="3CM-eK-RMN"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="17"/>
-                                                <color key="textColor" name="#75769D"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -55,7 +54,6 @@
                                         <rect key="frame" x="59" y="0.0" width="77" height="18"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="14"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -63,13 +61,23 @@
                                     <constraint firstAttribute="height" constant="18" id="xng-d9-8xr"/>
                                 </constraints>
                             </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ReU-MF-Sqb">
+                                <rect key="frame" x="0.0" y="27" width="136" height="1"/>
+                                <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="ZOa-RM-cr7"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ReU-MF-Sqb" secondAttribute="trailing" id="CXt-lE-1z0"/>
                             <constraint firstItem="7Nr-0Y-B04" firstAttribute="leading" secondItem="elU-ZW-nwn" secondAttribute="leading" id="DdP-DM-k2S"/>
                             <constraint firstAttribute="trailing" secondItem="7Nr-0Y-B04" secondAttribute="trailing" id="END-An-BEA"/>
                             <constraint firstItem="7Nr-0Y-B04" firstAttribute="centerY" secondItem="elU-ZW-nwn" secondAttribute="centerY" id="Mjq-yn-Afb"/>
+                            <constraint firstItem="ReU-MF-Sqb" firstAttribute="leading" secondItem="elU-ZW-nwn" secondAttribute="leading" id="h18-tI-7rT"/>
                             <constraint firstAttribute="height" constant="32" id="jQN-AD-kCI"/>
+                            <constraint firstItem="ReU-MF-Sqb" firstAttribute="top" secondItem="7Nr-0Y-B04" secondAttribute="bottom" constant="2" id="ya0-dZ-j5V"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -94,12 +102,12 @@
                 <outlet property="lblPhrase" destination="inD-NX-J33" id="mA2-wU-fS3"/>
                 <outlet property="viewNumber" destination="ef2-EQ-NUJ" id="0Gy-9g-SVs"/>
             </connections>
-            <point key="canvasLocation" x="135.87786259541986" y="-9.5070422535211279"/>
+            <point key="canvasLocation" x="135.87786259541986" y="-9.8591549295774659"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <namedColor name="#75769D">
-            <color red="0.45899999141693115" green="0.46299999952316284" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <systemColor name="secondarySystemFillColor">
+            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

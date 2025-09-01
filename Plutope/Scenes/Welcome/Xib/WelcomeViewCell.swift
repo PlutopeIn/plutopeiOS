@@ -15,7 +15,8 @@ class WelcomeViewCell: UICollectionViewCell, Reusable {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        lblTitle.font = AppFont.violetRegular(32).value
+        lblDescription.font = AppFont.violetRegular(16).value
     }
     
 }

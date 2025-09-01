@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AllCardHistoryViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="headerView" destination="kmu-UH-gPM" id="RmJ-b9-Aay"/>
+                <outlet property="tbvHistory" destination="slp-NN-cdz" id="GSe-Nn-dVp"/>
+                <outlet property="view" destination="ZWe-j9-K7l" id="ARj-qw-zbN"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="ZWe-j9-K7l">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmu-UH-gPM">
+                    <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="fnQ-gy-gen"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="slp-NN-cdz">
+                    <rect key="frame" x="23" y="119" width="347" height="694"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="694" id="Rgr-cu-EBC"/>
+                    </constraints>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="z2h-Jy-Cri"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="slp-NN-cdz" firstAttribute="leading" secondItem="z2h-Jy-Cri" secondAttribute="leading" constant="23" id="CII-7e-xCM"/>
+                <constraint firstItem="kmu-UH-gPM" firstAttribute="top" secondItem="z2h-Jy-Cri" secondAttribute="top" id="DgQ-ij-TWg"/>
+                <constraint firstItem="slp-NN-cdz" firstAttribute="top" secondItem="kmu-UH-gPM" secondAttribute="bottom" constant="10" id="Ed1-ce-sgs"/>
+                <constraint firstItem="kmu-UH-gPM" firstAttribute="leading" secondItem="ZWe-j9-K7l" secondAttribute="leading" id="R6t-0d-T8d"/>
+                <constraint firstItem="z2h-Jy-Cri" firstAttribute="bottom" secondItem="slp-NN-cdz" secondAttribute="bottom" constant="5" id="Tkc-bZ-jdh"/>
+                <constraint firstItem="z2h-Jy-Cri" firstAttribute="trailing" secondItem="kmu-UH-gPM" secondAttribute="trailing" id="Vhu-lV-gW2"/>
+                <constraint firstItem="z2h-Jy-Cri" firstAttribute="trailing" secondItem="slp-NN-cdz" secondAttribute="trailing" constant="23" id="rkN-1y-3Vj"/>
+            </constraints>
+            <point key="canvasLocation" x="93.89312977099236" y="-11.267605633802818"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

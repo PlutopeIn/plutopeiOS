@@ -44,6 +44,8 @@ class SettingPreviewViewController: UIViewController {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var lblNonce: UILabel!
     
+    @IBOutlet weak var sliderBar: PercentageSlider!
+    @IBOutlet weak var lblMax: UILabel!
     weak var delegate: SettingsViewControllerDelegate?
     var gasPrice = ""
     var gasLimit = ""
@@ -84,6 +86,7 @@ class SettingPreviewViewController: UIViewController {
         gasLimitForAddition = Int(self.gasLimit) ?? 0
       
         ivLow.addTapGesture {
+            HapticFeedback.generate(.light)
             self.isSelectedIvLow = true
             self.isSelectedIvMarket = false
             self.isSelectedIvAggressive = false
@@ -99,6 +102,7 @@ class SettingPreviewViewController: UIViewController {
             
         }
         ivMarket.addTapGesture {
+            HapticFeedback.generate(.light)
             self.isSelectedIvLow = false
             self.isSelectedIvMarket = true
             self.isSelectedIvAggressive = false
@@ -113,6 +117,7 @@ class SettingPreviewViewController: UIViewController {
             self.getValueFromAdvance(self.txtGasFee.text ?? "", self.txtGasLimit.text ?? "", self.txtNounce.text ?? "")
         }
         ivAggressive.addTapGesture {
+            HapticFeedback.generate(.light)
             self.isSelectedIvLow = false
             self.isSelectedIvMarket = false
             self.isSelectedIvAggressive = true
@@ -127,10 +132,39 @@ class SettingPreviewViewController: UIViewController {
             self.getValueFromAdvance(self.txtGasFee.text ?? "", self.txtGasLimit.text ?? "", self.txtNounce.text ?? "")
         }
         stackAdvance.addTapGesture {
+            HapticFeedback.generate(.light)
             self.toggleOptionsVisibility()
         }
         
+        sliderBar.value = 1 
+        sliderBar.minimumValue = 0
+        sliderBar.maximumValue = 100
+                
+        // Example initial value
+
+                // Add target-action for value change event
+        sliderBar.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+        
+        lblGasPrice.font = AppFont.violetRegular(16).value
+        lblGasFee.font = AppFont.violetRegular(16).value
+        lblNonce.font = AppFont.violetRegular(16).value
+        txtGasFee.font = AppFont.violetRegular(16).value
+        txtGasLimit.font = AppFont.violetRegular(16).value
+        txtNounce.font = AppFont.violetRegular(16).value
+        lblAdvancedoptions.font = AppFont.violetRegular(22.68).value
+        lblMaxFee.font = AppFont.violetRegular(20).value
+        lblMax.font = AppFont.violetRegular(20).value
+        
+        
     }
+    
+//    @IBAction func sliderAction(_ sender: Any) {
+//        let value = (sender as AnyObject).value
+//                print("Slider value: \(value)")
+//        self.gasLimit = String(format: "%.2f", value)
+//        
+////        self.gasLimit = (sender as AnyObject).value
+//    }
     func toggleOptionsVisibility() {
         if self.isDown {
             self.ivArrow.image = UIImage(systemName: "chevron.up")
@@ -148,6 +182,7 @@ class SettingPreviewViewController: UIViewController {
     }
     
     fileprivate func buttonSelectionAction() {
+        HapticFeedback.generate(.light)
         if isSelectedIvLow {
             
             self.ivLow.image = UIImage.icCheckedRadio
@@ -159,6 +194,7 @@ class SettingPreviewViewController: UIViewController {
             let calculationResult = self.performPercentageCalculation(fee: Double(self.gasLimit) ?? 0.0, percentage: 0.1)
             self.txtGasLimit.text = "\(calculationResult)"
             self.getValueFromAdvance(self.txtGasFee.text ?? "", self.txtGasLimit.text ?? "", self.txtNounce.text ?? "")
+            
         } else if isSelectedIvAggressive {
             
             self.ivAggressive.image = UIImage.icCheckedRadio
@@ -189,7 +225,17 @@ class SettingPreviewViewController: UIViewController {
         self.lblGasFee.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.gasLimit, comment: "")
         self.lblGasPrice.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.gasPrice, comment: "")
         self.lblAdvancedoptions.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.advance, comment: "")
-        btnSave.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.save, comment: ""), for: .normal)
+//        btnSave.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.save, comment: ""), for: .normal)
+        
+        let title = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.save, comment: "")
+                let font = AppFont.violetRegular(18).value
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .font: font
+                ]
+
+                let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+                self.btnSave.setAttributedTitle(attributedTitle, for: .normal)
+        
         let price = BigInt(self.gasPrice) ?? 0
         let gasPriceValue = UnitConverter.weiToGwei(price)
         gasPriceForAddition = Int(gasPriceValue)
@@ -210,7 +256,7 @@ class SettingPreviewViewController: UIViewController {
             super.viewWillAppear(animated)
           
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            if LocalizationSystem.sharedInstance.getLanguage() == "ar" {
+            /*if LocalizationSystem.sharedInstance.getLanguage() == "ar" {
                 self.txtNounce.textAlignment = .right
                 self.txtGasFee.textAlignment = .right
                 self.txtGasLimit.textAlignment = .right
@@ -220,13 +266,27 @@ class SettingPreviewViewController: UIViewController {
                 self.txtGasFee.textAlignment = .left
                 self.txtGasLimit.textAlignment = .left
                // txtTransactionData.textAlignment = .left
-            }
+            }*/
             self.uiSetUp()
+            self.txtNounce.textAlignment = .center
+            self.txtGasFee.textAlignment = .center
+            self.txtGasLimit.textAlignment = .center
         }
     }
+    
+    @objc func sliderValueChanged(_ sender: UISlider) {
+            let value = sender.value
+            print("Slider value: \(value)")
+//        self.gasLimit = String(format: "%.2f", value)
+        
+        let calculationResult = self.performPercentageCalculation(fee: Double(self.gasLimit) ?? 0.0, percentage: Double(value))
+        self.txtGasLimit.text = "\(calculationResult)"
+        self.getValueFromAdvance(self.txtGasFee.text ?? "", self.txtGasLimit.text ?? "", self.txtNounce.text ?? "")
+        }
+    
     // Button save Action
     @IBAction func btnSaveAction(_ sender: Any) {
-       
+        HapticFeedback.generate(.light)
          self.dismiss(animated: true) {
              
             self.delegate?.getNetworkFee( gaslimit: self.txtGasLimit.text ?? "", nonce: self.txtNounce.text ?? "", gasPrice: self.txtGasFee.text ?? "", isFromSettings: true, networkFee: self.lblNetworkFee.text ?? "",gasAmount: "\(self.calculatedGasPrice)")
@@ -237,6 +297,7 @@ class SettingPreviewViewController: UIViewController {
     }
     // Increase the gasPriceForAddition by 1
     @IBAction func btnGasPricePluseAction(_ sender: UIButton) {
+        HapticFeedback.generate(.light)
         disableImages()
         
             if let currentGasPrice = Int(txtGasFee.text ?? "") {
@@ -249,6 +310,7 @@ class SettingPreviewViewController: UIViewController {
     }
     // Decrease the gasPriceForAddition by 1
     @IBAction func btnGasPriceMinusAction(_ sender: UIButton) {
+        HapticFeedback.generate(.light)
         disableImages()
            if let currentGasLimit = Int(txtGasFee.text ?? "") {
                gasPriceForAddition = max(0, currentGasLimit - 1)
@@ -271,6 +333,7 @@ class SettingPreviewViewController: UIViewController {
     }
     // Increase the gasLimitForAddition by 1000
     @IBAction func btnGasLimitPluseAction(_ sender: UIButton) {
+        HapticFeedback.generate(.light)
         disableImages()
             if let currentGasLimit = Int(txtGasLimit.text ?? "") {
                 gasLimitForAddition = currentGasLimit + 1000
@@ -283,7 +346,7 @@ class SettingPreviewViewController: UIViewController {
     }
     // Decrease the gasLimitForAddition by 1000
     @IBAction func btnGasLimitMinusAction(_ sender: UIButton) {
-   
+        HapticFeedback.generate(.light)
         disableImages()
            if let currentGasLimit = Int(txtGasLimit.text ?? "") {
                gasLimitForAddition = max(21000, currentGasLimit - 1000)
@@ -401,3 +464,47 @@ extension SettingPreviewViewController : UITextFieldDelegate {
 //            self.getValueFromAdvance(txtGasFee.text ?? "", txtGasLimit.text ?? "", txtNounce.text ?? "")
 //        }
 }
+
+class PercentageSlider: UISlider {
+    private let thumbLabel = UILabel()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+    
+    var trackHeight: CGFloat = 20  // Set your desired track height here
+        
+        override func trackRect(forBounds bounds: CGRect) -> CGRect {
+            let customBounds = CGRect(x: bounds.origin.x, y: bounds.midY - trackHeight / 2, width: bounds.size.width, height: trackHeight)
+            super.trackRect(forBounds: customBounds)
+            return customBounds
+        }
+    
+    private func setup() {
+        thumbLabel.textAlignment = .center
+        thumbLabel.backgroundColor = .clear
+        thumbLabel.textColor = .black
+        thumbLabel.font = UIFont.systemFont(ofSize: 12)
+        addSubview(thumbLabel)
+        addTarget(self, action: #selector(updateThumbLabel), for: .valueChanged)
+    }
+    
+    @objc private func updateThumbLabel() {
+        let thumbRect = self.thumbRect(forBounds: bounds, trackRect: trackRect(forBounds: bounds), value: value)
+        thumbLabel.text = "\(Int(value))%"
+        let labelWidth = thumbRect.width * 2
+        thumbLabel.frame = CGRect(x: thumbRect.origin.x - (labelWidth - thumbRect.width) / 2, y: thumbRect.origin.y + 30, width: labelWidth, height: 20)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateThumbLabel()
+    }
+}
+

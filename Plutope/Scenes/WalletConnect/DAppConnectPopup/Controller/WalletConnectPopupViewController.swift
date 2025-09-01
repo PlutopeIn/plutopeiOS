@@ -10,40 +10,55 @@ import QRScanner
 import AVFoundation
 import WalletConnectSign
 import WalletConnectUtils
-import Web3Wallet
+//import Web3Wallet
+import ReownWalletKit
 import Web3
 import Combine
 import SafariServices
 
 class WalletConnectPopupViewController: UIViewController {
+    @IBOutlet weak var stackNoData: UIStackView!
     @IBOutlet weak var tbvSession: UITableView!
     @IBOutlet weak var tbvHeight: NSLayoutConstraint!
     @IBOutlet weak var btnConnectWallet: GradientButton!
     @IBOutlet weak var headerView: UIView!
+    
+    @IBOutlet weak var lblNoData: UILabel!
+    @IBOutlet weak var imgNoData: UIImageView!
+    
     var isConnected = false
     var showPairingLoading = false
     var sessions = [Session]()
     let interactor: WalletInteractor
-    private let importAccount: ImportAccount
+    let importAccount: ImportAccount
     private var disposeBag = Set<AnyCancellable>()
     private let app: Application
     init(
         interactor: WalletInteractor? = nil,
         app: Application? = nil,
-        importAccount: ImportAccount? = nil
+        importAccount: ImportAccount
     ) {
         defer {
             setupInitialState()
         }
         self.interactor = interactor ?? WalletInteractor()
         self.app = app ?? Application()
-        self.importAccount = importAccount ?? ImportAccount.new()
+        self.importAccount = importAccount
         super.init(nibName: nil, bundle: nil)
     }
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    fileprivate func uiSetUp() {
+        //btnConnectWallet.isHidden = true
+        
+        btnConnectWallet.titleLabel?.font = AppFont.regular(13).value
+        lblNoData.font = AppFont.violetRegular(16).value
+        lblNoData.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.noData, comment: "")
+        btnConnectWallet.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.addNewConnection, comment: ""), for: .normal)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         /// Navigation Header
@@ -51,25 +66,45 @@ class WalletConnectPopupViewController: UIViewController {
         /// Table Register
         tableRegister()
         
+        uiSetUp()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        onAppear()
-        DispatchQueue.main.async {
-            self.tbvSession.reloadData()
-            self.tbvSession.restore()
+      //  onAppear()
+       // DispatchQueue.main.async {
+        self.tbvSession.reloadData()
+        self.tbvSession.restore()
+        if sessions.isEmpty {
+            stackNoData.isHidden = false
+        } else {
+            stackNoData.isHidden = true
         }
+            
+      //  }
     }
     private func setupInitialState() {
         interactor.sessionsPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] sessions in
                 self?.sessions = sessions
+                
+                if sessions.count != 0 {
+                    self?.imgNoData.isHidden = true
+                    self?.lblNoData.isHidden = true
+                } else {
+                    self?.imgNoData.isHidden = false
+                    self?.lblNoData.isHidden = false
+                }
+                
+                DispatchQueue.main.async {
+                    self?.tbvSession.reloadData()
+                    self?.tbvSession.restore()
+                }
+                
             }
             .store(in: &disposeBag)
         
         sessions = interactor.getSessions()
-        
         pairFromDapp()
     }
     
@@ -108,7 +143,7 @@ class WalletConnectPopupViewController: UIViewController {
         }
         Task {
             do { self.showPairingLoading = true
-                try await Web3Wallet.instance.pair(uri: uri)
+                try await WalletKit.instance.pair(uri: uri)
                 
             } catch {
                 self.showPairingLoading = false
@@ -118,13 +153,14 @@ class WalletConnectPopupViewController: UIViewController {
     }
     // open QRCode Scanner
     @IBAction func btnConnectWalletAction(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
 //        let url = "https://webview-dev.rampable.co/?clientSecret=wpyYO6EyVSwx3QGY50d0VHCICTjiBHTTRGo7zbL6G6bxBtCSaGBrEbRB70ZhzdvP&useWalletConnect=true"
 //        self.showWebView(for: url, onVC: self, title: "")
-        
-        let scanner = QRScannerViewController()
-        scanner.delegate = self
-        self.present(scanner, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let scanner = QRScannerViewController()
+            scanner.delegate = self
+            self.present(scanner, animated: true, completion: nil)
+        }
     }
     
     //    checkForCameraPermission

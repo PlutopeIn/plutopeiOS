@@ -438,6 +438,9 @@ extension String {
             return NSAttributedString()
         }
     }
+    func trimingChar() -> String {
+        return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+    }
 }
 
 //setImage Color
@@ -636,7 +639,7 @@ extension UILabel {
         blurredImageView.translatesAutoresizingMaskIntoConstraints = false
         blurredImageView.tag = 100
         blurredImageView.contentMode = .center
-        blurredImageView.backgroundColor = UIColor.c0C0D2D
+        blurredImageView.backgroundColor = UIColor.systemBackground
         addSubview(blurredImageView)
         NSLayoutConstraint.activate([
             blurredImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -707,6 +710,7 @@ extension UIViewController {
         viewController.present(self, animated: true, completion: nil)
     }
     func push(from viewController: UIViewController) {
+        viewController.hidesBottomBarWhenPushed = true
         viewController.navigationController?.pushViewController(self, animated: true)
     }
     func present(from viewController: UIViewController) {
@@ -716,7 +720,54 @@ extension UIViewController {
         UIApplication.currentWindow.rootViewController = self
     }
 }
+extension UILabel {
+    func setCenteredEllipsisText(_ text: String) {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .byTruncatingMiddle
 
+        let attributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: paragraphStyle,
+        ]
+
+        let attributedString = NSAttributedString(string: text, attributes: attributes)
+        self.attributedText = attributedString
+    }
+}
+extension UITextField {
+//    func setCenteredEllipsisText(_ text: String) {
+//        let paragraphStyle = NSMutableParagraphStyle()
+//        paragraphStyle.lineBreakMode = .byTruncatingMiddle
+//
+//        let attributes: [NSAttributedString.Key: Any] = [
+//            .paragraphStyle: paragraphStyle,
+//        ]
+//
+//        let attributedString = NSAttributedString(string: text, attributes: attributes)
+//        self.attributedText = attributedString
+//    }
+   
+        func setCenteredEllipsisText(_ text: String) {
+            let maxLength = 8 // First 4 letters and last 4 letters
+            guard text.count > maxLength else {
+                self.text = text
+                return
+            }
+
+            let start = text.prefix(4)
+            let end = text.suffix(4)
+            let truncatedText = "\(start)...\(end)"
+
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineBreakMode = .byTruncatingMiddle
+
+            let attributes: [NSAttributedString.Key: Any] = [
+                .paragraphStyle: paragraphStyle,
+            ]
+
+            let attributedString = NSAttributedString(string: truncatedText, attributes: attributes)
+            self.attributedText = attributedString
+        }
+}
 // MARK: convert uiimage to gif
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
@@ -944,5 +995,172 @@ extension UILabel {
         if let link = label.attributedText?.attribute(.link, at: characterIndex, effectiveRange: nil) as? URL {
             UIApplication.shared.open(link)
         }
+    }
+    
+}
+extension UITextView {
+func leftSpace() {
+    self.textContainerInset = UIEdgeInsets(top: 12, left: 10, bottom: 8, right: 12)
+}
+}
+/// set attributed text with customized color
+func setAttributedText(labelName : UILabel, labeltext: String, value: String, color: UIColor) {
+    
+//    let commonAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.white, .font: AppFont.regular(15).value]
+    let commonAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.label, .font: AppFont.regular(15).value]
+    
+    let yourOtherAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: color, .font: AppFont.regular(15).value]
+    
+    let partOne = NSMutableAttributedString(string: labeltext, attributes: commonAttributes)
+    let partTwo = NSMutableAttributedString(string: value, attributes: yourOtherAttributes)
+    
+    partOne.append(partTwo)
+    labelName.attributedText = partOne
+}
+extension String {
+    func truncatedToFirstAndLastFour() -> String {
+        guard count > 8 else { return self }
+
+        let start = prefix(4)
+        let end = suffix(4)
+        return "\(start)...\(end)"
+    }
+}
+
+
+struct LocalizationHelper {
+    static func localizedMessage(
+        key: String,
+        fromAmount: Double,
+        fromCurrency: String,
+        toAmount: Double,
+        toCurrency: String
+    ) -> String {
+        // Get current language from your LocalizationSystem
+        let localeIdentifier = LocalizationSystem.sharedInstance.getLanguage()
+
+        // Format numbers based on locale
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: localeIdentifier)
+        formatter.numberStyle = .decimal
+
+        let formattedFromAmount = formatter.string(from: NSNumber(value: fromAmount)) ?? "\(fromAmount)"
+        let formattedToAmount = formatter.string(from: NSNumber(value: toAmount)) ?? "\(toAmount)"
+
+        // Fetch localized string template using dynamic key
+        let localizedTemplate = LocalizationSystem.sharedInstance.localizedStringForKey(
+            key: key,
+            comment: ""
+        )
+
+        return String(format: localizedTemplate, formattedFromAmount, fromCurrency, formattedToAmount, toCurrency)
+    }
+    
+    static func localizedMessageWithAmountAndCardType(
+            key: String,
+            amount: Double,
+            currency: String,
+            cardType: String
+        ) -> String {
+            // Get current language / locale
+            let localeIdentifier = LocalizationSystem.sharedInstance.getLanguage()
+
+            // Format amount based on locale
+            let formatter = NumberFormatter()
+            formatter.locale = Locale(identifier: localeIdentifier)
+            formatter.numberStyle = .decimal
+
+            let formattedAmount = formatter.string(from: NSNumber(value: amount)) ?? "\(amount)"
+
+            // Get localized template using dynamic key
+            let template = LocalizationSystem.sharedInstance.localizedStringForKey(
+                key: key,
+                comment: ""
+            )
+
+            return String(format: template, formattedAmount, currency,cardType)
+        }
+    
+    static func localizedMessageWithAmountCurrencyAndPhone(
+            key: String,
+            amount: Double,
+            currency: String,
+            phone: String
+        ) -> String {
+            let localeIdentifier = LocalizationSystem.sharedInstance.getLanguage()
+
+            let formatter = NumberFormatter()
+            formatter.locale = Locale(identifier: localeIdentifier)
+            formatter.numberStyle = .decimal
+
+            let formattedAmount = formatter.string(from: NSNumber(value: amount)) ?? "\(amount)"
+
+            let template = LocalizationSystem.sharedInstance.localizedStringForKey(
+                key: key,
+                comment: ""
+            )
+
+            return String(format: template, formattedAmount, currency, phone)
+        }
+    
+    static func localizedMessageForGet(
+            key: String,
+            amount: Double,
+            currency: String
+            
+        ) -> String {
+            let localeIdentifier = LocalizationSystem.sharedInstance.getLanguage()
+
+            let formatter = NumberFormatter()
+            formatter.locale = Locale(identifier: localeIdentifier)
+            formatter.numberStyle = .decimal
+
+            let formattedAmount = formatter.string(from: NSNumber(value: amount)) ?? "\(amount)"
+
+            let template = LocalizationSystem.sharedInstance.localizedStringForKey(
+                key: key,
+                comment: ""
+            )
+
+            return String(format: template, formattedAmount, currency)
+        }
+
+    static func localizedMessageForExchange(
+        key: String,
+        fromCurrency: String?,
+        toCurrency: String?
+    ) -> String {
+        // Retrieve the localized template
+        let template = LocalizationSystem.sharedInstance.localizedStringForKey(
+            key: key,
+            comment: ""
+        )
+
+        // Check if both fromCurrency and toCurrency are nil or empty
+        guard let from = fromCurrency, !from.isEmpty,
+              let to = toCurrency, !to.isEmpty else {
+            return template
+        }
+
+        // Format the string with the unwrapped and non-empty currency values
+        return String(format: template, from, to)
+    }
+
+
+
+}
+
+//extension String {
+//    static func localizedString(forKey key: String, withValues values: CVarArg...) -> String {
+//           let template = NSLocalizedString(key, comment: "")
+//           return String(format: template, arguments: values)
+//       }
+//}
+extension String {
+    var asDouble: Double {
+        let cleaned = self
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: ",", with: ".")
+        return Double(cleaned) ?? 0.0
     }
 }

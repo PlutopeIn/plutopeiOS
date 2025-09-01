@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SFPro_regular.ttf">
-            <string>SFProDisplay-Regular</string>
+        <array key="inter.ttf">
+            <string>Inter-Regular</string>
+        </array>
+        <array key="violet_sans.ttf">
+            <string>VioletSans-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NFTDescriptionViewController" customModule="Plutope" customModuleProvider="target">
             <connections>
-                <outlet property="btnCancel" destination="2Hz-i5-Hit" id="C3d-cW-579"/>
+                <outlet property="headerView" destination="zoP-3K-30y" id="w86-m3-l3C"/>
                 <outlet property="ivNFT" destination="DzP-vn-BqX" id="y2Z-3R-xeQ"/>
+                <outlet property="lblContractAddress" destination="9Yq-Zm-KJ6" id="PV2-fC-90F"/>
+                <outlet property="lblContractAddressTitle" destination="ZYH-fO-Nu6" id="OfL-EV-5os"/>
                 <outlet property="lblDescription" destination="Kbc-Eu-JGb" id="lzV-9U-nbL"/>
                 <outlet property="lblNFTName" destination="Nsc-hj-YG3" id="2OY-cx-p9Z"/>
+                <outlet property="lblNetwork" destination="Sz9-7z-eM6" id="juh-Vr-U3f"/>
+                <outlet property="lblNetworkTitle" destination="7Am-va-BLm" id="XoB-u2-nAC"/>
+                <outlet property="lblTokenId" destination="Anu-7u-QZA" id="vbA-1Z-T7K"/>
+                <outlet property="lblTokenIdTitle" destination="Mw5-5X-Feu" id="g6g-gL-gjr"/>
+                <outlet property="lblTokenStandard" destination="Men-5S-5lW" id="Lfw-c4-ecZ"/>
+                <outlet property="lblTokenStandardTitle" destination="EzK-zj-xd0" id="zM2-lO-uPp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,83 +39,175 @@
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O4a-0f-TGR">
-                    <rect key="frame" x="20" y="50" width="353" height="752"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zoP-3K-30y">
+                    <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                    <viewLayoutGuide key="safeArea" id="hsb-L1-N6j"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="dSp-WJ-H3l"/>
+                    </constraints>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bbv-oz-iDK">
+                    <rect key="frame" x="0.0" y="109" width="393" height="743"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NFT1" translatesAutoresizingMaskIntoConstraints="NO" id="DzP-vn-BqX">
-                            <rect key="frame" x="20" y="226" width="313" height="300"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O4a-0f-TGR">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="743"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NFT1" translatesAutoresizingMaskIntoConstraints="NO" id="DzP-vn-BqX">
+                                    <rect key="frame" x="20" y="20" width="353" height="300"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="300" id="00j-r9-4IP"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="10"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NFT Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nsc-hj-YG3">
+                                    <rect key="frame" x="20" y="340" width="353" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="8hP-k1-iJy"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="VioletSans-Regular" family="Violet Sans" pointSize="25"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kbc-Eu-JGb">
+                                    <rect key="frame" x="20" y="390" width="353" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="CMg-Yt-jSi"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="16"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="DVZ-nl-MhU">
+                                    <rect key="frame" x="20" y="430" width="353" height="258"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contract Address" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZYH-fO-Nu6">
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="Xge-ug-zu5"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="16"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Yq-Zm-KJ6">
+                                            <rect key="frame" x="0.0" y="34" width="353" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="4Fs-aY-Kh2"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="16"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token Id" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mw5-5X-Feu">
+                                            <rect key="frame" x="0.0" y="68" width="353" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="FoV-fh-rXq"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="16"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Anu-7u-QZA">
+                                            <rect key="frame" x="0.0" y="102" width="353" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="WUN-YJ-vJL"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="16"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token Standard" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EzK-zj-xd0">
+                                            <rect key="frame" x="0.0" y="136" width="353" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="jTo-Ik-2uS"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="16"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Men-5S-5lW">
+                                            <rect key="frame" x="0.0" y="170" width="353" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="WqY-sE-QMw"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="16"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Am-va-BLm">
+                                            <rect key="frame" x="0.0" y="204" width="353" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="oiv-kq-Tec"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="16"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sz9-7z-eM6">
+                                            <rect key="frame" x="0.0" y="238" width="353" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="Jva-ir-45S"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="16"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="300" id="00j-r9-4IP"/>
+                                <constraint firstItem="DVZ-nl-MhU" firstAttribute="leading" secondItem="O4a-0f-TGR" secondAttribute="leading" constant="20" id="31Q-d3-hVW"/>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="DVZ-nl-MhU" secondAttribute="bottom" constant="30" id="6la-Th-iFR"/>
+                                <constraint firstAttribute="trailing" secondItem="DzP-vn-BqX" secondAttribute="trailing" constant="20" id="8OU-ok-uh5"/>
+                                <constraint firstItem="Nsc-hj-YG3" firstAttribute="leading" secondItem="O4a-0f-TGR" secondAttribute="leading" constant="20" id="9GH-QW-N4d"/>
+                                <constraint firstItem="Kbc-Eu-JGb" firstAttribute="top" secondItem="Nsc-hj-YG3" secondAttribute="bottom" constant="20" id="SFL-Gb-Re7"/>
+                                <constraint firstItem="DzP-vn-BqX" firstAttribute="leading" secondItem="O4a-0f-TGR" secondAttribute="leading" constant="20" id="bbF-Np-lfk"/>
+                                <constraint firstAttribute="trailing" secondItem="Nsc-hj-YG3" secondAttribute="trailing" constant="20" id="bvo-wD-xxA"/>
+                                <constraint firstItem="Kbc-Eu-JGb" firstAttribute="leading" secondItem="O4a-0f-TGR" secondAttribute="leading" constant="20" id="dwI-t0-eMb"/>
+                                <constraint firstItem="DzP-vn-BqX" firstAttribute="top" secondItem="O4a-0f-TGR" secondAttribute="top" constant="20" id="ltY-HG-Iv9"/>
+                                <constraint firstAttribute="trailing" secondItem="DVZ-nl-MhU" secondAttribute="trailing" constant="20" id="mhO-bN-RB9"/>
+                                <constraint firstItem="DVZ-nl-MhU" firstAttribute="top" secondItem="Kbc-Eu-JGb" secondAttribute="bottom" constant="20" id="qQh-5J-lhz"/>
+                                <constraint firstItem="Nsc-hj-YG3" firstAttribute="top" secondItem="DzP-vn-BqX" secondAttribute="bottom" constant="20" id="vje-H2-FDb"/>
+                                <constraint firstAttribute="trailing" secondItem="Kbc-Eu-JGb" secondAttribute="trailing" constant="20" id="vwm-Im-Zd9"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                     <real key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NFT Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nsc-hj-YG3">
-                            <rect key="frame" x="114" y="186" width="125" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="30" id="8hP-k1-iJy"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="26"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kbc-Eu-JGb">
-                            <rect key="frame" x="20" y="536" width="313" height="20"/>
-                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="17"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Hz-i5-Hit">
-                            <rect key="frame" x="298" y="5" width="50" height="50"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="50" id="Vyt-3s-xQY"/>
-                                <constraint firstAttribute="height" constant="50" id="X9b-U6-6hq"/>
-                            </constraints>
-                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                            <state key="normal" image="Cancel"/>
-                            <connections>
-                                <action selector="actionCancel:" destination="-1" eventType="touchUpInside" id="rq2-H2-aLW"/>
-                            </connections>
-                        </button>
+                        </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="2Hz-i5-Hit" secondAttribute="trailing" constant="5" id="2I4-pA-MAi"/>
-                        <constraint firstItem="DzP-vn-BqX" firstAttribute="centerY" secondItem="O4a-0f-TGR" secondAttribute="centerY" id="63d-aY-3zD"/>
-                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Kbc-Eu-JGb" secondAttribute="bottom" constant="10" id="6kX-4f-0GM"/>
-                        <constraint firstAttribute="trailing" secondItem="DzP-vn-BqX" secondAttribute="trailing" constant="20" id="8OU-ok-uh5"/>
-                        <constraint firstItem="Nsc-hj-YG3" firstAttribute="top" relation="greaterThanOrEqual" secondItem="O4a-0f-TGR" secondAttribute="top" constant="10" id="FrA-Ms-8Jb"/>
-                        <constraint firstItem="DzP-vn-BqX" firstAttribute="top" secondItem="Nsc-hj-YG3" secondAttribute="bottom" constant="10" id="KdU-zd-uqs"/>
-                        <constraint firstItem="Nsc-hj-YG3" firstAttribute="centerX" secondItem="O4a-0f-TGR" secondAttribute="centerX" id="TSz-4Q-Kdc"/>
-                        <constraint firstItem="DzP-vn-BqX" firstAttribute="leading" secondItem="O4a-0f-TGR" secondAttribute="leading" constant="20" id="bbF-Np-lfk"/>
-                        <constraint firstItem="Kbc-Eu-JGb" firstAttribute="leading" secondItem="O4a-0f-TGR" secondAttribute="leading" constant="20" id="dwI-t0-eMb"/>
-                        <constraint firstItem="Kbc-Eu-JGb" firstAttribute="top" secondItem="DzP-vn-BqX" secondAttribute="bottom" constant="10" id="icU-uu-l0D"/>
-                        <constraint firstItem="2Hz-i5-Hit" firstAttribute="top" secondItem="O4a-0f-TGR" secondAttribute="top" constant="5" id="rhF-6c-v9R"/>
-                        <constraint firstAttribute="trailing" secondItem="Kbc-Eu-JGb" secondAttribute="trailing" constant="20" id="vwm-Im-Zd9"/>
+                        <constraint firstItem="O4a-0f-TGR" firstAttribute="top" secondItem="bbv-oz-iDK" secondAttribute="top" id="EPr-th-7mb"/>
+                        <constraint firstAttribute="trailing" secondItem="O4a-0f-TGR" secondAttribute="trailing" id="SYM-7w-6pR"/>
+                        <constraint firstAttribute="bottom" secondItem="O4a-0f-TGR" secondAttribute="bottom" id="YXP-aw-Zmw"/>
+                        <constraint firstItem="O4a-0f-TGR" firstAttribute="leading" secondItem="bbv-oz-iDK" secondAttribute="leading" id="id8-Di-pUI"/>
+                        <constraint firstItem="O4a-0f-TGR" firstAttribute="width" secondItem="bbv-oz-iDK" secondAttribute="width" id="l3V-R4-hNW"/>
+                        <constraint firstItem="O4a-0f-TGR" firstAttribute="height" secondItem="bbv-oz-iDK" secondAttribute="height" priority="250" id="tba-mQ-KtE"/>
                     </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="10"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </view>
+                </scrollView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="O4a-0f-TGR" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Pma-hy-F5v"/>
-                <constraint firstItem="O4a-0f-TGR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="Shl-ln-OXe"/>
-                <constraint firstItem="O4a-0f-TGR" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="l1r-gI-Izn"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="O4a-0f-TGR" secondAttribute="trailing" constant="20" id="uPZ-kq-tRE"/>
+                <constraint firstItem="zoP-3K-30y" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="9ZJ-3j-idc"/>
+                <constraint firstItem="zoP-3K-30y" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Qix-9u-be3"/>
+                <constraint firstAttribute="bottom" secondItem="bbv-oz-iDK" secondAttribute="bottom" id="ZG4-UU-Xze"/>
+                <constraint firstItem="bbv-oz-iDK" firstAttribute="top" secondItem="zoP-3K-30y" secondAttribute="bottom" id="lWp-W6-fhH"/>
+                <constraint firstAttribute="trailing" secondItem="bbv-oz-iDK" secondAttribute="trailing" id="u7S-sz-eLV"/>
+                <constraint firstItem="zoP-3K-30y" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="uyv-ba-3mC"/>
+                <constraint firstItem="bbv-oz-iDK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wkr-r6-KPv"/>
             </constraints>
             <point key="canvasLocation" x="108" y="-32"/>
         </view>
     </objects>
     <resources>
-        <image name="Cancel" width="23" height="23"/>
         <image name="NFT1" width="164" height="164"/>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

@@ -12,7 +12,7 @@ import UIKit
 extension SellCoinViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       
+        HapticFeedback.generate(.light)
         guard let cell = clvKeyboard.cellForItem(at: indexPath) as? KeyboardViewCell else { return }
         
         let number = indexPath.row + 1

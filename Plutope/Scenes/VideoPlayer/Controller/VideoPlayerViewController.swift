@@ -78,8 +78,12 @@ class VideoPlayerViewController: UIViewController {
             let navigationController = UINavigationController(rootViewController: walletSetUpVC)
             navigationController.setNavigationBarHidden(true, animated: false)
             window.rootViewController = navigationController
-        } else if let tabBarVC = walletStoryboard.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController {
-            window.rootViewController = tabBarVC
+        } else {
+            guard let appDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
+        
+        let tabBarVC = TabBarViewController(interactor: appDelegate.interactor, app: appDelegate.app, configurationService: appDelegate.app.configurationService)
+        window.rootViewController = tabBarVC
+       
         }
         
         window.makeKeyAndVisible()

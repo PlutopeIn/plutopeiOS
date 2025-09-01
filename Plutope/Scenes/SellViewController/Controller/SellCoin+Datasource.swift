@@ -22,7 +22,7 @@ extension SellCoinViewController: UICollectionViewDataSource, UICollectionViewDe
         switch number {
         case 10:
             cell.txtNumber.text = "."
-            cell.txtNumber.font = AppFont.medium(15).value
+            cell.txtNumber.font = AppFont.regular(15).value
         case 11:
             cell.txtNumber.text = "0"
         case 12:

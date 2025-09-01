@@ -1,7 +1,8 @@
 import Foundation
+import WalletConnectSigner
 import CryptoSwift
 import Web3
-import Auth
+//import Auth
 
 public struct DefaultSignerFactory: SignerFactory {
 
@@ -18,4 +19,3 @@ public struct Web3Signer: EthereumSigner {
         return EthereumSignature(v: UInt8(signature.v), r: signature.r, s: signature.s)
     }
 }
-

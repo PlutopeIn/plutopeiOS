@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -39,9 +39,6 @@
             <rect key="frame" x="0.0" y="0.0" width="395" height="848"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppBackground" translatesAutoresizingMaskIntoConstraints="NO" id="NNi-Aa-Ph7">
-                    <rect key="frame" x="0.0" y="0.0" width="395" height="844"/>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6fJ-z6-3cg">
                     <rect key="frame" x="0.0" y="59" width="395" height="50"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -92,7 +89,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do not delete this backup file on iCloud, or you risk losing all your crypto!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CHF-f9-UFT">
-                                            <rect key="frame" x="23.333333333333343" y="0.0" width="275.66666666666663" height="31.333333333333332"/>
+                                            <rect key="frame" x="23.333333333333343" y="0.0" width="275.66666666666663" height="30.333333333333332"/>
                                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="13"/>
                                             <color key="textColor" name="#FFD23D"/>
                                             <nil key="highlightedColor"/>
@@ -145,7 +142,7 @@
                                     <rect key="frame" x="16" y="241.33333333333331" width="363" height="77"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zZd-qh-Q7c">
-                                            <rect key="frame" x="1" y="0.0" width="59" height="12"/>
+                                            <rect key="frame" x="0.99999999999999645" y="0.0" width="63.666666666666657" height="12"/>
                                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="10"/>
                                             <color key="textColor" name="#75769D"/>
                                             <nil key="highlightedColor"/>
@@ -242,16 +239,12 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="#0C0D2D"/>
             <constraints>
-                <constraint firstItem="NNi-Aa-Ph7" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="0Ry-6F-aXU"/>
                 <constraint firstItem="6fJ-z6-3cg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Jkg-eM-mqh"/>
                 <constraint firstItem="v8M-iB-aiG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="K8g-i8-6iB"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="v8M-iB-aiG" secondAttribute="trailing" id="QCT-eC-vCe"/>
                 <constraint firstItem="6fJ-z6-3cg" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="QjF-my-ew9"/>
-                <constraint firstItem="NNi-Aa-Ph7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Zyz-WC-kj5"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="v8M-iB-aiG" secondAttribute="bottom" id="ex9-Nm-ABf"/>
-                <constraint firstItem="NNi-Aa-Ph7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="hSr-fu-lSX"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6fJ-z6-3cg" secondAttribute="trailing" id="ijk-Ex-lId"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="NNi-Aa-Ph7" secondAttribute="bottom" constant="-30" id="nIz-xw-Tgb"/>
                 <constraint firstItem="v8M-iB-aiG" firstAttribute="top" secondItem="6fJ-z6-3cg" secondAttribute="bottom" id="sv0-AJ-0yK"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -260,14 +253,13 @@
     </objects>
     <designables>
         <designable name="4DS-PQ-ipS">
-            <size key="intrinsicContentSize" width="63" height="30"/>
+            <size key="intrinsicContentSize" width="61" height="30"/>
         </designable>
         <designable name="wNb-4x-vwa">
-            <size key="intrinsicContentSize" width="75" height="19.666666666666668"/>
+            <size key="intrinsicContentSize" width="78" height="19.333333333333332"/>
         </designable>
     </designables>
     <resources>
-        <image name="AppBackground" width="250" height="541.33331298828125"/>
         <image name="Cancel" width="23" height="23"/>
         <image name="triangle-warning" width="14.399999618530273" height="12.60099983215332"/>
         <namedColor name="#00C6FB">

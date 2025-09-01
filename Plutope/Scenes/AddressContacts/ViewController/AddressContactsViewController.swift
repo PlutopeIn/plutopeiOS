@@ -32,7 +32,7 @@ class AddressContactsViewController: UIViewController {
         
         /// Table Register
         tableRegister()
-        self.viewAddContactBtn.isHidden = isFromSend
+//        self.viewAddContactBtn.isHidden = isFromSend
         
     }
     
@@ -76,6 +76,7 @@ class AddressContactsViewController: UIViewController {
     }
     
     @IBAction func btnAddContactAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = AddContactViewController()
         viewToNavigate.refreshDataDelegate = self
         self.navigationController?.pushViewController(viewToNavigate, animated: true)

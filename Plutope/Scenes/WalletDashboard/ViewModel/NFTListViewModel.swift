@@ -69,4 +69,10 @@ class NFTListViewModel {
         
     }
     
+    func apiGetAllNFTList(detail: String?, completion: @escaping (([NFTDataNewElement]?, Bool, String) -> Void)) {
+        repo?.apiGetAllNFTList(detail: detail, completion: { nftList, status, message in
+            completion(nftList, status, message)
+        })
+    }
+    
 }

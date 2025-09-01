@@ -70,4 +70,6 @@ struct PreviewSwap {
     let payAmount: String?
     let getAmount: String?
     let quote: String?
+    let paySymbol: String?
+    let getSymbol : String?
 }

@@ -57,7 +57,7 @@ class GradientButton: UIButton {
         activityView.frame = self.frame
         activityView.isHidden = true
         preSetTitle = titleLabel?.text ?? ""
-        activityView.color = .white
+        activityView.color = UIColor.systemGray
 
     }
 

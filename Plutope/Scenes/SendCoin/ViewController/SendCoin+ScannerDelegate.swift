@@ -151,10 +151,10 @@ extension SendCoinViewController: QRScannerDelegate {
             
             if result.hasPrefix("bitcoin:") || result.hasPrefix("bc1") || result.hasPrefix("1") || result.hasPrefix("3") {
                 self.coinType = "BTC"
-                if self.coinDetail?.type != self.coinType {
-                    self.showToast(message: "Invalid \(self.coinDetail?.type ?? "") Address", font: AppFont.medium(15).value)
-                    return
-                }
+//                if self.coinDetail?.type != self.coinType {
+//                    self.showToast(message: "Invalid \(self.coinDetail?.type ?? "") Address", font: AppFont.regular(15).value)
+//                    return
+//                }
                 self.verifyPrifixBTC(result:result)
             }
             // Check for the presence of "=0x" in the result string

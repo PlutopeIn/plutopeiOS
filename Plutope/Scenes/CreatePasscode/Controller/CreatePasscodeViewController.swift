@@ -21,7 +21,13 @@ class CreatePasscodeViewController: UIViewController, Reusable {
         super.viewDidLoad()
         
         /// Set the title based on the screen context
-       
+        lblPassCodeTitle.font = AppFont.violetRegular(32).value
+        lblDescription.font = AppFont.regular(14).value
+        
+        let dynamicLightBlueColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? UIColor(red: 1/255, green: 1/255, blue: 1/255, alpha: 0.75) : UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.75)
+              }
+        lblDescription.textColor = dynamicLightBlueColor
        if self.isFrom == "Biometric" {
             lblPassCodeTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.enterpasscode, comment: "")
         } else {

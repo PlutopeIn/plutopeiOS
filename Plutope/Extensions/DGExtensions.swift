@@ -344,9 +344,9 @@ extension String{
             NSMutableAttributedString(string: self, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
         }
     /// you can use this function to check the email is valid or invalid
-    //    var isValidEmail: Bool {
-    //        NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}").evaluate(with: self)
-    //    }
+    var isValidEmail: Bool {
+               NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}").evaluate(with: self)
+           }
     /// returns the boolean value telling if string contains the whitespace or not
     var containsWhitespace: Bool {
         for scalar in unicodeScalars {
@@ -802,6 +802,22 @@ extension String{
         return NSRange(location: loc+1, length: len)
         
     }
+        func matches(patternRegex: String?) -> Bool {
+            guard let patternRegex = patternRegex else {
+                return false // Return false if patternRegex is nil
+            }
+            
+            do {
+                let regex = try NSRegularExpression(pattern: patternRegex, options: [])
+                let range = NSRange(location: 0, length: self.utf16.count)
+                return regex.firstMatch(in: self, options: [], range: range) != nil
+            } catch {
+                print("Error creating regex: \(error)")
+                return false
+            }
+        }
+    
+
     
 }
 extension UIButton{
@@ -2049,6 +2065,9 @@ extension Data {
         let hexString = map { String(format: "%02.2hhx", $0) }.joined()
         return hexString
     }
+    var hexEncoded: String {
+        return "0x" + self.hexString
+    }
 }
 extension NSAttributedString {
     /// Give color to a perticular substring in string
@@ -2484,34 +2503,36 @@ extension TimeInterval {
 extension TimeInterval {
     func getReadableDate() -> String? {
         let date = Date(timeIntervalSince1970: self)
+        let calendar = Calendar.current
         let dateFormatter = DateFormatter()
-        
-        if Calendar.current.isDateInTomorrow(date) {
-            return "Tomorrow"
-        } else if Calendar.current.isDateInYesterday(date) {
-            return "Yesterday"
-        } else if dateFallsInCurrentWeek(date: date) {
-            if Calendar.current.isDateInToday(date) {
-                dateFormatter.dateFormat = "h:mm a"
-                dateFormatter.locale = Locale.current
-                return dateFormatter.string(from: date)
-            } else {
-                dateFormatter.dateFormat = "EEEE"
-                dateFormatter.locale = Locale.current
-                return dateFormatter.string(from: date)
-            }
+        dateFormatter.locale = Locale(identifier: LocalizationSystem.sharedInstance.getLanguage())
+
+        if calendar.isDateInYesterday(date) {
+            return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.yesterday, comment: "")
+        } else if calendar.isDateInToday(date) {
+            dateFormatter.dateFormat = "h:mm a"
+            return dateFormatter.string(from: date)
+        } else if calendar.isDate(date, equalTo: Date(), toGranularity: .weekOfYear) {
+            dateFormatter.dateFormat = "EEEE"
+            return dateFormatter.string(from: date)
         } else {
             dateFormatter.dateFormat = "MMM d, yyyy"
-            dateFormatter.locale = Locale.current
             return dateFormatter.string(from: date)
         }
-        // Set the locale to the desired language
-        
     }
+}
 
-    func dateFallsInCurrentWeek(date: Date) -> Bool {
-        let currentWeek = Calendar.current.component(Calendar.Component.weekOfYear, from: Date())
-        let datesWeek = Calendar.current.component(Calendar.Component.weekOfYear, from: date)
-        return (currentWeek == datesWeek)
+
+
+// Generic function to convert Data to any Codable model
+func convertDataToModel<T: Codable, U: Codable>(_ data: Data, primaryType: T.Type, fallbackType: U.Type) -> (primary: T?, fallback: U?) {
+    let decoder = JSONDecoder()
+    
+    if let primaryModel = try? decoder.decode(primaryType, from: data) {
+        return (primary: primaryModel, fallback: nil)
+    } else if let fallbackModel = try? decoder.decode(fallbackType, from: data) {
+        return (primary: nil, fallback: fallbackModel)
+    } else {
+        return (primary: nil, fallback: nil)
     }
 }

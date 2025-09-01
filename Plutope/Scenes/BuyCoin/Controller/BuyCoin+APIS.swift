@@ -41,7 +41,81 @@ extension BuyCoinViewController {
 
 // MARK: APIS
 extension BuyCoinViewController {
-    
+    func getQuote() {
+        guard let coinDetail = coinDetail, let selectedCurrency = selectedCurrency else {
+            return
+        }
+        var decimalAmount = ""
+        coinDetail.callFunction.getDecimal(completion: { decimal in
+            print("decimal",decimal ?? 0.0)
+//            decimalAmount = decimal ?? ""
+            let number: Int64? = Int64(decimal ?? "")
+            decimalAmount  = "\(number ?? 18)"
+            //let amountToGet = UnitConverter.convertWeiToEther(routerResult ?? "",Int(number ?? 0)) ?? ""
+            
+            var address = ""
+            if self.coinDetail?.chain?.coinType == CoinType.bitcoin {
+                address = WalletData.shared.getPublicWalletAddress(coinType: .bitcoin) ?? ""
+            } else {
+                address = WalletData.shared.getPublicWalletAddress(coinType: .ethereum) ?? ""
+            }
+            let countryCode = (selectedCurrency.symbol ?? "").prefix(2)
+            DispatchQueue.main.async {
+            
+            self.buyCoinQuoteViewModel.buyQuoteAPI(parameters: BuyQuoteParameters(chainId:Int(coinDetail.chain?.chainId ?? "")                 ,currency:selectedCurrency.symbol ?? "", amount :Double(self.txtPrice.text ?? "") , walletAddress:address, countryCode: "\(countryCode)", chainName: coinDetail.chain?.chainName.lowercased() ?? "", tokenSymbol: coinDetail.symbol ?? "" , tokenAddress: coinDetail.address ?? "", decimals: "\(decimalAmount)")) { status, message, data in
+                if status == true {
+                    self.lblCoinQuantity.hideLoading()
+                    self.lblBestPriceTitle.isHidden = false
+                    self.txtPrice.resignFirstResponder()
+                    self.buyQuoteArr = data ?? []
+                    print("self.buyQuoteArr",self.buyQuoteArr)
+                    if self.buyQuoteArr.isEmpty || self.buyQuoteArr == nil {
+                        print(message)
+                        self.lblCoinQuantity.hideLoading()
+                        self.lblCoinQuantity.text = " Not available! "
+                        self.viewProvider.isHidden = true
+                        self.lblChooseProvider.isHidden = true
+                        print("No providers found")
+                    } else {
+                        
+                        self.getBestPriceFromAllBestPrices()
+                    }
+                   
+    //                if let dataValue = data {
+    //                    for provider in dataValue {
+    //
+    //                    }
+    //                }
+                } else {
+                    print(message)
+                    self.txtPrice.resignFirstResponder()
+                    self.lblCoinQuantity.hideLoading()
+                    self.lblCoinQuantity.text = " Not available! "
+                    self.viewProvider.isHidden = true
+                    self.lblChooseProvider.isHidden = true
+                    print("No providers found")
+                }
+            }
+            }
+        })
+       
+//        var tokenSymbol = ""
+//        var chainName = ""
+//        let chainId = Int(coinDetail.chain?.chainId ?? "")
+//        if chainId == 10 {
+//            chainName = "eth"
+//            if coinDetail.chain?.name == "Optimism" {
+//                tokenSymbol = "\(coinDetail.symbol?.lowercased() ?? "")"
+//            } else {
+//                tokenSymbol = "\(coinDetail.symbol?.lowercased() ?? "")op"
+//            }
+//            
+//        } else {
+//            chainName = coinDetail.chain?.symbol.lowercased() ?? ""
+//            tokenSymbol = coinDetail.symbol ?? ""
+//        }
+
+    }
     func checkAllAPIsCompleted() {
         // Determine the supported providers based on your logic
         apiCount += 1
@@ -98,6 +172,8 @@ extension BuyCoinViewController {
                 getUnlimitBestPrice(payment: "BANKCARD", crypto: crypto, fiat: selectedCurrency.symbol ?? "", amount: txtPrice.text ?? "", region: "\(countryCode)") { status, data in
                     self.handleAPIResponse(providerName: StringConstants.unLimit, status: status, data: data)
                 }
+            case .guardarian : break
+                
             }
         }
     }
@@ -107,7 +183,7 @@ extension BuyCoinViewController {
         if coinDetail.address != "" {
             switch coinDetail.chain {
             case .polygon:
-                return "\(coinDetail.symbol?.lowercased() ?? "")matic"
+                return "\(coinDetail.symbol?.lowercased() ?? "")pol"
             case .binanceSmartChain:
                 return "\(coinDetail.symbol?.lowercased() ?? "")bsc"
             case .ethereum:
@@ -170,6 +246,11 @@ extension BuyCoinViewController {
                     let bestPrice = Double(amount)
                     allProviders[providerIndex].bestPrice = "\(bestPrice ?? 0.0)"
                 }
+            case StringConstants.guardarian:
+                if let providerIndex = allProviders.indices.first(where: { allProviders[$0].name == providerName }) {
+                    allProviders[providerIndex].bestPrice = "\(data?["quantity"] as? Double ?? 0.0)"
+                }
+                
             default:
                 break
             }

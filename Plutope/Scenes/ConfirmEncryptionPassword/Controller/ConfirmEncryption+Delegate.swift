@@ -8,6 +8,7 @@ import UIKit
 extension ConfirmEncryptionPasscodeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        HapticFeedback.generate(.light)
         arrWarnings[indexPath.row].isChecked.toggle()
         tbvInstruction.reloadData()
     }

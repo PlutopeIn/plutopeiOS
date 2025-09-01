@@ -13,9 +13,12 @@ class SettingViewCell: UITableViewCell, Reusable {
     @IBOutlet weak var ivSettingHeight: NSLayoutConstraint!
     @IBOutlet weak var ivSettingWidth: NSLayoutConstraint!
     
+    @IBOutlet weak var footerView: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        lblTitle.font = AppFont.regular(16).value
+        lblSubtitle.font = AppFont.regular(13).value
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

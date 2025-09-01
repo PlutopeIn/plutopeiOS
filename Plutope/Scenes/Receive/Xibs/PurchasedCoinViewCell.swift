@@ -13,12 +13,16 @@ class PurchasedCoinViewCell: UITableViewCell, Reusable {
     @IBOutlet weak var coinPrice: UILabel!
     @IBOutlet weak var coinQuantity: UILabel!
     @IBOutlet weak var coinAmount: UILabel!
-    
-    @IBOutlet weak var lblYourTokens: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.contentView.layer.cornerRadius = 10
-        // Initialization code
+        lblCoinName.font = AppFont.violetRegular(12.6).value
+        coinQuantity.font = AppFont.violetRegular(12.6).value
+        coinAmount.font = AppFont.violetRegular(11.6).value
+        lblSymbol.font = AppFont.violetRegular(8.2).value
+        coinPrice.font = AppFont.regular(10.2).value
+        lblPer.font = AppFont.regular(10.2).value
+        
+      
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SFPro_regular.ttf">
-            <string>SFProDisplay-Regular</string>
+        <array key="inter.ttf">
+            <string>Inter-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -28,20 +28,19 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="12c-Mx-lLV">
-                    <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                    <rect key="frame" x="5" y="59" width="388" height="50"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="7bX-5U-LT6"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LiT-HO-6N8">
-                    <rect key="frame" x="16" y="129" width="361" height="45"/>
+                    <rect key="frame" x="23" y="129" width="347" height="45"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SXg-k1-XjJ" customClass="customTextField" customModule="Plutope" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="361" height="45"/>
-                            <color key="backgroundColor" name="#25264D"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="17"/>
+                            <rect key="frame" x="0.0" y="0.0" width="347" height="45"/>
+                            <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
+                            <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="leftSpacing">
@@ -51,15 +50,23 @@
                                     <real key="value" value="22.5"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
-                                    <color key="value" name="#75769D"/>
+                                    <color key="value" systemColor="placeholderTextColor"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="number" keyPath="rightSpacing">
                                     <real key="value" value="43"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" systemColor="quaternarySystemFillColor"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </textField>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_search" translatesAutoresizingMaskIntoConstraints="NO" id="BdS-B9-JJP">
                             <rect key="frame" x="17" y="14" width="17" height="17"/>
+                            <color key="tintColor" systemColor="labelColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="N7I-iF-Nmv"/>
                                 <constraint firstAttribute="width" constant="17" id="yei-2j-Sgh"/>
@@ -78,42 +85,45 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="52N-6H-Y62">
-                    <rect key="frame" x="16" y="178" width="361" height="620"/>
+                    <rect key="frame" x="23" y="178" width="347" height="620"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" name="#0C0D2D"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="LiT-HO-6N8" firstAttribute="top" secondItem="12c-Mx-lLV" secondAttribute="bottom" constant="20" id="Axm-8W-chZ"/>
-                <constraint firstItem="52N-6H-Y62" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Hw3-Eh-IPi"/>
+                <constraint firstItem="52N-6H-Y62" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="23" id="Hw3-Eh-IPi"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="12c-Mx-lLV" secondAttribute="trailing" id="L6W-Gp-iyM"/>
                 <constraint firstItem="12c-Mx-lLV" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="LSp-vi-IWj"/>
                 <constraint firstItem="52N-6H-Y62" firstAttribute="top" secondItem="LiT-HO-6N8" secondAttribute="bottom" constant="4" id="T99-uG-HhZ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="52N-6H-Y62" secondAttribute="bottom" constant="20" id="Wj0-sN-HWD"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="52N-6H-Y62" secondAttribute="trailing" constant="16" id="jrH-MH-EKA"/>
-                <constraint firstItem="12c-Mx-lLV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ll8-Vy-gQq"/>
-                <constraint firstItem="LiT-HO-6N8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="rCm-TH-xGB"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="LiT-HO-6N8" secondAttribute="trailing" constant="16" id="tKa-kw-vwJ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="52N-6H-Y62" secondAttribute="trailing" constant="23" id="jrH-MH-EKA"/>
+                <constraint firstItem="12c-Mx-lLV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="5" id="ll8-Vy-gQq"/>
+                <constraint firstItem="LiT-HO-6N8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="23" id="rCm-TH-xGB"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="LiT-HO-6N8" secondAttribute="trailing" constant="23" id="tKa-kw-vwJ"/>
             </constraints>
             <point key="canvasLocation" x="57" y="-32"/>
         </view>
     </objects>
     <designables>
         <designable name="SXg-k1-XjJ">
-            <size key="intrinsicContentSize" width="154" height="21.666666666666668"/>
+            <size key="intrinsicContentSize" width="58.666666666666664" height="18.666666666666668"/>
         </designable>
     </designables>
     <resources>
         <image name="ic_search" width="16.294000625610352" height="16.295999526977539"/>
-        <namedColor name="#0C0D2D">
-            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="#25264D">
-            <color red="0.14499999582767487" green="0.14900000393390656" blue="0.30199998617172241" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="#75769D">
-            <color red="0.45899999141693115" green="0.46299999952316284" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="placeholderTextColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="quaternarySystemFillColor">
+            <color red="0.45490196078431372" green="0.45490196078431372" blue="0.50196078431372548" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

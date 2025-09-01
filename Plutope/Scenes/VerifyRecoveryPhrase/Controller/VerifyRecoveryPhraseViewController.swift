@@ -35,6 +35,7 @@ class VerifyRecoveryPhraseViewController: UIViewController, Reusable {
         }
     }()
   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderView()
@@ -49,16 +50,21 @@ class VerifyRecoveryPhraseViewController: UIViewController, Reusable {
         configureClvVerifyPhraseAppearance()
     }
     
-    fileprivate func walletCreation(_ coinList: [CoingechoCoinList]?) {
+    fileprivate func walletCreation(_ coinList: [CoingechoCoinList]?,alreadyAddStaticToken:Bool) {
         if wallet == nil {
             let walletCount = (DatabaseHelper.shared.retrieveData("Wallets") as? [Wallets] ?? []).count + 1
-            print("coinList =",coinList)
-            WalletData.shared.createWallet(walletName: "Main Wallet \(walletCount)" , mnemonicKey: mnemonic, isPrimary: true, isICloudBackup: false, isManualBackup: true,coinList: coinList) { status in
+            WalletData.shared.createWallet(walletName: "Main Wallet \(walletCount)" , mnemonicKey: mnemonic, isPrimary: true, isICloudBackup: false, isManualBackup: true,coinList: coinList,alreadyAddStaticToken: alreadyAddStaticToken) { status in
                 self.btnDone.HideLoader()
                 if status {
                     guard let fcmtoken = UserDefaults.standard.object(forKey: "fcm_Token") as? String else {
                         return
                     }
+                    self.viewModel.checkTokenVersion { status, msg, data in
+                        if status == 1 {
+                            UserDefaults.standard.set(data?.tokenString, forKey: DefaultsKey.tokenString)
+                        }
+                    }
+                    
                     var deviceId = ""
                     if let uuid = UIDevice.current.identifierForVendor?.uuidString {
                        print("Device ID: \(uuid)")
@@ -69,18 +75,19 @@ class VerifyRecoveryPhraseViewController: UIViewController, Reusable {
                     UserDefaults.standard.setValue(true, forKey: DefaultsKey.isTransactionSignin)
                     
                     print("isTransactionSignin",UserDefaults.standard.string(forKey: DefaultsKey.isTransactionSignin) ?? false)
-                    self.registerUserViewModel.registerAPI(walletAddress: WalletData.shared.myWallet?.address ?? "", appType: 1,deviceId: deviceId,fcmToken: fcmtoken) { resStatus, message in
+                    self.registerUserViewModel.registerAPI(walletAddress: WalletData.shared.myWallet?.address ?? "", appType: 1,deviceId: deviceId,fcmToken: fcmtoken, type: "create", referralCode: "") { resStatus, message in
                       //  if resStatus == 1 {
                             if !(UserDefaults.standard.object(forKey: DefaultsKey.homeButtonTip) as? Bool ?? false) {
+
                                 let viewToNavigate = WelcomeViewController()
                                 self.navigationController?.pushViewController(viewToNavigate, animated: true)
                                
                             } else {
                                 guard let appDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
-                                let walletStoryboard = UIStoryboard(name: "WalletRoot", bundle: nil)
-                                guard let tabBarVC = walletStoryboard.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController else { return }
-                                appDelegate.window?.makeKeyAndVisible()
-                                appDelegate.window?.rootViewController = tabBarVC
+                                                      
+                                                      let tabBarVC = TabBarViewController(interactor: appDelegate.interactor, app: appDelegate.app, configurationService: appDelegate.app.configurationService)
+                                                      window?.rootViewController = tabBarVC
+                                                      window?.makeKeyAndVisible()
                             }
 //                        } else {
 //                            print("wallet not register")
@@ -101,18 +108,22 @@ class VerifyRecoveryPhraseViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionDone(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
         if DatabaseHelper.shared.entityIsEmpty("Token") {
             self.btnDone.ShowLoader()
             viewModel.apiCoinList { status, _, coinList in
                 if status {
-                    self.walletCreation(coinList)
+                    guard var coinListD = coinList else { return } // Unwrap optional and make it mutable
+
+                       // Remove items where symbol == "bnry"
+                    coinListD.removeAll { $0.symbol == "bnry" }
+                    self.walletCreation(coinListD, alreadyAddStaticToken: false)
                 } else {
                     self.btnDone.HideLoader()
                 }
             }
         } else {
-            walletCreation([])
+            walletCreation([], alreadyAddStaticToken: true)
         }
     }
     

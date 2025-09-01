@@ -23,12 +23,20 @@ extension AddressContactsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tbvAddressList.dequeueReusableCell(indexPath: indexPath) as NotificationViewCell
         cell.selectionStyle = .none
+//        tableView.separatorStyle = .singleLine
+        cell.lblTitle.font = AppFont.violetRegular(16).value
+        cell.lblDescription.font = AppFont.violetRegular(15.5).value
+        
         cell.lblTime.text = ""
         let sectionTitle = sectionTitles[indexPath.section]
         let contactsInSection = contactsDictionary[sectionTitle]
         let contact = contactsInSection?[indexPath.row]
         cell.lblTitle?.text = contact?.name
-        cell.lblDescription?.text = contact?.address
+//        cell.lblDescription?.text = contact?.address
+        
+        cell.lblDescription.numberOfLines = 1
+        cell.lblDescription.setCenteredEllipsisText("\(contact?.address ?? "")")
+        
         return cell
     }
     
@@ -37,8 +45,8 @@ extension AddressContactsViewController: UITableViewDataSource {
         // Create and configure the title label
         let titleLabel = UILabel()
         titleLabel.text = sectionTitles[section]
-        titleLabel.textColor = UIColor.white
-        titleLabel.font = AppFont.semiBold(15).value
+        titleLabel.textColor = UIColor.label
+        titleLabel.font = AppFont.regular(15).value
         titleLabel.textAlignment = .left
         titleLabel.frame = CGRect(x: 25, y: 5, width: tableView.bounds.width - 32, height: 20)
 //        customHeader.backgroundColor = .red

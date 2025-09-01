@@ -79,15 +79,19 @@ class AppPasscodeHelper: PasscodeVerifyDelegate {
             // Passcode view controller is already presented, no need to present it again
             return
         } else {
-            viewController.present(passcodeVC ?? CreatePasscodeViewController(), animated: true) {
-                completion(self.isVerify)
+            DispatchQueue.main.async {
+                viewController.present(self.passcodeVC ?? CreatePasscodeViewController(), animated: true) {
+                    completion(self.isVerify)
+                }
             }
+            
         }
     }
     
     func performActionAfterAuthentication(completion: ((Bool) -> Void)?) {
         // Perform the desired action after successful authentication
         print("Authentication successful! Perform the action here.")
+        NotificationCenter.default.post(name: .sceneWillEnterForegroundCompleted, object: nil)
         completion?(true)
     }
 }

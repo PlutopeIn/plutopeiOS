@@ -5,7 +5,7 @@ CAST_HOST = notify.walletconnect.com
 EXPLORER_HOST = explorer-api.walletconnect.com
 
 // Uncomment next line and paste your project id. Get this on: https://cloud.walletconnect.com/sign-in
- PROJECT_ID = "740207e4a6f01a1c9c11fe9806a2c6a7"
+ PROJECT_ID = 82927c2e9c60ff33eae1b7c8d995e6aa
 
  WALLETAPP_SENTRY_DSN = "https://public@sentry.example.com/1"
 

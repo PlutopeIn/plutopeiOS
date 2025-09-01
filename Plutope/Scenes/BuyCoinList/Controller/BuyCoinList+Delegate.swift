@@ -8,7 +8,7 @@ import UIKit
 extension BuyCoinListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        HapticFeedback.generate(.light)
         // let coinData = tokensList?[indexPath.row]
         let coinData = isSearching ? tokensList?[indexPath.row] : sortedTokens?[indexPath.row]
         switch isFrom {
@@ -57,6 +57,7 @@ extension BuyCoinListViewController: UITableViewDelegate {
 //            } else {
                 let sendCoinVc = SendCoinViewController()
                 sendCoinVc.coinDetail = coinData
+                sendCoinVc.fromDashbord = "Dashboard"
                 self.navigationController?.pushViewController(sendCoinVc, animated: true)
            // }
             
@@ -78,7 +79,16 @@ extension BuyCoinListViewController: UITableViewDelegate {
                 viewToNavigate.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(viewToNavigate, animated: true)
            // }
-        
+        case .search :
+            
+            let viewToNavigate = CoinDetailViewController()
+            viewToNavigate.coinDetail = coinData
+          //  viewToNavigate.refreshWalletDelegate = self
+            viewToNavigate.hidesBottomBarWhenPushed = true
+            viewToNavigate.isFromSearch = true
+           // viewToNavigate.updatebalDelegate = self
+            self.navigationController?.pushViewController(viewToNavigate, animated: true)
+           
         default: break
        
         }

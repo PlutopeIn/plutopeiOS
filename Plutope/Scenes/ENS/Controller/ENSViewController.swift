@@ -44,6 +44,8 @@ class ENSViewController: UIViewController ,Reusable {
         if(coinDetail?.chain?.coinType == CoinType.bitcoin) {
             address = WalletData.shared.getPublicWalletAddress(coinType: .bitcoin) ?? ""
             
+        } else  if(coinDetail?.chain?.coinType == CoinType.tron) {
+            address = WalletData.shared.getPublicWalletAddress(coinType: .tron) ?? ""
         } else {
             address = WalletData.shared.getPublicWalletAddress(coinType: .ethereum) ?? ""
         }
@@ -55,7 +57,7 @@ class ENSViewController: UIViewController ,Reusable {
     func selectCoin(_ coinDetail: Token? = nil) {
         // Retrieve token list from the database
         self.tokensList = DatabaseHelper.shared.retrieveData("Token") as? [Token]
-        self.tokensList = tokensList?.filter { $0.symbol == "MATIC" && $0.type == "POLYGON" && $0.tokenId == "matic-network" && $0.address == "" && $0.chain?.coinType == CoinType.polygon && $0.name == "Polygon" }
+        self.tokensList = tokensList?.filter { $0.symbol == "POL" && $0.type == "POLYGON" && $0.tokenId == "polygon-ecosystem-token" && $0.address == "" && $0.chain?.coinType == CoinType.polygon && $0.name == "Polygon" }
         self.coinDetail = self.tokensList?.first
         print(self.coinDetail)
     }
@@ -81,6 +83,7 @@ class ENSViewController: UIViewController ,Reusable {
     }
     
     @IBAction func btnSearchAction(_ sender: GradientButton) {
+        HapticFeedback.generate(.light)
         getENSData()
     }
     func filterData() {
@@ -114,7 +117,7 @@ extension ENSViewController {
         } else {
             DGProgressView.shared.showLoader(to: view)
             self.lblMsg.isHidden = true
-            self.viewModel.eNSDataAPI(currency: "MATIC", domainName: txtSearch.text ?? "", ownerAddress: address, recordsAddress: address) { apiResponce in
+            self.viewModel.eNSDataAPI(currency: "POL", domainName: txtSearch.text ?? "", ownerAddress: address, recordsAddress: address) { apiResponce in
                 switch apiResponce {
                 case .success(let ensDataList):
                     DGProgressView.shared.hideLoader()

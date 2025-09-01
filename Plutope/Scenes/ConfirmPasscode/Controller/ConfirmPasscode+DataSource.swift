@@ -14,19 +14,46 @@ extension ConfirmPasscodeViewController: UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = clvKeyboard.dequeueReusableCell(indexPath: indexPath) as KeyboardViewCell
         let number = indexPath.row + 1
-        
+        cell.txtNumber.font = AppFont.violetRegular(34).value
         switch number {
-        case 10:
+        case 1:
+            cell.txtNumber.text = "\(number)"
+            cell.rightLable.isHidden = true
+        case 2:
+            cell.txtNumber.text = "\(number)"
+            cell.rightLable.isHidden = true
+        case 3:
+            cell.txtNumber.text = "\(number)"
+        case 4:
+            cell.txtNumber.text = "\(number)"
+            cell.rightLable.isHidden = true
+        case 5:
+            cell.txtNumber.text = "\(number)"
+            cell.rightLable.isHidden = true
+        case 6:
+            cell.txtNumber.text = "\(number)"
+        case 7:
+            cell.txtNumber.text = "\(number)"
+            cell.rightLable.isHidden = true
+        case 8:
+            cell.txtNumber.text = "\(number)"
+            cell.rightLable.isHidden = true
+        case 9:
+            cell.txtNumber.text = "\(number)"
+               case 10:
             //cell.txtNumber.text = "Cancel"
+            cell.rightLable.isHidden = true
             cell.txtNumber.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: "")
-            cell.txtNumber.font = AppFont.medium(15).value
+            cell.txtNumber.font = AppFont.regular(15).value
         case 11:
+            cell.rightLable.isHidden = true
             cell.txtNumber.text = "0"
         case 12:
             cell.txtNumber.isHidden = true
             cell.viewCancel.isHidden = false
         default:
-            cell.txtNumber.text = "\(number)"
+            break
+//            cell.txtNumber.text = "\(number)"
         }
         
         return cell

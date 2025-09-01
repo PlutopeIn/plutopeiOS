@@ -7,8 +7,9 @@
 
 import UIKit
 import Combine
-import Auth
-import Web3Wallet
+//import Auth
+//import Web3Wallet
+import ReownWalletKit
 import SDWebImage
 class WalletConnectionDetailPopup: UIViewController {
     
@@ -23,6 +24,7 @@ class WalletConnectionDetailPopup: UIViewController {
     @IBOutlet weak var ivConnection: UIImageView!
     @IBOutlet weak var lblWalletAddress: UILabel!
     var chainsArray = [String]()
+    var filteredChainsArray: [String] = []
     @IBOutlet weak var btnRemoveConnection: UIButton!
     let session: Session
     private let interactor: ConnectionDetailsInteractor
@@ -41,7 +43,7 @@ class WalletConnectionDetailPopup: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     fileprivate func uiSetUp() {
-        if let chains = session.requiredNamespaces["eip155"]?.chains {
+        if let chains = session.namespaces["eip155"]?.chains {
             // chains is an optional value, so make sure it's not nil before using it
             var chainsArray = Array(chains)
             
@@ -50,45 +52,38 @@ class WalletConnectionDetailPopup: UIViewController {
                     self.chainsArray.append(val.absoluteString)
                 }
             }
+            let allowedChains: Set<String> = [
+                       "eip155:56",  // Binance Smart Chain
+                       "eip155:1",   // Ethereum
+                       "eip155:137", // Polygon
+                       "eip155:66",  // OKC
+                       "eip155:10",  // Optimism Mainnet
+                       "eip155:42161", // Arbitrum
+                       "eip155:43114", // Avalanche
+                       "eip155:8453",  // Base
+                       "eip155:97"     // Binance Smart Chain (Testnet?)
+                   ]
+            filteredChainsArray = self.chainsArray.filter { allowedChains.contains($0) }
         } else {
             // Handle the case where the chains property is nil
             print("Chains property is nil")
         }
+        btnRemoveConnection.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.connectionRemove, comment: ""), for: .normal)
         
-//        var combinedChains = Set<Blockchain>()
-//
-//        if let requiredChains = session.requiredNamespaces["eip155"]?.chains {
-//            combinedChains.formUnion(requiredChains)
-//        }
-//
-//        if let optionalChains = session.namespaces["eip155"]?.chains {
-//            combinedChains.formUnion(optionalChains)
-//        }
-//
-//        // Convert combinedChains to an array of Blockchain objects
-//        var chainsArray: [String] = combinedChains.compactMap { element in
-//            guard let val = element as? Blockchain else { return nil }
-//            return val.absoluteString
-//        }
-//        // Sort chainsArray so that required namespaces are displayed first
-//        self.chainsArray.sort { element1, element2 in
-//            let isRequired1 = session.requiredNamespaces["eip155"]?.chains?.contains { $0.absoluteString == element1 } ?? false
-//            let isRequired2 = session.requiredNamespaces["eip155"]?.chains?.contains { $0.absoluteString == element2 } ?? false
-//
-//            if isRequired1 && !isRequired2 {
-//                return true
-//            } else if !isRequired1 && isRequired2 {
-//                return false
-//            } else {
-//                return element1 < element2
-//            }
-//        }
-//        // Append the elements to chainsArray
-//        self.chainsArray.append(contentsOf: chainsArray)
+        lblWalletTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.wallet, comment: "")
+        lblNetworkTitle.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.network, comment: "")
         lblName.text = "\(session.peer.name) "
         lblUrl.text = "\(session.peer.url)"
+        lblWalletAddress.text = WalletData.shared.myWallet?.address
         // Create URL
-        ivProvider.sd_setImage(with: URL(string: "\(session.peer.icons)"), placeholderImage: UIImage.icwalletConnectIcon)
+        
+        let icon = session.peer.icons
+         let firsticon = icon.first ?? ""
+         let imageUrl = URL(string: firsticon)
+
+                 // Set the image in the UIImageView using SDWebImage
+        ivProvider.sd_setImage(with: imageUrl, placeholderImage: UIImage.icwalletConnectIcon)
+//        ivProvider.sd_setImage(with: URL(string: "\(session.peer.icons)"), placeholderImage: UIImage.icwalletConnectIcon)
     }
     
     override func viewDidLoad() {
@@ -103,6 +98,7 @@ class WalletConnectionDetailPopup: UIViewController {
     }
     // remove session Action
     @IBAction func btnRemoveAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         self.onDelete()
     }
     // delete session
@@ -111,6 +107,8 @@ class WalletConnectionDetailPopup: UIViewController {
             do {
                 try await interactor.disconnectSession(session:session)
                 DispatchQueue.main.async {
+                    UserDefaults.standard.removeObject(forKey: "sessionName") 
+                    UserDefaults.standard.set(false, forKey: "isConnected") 
                     self.dismiss(animated: true, completion: nil)
                     self.navigationController?.popViewController(animated: true)
                 }

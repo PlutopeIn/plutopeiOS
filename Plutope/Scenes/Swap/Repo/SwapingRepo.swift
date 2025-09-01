@@ -18,6 +18,18 @@ class SwappingRepo {
         } else {
             defaultFromToken = address
         }
+        var fromCurrencyv = ""
+        var toCurrencyv = ""
+        if fromCurrencyv == "pop" {
+            fromCurrencyv = "matic"
+        } else {
+            fromCurrencyv = fromCurrency
+        }
+        if toCurrencyv == "pol" {
+            toCurrencyv = "matic"
+        } else {
+            toCurrencyv = toCurrency
+        }
         let param = ["fromCurrency": fromCurrency,
                      "toCurrency": toCurrency,
                      "fromNetwork": fromNetwork,
@@ -40,93 +52,12 @@ class SwappingRepo {
             }
         }
     }
-    /// apiRangoQuoteSwapping
-    func apiRangoQuoteSwapping(walletAddress: String,fromToken: Token,toToken: Token,fromAmount: String,fromWalletAddress:String,toWalletAddress:String,completion: @escaping ((Bool,String,String,Route?) -> Void)) {
-        
-                var fromNetwork: String? {
-                    switch fromToken.chain {
-        
-                    case .ethereum :
-                        return "ETH"
-                    case .binanceSmartChain :
-                        return "BNB"
-                    case .oKC:
-                        return "OKT"
-                    case .polygon:
-                        return "POLYGON"
-                    case .bitcoin:
-                        return "BTC"
-                    case .none:
-                        return ""
-                    
-                    }
-                }
-                var toNetwork: String? {
-                    switch toToken.chain {
-        
-                    case .ethereum :
-                        return "ETH"
-                    case .binanceSmartChain :
-                        return "BNB"
-                    case .oKC:
-                        return "OKT"
-                    case .polygon:
-                        return "POLYGON"
-                    case .bitcoin:
-                        return "BTC"
-                    case .none:
-                        return ""
-                   
-                    }
-                    
-                }
-        var defaultFromToken = ""
-        var defaultToToken = ""
-        if fromToken.address == "" {
-            defaultFromToken = StringConstants.defaultAddress
-        } else {
-            defaultFromToken = fromToken.address ?? ""
-        }
-        if toToken.address == "" {
-            defaultToToken = StringConstants.defaultAddress
-        } else {
-            defaultToToken = toToken.address ?? ""
-        }
-        let param = ["fromBlockchain":fromNetwork,
-                     "fromTokenSymbol":fromToken.symbol,
-                     "fromTokenAddress":defaultFromToken,
-                     "toBlockchain": toNetwork,
-                     "toTokenSymbol": toToken.symbol,
-                     "toTokenAddress":defaultToToken ,
-                     "walletAddress": walletAddress,
-                     "price": fromAmount,
-                     "fromWalletAddress":fromWalletAddress,
-                     "toWalletAddress":toWalletAddress
-                     
-        ]
-        print("Rangoparams=",param)
-        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL:"https://plutope.app/api/rango-swap-quote"), HttpMethod: .post, parameters: param as [String : Any], headers: nil) { status, error, data in
-            if status {
-                do {
-                    let jsonData = try JSONDecoder().decode(RangoSwapData.self, from: data ?? Data())
-                    
-                   // let data = try JSONSerialization.jsonObject(with: data!)
-                    completion(true,jsonData.error ?? "",jsonData.resultType ?? "",jsonData.route)
-                } catch(let error) {
-                    print(error)
-                    completion(false,error.localizedDescription,"",nil)
-                }
-            } else {
-                completion(false,error?.rawValue ?? "","",nil)
-            }
-        }
-    }
+
     /// apiRangoSwapping
     func apiRangoSwapping(walletAddress: String,fromToken: Token,toToken: Token,fromAmount: String,fromWalletAddress:String,toWalletAddress:String,completion: @escaping ((Bool,String,[String: Any]?) -> Void)) {
         
                 var fromNetwork: String? {
                     switch fromToken.chain {
-        
                     case .ethereum :
                         return "ETH"
                     case .binanceSmartChain :
@@ -135,54 +66,98 @@ class SwappingRepo {
                         return "OKT"
                     case .polygon:
                         return "POLYGON"
-                   
                     case .bitcoin:
                         return "BTC"
+                    case .opMainnet:
+                        return "OPTIMISM"
+                    case .avalanche:
+                        return "AVAX"
+                    case .arbitrum:
+                        return "ARBITRUM"
+                    case.base:
+                        return "BASE"
+//                    case .tron:
+//                        return "TRON"
+//                    case .solana:
+//                        return "Solana"
                     case .none:
                         return ""
+                    
                     }
+               
                 }
-                var toNetwork: String? {
-                    switch toToken.chain {
+        func toTokenChain() -> String? {
+            switch toToken.chain {
+                
+            case .ethereum :
+                return "ETH"
+            case .binanceSmartChain :
+                return "BSC"
+            case .oKC:
+                return "OKT"
+            case .polygon:
+                return "POLYGON"
+            case .bitcoin:
+                return "BTC"
+            case .opMainnet:
+                return "OPTIMISM"
+            case .avalanche:
+                return "AVAX"
+            case .arbitrum:
+                return "ARBITRUM"
+            case.base:
+                return "BASE"
+//            case .tron:
+//                return "TRON"
+//            case .solana:
+//                return "Solana"
+            case .none:
+                return ""
+            }
+        }
+        let payTokenAddress = (fromToken.address ?? "") == "" ? StringConstants.defaultAddress : fromToken.address ?? ""
+        let getTokenAddress = (toToken.address ?? "") == "" ? StringConstants.defaultAddress : toToken.address ?? ""
         
-                    case .ethereum :
-                        return "ETH"
-                    case .binanceSmartChain :
-                        return "BSC"
-                    case .oKC:
-                        return "OKT"
-                    case .polygon:
-                        return "POLYGON"
-                   
-                    case .bitcoin:
-                        return "BTC"
-                    case .none:
-                        return ""
-                    }
+        print("payTokenAddress",payTokenAddress)
+        print("getTokenAddress",getTokenAddress)
+        var toNetwork: String? {
+            return toTokenChain()
                 }
-        
+        var fromTokenSymbol = ""
+        var toTokenSymbol = ""
+        if fromToken.symbol == "POL" {
+            fromTokenSymbol = "MATIC"
+        } else {
+            fromTokenSymbol = fromToken.symbol ?? ""
+        }
+        if toToken.symbol == "POL" {
+            toTokenSymbol = "MATIC"
+        } else {
+            toTokenSymbol = toToken.symbol ?? ""
+        }
         let param = ["fromBlockchain":fromNetwork,
-                     "fromTokenSymbol":fromToken.symbol,
-                     "fromTokenAddress":fromToken.address,
+                     "fromTokenSymbol":fromTokenSymbol,
+                     "fromTokenAddress":payTokenAddress,
                      "toBlockchain": toNetwork,
-                     "toTokenSymbol": toToken.symbol,
-                     "toTokenAddress":toToken.address ,
+                     "toTokenSymbol": toTokenSymbol,
+                     "toTokenAddress":getTokenAddress ,
                      "walletAddress": walletAddress,
                      "price": fromAmount,
                      "fromWalletAddress":fromWalletAddress,
                      "toWalletAddress":toWalletAddress
         ]
         print(param)
-        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL:"https://plutope.app/api/rango-swap"), HttpMethod: .post, parameters: param as [String : Any], headers: nil) { status, error, data in
+        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL:"https://plutope.app/api/rango-swap-exchange"), HttpMethod: .post, parameters: param as [String : Any], headers: nil) { status, error, data in
             if status {
                 do {
                     let data = try JSONSerialization.jsonObject(with: data!)
                     completion(true,"",data as? [String: Any])
                 } catch(let error) {
-                    print(error)
+                    print("error",error)
                     completion(false,error.localizedDescription,nil)
                 }
             } else {
+                print("error1",error?.rawValue ?? "")
                 completion(false,error?.rawValue ?? "",nil)
             }
         }
@@ -210,6 +185,56 @@ class SwappingRepo {
         }
     }
     
+    func apiGetExodusTransactionStatus(_ transactionID: String?,completion: @escaping ((Bool,String,[String: Any]?) -> Void)) {
+        
+        let baseUrl = ServiceNameConstant.BaseUrl.baseUrl
+        let clientVersion = ServiceNameConstant.BaseUrl.clientVersion
+        let subUrl = ServiceNameConstant.exodusSwapSingleOrders
+        let apiUrl = "\(baseUrl)\(clientVersion)\(subUrl)/\(transactionID ?? "")"
+//    https://plutope.app/api/exodus-swap-single-orders/knp0NOvbQg08rzX
+        DGNetworkingServices.main.MakeApiCall(Service: NetworkURL(withURL: apiUrl), HttpMethod: .get, parameters: nil, headers: APIKey.changeNowAPIHeader) { result in
+            switch result {
+                
+            case .success((_, let data)):
+                do {
+                    let data = try JSONSerialization.jsonObject(with: data)
+                    completion(true,"",data as? [String: Any])
+                } catch(let error) {
+                    print(error)
+                    completion(false,error.localizedDescription,nil)
+                }
+            case .failure(let error) :
+                print(error)
+                completion(false,error.localizedDescription,nil)
+                
+            }
+        }
+    }
+    func apiUpdateExodusTransactionStatus(_ transactionID: String?,id:String?,completion: @escaping ((Bool,String,[String: Any]?) -> Void)) {
+        let baseUrl = ServiceNameConstant.BaseUrl.baseUrl
+        let clientVersion = ServiceNameConstant.BaseUrl.clientVersion
+        let subUrl = ServiceNameConstant.exodusSwapUpdateOrders
+        let apiUrl = "\(baseUrl)\(clientVersion)\(subUrl)"
+        
+        let param = ["id":id,
+                     "transactionId":transactionID]
+        print(param)
+        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .post, parameters: param as [String : Any], headers: nil) { status, error, data in
+            if status {
+                do {
+                    let data = try JSONSerialization.jsonObject(with: data ?? Data())
+                    completion(true,"",data as? [String: Any])
+                } catch(let error) {
+                    print(error)
+                    completion(false,error.localizedDescription,nil)
+                }
+            } else {
+                completion(false,error?.rawValue ?? "",nil)
+            }
+        }
+        
+    }
+    
     func apiGetCurrencies(completion: @escaping (([TransactionCurrencies]?,Bool,String) -> Void)) {
         
         DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: "https://api.changenow.io/v2/exchange/currencies"), HttpMethod: .get, parameters: nil, headers: nil) { status, error, data in
@@ -232,50 +257,13 @@ class SwappingRepo {
         }
         
     }
-    
     func apiOKTSwapping(fromTokenAddress: String, toTokenAddress: String, amount: String, chainId: String, userWalletAddress: String, slippage: String, completion: @escaping ((Bool, String, [String: Any]?) -> Void)) {
-        performOKTAPIRequest(path: "/api/v5/dex/aggregator/swap",
-                             query: "fromTokenAddress=\(fromTokenAddress)&toTokenAddress=\(toTokenAddress)&amount=\(amount)&chainId=\(chainId)&userWalletAddress=\(userWalletAddress)&slippage=\(slippage)",
-                             httpMethod: "GET",
-                             apiKey: APIKey.okxApiKey,
-                             secretKey: APIKey.okxSecretKey,
-                             passphrase: APIKey.okxPassphrase,
-                             source: "plutope",
-                             completion: completion)
-    }
-    
-    func apiOKTApproveSwap(tokenContractAddress: String, approveAmount: String, chainId: String, completion: @escaping ((Bool, String, [String: Any]?) -> Void)) {
-        performOKTAPIRequest(path: "/api/v5/dex/aggregator/approve-transaction",
-                             query: "tokenContractAddress=\(tokenContractAddress)&approveAmount=\(approveAmount)&chainId=\(chainId)",
-                             httpMethod: "GET",
-                             apiKey: APIKey.okxApiKey,
-                             secretKey: APIKey.okxSecretKey,
-                             passphrase: APIKey.okxPassphrase,
-                             source: "plutope",
-                             completion: completion)
-    }
-    
-    private func performOKTAPIRequest(path: String, query: String, httpMethod: String, apiKey: String, secretKey: String, passphrase: String, source: String, completion: @escaping ((Bool, String, [String: Any]?) -> Void)) {
-        let timestamp = Date().toISOString()
-        let apiUrl = "https://www.okx.com\(path)?\(query)"
-        
-        var headers = [String: String]()
-        headers["OK-ACCESS-TIMESTAMP"] = timestamp
-        
-        let requestData = timestamp + httpMethod + path + "?" + query
-        let signature = generateHMACSHA256(data: requestData, key: APIKey.okxSecretKey)
-//        guard let signature = try? HMAC(key: APIKey.okxSecretKey.bytes, variant: .sha2(.sha512))
-//                .authenticate(requestData.bytes) else {
-//            print("Failed to generate signature")
-//            return
-//        }
-        
-        headers["OK-ACCESS-SIGN"] = signature
-        headers["OK-ACCESS-PASSPHRASE"] = passphrase
-        headers["source"] = source
-        headers["OK-ACCESS-KEY"] = apiKey
-        
-        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .get, parameters: nil, headers: headers) { status, error, data in
+        let baseUrl = ServiceNameConstant.BaseUrl.baseUrl
+        let clientVersion = ServiceNameConstant.BaseUrl.clientVersion
+        let subUrl = ServiceNameConstant.okxSwapTranscation
+        let apiUrl = "\(baseUrl)\(clientVersion)\(subUrl)?fromTokenAddress=\(fromTokenAddress)&toTokenAddress=\(toTokenAddress)&amount=\(amount)&chainId=\(chainId)&userWalletAddress=\(userWalletAddress)&slippage=\(slippage)"
+        print("okxTransactionURL ==",apiUrl)
+        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .get, parameters: nil, headers: nil) { status, error, data in
             if status {
                 do {
                     let data = try JSONSerialization.jsonObject(with: data!)
@@ -289,33 +277,55 @@ class SwappingRepo {
             }
         }
     }
-    
-    func apiGetExchangePairs(fromCurrency: String,fromNetwork: String,toNetwork: String,completion: @escaping (([ExchangePairsData]?,Bool,String) -> Void)) {
-        var fromCurrencyUpdate = fromCurrency
-        if(fromCurrencyUpdate == "bsc-usd") {
-            fromCurrencyUpdate = "usdt"
-        }
-        let apiUrl = "https://api.changenow.io/v2/exchange/available-pairs?fromCurrency=\(fromCurrencyUpdate)&fromNetwork=\(fromNetwork)&toNetwork=\(toNetwork)"
-        
-        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .get, parameters: nil, headers: APIKey.changeNowAPIHeader) { status, error, data in
+    func apiOKTApproveSwap(tokenContractAddress: String, approveAmount: String, chainId: String, completion: @escaping ((Bool, String, [String: Any]?) -> Void)) {
+       
+        let baseUrl = ServiceNameConstant.BaseUrl.baseUrl
+        let clientVersion = ServiceNameConstant.BaseUrl.clientVersion
+        let subUrl = ServiceNameConstant.okxApproveTranscation
+        let apiUrl = "\(baseUrl)\(clientVersion)\(subUrl)?amount=\(approveAmount)&chainId=\(chainId)&tokenContractAddress=\(tokenContractAddress)&approveAmount=\(approveAmount)"
+        print("okxaproveURL ==",apiUrl)
+        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .get, parameters: nil, headers: nil) { status, error, data in
             if status {
                 do {
-                    let pairData = try JSONDecoder().decode([ExchangePairsData].self, from: data ?? Data())
-                    let pairsList = pairData
-                    
-                    completion(pairsList,true,"")
-                    print(pairData)
+                    let data = try JSONSerialization.jsonObject(with: data!)
+                    completion(true, "", data as? [String: Any])
                 } catch(let error) {
-                    completion(nil,false,error.localizedDescription)
                     print(error)
+                    completion(false, error.localizedDescription, nil)
                 }
             } else {
-                completion(nil,false,error?.rawValue ?? "")
-                print(error as Any)
-                //                self.apiGetExchangePairs(fromCurrency: fromCurrency, fromNetwork: fromNetwork, toNetwork: toNetwork, completion: completion)
+                completion(false, error?.rawValue ?? "", nil)
             }
         }
+        
     }
+    
+//    func apiGetExchangePairs(fromCurrency: String,fromNetwork: String,toNetwork: String,completion: @escaping (([ExchangePairsData]?,Bool,String) -> Void)) {
+//        var fromCurrencyUpdate = fromCurrency
+//        if(fromCurrencyUpdate == "bsc-usd") {
+//            fromCurrencyUpdate = "usdt"
+//        }
+//        let apiUrl = "https://api.changenow.io/v2/exchange/available-pairs?fromCurrency=\(fromCurrencyUpdate)&fromNetwork=\(fromNetwork)&toNetwork=\(toNetwork)"
+//        
+//        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .get, parameters: nil, headers: APIKey.changeNowAPIHeader) { status, error, data in
+//            if status {
+//                do {
+//                    let pairData = try JSONDecoder().decode([ExchangePairsData].self, from: data ?? Data())
+//                    let pairsList = pairData
+//                    
+//                    completion(pairsList,true,"")
+//                    print(pairData)
+//                } catch(let error) {
+//                    completion(nil,false,error.localizedDescription)
+//                    print(error)
+//                }
+//            } else {
+//                completion(nil,false,error?.rawValue ?? "")
+//                print(error as Any)
+//                //                self.apiGetExchangePairs(fromCurrency: fromCurrency, fromNetwork: fromNetwork, toNetwork: toNetwork, completion: completion)
+//            }
+//        }
+//    }
     
     // generateHMACSHA256
     private func generateHMACSHA256(data: String, key: String) -> String {
@@ -331,6 +341,77 @@ class SwappingRepo {
             return ""
         }
     }
+    
+    func exchangeOkxRangoSwapQuote(parameters: SwapQuoteParameters,completion: @escaping ((Bool,String,[SwapMeargedDataList]?) -> Void)) {
+        
+        let param: [String: Any] = [
+           "changeNow": [
+                "fromCurrency": parameters.fromCurrency ?? "",
+                "toCurrency": parameters.toCurrency ?? "",
+                "fromNetwork": parameters.fromNetwork ?? "",
+                "toNetwork": parameters.toNetwork ?? "",
+                "fromAmount": parameters.fromAmount ?? "",
+                "toAmount": parameters.toAmount ?? "",
+                "address": parameters.address ?? ""
+            ],
+            "okx": [
+                "amount": parameters.amountToPay,
+                "chainId": parameters.chainId,
+                "toTokenAddress": parameters.toTokenAddress,
+                "fromTokenAddress": parameters.fromTokenAddress,
+                "slippage": parameters.slippage,
+                "userWalletAddress": parameters.address
+                
+            ],
+             "rango": [
+                "fromBlockchain": parameters.fromBlockchain,
+                "fromTokenSymbol": parameters.fromTokenSymbol,
+                "toBlockchain": parameters.toBlockchain,
+                "toTokenSymbol": parameters.toTokenSymbol,
+                "rangotoTokenAddress": parameters.rangotoTokenAddress,
+                "fromWalletAddress": parameters.fromWalletAddress,
+                "toWalletAddress" : parameters.toWalletAddress,
+                "price": parameters.price,
+                "fromTokenAddress" : parameters.fromTokenAddress,
+                "toTokenAddress": parameters.toTokenAddress
+                
+             ],
+           "amount": parameters.mainAmount ?? "",
+           "amountInGwei": parameters.amountToPay ?? "",
+           "toBlockchain": parameters.toBlockchain ?? "",
+           "toTokenAddress": parameters.toTokenAddress ?? "",
+           "toTokenSymbol": parameters.toTokenSymbol ?? "",
+           "toWalletAddress": parameters.address ?? "",
+           "fromBlockchain": parameters.fromBlockchain ?? "",
+           "fromTokenAddress": parameters.fromTokenAddress ?? "",
+           "fromTokenSymbol": parameters.fromTokenSymbol ?? "",
+           "fromWalletAddress": parameters.fromWalletAddress ?? ""
+          
+        ]
+        print("mixProviderParams :==",param)
+      // Now you can use this dictionary in your API request
+        let appUrl = ServiceNameConstant.BaseUrl.baseUrl + ServiceNameConstant.BaseUrl.clientVersion + ServiceNameConstant.swapQuote
+        print(appUrl)
+        DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL:appUrl), HttpMethod: .post, parameters: param as [String : Any], headers: nil) { status, error, data in
+            
+            if status {
+                do {
+                    let resultData = try JSONDecoder().decode(SwapMeargedData.self, from: data ?? Data())
+                    completion(true,"",resultData.data)
+                    
+                } catch(let error) {
+                    completion(false,error.localizedDescription,nil)
+                    print(error)
+                }
+            } else {
+                completion(false,error?.rawValue ?? "",nil)
+                print(error as Any)
+            }
+
+        }
+
+    }
+    
 }
 
 extension Date {

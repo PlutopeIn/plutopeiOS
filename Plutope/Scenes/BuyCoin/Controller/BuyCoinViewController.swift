@@ -6,9 +6,11 @@
 //
 import UIKit
 import SafariServices
-
+import SDWebImage
+import IQKeyboardManagerSwift
 class BuyCoinViewController: UIViewController, Reusable {
     
+    @IBOutlet weak var lblChooseProvider: UILabel!
     @IBOutlet weak var txtPrice: UITextField!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var clvKeyboard: UICollectionView!
@@ -21,6 +23,7 @@ class BuyCoinViewController: UIViewController, Reusable {
     @IBOutlet weak var btnSelectedCurrency: UIButton!
     @IBOutlet weak var btnNext: GradientButton!
     @IBOutlet weak var lblBestPrice: UILabel!
+    @IBOutlet weak var lblBestPriceTitle: UILabel!
     @IBOutlet weak var lblThirdParty: UILabel!
     var isApiResponseReceived = false
     var headerTitle: String?
@@ -31,7 +34,14 @@ class BuyCoinViewController: UIViewController, Reusable {
     var provider: BuyCrypto.Domain = .onRamp()
     var apiCount = 0
     var url: String?
-    
+    var sendAddress = ""
+    var sendCoinQuantity = ""
+    var isFrom = ""
+    var buyQuoteArr = [BuyMeargedDataList]()
+    var isAlphyne = false
+    var isOnRamper = false
+    var isGuardarian = false
+    var providerName = ""
     // Define a completion handler type for API calls
     typealias APICompletionHandler = (Bool, [String: Any]?) -> Void
     var selectedCurrency: Currencies?
@@ -43,6 +53,12 @@ class BuyCoinViewController: UIViewController, Reusable {
             DGProgressView.shared.hideLoader()
         }
     }()
+    lazy var buyCoinQuoteViewModel: BuyCoinQuoteViewModel = {
+        BuyCoinQuoteViewModel { _, _ in
+          
+        }
+    }()
+    
     var supportedProviders = [BuyCrypto.Domain]()
     
     override func viewDidLoad() {
@@ -50,7 +66,17 @@ class BuyCoinViewController: UIViewController, Reusable {
         
         self.btnNext.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.next, comment: ""), for: .normal)
         self.lblThirdParty.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.thirdpartyprovider, comment: "")
-        self.lblBestPrice.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.bestprice, comment: "")
+        
+      //  self.lblBestPrice.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.bestprice, comment: "")
+        btnSelectedCurrency.titleLabel?.font = AppFont.regular(16.58).value
+        btnNext.titleLabel?.font = AppFont.regular(16.58).value
+        lblCurrency.font = AppFont.violetRegular(50).value
+        lblCoinQuantity.font = AppFont.violetRegular(22).value
+        lblChooseProvider.font = AppFont.violetRegular(24).value
+        lblProviderName.font = AppFont.violetRegular(20).value
+        lblBestPriceTitle.font = AppFont.regular(14).value
+        lblThirdParty.font = AppFont.regular(14).value
+        txtPrice.font = AppFont.violetRegular(50).value
         
         self.supportedProviders = (self.coinDetail?.chain!.buyProviders)!
         
@@ -58,129 +84,93 @@ class BuyCoinViewController: UIViewController, Reusable {
         defineHeader(headerView: headerView, titleText: headerTitle ?? "")
         
         /// Keyboard Register
-        keyboardRegister()
-       //  txtPrice.delegate = self
+//        keyboardRegister()
         /// Provider Action
         viewProvider.addTapGesture(target: self, action: #selector(providerTapped))
-        
+        self.btnNext.alpha = 0.5
+        self.btnNext.isUserInteractionEnabled = false
         selectedCurrency = WalletData.shared.primaryCurrency
         btnSelectedCurrency.setTitle(selectedCurrency?.symbol ?? "", for: .normal)
         lblCurrency.text = selectedCurrency?.sign ?? ""
-        getBestPriceFromAllProvider(buyProviders: supportedProviders)
+        getBestPriceFromAllProvider()
         
     }
-    
-    /// getBestPriceFromAllProvider
-     func getBestPriceFromAllProvider(buyProviders: [BuyCrypto.Domain]) {
-        lblCoinQuantity.showLoading()
-        viewProvider.isHidden = true
-        
-        /// Update Provider name with the name from the provider
-     
-        //  lblPrice.text = "2500"
-         txtPrice.text = "2500"
-
-        for idx in 0..<buyProviders.count {
-            /// temporary hide onMeta code
-                if buyProviders[idx] == .onMeta() {
-                    allProviders.append(BuyProviders(imageUrl: UIImage.providerOnMeta, name: StringConstants.onMeta, bestPrice: ""))
-
-                } else if buyProviders[idx] == .meld() {
-                    allProviders.append(BuyProviders(imageUrl: UIImage.providerMeld, name: StringConstants.meld, bestPrice: ""))
-                    
-                } else if buyProviders[idx] == .changeNow() {
-                    allProviders.append(BuyProviders(imageUrl: UIImage.providerChangeNow, name: StringConstants.changeNow, bestPrice: ""))
-                    
-                } else if buyProviders[idx] == .onRamp() {
-                    allProviders.append(BuyProviders(imageUrl: UIImage.providerRamp, name: StringConstants.onRamp, bestPrice: ""))
-                } else if buyProviders[idx] == .alchemy() {
-                    
-                } else if buyProviders[idx] == .unlimit() {
-                    allProviders.append(BuyProviders(imageUrl: UIImage.providerUnLimit, name: StringConstants.unLimit, bestPrice: ""))
-                }
-        }
-         
-         if self.selectedCurrency?.symbol == "INR" {
-             print("Selected Currency Symbol: \(self.selectedCurrency?.symbol ?? "nil")")
-             allProviders = allProviders.filter { provider in
-                 if provider.name != "Change Now" {
-                     return true
-                 } else {
-                     return false
-                 }
-             }
-             print("Filtered Providers: \(self.allProviders)")
-         }
+    func getBestPriceFromAllProvider() {
+       lblCoinQuantity.showLoading()
+       viewProvider.isHidden = true
+       lblChooseProvider.isHidden = true
        
-        if allProviders.count == 0 {
-            lblCoinQuantity.hideLoading()
-            lblCoinQuantity.text = "Not available!"
-        } else {
-            callAPIsAfterTaskCompletion()
-        }
-    
+       txtPrice.text = "5200"
+        getQuote()
+   
+   }
+
+    @IBAction func textCharecterChnage(_ sender: UITextField) {
+        HapticFeedback.generate(.light)
+        self.btnNext.alpha = 0.5
+        self.btnNext.isUserInteractionEnabled = false
+        makeAPICallIfValid()
     }
     
     @IBAction func textChanged(_ sender: UITextField) {
+        HapticFeedback.generate(.light)
         makeAPICallIfValid()
     }
     
     func getBestPriceFromAllBestPrices() {
-       
-        if let highestPriceProvider = allProviders.max(by: { (Double($0.bestPrice ?? "") ?? 0.0) < Double($1.bestPrice ?? "") ?? 0.0 }) {
-            DispatchQueue.main.async {
-                if Double(highestPriceProvider.bestPrice ?? "") ?? 0.0 <= 0 {
+        
+        if self.selectedCurrency?.symbol == "INR" {
+            print("Selected Currency Symbol: \(self.selectedCurrency?.symbol ?? "nil")")
+            self.buyQuoteArr = buyQuoteArr.filter { provider in
+                if provider.providerName != "changenow" {
+                    return true
+                } else {
+                    return false
+                }
+            }
+            print("Filtered Providers: \(self.allProviders)")
+        }
+        let highestPriceProvider = self.buyQuoteArr.first
+        guard let bestPrice =  self.buyQuoteArr.first?.amount else { return  }
+ 
+          //  DispatchQueue.main.async {
+                if Double(bestPrice) ?? 0.0 <= 0 {
                     self.lblCoinQuantity.hideLoading()
-                    self.lblCoinQuantity.text = "Not available!"
+                    self.lblCoinQuantity.text = " Not available! "
                     self.viewProvider.isHidden = true
+                    self.lblChooseProvider.isHidden = true
                     print("Price not available for the provider")
                 } else {
                     self.lblCoinQuantity.hideLoading()
+                    self.btnNext.alpha = 1
+                    self.btnNext.isUserInteractionEnabled = true
                     self.viewProvider.isHidden = false
+                    self.lblChooseProvider.isHidden = false
                    // self.isApiResponseReceived = true
-                    self.lblProviderName.text = highestPriceProvider.name
-                    let formattedPrice = WalletData.shared.formatDecimalString("\(highestPriceProvider.bestPrice ?? "")", decimalPlaces: 6)
-                    //  let formattedPrice = String(format: "%.6f", Double(highestPriceProvider.bestPrice ?? "") ?? 0.0)
-                    self.lblCoinQuantity.text = "~\(formattedPrice) \(self.coinDetail?.symbol ?? "")"
-                    self.ivProvider.image = highestPriceProvider.imageUrl
-                    switch highestPriceProvider.name {
-                        /// temporary hide onMeta code
-                    case StringConstants.onMeta:
-                        self.provider = .onMeta()
-                    case StringConstants.changeNow:
-                        self.provider = .changeNow()
-                    case StringConstants.onRamp:
-                        self.provider = .onRamp()
-                    case StringConstants.meld:
-                        self.provider = .meld()
-                    case StringConstants.unLimit:
-                        self.provider = .unlimit()
-                    default:
-                        break
-                    }
+                    self.lblProviderName.text = highestPriceProvider?.name
+                    self.providerName = highestPriceProvider?.providerName ?? ""
+                    let formattedPrice = WalletData.shared.formatDecimalString("\(highestPriceProvider?.amount ?? "")", decimalPlaces: 6)
+            
+                    self.lblCoinQuantity.text = " ~\(formattedPrice) \(self.coinDetail?.symbol ?? "" )"
+                    let imgUrl = ServiceNameConstant.BaseUrl.baseUrl + ServiceNameConstant.BaseUrl.clientVersion+ServiceNameConstant.BaseUrl.images + (highestPriceProvider?.image ?? "")
+                    self.ivProvider.sd_setImage(with: URL(string: imgUrl))
+                    self.url = highestPriceProvider?.url
                 }
             }
-        } else {
-            lblCoinQuantity.hideLoading()
-            lblCoinQuantity.text = "Not available!"
-            viewProvider.isHidden = true
-            print("No providers found")
-        }
-
-    }
     
     /// Will open provider list
     @objc func providerTapped(_ sender: UITapGestureRecognizer) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = ProvidersViewController()
         viewToNavigate.coinDetail = self.coinDetail
-        var sortedProviders = allProviders.sorted(by: { provider1, provider2 in
-            let price1 = Double(provider1.bestPrice ?? "") ?? 0.0
-            let price2 = Double(provider2.bestPrice ?? "") ?? 0.0
+        var sortedProviders = self.buyQuoteArr.sorted(by: { provider1, provider2 in
+            let price1 = Double(provider1.amount ?? "") ?? 0.0
+            let price2 = Double(provider2.amount ?? "") ?? 0.0
             return price1 > price2
         })
-        sortedProviders = sortedProviders.filter { (Double($0.bestPrice ?? "") ?? 0.0) > 0 }
-        viewToNavigate.arrProviderList = sortedProviders
-        viewToNavigate.delegate = self
+        sortedProviders = sortedProviders.filter { (Double($0.amount ?? "") ?? 0.0) > 0 }
+        viewToNavigate.buyArrProviderList = sortedProviders
+        viewToNavigate.buydelegate = self
         self.navigationController?.pushViewController(viewToNavigate, animated: true)
     }
     
@@ -193,63 +183,30 @@ class BuyCoinViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionCurrency(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = CurrencyViewController()
         viewToNavigate.delegate = self
         self.navigationController?.pushViewController(viewToNavigate, animated: true)
     }
     @IBAction func actionNext(_ sender: Any) {
-       
+        HapticFeedback.generate(.light)
         //        guard let priceval = Double(lblPrice.text ?? ""), priceval <= minimumAmount,
         if viewProvider.isHidden {
             self.btnNext.alpha = 0.5
             self.btnNext.isUserInteractionEnabled = false
             return
         }
-        guard let price = txtPrice.text,
-              let walletAddress = coinDetail?.chain?.walletAddress,
-              let currencyToBuy = coinDetail?.symbol?.lowercased(),
-              let chainId = coinDetail?.chain?.chainId,
-              let networkType = coinDetail?.type else { return  }
-       
-        switch provider {
-        case .onRamp:
-            url = BuyCrypto.buildURL(for: .onRamp(coinCode: currencyToBuy, walletAddress: walletAddress, fiatAmount: price, networkType: networkType))
-        case .meld:
-            url = BuyCrypto.buildURL(for: .meld(countryCode: "\((self.selectedCurrency?.symbol ?? "").prefix(2))", sourceAmount: price, sourceCurrencyCode: "\(self.selectedCurrency?.symbol ?? "")", destinationCurrencyCode: currencyToBuy.uppercased(), walletAddress: walletAddress, networkType: "\(networkType )", tokenAddress: coinDetail?.address ))
-        case .changeNow:
-
-            if let validCoinDetail = coinDetail {
-               let toCurrency = getToCurrency(coinDetail: validCoinDetail , currencyToBuy: currencyToBuy)
-                
-                url = BuyCrypto.buildURL(for: .changeNow(from: "\(self.selectedCurrency?.symbol ?? "")", toAddress: toCurrency, fiatMode: true, amount: price, recipientAddress: walletAddress))
-            } else {
-                // coinDetail is nil
-            }
-           
-            /// temporary hide onMeta code 
-        case .onMeta:
-            self.isOnMeta = true
-            let apiKey = APIKey.onMeta
-            url = BuyCrypto.buildURL(for: .onMeta(apiKey: apiKey, walletAddress: walletAddress, fiatAmount: price, chainId: chainId, tokenAddress: coinDetail?.address ?? "",tokenSymbol: currencyToBuy))
-        case .alchemy:
-            break
-        case .unlimit:
-            let crypto = "\(coinDetail?.symbol ?? "")-\(coinDetail?.type ?? "")"
-            let countryCode = self.selectedCurrency?.symbol ?? ""
-            url = BuyCrypto.buildURL(for: .unlimit(merchantId: "8d16f1c7-a6d1-46ac-bdf3-621284be889b",destinationCurrencyCode: crypto,fiatAmount: price,countryCode: countryCode))
-        }
-     
+        if self.providerName == "alpyne" {
+            isAlphyne = true
+        } else if self.providerName == "onrampable" {
+            isOnRamper = true
+        } 
+//        else if self.providerName == "guardarian" {
+//            isGuardarian = true
+//        }
         if let url = url {
             let _ : String = url
             self.showWebView(for: url, onVC: self, title: "Buy \(coinDetail?.symbol ?? "")")
-            
-    //        if let url = URL(string: url), UIApplication.shared.canOpenURL(url) {
-    //           if #available(iOS 10.0, *) {
-    //              UIApplication.shared.open(url, options: [:], completionHandler: nil)
-    //           } else {
-    //              UIApplication.shared.openURL(url)
-    //           }
-    //        }
         }
     }
     
@@ -257,7 +214,7 @@ class BuyCoinViewController: UIViewController, Reusable {
         if coinDetail.address != "" {
             switch coinDetail.chain {
             case .polygon:
-                return "\(currencyToBuy)matic"
+                return "\(currencyToBuy)pol"
             case .binanceSmartChain:
                 return "\(currencyToBuy)bsc"
             case .ethereum:
@@ -289,23 +246,30 @@ class BuyCoinViewController: UIViewController, Reusable {
     }
     @MainActor
     func showWebView(for url: String, onVC: UIViewController, title: String) {
-        if(self.isOnMeta) {
-            
-//                    if let url = URL(string: url), UIApplication.shared.canOpenURL(url) {
-//                       if #available(iOS 10.0, *) {
-//                          UIApplication.shared.open(url, options: [:], completionHandler: nil)
-//                       } else {
-//                          UIApplication.shared.openURL(url)
-//                       }
-//                    }
-            
+        if(self.isAlphyne) {
             if let url = URL(string: url) {
                 let safariViewController = SFSafariViewController(url: url)
                 let navigationController = UINavigationController(rootViewController: safariViewController)
                 navigationController.setNavigationBarHidden(true, animated: false)
                 present(navigationController, animated: true, completion: nil)
             }
-        } else {
+        }  else if(self.isOnRamper) {
+            if let url = URL(string: url) {
+                let safariViewController = SFSafariViewController(url: url)
+                let navigationController = UINavigationController(rootViewController: safariViewController)
+                navigationController.setNavigationBarHidden(true, animated: false)
+                present(navigationController, animated: true, completion: nil)
+            }
+        } 
+//        else if (self.isGuardarian) {
+//            if let url = URL(string: url) {
+//                let safariViewController = SFSafariViewController(url: url)
+//                let navigationController = UINavigationController(rootViewController: safariViewController)
+//                navigationController.setNavigationBarHidden(true, animated: false)
+//                present(navigationController, animated: true, completion: nil)
+//            }
+//        } 
+        else {
         let webController = WebViewController()
             webController.webViewURL = url
             webController.webViewTitle = title
@@ -315,9 +279,3 @@ class BuyCoinViewController: UIViewController, Reusable {
     }
     
 }
-
-//extension BuyCoinViewController : UITextFieldDelegate {
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        performNetworkCall()
-//    }
-//}

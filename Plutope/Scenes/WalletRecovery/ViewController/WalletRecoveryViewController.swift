@@ -23,10 +23,26 @@ class WalletRecoveryViewController: UIViewController {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var lblBackUpOptions: UILabel!
     
+    @IBOutlet weak var lblNonClimedTokens: UILabel!
+    @IBOutlet weak var lblTotalTokens: UILabel!
+    
+    @IBOutlet weak var lblClimedTokens: UILabel!
+    
+    @IBOutlet weak var lblCountTotalTokens: UILabel!
+    
+    @IBOutlet weak var lblCountClimedTokens: UILabel!
+    @IBOutlet weak var lblCountNonClimedTokens: UILabel!
+   
+    
+    var arrReferallCodeUser : [ReferalUserDataList]?
     var wallet: Wallets?
     var walletsList: [Wallets]?
-    
+    lazy var referalUserCodeViewModel: ReferalUserCodeViewModel = {
+        ReferalUserCodeViewModel { _ ,_ in
+        }
+    }()
     fileprivate func uiSetUp() {
+        self.lblName.font = AppFont.violetRegular(16).value
         self.lblName.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.name, comment: "")
         self.btnWalletDelete.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.deletewallet, comment: ""), for: .normal)
         self.lblIcloudActive.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.active, comment: "")
@@ -38,6 +54,11 @@ class WalletRecoveryViewController: UIViewController {
         self.txtWalletName.text = wallet?.wallet_name ?? ""
         self.txtWalletName.delegate = self
         self.btnSaveChanges.isHidden = true
+        
+        self.lblBackUpOptions.font = AppFont.regular(12).value
+        self.lblName.font = AppFont.regular(12).value
+        self.lblManualBackup.font = AppFont.violetRegular(15).value
+        self.lblManualActive.font = AppFont.violetRegular(15).value
     }
     
     override func viewDidLoad() {
@@ -51,6 +72,41 @@ class WalletRecoveryViewController: UIViewController {
         self.checkWalletDeletion()
         // backUpOptionTapAction
         self.backUpOptionTapAction()
+        getReferalUserCodeData(walletAddress: WalletData.shared.myWallet?.address ?? "")
+        self.lblTotalTokens.text = "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.total, comment: "")) \n \(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.tokens, comment: ""))"
+        self.lblClimedTokens.text = "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.claimd, comment: "")) \n \(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.tokens, comment: ""))"
+        self.lblNonClimedTokens.text = "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.nonClaimd, comment: "")) \n \(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.tokens, comment: ""))"
+    }
+    func getReferalUserCodeData(walletAddress: String) {
+//           DGProgressView.shared.showLoader(to: view)
+        referalUserCodeViewModel.referalUserRepo(walletAddress: walletAddress) { resStatus, resMessage,dataValue  in
+                if resStatus == 1 {
+                    if dataValue?.count != 0 {
+                        DGProgressView.shared.hideLoader()
+                        self.arrReferallCodeUser = dataValue
+                      //  self.lblNoData.isHidden = true
+                        
+                        guard let totalTokens = self.arrReferallCodeUser else { return }
+                        
+                        self.lblCountTotalTokens.text = "\(self.arrReferallCodeUser?.count ?? 0)"
+                        
+                        let isClaimFalseCount = totalTokens.filter { !($0.isClaim ?? false) }.count
+                        
+                        let isClaimTrueCount = totalTokens.filter { $0.isClaim ?? true }.count
+                        
+                        self.lblCountClimedTokens.text = "\(isClaimTrueCount)"
+                        
+                        self.lblCountNonClimedTokens.text = "\(isClaimFalseCount)"
+                    } else {
+                       // self.lblNoData.isHidden = false
+                    }
+                } else {
+                    DGProgressView.shared.hideLoader()
+                    self.showToast(message: resMessage, font: AppFont.regular(15).value)
+                   // self.lblNoData.isHidden = false
+                }
+          //  self.tbvUpdateClaim.reloadData()
+            }
     }
     // checkWalletDeletion
     func checkWalletDeletion() {
@@ -81,13 +137,14 @@ class WalletRecoveryViewController: UIViewController {
         // lblManualActive.text = isManualBackupActive ? StringConstants.backUpActive : StringConstants.backUpNotActive
         lblIcloudActive.text = isCloudBackupActive ? LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.active, comment: "") : LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.notactive, comment: "")
         lblManualActive.text = isManualBackupActive ? LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.active, comment: "") : LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.notactive, comment: "")
-        lblIcloudActive.textColor = isCloudBackupActive ? .c00C6FB : .c75769D
-        lblManualActive.textColor = isManualBackupActive ? .c00C6FB : .c75769D
+        lblIcloudActive.textColor = isCloudBackupActive ? .c2B5AF3 : .c75769D
+        lblManualActive.textColor = isManualBackupActive ? .c2B5AF3 : .c75769D
     }
     // backUpOptionTapAction
     fileprivate func backUpOptionTapAction() {
         /// iCloud Backup Tap Action
         viewiCloud.addTapGesture {
+            HapticFeedback.generate(.light)
             let isCloudBackupActive = self.wallet?.isCloudBackup ?? false
             if isCloudBackupActive {
                 let viewToNavigate = RecoveryPhraseViewController()
@@ -107,6 +164,7 @@ class WalletRecoveryViewController: UIViewController {
         
         /// Manual Backup Tap Action
         viewManual.addTapGesture {
+            HapticFeedback.generate(.light)
             if UserDefaults.standard.object(forKey: DefaultsKey.appPasscode) != nil {
                 guard let sceneDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
                 guard let viewController = sceneDelegate.window?.rootViewController else { return }
@@ -126,6 +184,7 @@ class WalletRecoveryViewController: UIViewController {
     }
   // btnCancelAction
     @IBAction func btnCancelAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         txtWalletName.text = ""
         btnCancel.isHidden = true
 

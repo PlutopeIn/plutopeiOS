@@ -2,10 +2,10 @@ import Foundation
 
 struct InputConfig {
     static var projectId: String {
-//        guard let projectId = config(for: "740207e4a6f01a1c9c11fe9806a2c6a7"), !projectId.isEmpty else {
-//            fatalError("PROJECT_ID is either not defined or empty in Configuration.xcconfig")
-//        }
-        let projectId = "740207e4a6f01a1c9c11fe9806a2c6a7"
+        guard let projectId = config(for: "PROJECT_ID"), !projectId.isEmpty else {
+            fatalError("PROJECT_ID is either not defined or empty in Configuration.xcconfig")
+        }
+        
         return projectId
     }
 
@@ -22,4 +22,3 @@ struct InputConfig {
     }
 
 }
-

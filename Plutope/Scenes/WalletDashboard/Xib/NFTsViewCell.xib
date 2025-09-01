@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -27,22 +28,24 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NFT1" translatesAutoresizingMaskIntoConstraints="NO" id="ETY-1y-qvu">
                                 <rect key="frame" x="0.0" y="0.0" width="259" height="356"/>
+                                <color key="backgroundColor" systemColor="secondaryLabelColor"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="10g-Nb-mPy">
                                 <rect key="frame" x="0.0" y="318" width="259" height="38"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="nft style ape" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1SP-PR-58F">
-                                        <rect key="frame" x="99" y="12" width="61" height="14"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="nft style ape" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1SP-PR-58F">
+                                        <rect key="frame" x="5" y="12" width="249" height="14"/>
                                         <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="12"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.14509803921568626" green="0.14900000393390656" blue="0.30199998617172241" alpha="0.88" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="secondaryLabelColor"/>
                                 <constraints>
+                                    <constraint firstItem="1SP-PR-58F" firstAttribute="leading" secondItem="10g-Nb-mPy" secondAttribute="leading" constant="5" id="Eg4-e7-yxD"/>
                                     <constraint firstAttribute="height" constant="38" id="Sd5-kS-5Ch"/>
                                     <constraint firstItem="1SP-PR-58F" firstAttribute="centerX" secondItem="10g-Nb-mPy" secondAttribute="centerX" id="YXt-TR-Kuu"/>
                                     <constraint firstItem="1SP-PR-58F" firstAttribute="centerY" secondItem="10g-Nb-mPy" secondAttribute="centerY" id="YtG-NC-Rz3"/>
+                                    <constraint firstAttribute="trailing" secondItem="1SP-PR-58F" secondAttribute="trailing" constant="5" id="yz7-3A-Lb6"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -82,5 +85,8 @@
     </objects>
     <resources>
         <image name="NFT1" width="164" height="164"/>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

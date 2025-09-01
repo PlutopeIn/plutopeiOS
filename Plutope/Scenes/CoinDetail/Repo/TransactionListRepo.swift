@@ -43,7 +43,7 @@ class TransactionListRepo {
                 }
                 
             case .failure(let error):
-                print(error)
+                print("errorvalue",error)
                 completion(nil,false,error.rawValue)
             }
         }
@@ -75,4 +75,102 @@ class TransactionListRepo {
             }
         }
     }
+    
+    func getTransactionHistortyNew1(_ coindetail: Token,_ page: String,completion: @escaping (([TransactionHistoryResult]?,Bool,String) -> Void)) {
+        
+        let apiURL = "https://plutope.app/api/wallet-transcation?wallet_address=\(coindetail.chain?.walletAddress ?? "")&chain=\(coindetail.chain?.chainName ?? "")&token_address=\(coindetail.address ?? "")"
+        //
+        DGNetworkingServices.main.MakeApiCall(Service: NetworkURL(withURL: apiURL), HttpMethod: .get, parameters: nil, headers: nil) { result in
+            
+            switch result {
+                
+            case .success((_,let response)):
+                do {
+                    let decodedRes = try JSONDecoder().decode(TransactionHistoryDataNew.self, from: response)
+                    completion(decodedRes.data,true,"")
+                  
+                } catch(let error) {
+                    print(error)
+                    completion(nil,false,error.localizedDescription)
+                }
+                
+            case .failure(let error):
+                print("errorvalue",error)
+                completion(nil,false,error.rawValue)
+            }
+        }
+    }
+    func getTransactionHistortyNew(
+        _ coindetail: Token,
+        cursor: String?,
+        completion: @escaping (([TransactionHistoryResult]?, String?, Bool, String) -> Void)
+    ) {
+        // Construct base URL
+        var components = URLComponents(string: "https://plutope.app/api/wallet-transcation")!
+        print("chain",coindetail.chain?.chainName ?? "")
+        // Build query items
+        var queryItems = [
+            URLQueryItem(name: "wallet_address", value: coindetail.chain?.walletAddress ?? ""),
+            URLQueryItem(name: "chain", value: coindetail.chain?.chainName ?? ""),
+            URLQueryItem(name: "token_address", value: coindetail.address ?? "")
+        ]
+        
+        if let cursor = cursor, !cursor.isEmpty {
+            queryItems.append(URLQueryItem(name: "cursor", value: cursor))
+        }
+
+        components.queryItems = queryItems
+
+        // Ensure valid URL
+        guard let url = components.url else {
+            completion(nil, nil, false, "Invalid URL")
+            return
+        }
+
+        print("➡️ Final URL: \(url.absoluteString)")
+
+        // Create request
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        // Uncomment if your API requires headers
+        // request.setValue("your-api-key", forHTTPHeaderField: "X-API-Key")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(nil, nil, false, error.localizedDescription)
+                print("➡️ Fetching transaction with error : \(error.localizedDescription)")
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(nil, nil, false, "Invalid response")
+                print("➡️ Invalid response : ")
+                return
+            }
+
+            guard (200...299).contains(httpResponse.statusCode) else {
+                completion(nil, nil, false, "HTTP \(httpResponse.statusCode)")
+                print("➡️ statusCode :\(httpResponse.statusCode) ")
+                return
+            }
+
+            guard let data = data else {
+                completion(nil, nil, false, "Empty response")
+                return
+            }
+
+            do {
+                let decodedRes = try JSONDecoder().decode(TransactionHistoryDataNew.self, from: data)
+                print("➡️ decodedRes :\(decodedRes.data) ")
+                completion(decodedRes.data, decodedRes.cursor, true, "")
+            } catch {
+                print("➡️ Decoding error :\(error.localizedDescription) ")
+                completion(nil, nil, false, "Decoding error: \(error.localizedDescription)")
+            }
+        }
+
+        task.resume()
+    }
+
+
 }

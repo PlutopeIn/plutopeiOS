@@ -19,7 +19,7 @@ class CoinGraphViewController: UIViewController, Reusable {
     @IBOutlet var btnDays: [UIButton]!
     @IBOutlet weak var lblPer: UILabel!
     @IBOutlet weak var lblPrice: UILabel!
-    @IBOutlet weak var lblCoinName: UILabel!
+
     @IBOutlet weak var ivCoinImage: UIImageView!
     @IBOutlet weak var chartView: LineChartView!
     @IBOutlet weak var headerView: UIView!
@@ -37,7 +37,7 @@ class CoinGraphViewController: UIViewController, Reusable {
     var priceLines: [CAShapeLayer] = []
     lazy var viewModel: CoinGraphViewModel = {
         CoinGraphViewModel { _ ,message in
-            self.showToast(message: message, font: .systemFont(ofSize: 15))
+           // self.showToast(message: message, font: .systemFont(ofSize: 15))
         }
     }()
     
@@ -50,7 +50,7 @@ class CoinGraphViewController: UIViewController, Reusable {
         super.viewDidLoad()
         
         /// Navigation Header
-        defineHeader(headerView: headerView, titleText: "")
+        defineHeader(headerView: headerView, titleText: coinDetail?.name ?? "")
         
         self.lblMarketCapText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.marketcap, comment: "")
         self.lblVolume24Text.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.volume24h, comment: "")
@@ -60,22 +60,58 @@ class CoinGraphViewController: UIViewController, Reusable {
         self.getMarketData("\(WalletData.shared.primaryCurrency?.symbol ?? "")", ids: self.coinDetail?.tokenId ?? "")
         self.getGraphData(self.coinDetail?.tokenId ?? "", currency: "\(WalletData.shared.primaryCurrency?.symbol ?? "")", days: "1")
         self.getTokenInfo(tokenId: self.coinDetail?.tokenId ?? "")
+        lblCirculatingSupplyText.font = AppFont.regular(12.67).value
+        lblCirculatingSupply.font = AppFont.violetRegular(17.11).value
+        lblUpdatedPrice.font = AppFont.regular(15.0).value
+        lblPer.font = AppFont.regular(15.0).value
+        lblVolume24Text.font = AppFont.regular(13.0).value
+        lblVolume.font = AppFont.violetRegular(18.0).value
+        lblTotalSupplyText.font = AppFont.regular(13.0).value
+        lblTotalSupply.font = AppFont.violetRegular(18.0).value
+        lblMarketCapText.font = AppFont.regular(13.0).value
+        lblMarketCap.font = AppFont.violetRegular(18.0).value
+        lblAboutCoin.font = AppFont.violetRegular(25).value
+        lblCoinDescription.font = AppFont.violetRegular(18.0).value
+        
         setCoinDetail()
     }
     
+    func convertToBillion(_ amount: Double) -> String {
+        let billionValue = amount / 1_000_000_000.0
+        return String(format: "%.1fB", billionValue)
+    }
+    func convertToMillion(_ amount: Double) -> String {
+        let millionValue = amount / 1_000_000.0
+        return String(format: "%.1fM", millionValue)
+    }
+    func formatAmount(_ amount: Double) -> String {
+        if amount >= 1_000_000_000 {
+            let billionValue = amount / 1_000_000_000.0
+            return String(format: "%.1fB", billionValue)
+        } else {
+            let millionValue = amount / 1_000_000.0
+            return String(format: "%.1fM", millionValue)
+        }
+    }
     @IBAction func actionDone(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
     }
     
     /// setCoinDetail
     private func setCoinDetail() {
-        self.lblCoinName.text = coinDetail?.symbol ?? ""
-        self.lblCoinSign.text = coinDetail?.name ?? ""
+    
         self.lblCoinType.text = coinDetail?.type ?? ""
-        self.lblPer.text = "\(coinDetail?.lastPriceChangeImpact ?? "")%"
-        let price = WalletData.shared.formatDecimalString("\(coinDetail?.price ?? "")", decimalPlaces: 5)
-        //let price = String(format: "%.5f", Double(coinDetail?.price ?? "") ?? 0.0)
-        self.lblPrice.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(price)"
+        let balanceString = WalletData.shared.formatDecimalString("\(coinDetail?.balance ?? "0")", decimalPlaces: 8)
+        
+        lblPrice.text = "\(balanceString) \(coinDetail?.symbol ?? "")"
+        let price = WalletData.shared.formatDecimalString("\(coinDetail?.price ?? "0")", decimalPlaces: 5)
+        if Double(coinDetail?.lastPriceChangeImpact ?? "") ?? 0.0 >= 0 {
+            self.lblPer.text = "+\(coinDetail?.lastPriceChangeImpact ?? "0")%"
+            self.lblPer.textColor = UIColor.c099817
+        } else {
+            self.lblPer.text = "\(coinDetail?.lastPriceChangeImpact ?? "0")%"
+            self.lblPer.textColor = .red
+        }
         self.lblUpdatedPrice.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(price)"
         self.ivCoinImage.sd_setImage(with: URL(string: coinDetail?.logoURI ?? ""))
         chartView.xAxis.enabled = false
@@ -85,7 +121,7 @@ class CoinGraphViewController: UIViewController, Reusable {
         chartView.delegate = self
         chartView.doubleTapToZoomEnabled = false
         chartView.pinchZoomEnabled = false
-        btnDays[1].backgroundColor = .c202148
+        btnDays[1].backgroundColor = UIColor.secondaryLabel
         
         if LocalizationSystem.sharedInstance.getLanguage() == "hi" {
             lblAboutCoin.text = "\(coinDetail?.name ?? "") \(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.about, comment: ""))"
@@ -96,10 +132,11 @@ class CoinGraphViewController: UIViewController, Reusable {
     }
     
     @IBAction func selectDaysAction(_ sender: UIButton) {
+        HapticFeedback.generate(.light)
         removePriceLabels()
         chartView.clear()
         dataEntries.removeAll()
-        sender.backgroundColor = .c202148
+        sender.backgroundColor = UIColor.secondaryLabel
         switch sender.tag {
         case 0 :
             getGraphData(self.coinDetail?.tokenId ?? "", currency: "\(WalletData.shared.primaryCurrency?.symbol ?? "")", days: "1")
@@ -155,10 +192,33 @@ extension CoinGraphViewController {
             
             if let firstMarketData = filteredMarketData.first {
                 self.marketDataList = firstMarketData
-                self.lblMarketCap.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(self.marketDataList?.marketCap ?? 0)"
-                self.lblTotalSupply.text = "\(self.marketDataList?.totalSupply ?? 0) \(self.coinDetail?.symbol ?? "")"
-                self.lblVolume.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(self.marketDataList?.totalVolume ?? 0)"
-                self.lblCirculatingSupply.text = "\(self.marketDataList?.circulatingSupply ?? 0) \(self.coinDetail?.symbol ?? "")"
+                
+                if let marketCap = self.marketDataList?.marketCap {
+                    let marketCapValue: Double = {
+                        switch marketCap {
+                        case .int(let value):
+                            return Double(value)
+                        case .double(let value):
+                            return value
+                        }
+                    }()
+                    let marketcap = Double(marketCapValue)
+                    let marketccapFinal = convertToBillion(marketcap)
+                    self.lblMarketCap.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(marketccapFinal)"
+                } else {
+                    self.lblMarketCap.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")0"
+                }
+                
+//                self.lblMarketCap.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(self.marketDataList?.marketCap ?? 0)"
+                
+                let totalSupply = Double(self.marketDataList?.totalSupply ?? 0)
+                let finaltotalSupply = WalletData.shared.formatDecimalString("\(totalSupply)", decimalPlaces: 1)
+                self.lblTotalSupply.text = "\(finaltotalSupply) \(self.coinDetail?.symbol ?? "")"
+                let volume = Double(self.marketDataList?.totalVolume ?? 0)
+                let volumeFinal = convertToMillion(volume)
+                self.lblVolume.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(volumeFinal)"
+               let circularsuply =  WalletData.shared.formatDecimalString("\(self.marketDataList?.circulatingSupply ?? 0)", decimalPlaces: 1)
+                self.lblCirculatingSupply.text = "\(circularsuply) \(self.coinDetail?.symbol ?? "")"
             }
         }
         
@@ -168,7 +228,7 @@ extension CoinGraphViewController {
         viewModel.apiCoinInfo(tokenID: tokenId) { [weak self] status, _, data in
             if status == true {
                 let str = data?.description?.en ?? ""
-                if let attributedString = str.attributedStringFromHTML(font: AppFont.regular(14).value, textColor: .white) {
+                if let attributedString = str.attributedStringFromHTML(font: AppFont.violetRegular(15).value, textColor: .label) {
                     self?.lblCoinDescription.attributedText = attributedString
                     self?.lblCoinDescription.isUserInteractionEnabled = true
                     self?.lblCoinDescription.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self?.labelTapped(_:))))
@@ -191,6 +251,7 @@ extension CoinGraphViewController {
         }
     }
     @objc func labelTapped(_ gesture: UITapGestureRecognizer) {
+        HapticFeedback.generate(.light)
         // Handle link tap
         // You can use the same logic as previously mentioned
         guard let label = gesture.view as? UILabel else { return }
@@ -233,7 +294,7 @@ extension CoinGraphViewController {
         
         // Inside the completion handler of your API request
         
-        if self.btnDays[0].backgroundColor == .c202148 {
+        if self.btnDays[0].backgroundColor == UIColor.secondaryLabel {
             
             if let prices = jsonArray.prices {
                 let last12Prices = Array(prices.suffix(12))
@@ -257,18 +318,27 @@ extension CoinGraphViewController {
         let dataSet = LineChartDataSet(entries: dataEntries, label: "Price")
         
         // Create a gradient fill color
-        dataSet.fill = ColorFill(cgColor: UIColor.cF0B90B.cgColor)
+//        dataSet.fill = ColorFill(cgColor: UIColor.cF0B90B.cgColor)
+//        dataSet.drawCirclesEnabled = false
+//        dataSet.lineWidth = 1
+//        dataSet.fillColor = .cF0B90B
+//        dataSet.setColor(.white)
+//        dataSet.fillAlpha = 1
+//        dataSet.drawFilledEnabled = true
+//        dataSet.highlightColor = .gray
+        dataSet.highlightEnabled = true
+        dataSet.drawFilledEnabled = false
+        
+        // Customize the appearance of the line chart
         dataSet.drawCirclesEnabled = false
         dataSet.lineWidth = 1
-        dataSet.fillColor = .cF0B90B
-        dataSet.setColor(.white)
-        dataSet.fillAlpha = 1
-        dataSet.drawFilledEnabled = true
+        dataSet.setColor(.green)  // Set the color of the line
         dataSet.highlightColor = .gray
         dataSet.fillFormatter = DefaultFillFormatter { _,_ -> CGFloat in
             return CGFloat(self.chartView.leftAxis.axisMinimum)
         }
-        
+        chartView.layer.borderColor = UIColor.systemGray3.cgColor  // Set the border color
+        chartView.layer.borderWidth = 1.0
         let data = LineChartData(dataSet: dataSet)
         chartView.data = data
         
@@ -277,8 +347,8 @@ extension CoinGraphViewController {
         let maxPrice = dataEntries.max { $0.y < $1.y }?.y ?? 0.0
         
         // Add minimum and maximum price labels
-        addPriceLabel(value: minPrice, color: .black)
-        addPriceLabel(value: maxPrice, color: .black)
+        addPriceLabel(value: minPrice, color: .systemBackground)
+        addPriceLabel(value: maxPrice, color: .systemBackground)
         
         chartView.notifyDataSetChanged()
     }
@@ -287,24 +357,24 @@ extension CoinGraphViewController {
         let priceLabel = UILabel()
         priceLabel.textColor = color
         priceLabel.textAlignment = .center
-        priceLabel.backgroundColor = .white
+        priceLabel.backgroundColor = .label
         priceLabel.layer.cornerRadius = 5
         priceLabel.layer.masksToBounds = true
         
         // Adjust the font size to fit the label width
         priceLabel.adjustsFontSizeToFitWidth = true
-        priceLabel.minimumScaleFactor = 0.5
+        priceLabel.minimumScaleFactor = 0.2
         
         // Set the price label value
         let valueLable = WalletData.shared.formatDecimalString("\(value)", decimalPlaces: 2)
-        priceLabel.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(valueLable))"
+        priceLabel.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(valueLable)"
         
         // Add the label to the chart view
         chartView.addSubview(priceLabel)
         
         // Position the label on the chart view
         let labelWidth: CGFloat = 70
-        let labelHeight: CGFloat = 20
+        let labelHeight: CGFloat = 10
         
         // Find the closest data entry to the value
         let closestEntry = dataEntries.min(by: { abs($0.y - value) < abs($1.y - value) })
@@ -337,7 +407,7 @@ extension CoinGraphViewController: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
        
         let entryY = WalletData.shared.formatDecimalString("\(entry.y)", decimalPlaces: 2)
-        lblPrice.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(entryY))"
+//        lblPrice.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(entryY) \(coinDetail?.symbol ?? "")"
         
     }
 }
@@ -367,4 +437,3 @@ extension String {
         }
     }
 }
-

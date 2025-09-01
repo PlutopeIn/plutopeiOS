@@ -29,20 +29,7 @@ class SwappingViewModel {
             }
         })
     }
-    
-    /// apiRangoSwappingQuote
-    func apiRangoQuoteSwapping(address: String,fromToken: Token,toToken: Token,fromAmount: String,fromWalletAddress:String,toWalletAddress:String,completion: @escaping ((Bool,String,String,Route?) -> Void)) {
-        
-        repo?.apiRangoQuoteSwapping(walletAddress : address,fromToken: fromToken,toToken: toToken,fromAmount:fromAmount,fromWalletAddress:fromWalletAddress,toWalletAddress:toWalletAddress,completion: { status,error,reqType,data  in
-            if status {
-                completion(true,error,reqType,data)
-            } else {
-                completion(false,error,reqType,data)
-            }
-        })
-    }
-    
-    ///
+
     /// apiRangoSwapping
     func apiRangoSwapping(address: String,fromToken: Token,toToken: Token,fromAmount: String,fromWalletAddress:String,toWalletAddress:String,completion: @escaping ((Bool,String,[String: Any]?) -> Void)) {
         
@@ -65,6 +52,21 @@ class SwappingViewModel {
 //                self.failblock?(false, error)
                 completion(false,error,data)
             }
+        })
+    }
+    func apiGetExodusTransactionStatus(_ transactionID: String?,completion: @escaping ((Bool,String,[String: Any]?) -> Void)) {
+        repo?.apiGetExodusTransactionStatus(transactionID,completion: { status,error,data  in
+            if status {
+                completion(true,error,data)
+            } else {
+//                self.failblock?(false, error)
+                completion(false,error,data)
+            }
+        })
+    }
+    func apiUpdateExodusTransactionStatus(_ transactionID: String?,id:String?,completion: @escaping ((Bool,String,[String: Any]?) -> Void)) {
+        repo?.apiUpdateExodusTransactionStatus(transactionID, id: id, completion: { status,error,data  in
+                completion(status,error,data)
         })
     }
     
@@ -94,16 +96,16 @@ class SwappingViewModel {
         
     }
     /// apiGetExchangePairs
-    func apiGetExchangePairs(fromCurrency: String,fromNetwork: String,toNetwork: String,completion: @escaping (([ExchangePairsData]?,Bool,String) -> Void)) {
-        
-        repo?.apiGetExchangePairs(fromCurrency: fromCurrency, fromNetwork: fromNetwork, toNetwork: toNetwork, completion: { pairdata, status, err in
-            if status {
-                completion(pairdata,true,err)
-            } else {
-                self.failblock?(false, err)
-            }
-        })
-    }
+//    func apiGetExchangePairs(fromCurrency: String,fromNetwork: String,toNetwork: String,completion: @escaping (([ExchangePairsData]?,Bool,String) -> Void)) {
+//        
+//        repo?.apiGetExchangePairs(fromCurrency: fromCurrency, fromNetwork: fromNetwork, toNetwork: toNetwork, completion: { pairdata, status, err in
+//            if status {
+//                completion(pairdata,true,err)
+//            } else {
+//                self.failblock?(false, err)
+//            }
+//        })
+//    }
     func apiOKTApproveSwap(tokenContractAddress: String,approveAmount: String,chainId: String,completion: @escaping ((Bool,String,[String: Any]?) -> Void)) {
         
         repo?.apiOKTApproveSwap(tokenContractAddress: tokenContractAddress,approveAmount: approveAmount,chainId: chainId ,completion: { status, err, data in
@@ -114,5 +116,15 @@ class SwappingViewModel {
             }
         })
         
+    }
+    
+    func apiExchangeOkxRangoSwapQuote(parameters: SwapQuoteParameters,completion: @escaping ((Bool,String,[SwapMeargedDataList]?) -> Void)) {
+        repo?.exchangeOkxRangoSwapQuote(parameters: parameters, completion: { status, msg, data in
+            if status == true {
+                completion(true,"",data)
+            } else {
+                completion(false,"",nil)
+            }
+        })
     }
 }

@@ -2,7 +2,6 @@ import Foundation
 import Commons
 import WalletConnectSign
 
-
 final class Signer {
     enum Errors: Error {
         case notImplemented
@@ -12,8 +11,8 @@ final class Signer {
     
     static func sign(request: Request, importAccount: ImportAccount) throws -> AnyCodable {
         var signer = ETHSigner(importAccount: importAccount)
-
-        
+        print("request.method")
+        print(request.method)
         switch request.method {
         case "personal_sign":
             return signer.personalSign(request.params)
@@ -24,9 +23,13 @@ final class Signer {
 
         case "eth_sendTransaction":
             print(request)
-             
-            return try signer.sendTransaction(request)
-
+            let returnvalue = signer.sendTransactionWalletConnect(request)
+//            let returnvalue = try signer.sendTransaction(request.params)
+            print(returnvalue)
+            return  returnvalue
+        case "eth_signTypedData_v4":
+            print(request)
+            return   signer.sendTransaction(request)
         case "solana_signTransaction":
             return SOLSigner.signTransaction(request.params)
             

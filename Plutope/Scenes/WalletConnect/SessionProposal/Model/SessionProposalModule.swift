@@ -1,6 +1,6 @@
 import SwiftUI
-
-import Web3Wallet
+//import WalletConnectSign
+import ReownWalletKit
 
 final class SessionProposalModule {
 
@@ -12,8 +12,7 @@ final class SessionProposalModule {
         context: VerifyContext?
     ) -> UIViewController {
         let interactor = SessionProposalInteractor()
-        let viewController = DAppConnectPopupViewController(proposal: proposal)
+        let viewController = DAppConnectPopupViewController(interactor: interactor, importAccount: importAccount, proposal: proposal, context: context)
         return viewController
     }
 }
-

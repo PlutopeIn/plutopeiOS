@@ -8,7 +8,7 @@ import UIKit
 extension ConfirmPasscodeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        HapticFeedback.generate(.light)
         guard let cell = clvKeyboard.cellForItem(at: indexPath) as? KeyboardViewCell else { return }
         let number = indexPath.row + 1
         
@@ -41,8 +41,7 @@ extension ConfirmPasscodeViewController: UICollectionViewDelegate {
         
     }
     private func deletePasscodeDigit() {
-        
-        for view in viewSecureText.reversed() where view.tintColor == UIColor.c00C6FB {
+        for view in viewSecureText.reversed() where view.tintColor == UIColor.systemBlue {
             view.imageTintColor = UIColor.c75769D
             passcode?.removeLast()
             return
@@ -51,6 +50,9 @@ extension ConfirmPasscodeViewController: UICollectionViewDelegate {
     }
     
     private func enterPasscodeDigit(_ digit: String?) {
+        let dynamicLightBlueColor = UIColor { traitCollection in
+                  return traitCollection.userInterfaceStyle == .dark ? UIColor(red: 15/255, green: 47/255, blue: 128/255, alpha: 1.0) : UIColor(red: 43/255, green: 90/255, blue: 243/255, alpha: 1.0)
+              }
         guard let digit = digit else { return }
         
         if passcode?.count ?? 0 < 6 {
@@ -60,7 +62,7 @@ extension ConfirmPasscodeViewController: UICollectionViewDelegate {
         let currentIndex = (passcode?.count ?? 0) - 1
         
         if currentIndex >= 0 && currentIndex < viewSecureText.count {
-            viewSecureText[currentIndex].imageTintColor = UIColor.c00C6FB
+            viewSecureText[currentIndex].imageTintColor = UIColor.systemBlue
         }
        
     }
@@ -80,7 +82,7 @@ extension ConfirmPasscodeViewController: UICollectionViewDelegate {
     private func handleInvalidPasscode() {
         if passcode?.count == 6 {
             viewSecureText.forEach { view in
-                view.imageTintColor = UIColor.cD50000
+                view.imageTintColor = UIColor.red
             }
             // Create a shake animation for horizontal movement
             let animation = CABasicAnimation(keyPath: "transform.translation.x")

@@ -1,6 +1,6 @@
 import SwiftUI
-
-import Web3Wallet
+import ReownWalletKit
+//import Web3Wallet
 
 final class ConnectionDetailsModule {
     @discardableResult

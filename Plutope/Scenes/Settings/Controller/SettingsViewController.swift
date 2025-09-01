@@ -7,26 +7,40 @@
 import UIKit
 import Combine
 import WalletConnectSign
-import Auth
+//import Auth
 
 class SettingsViewController: UIViewController, Reusable {
     
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var tbvSetting: UITableView!
     @IBOutlet weak var btnHome: UIButton!
-    let interactor: MainInteractor
-    let importAccount: ImportAccount
-    var app: Application
-    var disposeBag = Set<AnyCancellable>()
-    private let configurationService: ConfigurationService
+    var primaryWallet: Wallets?
     var isPushed = false
+    var activeToken: [ActiveTokens]? = []
+    let importAccount: ImportAccount
+    let interactor: MainInteractor
+    var app: Application
+    private let configurationService: ConfigurationService
+//    var app: Application
+    var disposeBag = Set<AnyCancellable>()
+    var arrSettigngData: [GroupSettingData] = [
+        GroupSettingData(group: [ .wallets, .currency, .languages, .refreal]),
+        GroupSettingData(group: [ .security, .contacts,.walletConnect]),
+//        GroupSettingData(group: [ .security, .contacts,.refreal]),
+//       GroupSettingData(group: [ .security, .contacts,.walletConnect]),
+        GroupSettingData(group: [ .helpCenter, .aboutPlutope])
+    ]
+    
+    weak var primaryWalletDelegate: PrimaryWalletDelegate?
+    weak var updatedWalletWalletDelegate: UpdatedWalletWalletDelegate?
+    weak var currencyUpdateDelegate: CurrencyUpdateDelegate?
     init(importAccount: ImportAccount,interactor: MainInteractor? = nil,app:Application? = nil,configurationService: ConfigurationService? = nil) {
 
      // Assign default values to properties
         defer { setupInitialState() }
         self.app = app ?? Application()
         self.importAccount = importAccount
-        self.configurationService = configurationService ?? ConfigurationService()  // Assuming ConfigurationService has a default initializer
+        self.configurationService = configurationService ?? ConfigurationService()
         self.interactor = interactor ?? MainInteractor()
         
         super.init(nibName: nil, bundle: nil)
@@ -35,27 +49,18 @@ class SettingsViewController: UIViewController, Reusable {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    var arrSettigngData: [GroupSettingData] = [
-        GroupSettingData(group: [ .wallets, .currency, .languages]),
-      //  GroupSettingData(group: [ .security, .contacts]),
-       GroupSettingData(group: [ .security, .contacts,.walletConnect]),
-        GroupSettingData(group: [ .helpCenter, .aboutPlutope])
-    ]
-    
-    weak var primaryWalletDelegate: PrimaryWalletDelegate?
-    weak var currencyUpdateDelegate: CurrencyUpdateDelegate?
-    
+    func setupInitialState() {
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+     //   zendeskInit()
         /// Navigation Header
-        defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.settings, comment: ""), btnBackHidden: true)
+        defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.settings, comment: ""), btnBackHidden: false)
         /// Table Register
         tableRegister()
         /// Long tap Action
-        let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTapped))
-        btnHome.addGestureRecognizer(longTapGesture)
-        
+       // let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTapped))
+       // btnHome.addGestureRecognizer(longTapGesture)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -67,7 +72,7 @@ class SettingsViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionHome(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
         //        let viewToNavigate = CoinTransferPopUp()
         //        viewToNavigate.delegate = self
         //        viewToNavigate.modalTransitionStyle = .coverVertical
@@ -85,7 +90,7 @@ class SettingsViewController: UIViewController, Reusable {
     }
     /// Selector method
     @objc func longTapped() {
-        
+        HapticFeedback.generate(.light)
         self.tabBarController?.selectedIndex = 1
         
     }
@@ -105,42 +110,46 @@ extension SettingsViewController: PrimaryWalletDelegate {
     
     func setPrimaryWallet(primaryWallet: Wallets?) {
         
-        if let walletDash = (self.tabBarController?.viewControllers?[1] as? UINavigationController)?.topViewController as? WalletDashboardViewController {
-            self.primaryWalletDelegate = walletDash
-            self.primaryWalletDelegate?.setPrimaryWallet(primaryWallet: primaryWallet)
-            self.tabBarController?.selectedIndex = 1
+        if let navigationController = self.navigationController {
+            for viewController in navigationController.viewControllers {
+                if let walletDash = viewController as? WalletDashboardViewController {
+                    self.primaryWalletDelegate = walletDash
+                    self.primaryWalletDelegate?.setPrimaryWallet(primaryWallet: primaryWallet)
+                    self.tabBarController?.selectedIndex = 1
+                    break
+                }
+            }
         }
+        
+        
+//        if let walletDash = (self.tabBarController?.viewControllers?[1] as? UINavigationController)?.topViewController as? WalletDashboardViewController {
+//            self.primaryWalletDelegate = walletDash
+//            self.primaryWalletDelegate?.setPrimaryWallet(primaryWallet: primaryWallet)
+//            self.tabBarController?.selectedIndex = 1
+//        }
         
     }
     
 }
-extension SettingsViewController {
-    // MARK: - Private functions
-  
-         func setupInitialState() {
-            configurationService.configure(importAccount: importAccount)
-          
-            interactor.sessionProposalPublisher
-                .receive(on: DispatchQueue.main)
-                .sink { [unowned self] session in
-                    SessionProposalModule.create(app: app, importAccount: importAccount, proposal: session.proposal, context: session.context)
-                        .push(from: self)
+extension SettingsViewController : UpdatedWalletWalletDelegate {
+    func setUpdatedWallet(primaryWallet: Wallets?) {
+        if let navigationController = self.navigationController {
+            for viewController in navigationController.viewControllers {
+                if let walletDash = viewController as? WalletDashboardViewController {
+                    self.updatedWalletWalletDelegate = walletDash
+                    self.updatedWalletWalletDelegate?.setUpdatedWallet(primaryWallet: primaryWallet)
+                    self.tabBarController?.selectedIndex = 1
+                    break
                 }
-                .store(in: &disposeBag)
-            
-            interactor.sessionRequestPublisher
-                .receive(on: DispatchQueue.main)
-                .sink { [unowned self] request, context in
-                    SessionRequestModule.create(app: app, sessionRequest: request, importAccount: importAccount, sessionContext: context)
-                        .presentFullScreen(from: self, transparentBackground: false)
-                }.store(in: &disposeBag)
-            
-            interactor.requestPublisher
-                .receive(on: DispatchQueue.main)
-                .sink { [unowned self] result in
-                    AuthRequestModule.create(app: app, request: result.request, importAccount: importAccount, context: result.context)
-                        .presentFullScreen(from: self, transparentBackground: true)
-                }
-                .store(in: &disposeBag)
+            }
         }
+    }
+}
+
+extension SettingsViewController : DismissLanguageDelegate {
+    func dismissPopup() {
+        tbvSetting.reloadData()
+        tbvSetting.restore()
+    }
+    
 }

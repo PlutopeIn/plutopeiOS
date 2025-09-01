@@ -14,12 +14,8 @@ extension RecoveryPhraseViewController: UICollectionViewDataSource, UICollection
         let cell = clvPhrase.dequeueReusableCell(indexPath: indexPath) as PhraseViewCell
         
         cell.lblNumber.text = "\(indexPath.row + 1)."
-        
-//        if self.lblHideShowPhrase.text == StringConstants.showPhrase {
-//            cell.lblPhrase.text = "• • • • • •"
-//        } else {
         cell.lblPhrase.text = arrSecretPhrase[indexPath.row].phrase
-//        }
+
         return cell
     }
     

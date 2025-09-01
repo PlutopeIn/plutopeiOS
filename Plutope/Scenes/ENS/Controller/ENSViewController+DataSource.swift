@@ -38,7 +38,7 @@ extension ENSViewController : UITableViewDataSource {
         return cell
     }
     @objc func buyDomain(_ sender : UIButton) {
-       
+        HapticFeedback.generate(.light)
         let cell = self.tbvEnsList.cellForRow(at: IndexPath.init(item: sender.tag, section: 0)) as? ENSViewCell
         
         self.txValue = filteredList[sender.tag].tx?.params?.value ?? ""

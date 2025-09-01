@@ -19,7 +19,7 @@ extension SettingsViewController: UITableViewDataSource {
         let cell = tbvSetting.dequeueReusableCell(indexPath: indexPath) as SettingViewCell
         let data = arrSettigngData[indexPath.section].group[indexPath.row]
         cell.selectionStyle = .none
-        
+       // tableView.separatorStyle = .singleLine
         cell.ivSettings.image = data.image
         cell.lblTitle.text = data.title
         if data.showForward {
@@ -45,11 +45,16 @@ extension SettingsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
+//        UITableView.automaticDimension
+        return 61
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        10
+        0
+        
+    }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -37,9 +38,6 @@
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppBackground" translatesAutoresizingMaskIntoConstraints="NO" id="jQX-tU-cRc">
-                    <rect key="frame" x="0.0" y="0.0" width="393" height="1202"/>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wO4-Vu-5Oj">
                     <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                     <subviews>
@@ -51,12 +49,11 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Passcode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DlX-fL-UBT">
-                            <rect key="frame" x="92.666666666666686" y="74" width="208" height="34"/>
+                            <rect key="frame" x="93.000000000000014" y="74" width="207.33333333333337" height="34"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="34" id="hui-PE-Aue"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="27"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="0Cj-zf-Ovs">
@@ -64,42 +61,42 @@
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="staroflife.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="SQQ-UZ-Axv">
                                     <rect key="frame" x="0.0" y="0.33333333333333215" width="15" height="14.333333333333334"/>
-                                    <color key="tintColor" name="#75769D"/>
+                                    <color key="tintColor" systemColor="labelColor"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="15" id="WTE-u7-vcS"/>
                                     </constraints>
                                 </imageView>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="staroflife.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Btp-wY-T30">
                                     <rect key="frame" x="32.999999999999986" y="0.33333333333333215" width="15" height="14.333333333333334"/>
-                                    <color key="tintColor" name="#75769D"/>
+                                    <color key="tintColor" systemColor="labelColor"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="15" id="rWB-kS-mgg"/>
                                     </constraints>
                                 </imageView>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="staroflife.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="amp-ci-Kn0">
                                     <rect key="frame" x="65.999999999999986" y="0.33333333333333215" width="15" height="14.333333333333334"/>
-                                    <color key="tintColor" name="#75769D"/>
+                                    <color key="tintColor" systemColor="labelColor"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="15" id="a4W-xC-7fR"/>
                                     </constraints>
                                 </imageView>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="staroflife.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="f2m-8a-Xq7">
                                     <rect key="frame" x="98.999999999999986" y="0.33333333333333215" width="15" height="14.333333333333334"/>
-                                    <color key="tintColor" name="#75769D"/>
+                                    <color key="tintColor" systemColor="labelColor"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="15" id="86B-92-jx2"/>
                                     </constraints>
                                 </imageView>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="staroflife.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Ulo-hf-Cdq">
                                     <rect key="frame" x="132" y="0.33333333333333215" width="15" height="14.333333333333334"/>
-                                    <color key="tintColor" name="#75769D"/>
+                                    <color key="tintColor" systemColor="labelColor"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="15" id="40x-pU-TJK"/>
                                     </constraints>
                                 </imageView>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="staroflife.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Y01-V5-0v3">
                                     <rect key="frame" x="165" y="0.33333333333333215" width="15" height="14.333333333333334"/>
-                                    <color key="tintColor" name="#75769D"/>
+                                    <color key="tintColor" systemColor="labelColor"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="15" id="1DZ-N1-i1p"/>
                                     </constraints>
@@ -182,10 +179,10 @@
                             </constraints>
                         </stackView>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Ul2-tN-TWB">
-                            <rect key="frame" x="0.0" y="459" width="393" height="270"/>
+                            <rect key="frame" x="0.0" y="457" width="393" height="272"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="270" id="5aJ-ij-Qrn"/>
+                                <constraint firstAttribute="height" constant="272" id="5aJ-ij-Qrn"/>
                             </constraints>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="WhT-Vb-AuL">
                                 <size key="itemSize" width="128" height="128"/>
@@ -200,7 +197,7 @@
                                 <constraint firstAttribute="height" constant="72" id="VdI-VV-cDY"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="13"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" systemColor="secondaryLabelColor"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
@@ -228,28 +225,29 @@
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" name="#0C0D2D"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="wO4-Vu-5Oj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="3Qi-H5-6kQ"/>
-                <constraint firstAttribute="bottom" secondItem="jQX-tU-cRc" secondAttribute="bottom" constant="-350" id="4Ul-R5-nhH"/>
-                <constraint firstItem="jQX-tU-cRc" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Ajz-PO-WiQ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="wO4-Vu-5Oj" secondAttribute="trailing" id="Vgq-bF-jVU"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jQX-tU-cRc" secondAttribute="trailing" id="isM-kJ-dFl"/>
                 <constraint firstItem="wO4-Vu-5Oj" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="pJ1-ou-39s"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="wO4-Vu-5Oj" secondAttribute="bottom" id="qWL-g2-f4Y"/>
-                <constraint firstItem="jQX-tU-cRc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="y1h-HX-K6A"/>
             </constraints>
             <point key="canvasLocation" x="96.946564885496173" y="-1.4084507042253522"/>
         </view>
     </objects>
     <resources>
-        <image name="AppBackground" width="250" height="541.33331298828125"/>
         <image name="staroflife.fill" catalog="system" width="121" height="128"/>
-        <namedColor name="#0C0D2D">
-            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="#75769D">
             <color red="0.45899999141693115" green="0.46299999952316284" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

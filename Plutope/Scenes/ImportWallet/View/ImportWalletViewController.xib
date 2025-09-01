@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -23,7 +24,9 @@
                 <outlet property="btnPaste" destination="Z8z-eU-UXj" id="d2L-Kg-Uz9"/>
                 <outlet property="btnWhatIsSecretPhase" destination="M0I-O3-UWB" id="9M8-4q-VNC"/>
                 <outlet property="headerView" destination="akP-fG-o0i" id="lcl-DY-Ie0"/>
+                <outlet property="lblSelectPhrase" destination="9Yf-hl-nsn" id="ZD8-Vx-Y4O"/>
                 <outlet property="lblTypically" destination="y2S-Pi-4Hg" id="0vn-ir-g4n"/>
+                <outlet property="lblWalletName" destination="UQx-eD-6C3" id="npK-wO-zLl"/>
                 <outlet property="txtViewPhrase" destination="aIr-co-BwN" id="HPA-Jl-89d"/>
                 <outlet property="txtWalletName" destination="5Tg-2r-Pp2" id="AC3-31-6TC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -44,55 +47,84 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMJ-5D-7Uu">
                     <rect key="frame" x="0.0" y="109" width="393" height="709"/>
                     <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Name*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQx-eD-6C3">
+                            <rect key="frame" x="15" y="10" width="358" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="1SE-eN-9W7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Main Wallet" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Tg-2r-Pp2" customClass="customTextField" customModule="Plutope" customModuleProvider="target">
-                            <rect key="frame" x="16" y="40" width="361" height="50"/>
-                            <color key="backgroundColor" name="#25264D"/>
+                            <rect key="frame" x="20" y="36" width="353" height="50"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="9zU-9h-3in"/>
                             </constraints>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="15"/>
                             <textInputTraits key="textInputTraits"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
-                                    <color key="value" name="#75769D"/>
+                                    <color key="value" systemColor="placeholderTextColor"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="number" keyPath="leftSpacing">
                                     <real key="value" value="14"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                    <real key="value" value="10"/>
+                                    <real key="value" value="25"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
                                 <userDefinedRuntimeAttribute type="number" keyPath="rightSpacing">
                                     <real key="value" value="14"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" systemColor="secondarySystemFillColor"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                             <variation key="heightClass=regular-widthClass=regular">
                                 <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="20"/>
                             </variation>
                         </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Phrase*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Yf-hl-nsn">
+                            <rect key="frame" x="15" y="106" width="358" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="eDs-44-vxT"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iob-PC-w5s">
-                            <rect key="frame" x="16" y="95" width="361" height="148"/>
+                            <rect key="frame" x="16" y="137" width="361" height="148"/>
                             <subviews>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aIr-co-BwN" customClass="PlaceholderTextView" customModule="Plutope" customModuleProvider="target">
-                                    <rect key="frame" x="9" y="10" width="338" height="86"/>
+                                    <rect key="frame" x="9" y="10" width="338" height="89"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="textColor" systemColor="labelColor"/>
                                     <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="15"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="15"/>
+                                        </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <variation key="heightClass=regular-widthClass=regular">
                                         <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="20"/>
                                     </variation>
                                 </textView>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z8z-eU-UXj">
-                                    <rect key="frame" x="319" y="108" width="30" height="28"/>
-                                    <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="13"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z8z-eU-UXj">
+                                    <rect key="frame" x="324" y="111" width="25" height="25"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="25" id="TmG-g7-jRV"/>
+                                    </constraints>
+                                    <color key="tintColor" systemColor="labelColor"/>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" title="Paste">
+                                    <state key="normal" image="ic_copy">
                                         <color key="titleColor" name="#00C6FB"/>
                                     </state>
                                     <connections>
@@ -100,7 +132,7 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" name="#25264D"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="Z8z-eU-UXj" secondAttribute="bottom" constant="12" id="4Xz-sS-AUT"/>
                                 <constraint firstAttribute="trailing" secondItem="aIr-co-BwN" secondAttribute="trailing" constant="14" id="HA2-Rg-Hrx"/>
@@ -114,52 +146,54 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                     <real key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" systemColor="secondarySystemFillColor"/>
+                                </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Typically 12 (Sometimes 18,24) words seprated by single spaces" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y2S-Pi-4Hg">
-                            <rect key="frame" x="17" y="263" width="355" height="14.333333333333314"/>
+                            <rect key="frame" x="17" y="305" width="355" height="14"/>
                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="12"/>
-                            <color key="textColor" name="#75769D"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="r3m-Hl-yq6">
-                            <rect key="frame" x="30" y="579" width="333" height="120"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="r3m-Hl-yq6">
+                            <rect key="frame" x="30" y="594" width="333" height="105"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybL-4t-26j" customClass="GradientButton" customModule="Plutope" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybL-4t-26j" customClass="GradientButton" customModule="Plutope" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="333" height="50"/>
+                                    <color key="backgroundColor" systemColor="labelColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="Bf2-C6-tm4"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="15"/>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" title="Import">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="titleColor" systemColor="systemBackgroundColor"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
-                                            <color key="value" name="#121C3D"/>
-                                        </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
-                                            <color key="value" name="#00C6FB"/>
-                                        </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="number" keyPath="cornderRadius">
                                             <real key="value" value="25"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="25"/>
+                                        </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="actionImport:" destination="-1" eventType="touchUpInside" id="wTz-Kn-Mn8"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M0I-O3-UWB">
-                                    <rect key="frame" x="0.0" y="70" width="333" height="50"/>
+                                    <rect key="frame" x="0.0" y="55" width="333" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="R60-Jn-HnI"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="15"/>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" title="What is Secret Phrase?">
-                                        <color key="titleColor" name="#00C6FB"/>
+                                        <color key="titleColor" systemColor="labelColor"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -175,30 +209,36 @@
                                 </button>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="height" constant="120" id="Rxt-Ah-TxK"/>
+                                <constraint firstAttribute="height" constant="105" id="Rxt-Ah-TxK"/>
                             </constraints>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="y2S-Pi-4Hg" secondAttribute="trailing" constant="21" id="3CP-fR-Oi7"/>
+                        <constraint firstItem="9Yf-hl-nsn" firstAttribute="top" secondItem="5Tg-2r-Pp2" secondAttribute="bottom" constant="20" id="7uV-t5-EyD"/>
+                        <constraint firstAttribute="trailing" secondItem="UQx-eD-6C3" secondAttribute="trailing" constant="20" id="GNp-z3-fbP"/>
                         <constraint firstItem="r3m-Hl-yq6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="y2S-Pi-4Hg" secondAttribute="bottom" constant="10" id="GS2-wl-C0F"/>
                         <constraint firstItem="y2S-Pi-4Hg" firstAttribute="top" secondItem="iob-PC-w5s" secondAttribute="bottom" constant="20" id="HzC-f0-mnW"/>
-                        <constraint firstAttribute="trailing" secondItem="5Tg-2r-Pp2" secondAttribute="trailing" constant="16" id="LM7-8g-SVS"/>
+                        <constraint firstAttribute="trailing" secondItem="5Tg-2r-Pp2" secondAttribute="trailing" constant="20" id="LM7-8g-SVS"/>
                         <constraint firstAttribute="bottom" secondItem="r3m-Hl-yq6" secondAttribute="bottom" constant="10" id="LeB-Ub-hTm"/>
                         <constraint firstAttribute="trailing" secondItem="iob-PC-w5s" secondAttribute="trailing" constant="16" id="NyD-rL-YFQ"/>
+                        <constraint firstItem="UQx-eD-6C3" firstAttribute="leading" secondItem="vMJ-5D-7Uu" secondAttribute="leading" constant="15" id="OHP-QH-mpO"/>
                         <constraint firstItem="y2S-Pi-4Hg" firstAttribute="leading" secondItem="vMJ-5D-7Uu" secondAttribute="leading" constant="17" id="Oi2-py-m2s"/>
-                        <constraint firstItem="5Tg-2r-Pp2" firstAttribute="top" secondItem="vMJ-5D-7Uu" secondAttribute="top" constant="40" id="TKF-RI-Xhc"/>
-                        <constraint firstItem="5Tg-2r-Pp2" firstAttribute="leading" secondItem="vMJ-5D-7Uu" secondAttribute="leading" constant="16" id="Wx5-3V-b9Y"/>
+                        <constraint firstItem="9Yf-hl-nsn" firstAttribute="leading" secondItem="vMJ-5D-7Uu" secondAttribute="leading" constant="15" id="RuV-4H-Ipd"/>
+                        <constraint firstItem="5Tg-2r-Pp2" firstAttribute="leading" secondItem="vMJ-5D-7Uu" secondAttribute="leading" constant="20" id="Wx5-3V-b9Y"/>
+                        <constraint firstItem="UQx-eD-6C3" firstAttribute="top" secondItem="vMJ-5D-7Uu" secondAttribute="top" constant="10" id="XuG-HK-ZDb"/>
                         <constraint firstAttribute="trailing" secondItem="r3m-Hl-yq6" secondAttribute="trailing" constant="30" id="cgj-Qq-L2I"/>
                         <constraint firstItem="r3m-Hl-yq6" firstAttribute="leading" secondItem="vMJ-5D-7Uu" secondAttribute="leading" constant="30" id="ib8-Pu-C8J"/>
                         <constraint firstItem="iob-PC-w5s" firstAttribute="leading" secondItem="vMJ-5D-7Uu" secondAttribute="leading" constant="16" id="ndv-bb-lfd"/>
-                        <constraint firstItem="iob-PC-w5s" firstAttribute="top" secondItem="5Tg-2r-Pp2" secondAttribute="bottom" constant="5" id="tDP-6J-rWc"/>
+                        <constraint firstAttribute="trailing" secondItem="9Yf-hl-nsn" secondAttribute="trailing" constant="20" id="pFa-dk-gsb"/>
+                        <constraint firstItem="5Tg-2r-Pp2" firstAttribute="top" secondItem="UQx-eD-6C3" secondAttribute="bottom" constant="5" id="wTe-nq-lVg"/>
+                        <constraint firstItem="iob-PC-w5s" firstAttribute="top" secondItem="9Yf-hl-nsn" secondAttribute="bottom" constant="10" id="zzE-y0-FeO"/>
                     </constraints>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" name="#0C0D2D"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="akP-fG-o0i" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="MfW-gn-cVD"/>
                 <constraint firstItem="vMJ-5D-7Uu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="QAV-3w-fAn"/>
@@ -213,27 +253,28 @@
     </objects>
     <designables>
         <designable name="5Tg-2r-Pp2">
-            <size key="intrinsicContentSize" width="101" height="19.666666666666668"/>
+            <size key="intrinsicContentSize" width="78" height="19.333333333333332"/>
         </designable>
         <designable name="ybL-4t-26j">
-            <size key="intrinsicContentSize" width="46" height="30"/>
+            <size key="intrinsicContentSize" width="53" height="34"/>
         </designable>
     </designables>
     <resources>
+        <image name="ic_copy" width="25" height="25"/>
         <namedColor name="#00C6FB">
             <color red="0.0" green="0.77600002288818359" blue="0.98400002717971802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="#0C0D2D">
-            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="#121C3D">
-            <color red="0.071000002324581146" green="0.10999999940395355" blue="0.23899999260902405" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="#25264D">
-            <color red="0.14499999582767487" green="0.14900000393390656" blue="0.30199998617172241" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="#75769D">
-            <color red="0.45899999141693115" green="0.46299999952316284" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="placeholderTextColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29803921570000003" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemFillColor">
+            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

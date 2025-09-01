@@ -49,11 +49,12 @@ extension AddCustomTokenViewController : SelectNetworkDelegate {
     func selectNetwork(chain: Token) {
         self.coinDetail = chain
         lblChain.text = chain.name ?? ""
+        lblNetworkText.text = chain.name
         self.tokenId = chain.tokenId ?? ""
         for textFields in [self.txtTokenName,self.txtDecimal,self.txtTokenSymbol,self.txtContractAddress] {
             textFields?.text = ""
         }
-        btnSave.alpha = 0.5
+        //btnSave.alpha = 0.5
         btnSave.isUserInteractionEnabled = false
     }
 

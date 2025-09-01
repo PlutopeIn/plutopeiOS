@@ -1,6 +1,6 @@
 import SwiftUI
-
-import Web3Wallet
+import ReownWalletKit
+//import Web3Wallet
 // session Module 
 final class SessionRequestModule {
     @discardableResult

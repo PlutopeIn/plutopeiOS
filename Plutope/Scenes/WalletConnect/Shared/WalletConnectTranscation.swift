@@ -1,0 +1,16 @@
+import Foundation
+import Web3
+
+extension WalletConnectTranscation {
+    var description: String {
+        return """
+        from: \(String(describing: from!.hex(eip55: true)))
+        to: \(String(describing: to!.hex(eip55: true))),
+        value: \(String(describing: value!.hex())),
+        gasPrice: \(String(describing: gasPrice?.hex())),
+        gas: \(String(describing: gasLimit?.hex())),
+        data: \(data.hex()),
+        nonce: \(String(describing: nonce?.hex()))
+        """
+    }
+}

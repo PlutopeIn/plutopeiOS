@@ -15,17 +15,57 @@ extension BuyCoinViewController: UICollectionViewDataSource, UICollectionViewDel
         let cell = clvKeyboard.dequeueReusableCell(indexPath: indexPath) as KeyboardViewCell
         let number = indexPath.row + 1
         
+        cell.txtNumber.font = AppFont.violetRegular(34).value
         switch number {
+        case 1:
+           // cell.topLable.isHidden = true
+            cell.leftLable.isHidden = true
+            cell.txtNumber.text = "\(number)"
+        case 2:
+         //   cell.topLable.isHidden = true
+            cell.txtNumber.text = "\(number)"
+        case 3:
+        //    cell.topLable.isHidden = true
+            cell.rightLable.isHidden = true
+            cell.txtNumber.text = "\(number)"
+        case 4:
+            cell.leftLable.isHidden = true
+            cell.txtNumber.text = "\(number)"
+        case 5:
+            // cell.topLable.isHidden = true
+            cell.txtNumber.text = "\(number)"
+        case 6:
+            cell.rightLable.isHidden = true
+            cell.txtNumber.text = "\(number)"
+        case 7:
+            cell.leftLable.isHidden = true
+            cell.txtNumber.text = "\(number)"
+            
+        case 8:
+           // cell.topLable.isHidden = true
+            cell.txtNumber.text = "\(number)"
+            
+        case 9:
+            cell.rightLable.isHidden = true
+            cell.txtNumber.text = "\(number)"
+           
         case 10:
-            cell.txtNumber.text = "."
-            cell.txtNumber.font = AppFont.medium(15).value
+         //   cell.bottomLable.isHidden = true
+            cell.leftLable.isHidden = true
+            //cell.txtNumber.text = "Cancel"
+            cell.txtNumber.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: "")
+            cell.txtNumber.font = AppFont.regular(15).value
         case 11:
+          //  cell.bottomLable.isHidden = true
             cell.txtNumber.text = "0"
         case 12:
+           // cell.bottomLable.isHidden = true
             cell.txtNumber.isHidden = true
             cell.viewCancel.isHidden = false
+            cell.rightLable.isHidden = false
         default:
-            cell.txtNumber.text = "\(number)"
+            break
+//            cell.txtNumber.text = "\(number)"
         }
         
         return cell

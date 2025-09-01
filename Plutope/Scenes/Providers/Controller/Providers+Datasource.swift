@@ -7,18 +7,24 @@
 import UIKit
 extension ProvidersViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        arrProviderList.count
+        buyArrProviderList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tbvProviders.dequeueReusableCell(withIdentifier: CoinListViewCell.reuseIdentifier) as? CoinListViewCell else { return UITableViewCell() }
-        let data = arrProviderList[indexPath.row]
-    
+        let data = buyArrProviderList[indexPath.row]
+       
+        cell.bgView.backgroundColor = UIColor.secondarySystemBackground
         cell.selectionStyle = .none
         cell.lblSymbol.isHidden = true
         cell.lblCoinName?.text = data.name
-        cell.ivCoin.image = data.imageUrl
-        let formattedPrice = WalletData.shared.formatDecimalString("\(data.bestPrice ?? "")", decimalPlaces: 6)
+        
+        var imgUrl = ServiceNameConstant.BaseUrl.baseUrl + ServiceNameConstant.BaseUrl.clientVersion+ServiceNameConstant.BaseUrl.images + (data.image ?? "")
+        cell.ivCoin.sd_setImage(with: URL(string: imgUrl))
+        cell.ivCoin.RoundMe(Radius: cell.ivCoin.frame.height / 2 )
+        //cell.ivCoin.BorderMe(Color: UIColor.secondarySystemFill, BorderWidth: 1)
+//        cell.ivCoin.image = data.imageUrl
+        let formattedPrice = WalletData.shared.formatDecimalString("\(data.amount ?? "")", decimalPlaces: 6)
         
        // let formattedPrice = String(format: "%.6f", Double(data.bestPrice ?? "") ?? 0.0)
         if self.providerType == .buy {
@@ -26,8 +32,11 @@ extension ProvidersViewController: UITableViewDataSource {
         } else {
             cell.lblCoinQuantity.text = "\(selectedCurrency?.sign ?? "")\(formattedPrice)"
         }
-        cell.lblCoinQuantity.textColor = UIColor.c00C6FB
+        cell.lblCoinQuantity.textColor = UIColor(named: "#2B5AF3")
         return cell
     }
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        UITableView.automaticDimension
+        return 52
+    }
 }

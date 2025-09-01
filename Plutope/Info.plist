@@ -7,6 +7,8 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.plutope.app</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>plutope</string>
@@ -17,8 +19,25 @@
 	<string>$(CONFIGURATION)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://plutope.page.link/</string>
+	</array>
+	<key>FirebaseScreenReportingEnabled</key>
+	<false/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechrome</string>
+		<string>googlechromes</string>
+		<string>firefox</string>
+		<string>opera</string>
+		<string>ucbrowser</string>
+		<string>puffin</string>
+		<string>puffins</string>
+		<string>yandexbrowser-open-url</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -36,18 +55,12 @@
 			<string>Any</string>
 		</dict>
 	</dict>
+	<key>PROJECT_ID</key>
+	<string>$(PROJECT_ID)</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Quicksand-Bold.ttf</string>
-		<string>Quicksand-Light.ttf</string>
-		<string>SFProDisplay-Medium.ttf</string>
-		<string>SFProDisplay-Regular.ttf</string>
-		<string>Quicksand-SemiBold.ttf</string>
-		<string>SFPro_bold.ttf</string>
-		<string>SFPro_light.ttf</string>
-		<string>SFPro_medium.ttf</string>
-		<string>SFPro_regular.ttf</string>
-		<string>SFPro_semibold.ttf</string>
+		<string>inter.ttf</string>
+		<string>violet_sans.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
@@ -68,7 +81,19 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>INSendMessageIntent</string>
+	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Plutope requires your location to provide relevant services based on your current position.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Plutope requires access to your photo library to let you upload  images </string>
 </dict>
 </plist>

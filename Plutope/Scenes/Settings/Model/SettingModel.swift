@@ -43,6 +43,8 @@ enum SettingData: Setting {
             return 20
         case .walletConnect:
             return 20
+        case .refreal:
+            return 20
         }
     }
     
@@ -68,12 +70,15 @@ enum SettingData: Setting {
             return 20
         case .walletConnect:
             return 20
+        case .refreal:
+            return 20
         }
     }
     
     case wallets
     case currency
     case security
+    case refreal
     case pushNotification
     case helpCenter
     case aboutPlutope
@@ -81,28 +86,35 @@ enum SettingData: Setting {
     case languages
     case ens
     case walletConnect
+   
     var image: UIImage {
         switch self {
         case .wallets:
-            return UIImage.icWallet
+            return UIImage.icNewWallet
         case .currency:
-            return UIImage.coin
+            return UIImage.newcoin
         case .security:
-            return UIImage.icInsurance
+            return UIImage.icNewInsurance
+        case .refreal:
+            return UIImage.icReferral
+//            return UIImage.icReferral.sd_tintedImage(with: .white) ?? UIImage()
         case .pushNotification:
-            return UIImage.icSmartphone
+            return UIImage.icNewSmartphone
         case .helpCenter:
-            return UIImage.icHelp
+            return UIImage.icNewHelp
         case .aboutPlutope:
-            return UIImage.plutopayLogo
+            return UIImage.aboytplutope
         case .contacts:
-            return UIImage.icUser.sd_tintedImage(with: .white) ?? UIImage()
+            return UIImage.icNewUser
+//            return UIImage.icNewUser.sd_tintedImage(with: .white) ?? UIImage()
         case .languages:
-            return UIImage.icLanguage.sd_tintedImage(with: .white) ?? UIImage()
+            return UIImage.icLanguage
+//            return UIImage.icLanguage.sd_tintedImage(with: .white) ?? UIImage()
         case .ens:
             return UIImage.icENS.withRoundedCorners() ?? UIImage()
         case .walletConnect:
-           return UIImage.icwalletConnectIcon.sd_tintedImage(with: .white) ?? UIImage()
+           return UIImage.icwalletConnectIcon.sd_tintedImage(with: .label) ?? UIImage()
+        
         }
     }
     
@@ -117,6 +129,9 @@ enum SettingData: Setting {
         case .security:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.security, comment: "")
           
+        case .refreal:
+            return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.myReffreal, comment: "")
+            
         case .pushNotification:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.pushnotifications, comment: "")
            
@@ -136,6 +151,8 @@ enum SettingData: Setting {
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.ens, comment: "")
         case .walletConnect:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.walletConnect, comment: "")
+       
+          //  return "Referral"
         }
     }
     
@@ -150,8 +167,9 @@ enum SettingData: Setting {
     var showForward: Bool {
         switch self {
         case .wallets, .currency:
-            return false
-        case .security, .pushNotification, .helpCenter, .aboutPlutope, .contacts, .languages,.ens,.walletConnect:
+//            return false
+            return true
+        case .security, .pushNotification, .helpCenter, .aboutPlutope, .contacts, .languages,.ens,.walletConnect,.refreal:
             return true
         }
     }

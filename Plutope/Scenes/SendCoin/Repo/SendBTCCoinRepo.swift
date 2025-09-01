@@ -34,7 +34,7 @@ class SendBTCCoinRepo {
                     DGProgressView.shared.hideLoader()
                     let data = try JSONDecoder().decode(SendWalletData.self, from: data ?? Data())
                     if data.status == 200 {
-                        completion(1,data.message ?? "",nil)
+                        completion(1,data.message ?? "",data.data)
                     } else {
                         print(error as Any)
                         completion(0,data.message ?? "",nil)

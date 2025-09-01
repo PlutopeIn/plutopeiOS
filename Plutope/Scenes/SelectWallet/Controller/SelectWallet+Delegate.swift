@@ -9,6 +9,7 @@ import UIKit
 // MARK: UITableViewDelegate methods
 extension SelectWalletBackUpViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        HapticFeedback.generate(.light)
         let fileName = self.arrBackupWallets?[indexPath.row].title
         let viewToNavigate = EncryptionPasswordViewController()
         viewToNavigate.isRestoreWallet = true

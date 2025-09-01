@@ -1,13 +1,14 @@
 import Foundation
 
-import Web3Wallet
-import WalletConnectRouter
+//import Web3Wallet
+import ReownWalletKit
+ import ReownRouter
 
 final class SessionRequestInteractor {
     func approve(sessionRequest: Request, importAccount: ImportAccount) async throws -> Bool {
         do {
             let result = try Signer.sign(request: sessionRequest, importAccount: importAccount)
-            try await Web3Wallet.instance.respond(
+            try await WalletKit.instance.respond(
                 topic: sessionRequest.topic,
                 requestId: sessionRequest.id,
                 response: .response(result)
@@ -16,7 +17,7 @@ final class SessionRequestInteractor {
             /* Redirect */
             let session = getSession(topic: sessionRequest.topic)
             if let uri = session?.peer.redirect?.native {
-                WalletConnectRouter.goBack(uri: uri)
+                ReownRouter.goBack(uri: uri)
                 return false
             } else {
                 return true
@@ -27,7 +28,7 @@ final class SessionRequestInteractor {
     }
 
     func reject(sessionRequest: Request) async throws {
-        try await Web3Wallet.instance.respond(
+        try await WalletKit.instance.respond(
             topic: sessionRequest.topic,
             requestId: sessionRequest.id,
             response: .error(.init(code: 0, message: ""))
@@ -36,11 +37,11 @@ final class SessionRequestInteractor {
         /* Redirect */
         let session = getSession(topic: sessionRequest.topic)
         if let uri = session?.peer.redirect?.native {
-            WalletConnectRouter.goBack(uri: uri)
+            ReownRouter.goBack(uri: uri)
         }
     }
 
     func getSession(topic: String) -> Session? {
-        return Web3Wallet.instance.getSessions().first(where: { $0.topic == topic })
+        return WalletKit.instance.getSessions().first(where: { $0.topic == topic })
     }
 }

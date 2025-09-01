@@ -9,9 +9,10 @@ import Foundation
 import UIKit
 class LoadingTextField: UITextField {
     private let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .white)
+        let indicator = UIActivityIndicatorView(style: .medium)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.hidesWhenStopped = true
+        indicator.color = UIColor.gray
         return indicator
     }()
 

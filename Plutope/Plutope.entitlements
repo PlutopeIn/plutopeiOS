@@ -4,6 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>applinks:plutope.page.link</string>
 		<string>applinks:walletconnect.com</string>
 	</array>
 	<key>com.apple.developer.usernotifications.communication</key>

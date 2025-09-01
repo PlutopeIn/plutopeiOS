@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_bold.ttf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MasterCardListViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="btnContactSupport" destination="DcD-jE-QBj" id="9MI-Eu-nNM"/>
+                <outlet property="constHeightCardsTable" destination="xmu-X7-7BI" id="4VN-Xy-M3l"/>
+                <outlet property="lblAddCard" destination="6Ou-DG-mOU" id="YAy-Vo-qnt"/>
+                <outlet property="lblSelectCard" destination="vPZ-Sb-Ev8" id="pMc-uU-0B8"/>
+                <outlet property="tbvCards" destination="i1T-nz-Vqm" id="Wzq-zP-87z"/>
+                <outlet property="view" destination="PZm-5W-b8n" id="A0C-0z-7ft"/>
+                <outlet property="vwAddCard" destination="KN2-XK-Iz6" id="YlK-Jd-WRJ"/>
+                <outlet property="vwDismiss" destination="fMM-QJ-uKD" id="5le-EI-SIc"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="PZm-5W-b8n" userLabel="ViewNew">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fMM-QJ-uKD">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LdE-Cw-s4e">
+                    <rect key="frame" x="0.0" y="456" width="393" height="396"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select card" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vPZ-Sb-Ev8">
+                            <rect key="frame" x="23" y="25" width="347" height="27"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="27" id="ITx-qg-Cdn"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="24"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="i1T-nz-Vqm">
+                            <rect key="frame" x="23" y="77" width="347" height="150"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="150" id="xmu-X7-7BI"/>
+                            </constraints>
+                        </tableView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KN2-XK-Iz6">
+                            <rect key="frame" x="23" y="242" width="160" height="34"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_AddNewCard" translatesAutoresizingMaskIntoConstraints="NO" id="TqO-k2-9bN">
+                                    <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
+                                    <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                                    <color key="tintColor" systemColor="labelColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="34" id="MOy-77-QzO"/>
+                                        <constraint firstAttribute="width" constant="34" id="Z7t-Mz-rDx"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="11"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add new card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ou-DG-mOU">
+                                    <rect key="frame" x="43.999999999999993" y="8" width="94.333333333333314" height="18"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="6Ou-DG-mOU" firstAttribute="centerY" secondItem="TqO-k2-9bN" secondAttribute="centerY" id="Bn2-pI-A5D"/>
+                                <constraint firstItem="6Ou-DG-mOU" firstAttribute="leading" secondItem="TqO-k2-9bN" secondAttribute="trailing" constant="10" id="JcP-4R-pdh"/>
+                                <constraint firstItem="TqO-k2-9bN" firstAttribute="leading" secondItem="KN2-XK-Iz6" secondAttribute="leading" id="NyC-1l-nc1"/>
+                                <constraint firstAttribute="height" constant="34" id="m3d-0m-R6d"/>
+                                <constraint firstAttribute="width" constant="160" id="ngF-EQ-0TG"/>
+                                <constraint firstItem="TqO-k2-9bN" firstAttribute="top" secondItem="KN2-XK-Iz6" secondAttribute="top" id="yu1-dr-3hh"/>
+                                <constraint firstAttribute="bottom" secondItem="TqO-k2-9bN" secondAttribute="bottom" id="zgA-Fs-nkR"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DcD-jE-QBj">
+                            <rect key="frame" x="23" y="306" width="347" height="50"/>
+                            <color key="backgroundColor" systemColor="systemGray4Color"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="TW9-fn-bU4"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Contact Support to remove bank cards ">
+                                <color key="titleColor" systemColor="labelColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornderRadius">
+                                    <real key="value" value="25"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="25"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="DcD-jE-QBj" firstAttribute="top" secondItem="KN2-XK-Iz6" secondAttribute="bottom" constant="30" id="647-2t-j9x"/>
+                        <constraint firstItem="vPZ-Sb-Ev8" firstAttribute="top" secondItem="LdE-Cw-s4e" secondAttribute="top" constant="25" id="Dco-CM-I3R"/>
+                        <constraint firstAttribute="trailing" secondItem="DcD-jE-QBj" secondAttribute="trailing" constant="23" id="ELK-Bo-j7w"/>
+                        <constraint firstItem="KN2-XK-Iz6" firstAttribute="leading" secondItem="LdE-Cw-s4e" secondAttribute="leading" constant="23" id="G5W-Z2-X6R"/>
+                        <constraint firstItem="KN2-XK-Iz6" firstAttribute="top" secondItem="i1T-nz-Vqm" secondAttribute="bottom" constant="15" id="Ogm-JT-twP"/>
+                        <constraint firstItem="i1T-nz-Vqm" firstAttribute="leading" secondItem="LdE-Cw-s4e" secondAttribute="leading" constant="23" id="RDY-6J-vox"/>
+                        <constraint firstItem="vPZ-Sb-Ev8" firstAttribute="leading" secondItem="LdE-Cw-s4e" secondAttribute="leading" constant="23" id="TmR-pe-suE"/>
+                        <constraint firstItem="DcD-jE-QBj" firstAttribute="leading" secondItem="LdE-Cw-s4e" secondAttribute="leading" constant="23" id="awj-fq-fLw"/>
+                        <constraint firstAttribute="trailing" secondItem="vPZ-Sb-Ev8" secondAttribute="trailing" constant="23" id="dTj-rL-FKN"/>
+                        <constraint firstAttribute="trailing" secondItem="i1T-nz-Vqm" secondAttribute="trailing" constant="23" id="sGz-pi-fyd"/>
+                        <constraint firstAttribute="bottom" secondItem="DcD-jE-QBj" secondAttribute="bottom" constant="40" id="sr3-qN-8Wc"/>
+                        <constraint firstItem="i1T-nz-Vqm" firstAttribute="top" secondItem="vPZ-Sb-Ev8" secondAttribute="bottom" constant="25" id="zXh-MH-1rO"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="7Z1-Je-crQ"/>
+            <color key="backgroundColor" systemColor="separatorColor"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="LdE-Cw-s4e" secondAttribute="bottom" id="5On-4w-9Gj"/>
+                <constraint firstItem="fMM-QJ-uKD" firstAttribute="leading" secondItem="PZm-5W-b8n" secondAttribute="leading" id="DDK-w1-GsH"/>
+                <constraint firstItem="LdE-Cw-s4e" firstAttribute="leading" secondItem="7Z1-Je-crQ" secondAttribute="leading" id="EsW-wB-dDd"/>
+                <constraint firstAttribute="trailing" secondItem="fMM-QJ-uKD" secondAttribute="trailing" id="Fu0-kG-vFO"/>
+                <constraint firstItem="fMM-QJ-uKD" firstAttribute="top" secondItem="PZm-5W-b8n" secondAttribute="top" id="iZS-0q-LPD"/>
+                <constraint firstItem="LdE-Cw-s4e" firstAttribute="trailing" secondItem="7Z1-Je-crQ" secondAttribute="trailing" id="jm4-Il-PSf"/>
+                <constraint firstAttribute="bottom" secondItem="fMM-QJ-uKD" secondAttribute="bottom" id="mRq-UK-i2X"/>
+            </constraints>
+            <point key="canvasLocation" x="730.53435114503816" y="-11.267605633802818"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_AddNewCard" width="40" height="40"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondarySystemFillColor">
+            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="separatorColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray4Color">
+            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

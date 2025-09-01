@@ -27,12 +27,14 @@ class CoinTransferPopUp: UIViewController, Reusable {
         self.lblSwap.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: "")
         self.lblSend.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.send, comment: "")
         self.lblReceive.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.receive, comment: "")
-        
+        let accountStorage =  AccountStorage(defaults: UserDefaults.standard)
+        guard let importAccount = accountStorage.importAccount else { return  }
         self.icCancel.addTapGesture {
          //   self.dismiss(animated: true)
+            HapticFeedback.generate(.light)
             self.dismiss(animated: true) {
                
-//                guard let proto = self.delegate else {return}
+                guard let proto = self.delegate else {return}
 //                //self.coinListVC.isFrom = .swap
 //                self.tabBarController?.selectedIndex = 1
 //                self.hidesBottomBarWhenPushed = false
@@ -45,6 +47,7 @@ class CoinTransferPopUp: UIViewController, Reusable {
     }
     
     @IBAction func actionSwap(_ sender: Any) {
+        HapticFeedback.generate(.light)
         self.dismiss(animated: true) {
             guard let proto = self.delegate else {return}
             self.coinListVC.isFrom = .swap
@@ -53,7 +56,7 @@ class CoinTransferPopUp: UIViewController, Reusable {
     }
     
     @IBAction func actionSend(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
         self.dismiss(animated: true) {
             guard let proto = self.delegate else {return}
             self.coinListVC.isFrom = .send
@@ -63,6 +66,7 @@ class CoinTransferPopUp: UIViewController, Reusable {
     }
     
     @IBAction func actionReceive(_ sender: Any) {
+        HapticFeedback.generate(.light)
         self.dismiss(animated: true) {
             guard let proto = self.delegate else {return}
             self.coinListVC.isFrom = .receive
@@ -71,6 +75,7 @@ class CoinTransferPopUp: UIViewController, Reusable {
     }
     
     @IBAction func actionBuy(_ sender: Any) {
+        HapticFeedback.generate(.light)
         self.dismiss(animated: true) {
             guard let proto = self.delegate else {return}
             self.coinListVC.isFrom = .buy
@@ -79,6 +84,6 @@ class CoinTransferPopUp: UIViewController, Reusable {
     }
 
     @IBAction func actionHome(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
     }
 }

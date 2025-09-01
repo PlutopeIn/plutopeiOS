@@ -34,3 +34,16 @@ struct CoinInfoData: Codable {
 struct CoinDescription: Codable {
     let en: String?
 }
+// MARK: - CheckVersopn
+struct CheckAppVersonData: Codable {
+    let status: Int?
+    let message: String?
+    let data: CheckAppVersonList?
+}
+
+// MARK: - DataClass
+struct CheckAppVersonList: Codable {
+    let isUpdate: Bool?
+    let tokenString: String?
+    var platform : String? = ""
+}

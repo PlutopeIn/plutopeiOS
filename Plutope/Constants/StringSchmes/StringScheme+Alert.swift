@@ -35,10 +35,8 @@ enum CustomAlert: CustomAlertOptions {
     var cancelTitle: String? {
         switch self {
         case .manualBackupWarning,.deleteIcloud, .deleteWallet, .sellCryptoWarning:
-            //return "Cancel"
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: "")
         case .swapping:
-            //return "Ok"
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.ok, comment: "")
         }
     }
@@ -48,7 +46,6 @@ enum CustomAlert: CustomAlertOptions {
         case .manualBackupWarning:
             return "Start Now"
         case .deleteIcloud, .deleteWallet:
-            //return "Delete"
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.delete, comment: "")
         case .sellCryptoWarning, .swapping:
             return nil
@@ -58,7 +55,6 @@ enum CustomAlert: CustomAlertOptions {
     var title: String? {
         switch self {
         case .deleteIcloud:
-            //return "Delete Backup"
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.deletebackup, comment: "")
         case .deleteWallet:
             return LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.deletWalletMsg, comment: "")

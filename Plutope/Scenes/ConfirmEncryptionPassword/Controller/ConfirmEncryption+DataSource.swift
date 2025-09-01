@@ -21,10 +21,10 @@ extension ConfirmEncryptionPasscodeViewController: UITableViewDataSource {
         cell.lblWarning.text = data.warning
         
         if data.isChecked {
-            cell.ivCheck.image = UIImage.check
+            cell.ivCheck.image = UIImage.check.sd_tintedImage(with: UIColor.label)
             
         } else {
-            cell.ivCheck.image = UIImage.uncheck
+            cell.ivCheck.image = UIImage.uncheck.sd_tintedImage(with: UIColor.label)
         }
         
         if arrWarnings.allSatisfy({ $0.isChecked }) {

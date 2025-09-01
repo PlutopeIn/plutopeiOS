@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -29,74 +30,104 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zUh-b2-YzC">
                         <rect key="frame" x="16" y="2.6666666666666643" width="289" height="70"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pluto-logo 1" translatesAutoresizingMaskIntoConstraints="NO" id="4Q3-Wz-0dA">
-                                <rect key="frame" x="14" y="15" width="35" height="40"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_headerPlutopeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="4Q3-Wz-0dA">
+                                <rect key="frame" x="14" y="15" width="40" height="40"/>
+                                <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                                <color key="tintColor" systemColor="labelColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="pR2-dL-876"/>
-                                    <constraint firstAttribute="width" constant="35" id="q6S-FA-s6y"/>
+                                    <constraint firstAttribute="width" constant="40" id="q6S-FA-s6y"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="9uc-DS-w0h">
-                                <rect key="frame" x="55.999999999999993" y="18" width="77.333333333333314" height="34"/>
+                                <rect key="frame" x="60.999999999999993" y="18" width="78.333333333333314" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main Wallet 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pg1-Qv-B47">
-                                        <rect key="frame" x="0.0" y="0.0" width="77.333333333333329" height="16"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="78.333333333333329" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="kmi-XP-ZRT"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="13"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Multi-Coin Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WhR-0X-CiA">
-                                        <rect key="frame" x="0.0" y="17.999999999999996" width="77.333333333333329" height="16.000000000000004"/>
+                                        <rect key="frame" x="0.0" y="17.999999999999996" width="78.333333333333329" height="16.000000000000004"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="ezm-wy-DeD"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="10"/>
-                                        <color key="textColor" name="#75769D"/>
+                                        <color key="textColor" systemColor="secondaryLabelColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Jib-YP-VuA">
-                                <rect key="frame" x="36" y="13.999999999999998" width="15" height="13.666666666666666"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="41" y="13.999999999999998" width="15" height="13.666666666666666"/>
+                                <color key="tintColor" systemColor="tintColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="15" id="4cR-Vh-G1k"/>
                                     <constraint firstAttribute="height" constant="15" id="vdr-2j-JH9"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GE6-37-08k">
-                                <rect key="frame" x="239" y="10" width="50" height="50"/>
+                                <rect key="frame" x="229" y="10" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="kGY-Ax-qi6"/>
                                 </constraints>
-                                <color key="tintColor" name="#75769D"/>
+                                <color key="tintColor" systemColor="labelColor"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="ic_more"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fi-Ac-pni">
+                                <rect key="frame" x="179" y="10" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="PFu-oq-B8i"/>
+                                </constraints>
+                                <color key="tintColor" name="#75769D"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="share"/>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" name="#202148"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="9uc-DS-w0h" firstAttribute="leading" secondItem="4Q3-Wz-0dA" secondAttribute="trailing" constant="7" id="06S-Lr-8c0"/>
                             <constraint firstItem="4Q3-Wz-0dA" firstAttribute="leading" secondItem="zUh-b2-YzC" secondAttribute="leading" constant="14" id="2Uv-xv-wtC"/>
                             <constraint firstItem="GE6-37-08k" firstAttribute="centerY" secondItem="zUh-b2-YzC" secondAttribute="centerY" id="Bs5-Bv-VQC"/>
                             <constraint firstItem="4Q3-Wz-0dA" firstAttribute="centerY" secondItem="zUh-b2-YzC" secondAttribute="centerY" id="EeW-pN-BH4"/>
                             <constraint firstAttribute="bottom" secondItem="GE6-37-08k" secondAttribute="bottom" constant="10" id="F3B-V9-9B6"/>
+                            <constraint firstAttribute="bottom" secondItem="7fi-Ac-pni" secondAttribute="bottom" constant="10" id="FFo-em-ivt"/>
                             <constraint firstAttribute="bottom" secondItem="4Q3-Wz-0dA" secondAttribute="bottom" constant="15" id="Olu-ht-N9b"/>
+                            <constraint firstItem="GE6-37-08k" firstAttribute="leading" secondItem="7fi-Ac-pni" secondAttribute="trailing" constant="10" id="Pbl-vJ-LFn"/>
                             <constraint firstItem="4Q3-Wz-0dA" firstAttribute="top" secondItem="zUh-b2-YzC" secondAttribute="top" constant="15" id="QOo-SM-QF5"/>
                             <constraint firstItem="GE6-37-08k" firstAttribute="top" secondItem="zUh-b2-YzC" secondAttribute="top" constant="10" id="Tru-Gb-PPY"/>
                             <constraint firstItem="9uc-DS-w0h" firstAttribute="centerY" secondItem="4Q3-Wz-0dA" secondAttribute="centerY" id="VX1-rP-fjN"/>
                             <constraint firstItem="Jib-YP-VuA" firstAttribute="trailing" secondItem="4Q3-Wz-0dA" secondAttribute="trailing" constant="2" id="hWT-Em-Kba"/>
+                            <constraint firstItem="7fi-Ac-pni" firstAttribute="top" secondItem="zUh-b2-YzC" secondAttribute="top" constant="10" id="i8p-qT-986"/>
                             <constraint firstItem="Jib-YP-VuA" firstAttribute="top" secondItem="4Q3-Wz-0dA" secondAttribute="top" constant="-2" id="n60-wU-XDm"/>
-                            <constraint firstAttribute="trailing" secondItem="GE6-37-08k" secondAttribute="trailing" id="vct-KY-O1z"/>
+                            <constraint firstAttribute="trailing" secondItem="GE6-37-08k" secondAttribute="trailing" constant="10" id="vct-KY-O1z"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <real key="value" value="10"/>
+                                <real key="value" value="35"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" systemColor="secondarySystemFillColor"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="7fi-Ac-pni"/>
+                            </mask>
+                        </variation>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -111,6 +142,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="btnMore" destination="GE6-37-08k" id="c3a-IS-LFM"/>
+                <outlet property="btnShare" destination="7fi-Ac-pni" id="uWv-Fn-inN"/>
                 <outlet property="ivCheckWallet" destination="Jib-YP-VuA" id="Aa8-1O-Pco"/>
                 <outlet property="lblWalletName" destination="pg1-Qv-B47" id="lIc-8V-M3v"/>
                 <outlet property="lblWalletType" destination="WhR-0X-CiA" id="emw-lP-C4i"/>
@@ -120,13 +152,23 @@
     </objects>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="ic_headerPlutopeIcon" width="160" height="160"/>
         <image name="ic_more" width="8" height="24"/>
-        <image name="pluto-logo 1" width="35" height="40"/>
-        <namedColor name="#202148">
-            <color red="0.125" green="0.1289999932050705" blue="0.28200000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <image name="share" width="50" height="50"/>
         <namedColor name="#75769D">
             <color red="0.45899999141693115" green="0.46299999952316284" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemFillColor">
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="tintColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

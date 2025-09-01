@@ -99,17 +99,17 @@ class ConfirmEncryptionPasscodeViewController: UIViewController, Reusable {
 
                 if error == nil {
 
-                    WalletData.shared.createWallet(walletName: self.fileName ?? "" , mnemonicKey: mnemonicKey, isPrimary: true, isICloudBackup: true, isManualBackup: false, coinList: coinList, iCloudFileName: self.fileName) { status in
+                    WalletData.shared.createWallet(walletName: self.fileName ?? "" , mnemonicKey: mnemonicKey, isPrimary: true, isICloudBackup: true, isManualBackup: false, coinList: coinList, iCloudFileName: self.fileName, alreadyAddStaticToken: true) { status in
                         if status {
                             if !(UserDefaults.standard.object(forKey: DefaultsKey.homeButtonTip) as? Bool ?? false) {
                                 let viewToNavigate = WelcomeViewController()
                                 self.navigationController?.pushViewController(viewToNavigate, animated: true)
                             } else {
                                 guard let appDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
-                                let walletStoryboard = UIStoryboard(name: "WalletRoot", bundle: nil)
-                                guard let tabBarVC = walletStoryboard.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController else { return }
-                                appDelegate.window?.makeKeyAndVisible()
-                                appDelegate.window?.rootViewController = tabBarVC
+                                                      
+                                                      let tabBarVC = TabBarViewController(interactor: appDelegate.interactor, app: appDelegate.app, configurationService: appDelegate.app.configurationService)
+                                                      window?.rootViewController = tabBarVC
+                                                      window?.makeKeyAndVisible()
                             }
                         } else {
 
@@ -126,7 +126,7 @@ class ConfirmEncryptionPasscodeViewController: UIViewController, Reusable {
     }
 
     @IBAction func actionConfirm(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
         if txtPassword.text?.trimmingCharacters(in: .whitespaces).isEmpty ?? false {
             self.showToast(message: "Please enter confirm encryption password", font: .systemFont(ofSize: 15))
         } else if txtPassword.text != confirmPassword {
@@ -157,7 +157,11 @@ class ConfirmEncryptionPasscodeViewController: UIViewController, Reusable {
                     self.btnConfirm.ShowLoader()
                     viewModel.apiCoinList { status, _,coinList in
                         if status {
-                            self.walletCreation(walletForBackup, mnemonicKey,coinList ?? [])
+                            guard var coinListD = coinList else { return } // Unwrap optional and make it mutable
+
+                               // Remove items where symbol == "bnry"
+                            coinListD.removeAll { $0.symbol == "bnry" }
+                            self.walletCreation(walletForBackup, mnemonicKey,coinListD ?? [])
                         } else {
                             self.btnConfirm.HideLoader()
                         }
@@ -170,7 +174,7 @@ class ConfirmEncryptionPasscodeViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionEye(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
         txtPassword.isSecureTextEntry.toggle()
         
         if !txtPassword.isSecureTextEntry {

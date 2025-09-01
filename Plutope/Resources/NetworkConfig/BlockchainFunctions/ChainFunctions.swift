@@ -7,6 +7,7 @@
 import Foundation
 import Web3
 import CoreData
+// swiftlint:disable type_body_length
 class ChainFunctions: BlockchainFunctions {
     init(_ data: Token) {
         self.tokenDetails = data
@@ -41,26 +42,31 @@ class ChainFunctions: BlockchainFunctions {
             
             web3.eth.gasPrice { gasPriceResponse in
                 
-                let gasPrice = gasPriceResponse.result?.quantity ?? BigUInt(100)
+                let gasPriceTx = gasPriceResponse.result?.quantity ?? BigUInt(100)
                 
                 web3.eth.estimateGas(call: EthereumCall(from: myWalletAddress, to: toWalletAddress, gasPrice: gasPriceResponse.result, data: EthereumData(Bytes(hex: rawData))), response: { gasLimitRes in
                     // convert BigUInt(Double(gas)
-                    let gasLimitEstimate = gasLimitRes.result?.quantity ?? BigUInt(Double(gasPrice))
+                    let gasLimitEstimate = gasLimitRes.result?.quantity ?? BigUInt(21000)
                     // Apply a buffer to the gas limit (e.g., increase it by 10%)
                     let bufferPercentage: Double = 10.1
                     let gasLimit = BigUInt(Double(gasLimitEstimate) * bufferPercentage)
                     let amount = UnitConverter.etherToWei(Double(tokenAmount) ?? 0)
                     let amountToWei = EthereumQuantity(quantity: BigUInt(amount))
                     // Calculate the total transaction fee
-                    let fee = gasPrice * gasLimit
+                    let fee = gasPriceTx * gasLimit
                     // add static decimal 18
                     let gasAmount = UnitConverter.convertWeiToEther("\(fee)", Int(18)) ?? ""
                     let chainBal = self.tokenDetails.balance ?? ""
-                    if (Double(chainBal) ?? 0) < (Double(gasAmount) ?? 0) {
-                        completion(false,ToastMessages.lowFeeBalance("\(chain.name) (\(chain.symbol))"),nil)
-                    } else {
+//                    if (Double(chainBal) ?? 0) < (Double(gasAmount) ?? 0) {
+//                        completion(false,ToastMessages.lowFeeBalance("\(chain.name) (\(chain.symbol))"),nil)
+//                    } else 
+                    
+//                    let gasPriceBigU: BigUInt = BigUInt(gasPrice)
+//                    
+//                    let gasLimitBigU: BigUInt = BigUInt(gas)
+                    
                         do {
-                            let transaction = EthereumTransaction(nonce: resp.result, gasPrice: EthereumQuantity(quantity: gasPrice), gasLimit: EthereumQuantity(quantity: gasLimit), from: myWalletAddress, to: toWalletAddress, value: amountToWei,data: EthereumData(Bytes(hex: rawData)))
+                            let transaction = EthereumTransaction(nonce: resp.result, gasPrice: EthereumQuantity(quantity: gasPriceTx), gasLimit: EthereumQuantity(quantity: gasLimit), from: myWalletAddress, to: toWalletAddress, value: amountToWei,data: EthereumData(Bytes(hex: rawData)))
                             let signedTx = try transaction.sign(with: EthereumPrivateKey(hexPrivateKey: chain.privateKey ?? ""),chainId: EthereumQuantity(quantity: BigUInt(Int(chain.chainId) ?? 0)))
                             try web3.eth.sendRawTransaction(transaction: signedTx) { (transactionHash) in
                                 if let txHash = transactionHash.result {
@@ -93,7 +99,7 @@ class ChainFunctions: BlockchainFunctions {
                             print(error)
                             completion(false,error.localizedDescription,nil)
                         }
-                    }
+                    
                     
                 })
             }
@@ -136,7 +142,7 @@ class ChainFunctions: BlockchainFunctions {
                             let trans = EthereumTransaction(nonce: resp.result, gasPrice: gasPriceRes.result, gasLimit: gasLimitRes.result, from: myWalletAddress, to: toWalletAddress, value: amountToWei)
                             
                             let signedTrans = try trans.sign(with: try EthereumPrivateKey(hexPrivateKey: chain.privateKey ?? ""),chainId: EthereumQuantity(quantity: BigUInt(Int(chain.chainId) ?? 0)))
-                            print(signedTrans)
+                            print("signTrans",signedTrans)
                             try web3.eth.sendRawTransaction(transaction: signedTrans) { (transactionHash) in
                                 if let txHash = transactionHash.result {
                                     fetchTransactionReceiptWithRetry(transactionHash: txHash, web3: web3) { result in
@@ -152,13 +158,16 @@ class ChainFunctions: BlockchainFunctions {
                                                 completion(false, "Transaction receipt not available", txHash)
                                             }
                                         case .failure(let error):
-                                            completion(false, error.localizedDescription, txHash)
+                                            print("SenderrMsg = ",error.localizedDescription)
+                                            completion(false, transactionHash.error?.readableDescription, txHash)
                                         }
                                     }
                                     
                                 } else if let error = transactionHash.error {
-                                    completion(false, error.localizedDescription, nil)
+                                    print("SenderrMsg1 = ",transactionHash.error?.readableDescription)
+                                    completion(false, transactionHash.error?.readableDescription, nil)
                                 } else {
+                                    
                                     completion(false, "Transaction hash not available", nil)
                                 }  }
                             
@@ -172,7 +181,7 @@ class ChainFunctions: BlockchainFunctions {
 //                                print(transactionHash)
 //                            }
                         } catch(let error) {
-                            print(error.localizedDescription)
+                            print("SenderrMsg2",error.localizedDescription)
                             completion(false, error.localizedDescription, nil)
                         }
                     }
@@ -263,9 +272,15 @@ class ChainFunctions: BlockchainFunctions {
     /// getBalance
     func getBalance(completion: @escaping ((String?) -> Void)) {
         guard let chain = tokenDetails.chain else { return  }
+        
         guard let walletAddress = chain.walletAddress else { return  }
         let web3 = Web3(rpcURL: chain.rpcURL)
-        
+        print("chainDetail",tokenDetails)
+        print("chain",chain)
+        print("chainRPC",chain.rpcURL)
+        print(walletAddress)
+        print(chain.symbol)
+       
         do {
             web3.eth.getBalance(address: try EthereumAddress(hex: walletAddress, eip55: true), block: .latest) { resp in
                 if resp.status.isSuccess {
@@ -330,6 +345,7 @@ class ChainFunctions: BlockchainFunctions {
     func signAndSendTranscation(_ receiverAddress: String?, gasLimit: BigUInt, gasPrice: BigUInt, txValue: BigUInt, rawData: String,
                                 completion: @escaping ((Bool, String?, EthereumData?) -> Void)) {
         guard let chain = tokenDetails.chain else { return  }
+        print("chain",chain)
         let web3 = Web3(rpcURL: chain.rpcURL)
         guard let toWalletAddress = try? EthereumAddress(hex: receiverAddress ?? "" , eip55: false) else { return  }
         guard let myWalletAddress = try? EthereumAddress(hex: chain.walletAddress ?? "", eip55: false) else { return  }
@@ -387,8 +403,7 @@ class ChainFunctions: BlockchainFunctions {
         guard let myWalletAddress = try? EthereumAddress(hex: chain.walletAddress ?? "", eip55: false) else { return  }
         
         web3.eth.getTransactionCount(address: myWalletAddress, block: .latest) { resp in
-           
-            do{
+            do {
             web3.eth.gasPrice { gasPriceResponse in
                 _ = gasPriceResponse.result?.quantity ?? BigUInt(100)
                 do {
@@ -435,4 +450,82 @@ class ChainFunctions: BlockchainFunctions {
             }
         }
     }
+    func sendTokenOrCoinFromWalletConect(_ receiverAddress: String?, tokenAmount: Double,gasLimit: BigInt,rawData: String,isGettingTransactionHash:Bool?, completion: @escaping ((Bool, String?,BigInt?,BigInt?,BigInt?, EthereumData?) -> Void)) {
+        
+        guard let chain = tokenDetails.chain else { return  }
+        let web3 = Web3(rpcURL: chain.rpcURL)
+        guard let toWalletAddress = try? EthereumAddress(hex: receiverAddress ?? "" , eip55: false) else {
+            completion(false,"Invalid receiver address",0,0,0, nil)
+            return
+        }
+        guard let myWalletAddress = try? EthereumAddress(hex: chain.walletAddress ?? "", eip55: false) else { return  }
+        
+        web3.eth.getTransactionCount(address: myWalletAddress, block: .latest) { resp in
+            
+            web3.eth.gasPrice {  gasPriceRes in
+                
+                let amount = UnitConverter.etherToWei(Double(tokenAmount))
+                let amountToWei = EthereumQuantity(quantity: BigUInt(amount))
+                web3.eth.estimateGas(call: EthereumCall(to: toWalletAddress,gasPrice: gasPriceRes.result,value: amountToWei)) { gasLimitRes in
+                    
+//                    let txGasLimit: BigInt =  UnitConverter.hexStringToBigInteger(hex: gasLimit) ??  BigInt(50000)
+                    let txGasLimit =  gasLimit ??  BigInt(50000)
+                    let gasLimitEstimate = gasLimitRes.result?.quantity ?? BigUInt(50000)
+                    let bufferPercentage: Double = 1.1
+                    var gasLimitDfault = BigUInt(Double(gasLimitEstimate) * bufferPercentage)
+                    let gasPrice = gasPriceRes.result?.quantity ?? BigUInt(100)
+                    var finalGasLimit = BigInt()
+                    if txGasLimit != 0 {
+                        finalGasLimit  = BigInt(txGasLimit)
+                    } else {
+                        finalGasLimit = BigInt(gasLimitDfault)
+                    }
+                    var nonce = resp.result?.quantity ?? BigUInt()
+                    // Calculate the total transaction fee
+                    let fee = gasPrice * BigUInt(finalGasLimit)
+                    let gasAmount = UnitConverter.convertWeiToEther("\(finalGasLimit)",Int(self.tokenDetails.decimals)) ?? ""
+                        do {
+                            let trans = EthereumTransaction(nonce: resp.result, gasPrice: EthereumQuantity(quantity: gasPrice), gasLimit: EthereumQuantity(quantity: BigUInt(finalGasLimit)), from: myWalletAddress, to: toWalletAddress, value: amountToWei,data: EthereumData(Bytes(hex: rawData)))
+                            
+                            let signedTrans = try trans.sign(with: try EthereumPrivateKey(hexPrivateKey: chain.privateKey ?? ""),chainId: EthereumQuantity(quantity: BigUInt(Int(chain.chainId) ?? 0)))
+                            print(signedTrans)
+                            if isGettingTransactionHash ?? false {
+                            try web3.eth.sendRawTransaction(transaction: signedTrans) { (transactionHash) in
+                                if let txHash = transactionHash.result {
+                                    fetchTransactionReceiptWithRetry(transactionHash: txHash, web3: web3) { result in
+                                        switch result {
+                                        case .success(let receiptResponse):
+                                            if receiptResponse.result != nil {
+                                                if receiptResponse.status.result??.status?.quantity == BigUInt(1) {
+                                                    completion(true, "Send successful",0,0,0, txHash)
+                                                } else {
+                                                    completion(false, "Send failed please try again after some time.",0,0,0, txHash)
+                                                }
+                                            } else {
+                                                completion(false, "Transaction receipt not available",0,0,0, txHash)
+                                            }
+                                        case .failure(let error):
+                                            completion(false, error.localizedDescription,0,0,0, txHash)
+                                        }
+                                    }
+                                    
+                                } else if let error = transactionHash.error {
+                                    completion(false, error.localizedDescription,0,0,0, nil)
+                                } else {
+                                    completion(false, "Transaction hash not available",0,0,0, nil)
+                                }  }
+                            } else {
+                                
+                                completion(true,"signedTransaction",finalGasLimit,BigInt(gasPrice),BigInt(nonce),signedTrans.data)
+                            }
+
+                        } catch(let error) {
+                            print(error.localizedDescription)
+                            completion(false, error.localizedDescription,0,0,0, nil)
+                        }
+                }
+            }
+        }
+    }
 }
+// swiftlint:enable type_body_length

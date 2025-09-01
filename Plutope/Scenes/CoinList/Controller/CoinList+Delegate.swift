@@ -10,28 +10,97 @@ import IQKeyboardManagerSwift
 extension CoinListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        HapticFeedback.generate(.light)
         if self.isFromDash {
             let entity = NSEntityDescription.entity(forEntityName: "WalletTokens", in: DatabaseHelper.shared.context)!
             let walletTokenEntity = WalletTokens(entity: entity, insertInto: DatabaseHelper.shared.context)
             walletTokenEntity.id = UUID()
             walletTokenEntity.wallet_id = primaryWallet?.wallet_id
             walletTokenEntity.tokens = self.tokensList?[indexPath.row]
-            DatabaseHelper.shared.saveData(walletTokenEntity) { status in
-                if status {
-                    DispatchQueue.main.async {
-                        self.dismiss(animated: true) {
-                            self.enabledTokenDelegate?.selectEnabledToken((self.tokensList?[indexPath.row])!)
+            
+                    DatabaseHelper.shared.saveData(walletTokenEntity) { status in
+                        if status {
+                            DispatchQueue.main.async {
+                                self.dismiss(animated: true) {
+         
+                                    self.enabledTokenDelegate?.selectEnabledToken((self.tokensList?[indexPath.row])!)
+                                }
+                            }
+                        } else {
+                            self.dismiss(animated: true)
                         }
                     }
-                } else {
-                    self.dismiss(animated: true)
-                }
-            }
+            
+//                }
+//                else{
+//                    self.dismiss(animated: true)
+//                }
+                
+//            }
+            
+        } else if isFrom == "swap"{
+            guard let selectedToken = self.tokensList?[indexPath.row] else { return }
+
+               // ✅ 1. Dismiss immediately and notify delegate
+               self.dismiss(animated: true) {
+                   if self.isPayCoin {
+                       self.swapDelegate?.selectPayCoin(selectedToken)
+                   } else {
+                       self.swapDelegate?.selectGetCoin(selectedToken)
+                   }
+                   self.enabledTokenDelegate?.selectEnabledToken(selectedToken)
+               }
+
+               // ✅ 2. Run balance + price fetch in background
+               selectedToken.callFunction.getBalance { [weak self] bal in
+                   guard let self = self else { return }
+
+                   let tokenId = selectedToken.tokenId ?? ""
+                   let address = selectedToken.address?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                   let symbol = selectedToken.symbol?.uppercased() ?? ""
+                   let primaryCurrencySymbol = WalletData.shared.primaryCurrency?.symbol ?? ""
+
+                   self.coinGeckoViewModel.apiMarketVolumeData(primaryCurrencySymbol, ids: tokenId) { status, msg, data in
+                       guard status, let assets = data?.first else {
+                           DispatchQueue.main.async {
+                               self.showToast(message: msg, font: .systemFont(ofSize: 15))
+                           }
+                           return
+                       }
+
+                       // ✅ 3. Update database with balance and price
+                       DatabaseHelper.shared.updateData(
+                           entityName: "Token",
+                           predicateFormat: "tokenId == %@ AND address == %@ AND symbol == %@",
+                           predicateArgs: [tokenId, address, symbol]
+                       ) { object in
+                           guard let token = object as? Token else { return }
+
+                           let balanceValue = bal ?? "0"
+                           token.balance = balanceValue
+                           token.price = "\(assets.currentPrice ?? 0.0)"
+                           token.logoURI = assets.image ?? ""
+                           token.lastPriceChangeImpact = String(format: "%.2f", assets.priceChangePercentage24H ?? 0.0)
+
+                           switch (token.name?.lowercased(), token.tokenId?.lowercased(), address.isEmpty) {
+                           case ("optimism", "optimism", _):
+                               print("OptimismBal =", balanceValue)
+                           case ("arbitrum", "arbitrum", true):
+                               print("arbitrumBal =", balanceValue)
+                           case ("base", "base", true):
+                               print("baseBal =", balanceValue)
+                           default:
+                               print("Bal =", balanceValue)
+                           }
+
+                           // ✅ Optional: Notify main screen of updates via delegate or NotificationCenter
+                       }
+                   }
+               }
         } else {
             self.tokensList?[indexPath.row].callFunction.getBalance(completion: { bal in
                 DispatchQueue.main.async {
-                    DGProgressView.shared.showLoader(to: self.view)
+//                    DGProgressView.shared.showLoader(to: self.view)
                 }
                 self.coinGeckoViewModel.apiMarketVolumeData("\(WalletData.shared.primaryCurrency?.symbol ?? "")", ids: self.tokensList?[indexPath.row].tokenId ?? "") { status,msg,data in
                     if status {
@@ -42,14 +111,31 @@ extension CoinListViewController: UITableViewDelegate {
                         if let data = data, let assets = data.first {
                             DispatchQueue.main.async {
                                 let symbol = (assets.symbol ?? "").uppercased()
-                                DatabaseHelper.shared.updateData(entityName: "Token", predicateFormat: "symbol == %@ AND address == %@", predicateArgs: [self.tokensList?[indexPath.row].symbol ?? "" ,self.tokensList?[indexPath.row].address ?? ""]) { object in
+                                DatabaseHelper.shared.updateData(entityName: "Token", predicateFormat: "tokenId == %@ AND address == %@  AND symbol == %@", predicateArgs: [self.tokensList?[indexPath.row].tokenId ?? "" ,self.tokensList?[indexPath.row].address ?? "",self.tokensList?[indexPath.row].symbol?.uppercased() ?? ""]) { object in
                                     //  DatabaseHelper.shared.updateData(entityName: "Token", predicateFormat: "symbol == %@ AND tokenId == %@", predicateArgs: [symbol ,assets.id ?? ""]) { object in
                                     if let token = object as? Token {
-                                        token.balance = bal
+                                        let cleanAddress = token.address?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                                        let balanceValue = bal ?? "0"
+
+                                        token.balance = balanceValue
+
+                                        switch (token.name?.lowercased(), token.tokenId?.lowercased(), cleanAddress.isEmpty) {
+                                        case ("optimism", "optimism", _):
+                                            print("OptimismBal =", balanceValue)
+
+                                        case ("arbitrum", "arbitrum", true):
+                                            print("arbitrumBal =", balanceValue)
+
+                                        case ("base", "base", true):
+                                            print("baseBal =", balanceValue)
+
+                                        default:
+                                            print("Bal =", balanceValue)
+                                        }
+//                                        token.balance = bal
                                         let price = assets.currentPrice ?? 0.0
                                         token.price = "\(price)"
                                         token.logoURI = assets.image ?? ""
-                                        token.logoURI = "\(assets.image ?? "")"
                                         token.lastPriceChangeImpact = String(format: "%.2f", (assets.priceChangePercentage24H ?? 0.0))
                                         DispatchQueue.main.async {
                                             if (self.tokensList?.count ?? 0) != 0 {
@@ -72,15 +158,17 @@ extension CoinListViewController: UITableViewDelegate {
                         } else {
                             DispatchQueue.main.async {
                                 DGProgressView.shared.hideLoader()
+                                self.showToast(message: msg, font: .systemFont(ofSize: 15))
                             }
-                            self.showToast(message: msg, font: .systemFont(ofSize: 15))
+                            
                         }
                 }// status
                     else {
                         DispatchQueue.main.async {
                             DGProgressView.shared.hideLoader()
+                            self.showToast(message: msg, font: .systemFont(ofSize: 15))
                         }
-                        self.showToast(message: msg, font: .systemFont(ofSize: 15))
+                       
                     }
                 }
             })
@@ -102,118 +190,47 @@ extension CoinListViewController: UITextFieldDelegate {
         }
         tbvCoinList.reloadData()
     }
-    
+    /* new logic as per symbol */
     func filterAssets(with searchText: String) {
-        self.tokensList = filterTokens?.filter { asset in
-            let type = asset.type
-            let symbol = asset.symbol
-            
-            // Match the entered text with name or symbol
-            return type?.localizedCaseInsensitiveContains(searchText) ?? false ||
-            symbol?.localizedCaseInsensitiveContains(searchText) ?? false
+        let lowercasedSearch = searchText.lowercased()
+
+        guard let tokens = filterTokens else {
+            self.tokensList = []
+            return
+        }
+
+        let filtered = tokens.filter { asset in
+            guard let symbol = asset.symbol?.lowercased(),
+                  let type = asset.type?.lowercased(),
+                  let name = asset.name?.lowercased() else { return false }
+
+            return symbol.contains(lowercasedSearch) ||
+                   type.contains(lowercasedSearch) ||
+                   name.contains(lowercasedSearch)
+        }
+
+        // Tier 1: Exact symbol match
+        let exactMatches = filtered.filter {
+            $0.symbol?.lowercased() == lowercasedSearch
+        }
+
+        // Tier 2: Symbol starts with search text
+        let symbolStartsWith = filtered.filter {
+            $0.symbol?.lowercased().hasPrefix(lowercasedSearch) == true &&
+            $0.symbol?.lowercased() != lowercasedSearch
+        }
+
+        // Tier 3: All other partial matches (symbol contains but not prefix, or name/type match)
+        let otherMatches = filtered.filter {
+            !exactMatches.contains($0) && !symbolStartsWith.contains($0)
+        }
+
+        // Merge all and sort each tier by balance descending
+        self.tokensList = (exactMatches + symbolStartsWith + otherMatches).sorted {
+            (Double($0.balance ?? "0") ?? 0) > (Double($1.balance ?? "0") ?? 0)
         }
     }
-    
+
 }
-//// MARK: - UITextFieldDelegate
-//extension CoinListViewController: UITextFieldDelegate {
-//    // Implement the UITextFieldDelegate method to perform the search
-//    func textFieldDidChangeSelection(_ textField: UITextField) {
-//        textField.inputView?.reloadInputViews()
-//        if (textField.text?.trimmingCharacters(in: .whitespaces).isEmpty ?? false) {
-//            self.tokensList = filterTokens
-//        } else {
-//            filterAssets(with: textField.text ?? "")
-//        }
-//
-//        tbvCoinList.reloadData()
-//
-//    }
-//
-////    func filterAssets(with searchText: String) {
-////        self.tokensList = filterTokens?.filter { asset in
-////            let type = asset.type
-////            let symbol = asset.symbol
-////
-////            // Check if the symbol is an exact match with the search text
-////            let isSymbolMatch = symbol?.localizedCaseInsensitiveCompare(searchText) == .orderedSame
-////
-////            // Match the entered text with name or symbol
-////            return isSymbolMatch || type?.localizedCaseInsensitiveContains(searchText) ?? false || symbol?.localizedCaseInsensitiveContains(searchText) ?? false
-////        }.sorted { asset1, asset2 in
-////            // Custom sorting logic to prioritize exact matches first
-////            let symbol1 = asset1.symbol ?? ""
-////            let symbol2 = asset2.symbol ?? ""
-////            let isSymbol1Match = symbol1.localizedCaseInsensitiveCompare(searchText) == .orderedSame
-////            let isSymbol2Match = symbol2.localizedCaseInsensitiveCompare(searchText) == .orderedSame
-////
-////            // If both symbols are the same or both are not an exact match,
-////            // sort based on asset name
-////            if isSymbol1Match == isSymbol2Match {
-////                let name1 = asset1.type ?? ""
-////                let name2 = asset2.type ?? ""
-////                return name1.localizedCaseInsensitiveCompare(name2) == .orderedAscending
-////            } else {
-////                // If one is an exact match and the other is not, prioritize exact matches first
-////                return isSymbol1Match
-////            }
-////        }
-////    }
-////    func filterAssets(with searchText: String) {
-////
-////        self.tokensList = filterTokens?
-////               .filter { asset in
-////                   let symbol = asset.symbol ?? ""
-////                   return symbol.localizedCaseInsensitiveContains(searchText)
-////               }
-//////        self.tokensList = filterTokens?.filter { asset in
-//////            let type = asset.type
-//////            let symbol = asset.symbol
-//////
-//////            // Check if the symbol is an exact match with the search text
-//////            let isSymbolMatch = symbol?.localizedCaseInsensitiveCompare(searchText) == .orderedSame
-//////
-//////            // Match the entered text with name or symbol
-//////            return isSymbolMatch || type?.localizedCaseInsensitiveContains(searchText) ?? false || symbol?.localizedCaseInsensitiveContains(searchText) ?? false
-//////        }.sorted { asset1, asset2 in
-//////            // Custom sorting logic to prioritize exact matches first
-//////            let symbol1 = asset1.symbol ?? ""
-//////            let symbol2 = asset2.symbol ?? ""
-//////            let isSymbol1Match = symbol1.localizedCaseInsensitiveCompare(searchText) == .orderedSame
-//////            let isSymbol2Match = symbol2.localizedCaseInsensitiveCompare(searchText) == .orderedSame
-//////
-//////            // If both symbols are the same or both are not an exact match,
-//////            // sort based on asset name
-//////            if isSymbol1Match == isSymbol2Match {
-//////                let name1 = asset1.type ?? ""
-//////                let name2 = asset2.type ?? ""
-//////                return name1.localizedCaseInsensitiveCompare(name2) == .orderedAscending
-//////            } else {
-//////                // If one is an exact match and the other is not, prioritize exact matches first
-//////                return isSymbol1Match
-//////            }
-//////        }
-////    }
-//
-//    func filterAssets(with searchText: String) {
-//        self.tokensList = filterTokens?
-//            .filter { asset in
-//                let symbol = asset.symbol ?? ""
-//                return symbol.localizedCaseInsensitiveContains(searchText)
-//            }
-//            .sorted { asset1, asset2 in
-//                let symbol1 = asset1.symbol ?? ""
-//                let symbol2 = asset2.symbol ?? ""
-//                let isSymbol1Match = symbol1.localizedCaseInsensitiveCompare(searchText) == .orderedSame
-//                let isSymbol2Match = symbol2.localizedCaseInsensitiveCompare(searchText) == .orderedSame
-//
-//                if isSymbol1Match == isSymbol2Match {
-//                    let name1 = asset1.type ?? ""
-//                    let name2 = asset2.type ?? ""
-//                    return name1.localizedCaseInsensitiveCompare(name2) == .orderedAscending
-//                } else {
-//                    return isSymbol1Match
-//                }
-//            }
-//    }
-//}
+
+

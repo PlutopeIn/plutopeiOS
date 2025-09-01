@@ -10,6 +10,7 @@ extension VerifyRecoveryPhraseViewController: UICollectionViewDelegate, UICollec
     
     /// Did select cell
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        HapticFeedback.generate(.light)
         switch collectionView {
         case clvVerifyPhrase:
             movePhrase(from: &arrSecretPhrase, to: &arrGuessSecretPhrase, at: indexPath)
@@ -45,7 +46,6 @@ extension VerifyRecoveryPhraseViewController: UICollectionViewDelegate, UICollec
         
         for (idx, secretPhrase) in arrSecretPhrase.enumerated() {
             if arrMnemonic[idx] != secretPhrase.phrase {
-                //lblError.text = StringConstants.invalidOrder
                 lblError.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.invalidordertryagain, comment: "")
                 lblError.textColor = UIColor.cD50000
             } else {
@@ -57,7 +57,6 @@ extension VerifyRecoveryPhraseViewController: UICollectionViewDelegate, UICollec
         /// Done button validation
         let isPhraseMatched = arrMnemonic == arrSecretPhrase.map({ $0.phrase })
         if isPhraseMatched {
-            //lblError.text = StringConstants.phraseMatched
             lblError.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.welldone, comment: "")
             lblError.textColor = UIColor.c099817
         }

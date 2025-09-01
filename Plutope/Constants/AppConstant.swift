@@ -10,6 +10,27 @@ typealias BindFail = ((_ status: Bool, _ message: String) -> Void)
 struct AppConstants {
     static let serverURL: String = "@{serverURL}"
     static var storedTokensList: [MarketData]?
+    static var storedCountryList:[CountryList]?
+    static var cardPrimaryCurrency : String?
+    static var tokensList: [Token]?
+    // This property will load the stored wallet from UserDefaults (if it exists), or be an empty array otherwise
+       static var storedWallet: [String]? {
+           get {
+               return UserDefaults.standard.stringArray(forKey: "storedWallet") ?? []
+           }
+           set {
+               UserDefaults.standard.set(newValue, forKey: "storedWallet")
+           }
+       }
+    static let supportedChains: [String] = [
+            "binance-smart-chain", "ethereum", "polygon-pos", "okex-chain",
+            "bitcoin", "optimistic-ethereum", "arbitrum-one", "avalanche", "base"
+        ]
+        
+    static  let nativeCoins: [String] = [
+            "OKT Chain", "Ethereum", "POL (ex-MATIC)", "BNB", "Bitcoin",
+            "Optimism", "Arbitrum", "Avalanche", "Base"
+        ]
 }
 
 public var screenWidth = UIScreen.main.bounds.width
@@ -24,17 +45,48 @@ enum CoinList {
     case receiveNFT
     case addCustomToken
     case swap
+    case search
 }
+let window = UIApplication.shared.windows.first
 
+func getWindow() -> UIWindow? {
+    return UIApplication.shared.windows.first
+}
 // MARK: Global function to set any screen as root
 public func setRootViewController(viewController: UIViewController) {
-    let appDelegate = UIApplication.shared.delegate as? SceneDelegate
+    guard let window = getWindow() else { return }
     let navigationController = UINavigationController(rootViewController: viewController)
+    navigationController.tabBarController?.selectedIndex = 0
     navigationController.setNavigationBarHidden(true, animated: true)
-    appDelegate?.window?.makeKeyAndVisible()
-    appDelegate?.window?.rootViewController = navigationController
+    window.rootViewController = navigationController
+    window.makeKeyAndVisible()
 }
+// MARK: LogOut
+public func logoutApp() {
+   
+    DispatchQueue.main.async {
+   DGProgressView.shared.hideLoader()
+   UserDefaults.standard.removeObject(forKey: loginApiToken)
+   UserDefaults.standard.removeObject(forKey: loginPhoneNumber)
+   UserDefaults.standard.removeObject(forKey: loginPassword)
+   UserDefaults.standard.removeObject(forKey: loginApiRefreshToken)
+   UserDefaults.standard.removeObject(forKey: cardHolderfullName)
+   UserDefaults.standard.removeObject(forKey: cryptoCardNumber)
+   UserDefaults.standard.removeObject(forKey: mainPublicKey)
+   UserDefaults.standard.removeObject(forKey: mainPrivetKey)
+   UserDefaults.standard.removeObject(forKey: loginApiTokenExpirey)
+   UserDefaults.standard.removeObject(forKey: cardTypes)
+   UserDefaults.standard.removeObject(forKey: fiateValue)
+   UserDefaults.standard.removeObject(forKey: cardCurrency)
+   UserDefaults.standard.removeObject(forKey: serverType)
+        let app = Application() // Example, ensure this matches your Application initialization
+        let interactor = MainInteractor()
+        let configurationService = ConfigurationService()
+        let tabBarVC = TabBarViewController(interactor: interactor,app:app,configurationService:configurationService)
 
+        setRootViewController(viewController: tabBarVC)
+    }
+}
 // MARK: - App protocol delegates
 
 /// Delegate for dismiss/pop view and action
@@ -44,8 +96,11 @@ protocol PushViewControllerDelegate: AnyObject {
 protocol ProviderSelectDelegate: AnyObject {
     func valuesTobePassed(_ provider: BuyProviders)
 }
+protocol BuyProviderSelectDelegate: AnyObject {
+    func valuesTobePassed(_ name:String,amount:String,url:String,imageUrl:String,providerName:String)
+}
 protocol SwapProviderSelectDelegate: AnyObject {
-    func valuesTobePassed(_ provider: SwapProviders)
+    func valuesTobePassed(name: String?,bestPrice: String?,swapperFee : String?,providerImage : String?,providerName:String,isBestPrice:Bool)
 }
 protocol PrimaryWalletDelegate: AnyObject {
     func setPrimaryWallet(primaryWallet: Wallets?)
@@ -71,12 +126,19 @@ protocol SwappingCoinDelegate: AnyObject {
     func selectPayCoin(_ coinDetail: Token?)
     func selectGetCoin(_ coinDetail: Token?)
 }
+protocol UpdatedWalletWalletDelegate: AnyObject {
+    func setUpdatedWallet(primaryWallet: Wallets?)
+}
 
 /// EnabledTokenDelegate
 protocol EnabledTokenDelegate: AnyObject {
     func selectEnabledToken(_ coinDetail: Token)
 }
 
+/// EnabledTokenDelegate
+protocol RefreshCardTokenDelegate: AnyObject {
+    func refreshCardTokenDelegateToken()
+}
 /// Select Contact for send Amount
 protocol SelectContactDelegate: AnyObject {
     func selectContact(_ contact: Contacts)

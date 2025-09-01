@@ -17,8 +17,11 @@ extension LockMethodViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tbvLockMethod.dequeueReusableCell(indexPath: indexPath) as SecurityViewCell
+        tableView.separatorStyle = .singleLine
+        
         let data = arrMethodData[indexPath.row]
         cell.selectionStyle = .none
+        
         
         cell.lblTitle.text = data.title
         

@@ -67,7 +67,7 @@ class EncryptionPasswordViewController: UIViewController, Reusable {
     }
     
     fileprivate func walletCreation(_ data: MyWallet,_ coinList: [CoingechoCoinList]?) {
-        WalletData.shared.createWallet(walletName: self.walletName ?? "", mnemonicKey: WalletData.shared.mnemonic, isPrimary: true, isICloudBackup: true, isManualBackup: false,coinList: coinList, iCloudFileName: self.backUpFileName) { status in
+        WalletData.shared.createWallet(walletName: self.walletName ?? "", mnemonicKey: WalletData.shared.mnemonic, isPrimary: true, isICloudBackup: true, isManualBackup: false,coinList: coinList, iCloudFileName: self.backUpFileName, alreadyAddStaticToken: true) { status in
             if status {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     self.btnSetPassword.HideLoader()
@@ -76,10 +76,10 @@ class EncryptionPasswordViewController: UIViewController, Reusable {
                         self.navigationController?.pushViewController(viewToNavigate, animated: true)
                     } else {
                         guard let appDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
-                        let walletStoryboard = UIStoryboard(name: "WalletRoot", bundle: nil)
-                        guard let tabBarVC = walletStoryboard.instantiateViewController(withIdentifier: "TabBarViewController") as? TabBarViewController else { return }
-                        appDelegate.window?.makeKeyAndVisible()
-                        appDelegate.window?.rootViewController = tabBarVC
+                                              
+                                              let tabBarVC = TabBarViewController(interactor: appDelegate.interactor, app: appDelegate.app, configurationService: appDelegate.app.configurationService)
+                                              window?.rootViewController = tabBarVC
+                                              window?.makeKeyAndVisible()
                     }
                 }
 
@@ -90,7 +90,7 @@ class EncryptionPasswordViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionSetEncryptionPassword(_ sender: Any) {
-
+        HapticFeedback.generate(.light)
         if txtPassword.text?.trimmingCharacters(in: .whitespaces).isEmpty ?? false {
             self.showToast(message: ToastMessages.passwordRequired, font: .systemFont(ofSize: 15))
         } else {
@@ -113,8 +113,13 @@ class EncryptionPasswordViewController: UIViewController, Reusable {
                         } else {
 
                             if DatabaseHelper.shared.entityIsEmpty("Token") {
+                               
                                 self.viewModel.apiCoinList { status, _, coinList in
                                     if status {
+                                        guard var coinListD = coinList else { return } // Unwrap optional and make it mutable
+
+                                           // Remove items where symbol == "bnry"
+                                        coinListD.removeAll { $0.symbol == "bnry" }
                                       //  self.walletCreation(data,coinList ?? [])
                                     } else {
                                         self.btnSetPassword.HideLoader()
@@ -153,6 +158,7 @@ class EncryptionPasswordViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionEye(_ sender: Any) {
+        HapticFeedback.generate(.light)
         txtPassword.isSecureTextEntry.toggle()
         
         if !txtPassword.isSecureTextEntry {

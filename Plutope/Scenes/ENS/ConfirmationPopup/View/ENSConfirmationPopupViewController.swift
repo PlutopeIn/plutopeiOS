@@ -69,7 +69,7 @@ class ENSConfirmationPopupViewController: UIViewController {
     }
     
     @IBAction func btnConfirmAction(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
         self.dismiss(animated: true, completion: {
             self.delegate?.confirmEnsBuy()
         })

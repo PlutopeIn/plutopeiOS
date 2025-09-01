@@ -5,17 +5,18 @@
 //  Created by Priyanka on 03/06/23.
 //
 import UIKit
-
+import SafariServices
+import Lottie
+// swiftlint:disable type_body_length
 class CoinDetailViewController: UIViewController, Reusable {
     
+    @IBOutlet weak var lblCheckExp: UILabel!
+    @IBOutlet weak var lblCoinBalance: UILabel!
+    @IBOutlet weak var clvActions: UICollectionView!
     @IBOutlet weak var segmentHeight: NSLayoutConstraint!
-    @IBOutlet weak var lblBuy: UILabel!
+    @IBOutlet weak var lblCheckExplorer: UILabel!
     @IBOutlet weak var lblCoinNetwork: DesignableLabel!
     @IBOutlet weak var mainScrollView: UIScrollView!
-    @IBOutlet weak var btnMore: UIButton!
-    @IBOutlet weak var btnBuy: UIButton!
-    @IBOutlet weak var btnReceive: UIButton!
-    @IBOutlet weak var btnSend: UIButton!
     @IBOutlet weak var viewNoTransaction: UIView!
     @IBOutlet weak var lblPer: UILabel!
     @IBOutlet weak var ivCoinImage: UIImageView!
@@ -25,39 +26,60 @@ class CoinDetailViewController: UIViewController, Reusable {
     @IBOutlet weak var constantTbvHeight: NSLayoutConstraint!
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var lblTransactions: UILabel!
-    @IBOutlet weak var lblSend: UILabel!
-    @IBOutlet weak var lblReceive: UILabel!
- //   @IBOutlet weak var lblBuy: UILabel!
-    @IBOutlet weak var lblMore: UILabel!
+    
+    @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var viewTransationinternal: UIView!
+    @IBOutlet weak var heightViewtransactionInternal: NSLayoutConstraint!
     @IBOutlet weak var lblNoTransactions: UILabel!
-  //  @IBOutlet weak var lblSend: UILabel!
-   // @IBOutlet weak var lblReceive: UILabel!
-  //  @IBOutlet weak var lblMore: UILabel!
+    
+    @IBOutlet weak var lotteView: LottieAnimationView!
+    @IBOutlet weak var btnInternal: UIButton!
+    @IBOutlet weak var btnTransaction: UIButton!
     var isFetchingData = false
-    var isInternalFetchingData = false
+   
     var coinDetail: Token?
     var isToContract  = false
     var url: String?
-    @IBOutlet weak var segmentTransactions: CustomSegmentedControl!
+
+    // new Api
+    var arrTransactionNewData: [TransactionHistoryResult] = []
+    
     var transactionHistory: [TransactionHistory] = []
     weak var refreshWalletDelegate: RefreshDataDelegate?
-    var arrTransactionData: [TransactionResult] = []
-    var arrInternalTransactionData: [TransactionResult] = []
     weak var updatebalDelegate: RefreshDataDelegate?
     var isCustomAdded: Bool = false
     var selectedSegment = String()
+    var transctionsValueArr  = [DashboardTrnsactions]()
+    var cursor: String? = nil
+    var tokenCursor: String? = nil
+    var isLoading = false
+    var isTokenLoading = false
+    var hasMoreData = true
+    var hasTokenMoreData = true
+    var internalCursor: String? = nil
+    var hasMoreInternalData = true
+    var isInternalFetchingData = false
+    var isFromSearch = false
+    var page = 1
+    var currentPage: Int = 1
+    var totalPages: Int = 1
     lazy var viewModel: TransactionHistoryViewModel = {
         TransactionHistoryViewModel { _ , _ in
-            // self.showToast(message: message, font: .systemFont(ofSize: 15))
             self.viewNoTransaction.isHidden = false
             self.tbvTransactions.isHidden = true
-            DGProgressView.shared.hideLoader()
+            DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
+                            // Simulated network delay
+                            DispatchQueue.main.async {
+                               self.tbvTransactions.hideLoader()
+                              
+                            }
+                        }
         }
     }()
     lazy var buyViewModel: CoinMinPriceViewModel = {
         CoinMinPriceViewModel { status, message in
             if status == false {
-              //  self.showToast(message: message, font: .systemFont(ofSize: 15))
+                self.showToast(message: message, font: .systemFont(ofSize: 15))
             }
         }
     }()
@@ -67,25 +89,77 @@ class CoinDetailViewController: UIViewController, Reusable {
             // self.btnDone.HideLoader()
         }
     }()
-    var page = 1
-    var pageInternal = 1
-    
     fileprivate func uiSetUp() {
         self.lblTransactions.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transactions, comment: "")
-        self.lblSend.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.send, comment: "")
-        self.lblReceive.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.receive, comment: "")
-        self.lblBuy.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.buy, comment: "")
-        self.lblMore.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.more, comment: "")
         self.lblNoTransactions.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.notransactionsyet, comment: "")
-        self.segmentTransactions.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transaction, comment: ""), forSegmentAt: 0)
-        self.segmentTransactions.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.internalText, comment: ""), forSegmentAt: 1)
+        self.lblPrice.font = AppFont.regular(15).value
+        self.lblPer.font = AppFont.regular(15).value
+        self.lblCoinBal.font = AppFont.violetRegular(26.76).value
+        self.lblTransactions.font = AppFont.violetRegular(16).value
+        self.lblCoinNetwork.font = AppFont.regular(8.0).value
+        self.lblCoinBalance.font = AppFont.violetRegular(15).value
+        self.lblCheckExp.font = AppFont.regular(13).value
+       
+        setAttributedClickableText(labelName: lblCheckExplorer, labelText:LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.canNotFindTrans, comment: "") , value: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.checkExplorer, comment: ""), color: UIColor.label, linkColor: UIColor.c00C6FB)
+        lblCheckExplorer.addTapGesture {
+            HapticFeedback.generate(.light)
+            self.openExplorer(for: self.coinDetail?.chain, walletAddress: self.coinDetail?.chain?.walletAddress)
+        }
+
+        lotteView.addTapGesture {
+            HapticFeedback.generate(.light)
+            self.openExplorer(for: self.coinDetail?.chain, walletAddress: self.coinDetail?.chain?.walletAddress)
+        }
+        lblCheckExp.addTapGesture {
+            HapticFeedback.generate(.light)
+            self.openExplorer(for: self.coinDetail?.chain, walletAddress: self.coinDetail?.chain?.walletAddress)
+        }
     }
-    
+   
+    private func openExplorer(for chain: Chain?, walletAddress: String?) {
+        guard let txId = walletAddress, let chain = chain else { return }
+
+        let urlString: String
+        switch chain {
+        case .binanceSmartChain:
+            urlString = "https://bscscan.com/address/\(txId)"
+        case .ethereum:
+            urlString = "https://etherscan.io/address/\(txId)"
+        case .oKC:
+            urlString = "https://www.okx.com/explorer/oktc/address/\(txId)"
+        case .polygon:
+            urlString = "https://polygonscan.com/address/\(txId)"
+        case .bitcoin:
+            urlString = "https://btcscan.org/address/\(txId)"
+        case .opMainnet:
+            urlString = "https://optimistic.etherscan.io/address/\(txId)"
+       
+        case .avalanche:
+            urlString = "https://subnets.avax.network/c-chain/address/\(txId)"
+        case .arbitrum:
+            urlString = "https://arbiscan.io/address/\(txId)"
+        case .base:
+            urlString = "https://basescan.org/address/\(txId)"
+        default:
+            return // Unsupported chain
+        }
+
+        guard let url = URL(string: urlString) else { return }
+
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.modalPresentationStyle = .overFullScreen
+        self.present(safariVC, animated: true)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         selectedSegment = "Transaction"
         /// Navigation Header
-        defineHeader(headerView: headerView, titleText:  coinDetail?.name ?? "", btnBackHidden: false, popToRoot: true, btnRightImage: UIImage.icGraph) {
+        if  coinDetail?.tokenId == "PLT".lowercased() {
+            defineHeader(headerView: headerView, titleText:  coinDetail?.name ?? "", btnBackHidden: false, popToRoot: true)
+        } else {
+        defineHeader(headerView: headerView, titleText:  coinDetail?.name ?? "", btnBackHidden: false, popToRoot: true, btnRightImage: UIImage.icNewgraff.withTintColor(UIColor.systemGray3)) {
+            HapticFeedback.generate(.light)
             let viewToNavigate = CoinGraphViewController()
             viewToNavigate.coinDetail = self.coinDetail
             self.navigationController?.pushViewController(viewToNavigate, animated: true)
@@ -98,38 +172,85 @@ class CoinDetailViewController: UIViewController, Reusable {
                 }
                 self.refreshWalletDelegate?.refreshData()
             }
-            self.navigationController?.popToRootViewController(animated: true)
+            if self.isFromSearch == true {
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                self.navigationController?.popToRootViewController(animated: true)
+            }
         }
+    }
+        
         /// UI Set up
         uiSetUp()
-        
+        loadNibs()
         /// Table Register
         tableRegister()
-        
+        if  coinDetail?.tokenId == "PLT".lowercased() {
+            transctionsValueArr =  [DashboardTrnsactions(image: UIImage.send, name: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.send, comment: "")),DashboardTrnsactions(image: UIImage.receive, name: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.receive, comment: ""))]
+            
+        } else {
+            transctionsValueArr =  [DashboardTrnsactions(image: UIImage.send, name: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.send, comment: "")),DashboardTrnsactions(image: UIImage.receive, name: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.receive, comment: "")),DashboardTrnsactions(image: UIImage.buy, name: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.buy, comment: "")),DashboardTrnsactions(image: UIImage.swap, name: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.swap, comment: "")),DashboardTrnsactions(image: UIImage.icSell, name: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.sell, comment: ""))]
+            }
         /// call setcoin detail
         setCoinDetail()
         
         // segment
-        segmentSetup()
-       
-        /// getTransactionHistory
-        
+//        segmentSetup()
+         
         // set segment for only main chains 
-//        if coinDetail?.symbol == "MATIC" && coinDetail?.type == "POLYGON" {
-        if coinDetail?.address == "" {
-            segmentTransactions.isHidden = false
-            segmentHeight.constant = 40
-        } else {
-            segmentTransactions.isHidden = true
-            segmentHeight.constant = 0
-        }
+//        if coinDetail?.address == "" && coinDetail?.type != "BTC"{
+//            viewTransationinternal.isHidden = false
+//            heightViewtransactionInternal.constant = 40
+//        } else {
+            viewTransationinternal.isHidden = true
+            heightViewtransactionInternal.constant = 0
+//        }
         if DataStore.networkEnv == .mainnet {
-            self.getTransactionHistory("\(self.page)")
-//            self.getInternalTransactionHistory("\(self.pageInternal)")
+            getTransactionHistory(cursor: nil)
+//            if coinDetail?.address == "" {
+//                fetchTransactionHistory(cursor: nil)
+//            } else {
+//                fetchTokenTransactionHistory(cursor: nil)
+//            }
         }
+        
+        self.btnTransaction.backgroundColor = UIColor.label
+        self.btnInternal.backgroundColor = UIColor.secondarySystemFill
+        
+        let btnNewCardTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transaction, comment: "")
+        let btnNewCardAttributes: [NSAttributedString.Key: Any] = [
+            .font: AppFont.violetRegular(14).value,
+            .foregroundColor: UIColor.systemBackground // Adapts to light/dark mode
+        ]
+        let btnNewCardAttributTitle = NSAttributedString(string: btnNewCardTitle, attributes: btnNewCardAttributes)
+        btnTransaction.setAttributedTitle(btnNewCardAttributTitle, for: .normal)
+        
+        let btnNftAttributes: [NSAttributedString.Key: Any] = [
+            .font: AppFont.violetRegular(14).value,
+            .foregroundColor: UIColor.label
+        ]
+        let btnNFTsTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.internalText, comment: "")
+        
+        let btnNftAttributTitle = NSAttributedString(string: btnNFTsTitle, attributes: btnNftAttributes)
+        btnInternal.setAttributedTitle(btnNftAttributTitle, for: .normal)
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        lotteView.loopMode = .loop
+        lotteView.animationSpeed = 1
+        lotteView.play()
+    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        tbvTransactions.reloadData()
+//        tbvTransactions.restore()
+//    }
+    /// NFT collection register
+     func loadNibs() {
+        clvActions.delegate = self
+        clvActions.dataSource = self
+        clvActions.register(WalletDashboardCell.nib, forCellWithReuseIdentifier: WalletDashboardCell.reuseIdentifier)
         
     }
     /// setcoin detail
@@ -141,94 +262,141 @@ class CoinDetailViewController: UIViewController, Reusable {
             }
         }
      //   print(coinDetail?.symbol?.lowercased() == "usdc.e")
-        if let balanceString = coinDetail?.balance, let balance = Double(balanceString) {
-            let formatter = NumberFormatter()
-            formatter.minimumFractionDigits = 0
-            formatter.maximumFractionDigits = 7
+        let coinBal =  WalletData.shared.formatDecimalString("\(coinDetail?.balance ?? "")", decimalPlaces: 8)
+        lblCoinBal.text = "\(coinBal) \(coinDetail?.symbol ?? "0")"
+        
+        let amout = (Double(coinDetail?.balance ?? "0") ?? 0.0) * (Double(coinDetail?.price ?? "0") ?? 0.0)
 
-            if let formattedBalance = formatter.string(from: NSNumber(value: balance)) {
-                lblCoinBal.text = formattedBalance + " \(coinDetail?.symbol ?? "")"
-            }
-        } else {
-            lblCoinBal.text = "0 \(coinDetail?.symbol ?? "")"
-        }
+        let formattedValue = WalletData.shared.formatDecimalString("\(amout)", decimalPlaces: 2)
+
+        // coin amount
+        let coinAmt = "≈ \(WalletData.shared.primaryCurrency?.sign ?? "") \(formattedValue)"
+        lblCoinBalance.text = coinAmt
         lblCoinNetwork.text = coinDetail?.type
         /// Price impact set up with color
-        if Double(coinDetail?.lastPriceChangeImpact ?? "") ?? 0.0 >= 0 {
-            self.lblPer.text = "+\(coinDetail?.lastPriceChangeImpact ?? "")%"
+        if Double(coinDetail?.lastPriceChangeImpact ?? "0") ?? 0.0 >= 0 {
+            self.lblPer.text = "+\(coinDetail?.lastPriceChangeImpact ?? "0")%"
             self.lblPer.textColor = UIColor.c099817
         } else {
-            self.lblPer.text = "\(coinDetail?.lastPriceChangeImpact ?? "")%"
+            self.lblPer.text = "\(coinDetail?.lastPriceChangeImpact ?? "0")%"
             self.lblPer.textColor = .red
         }
-        lblPrice.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(coinDetail?.price ?? "")"
+        lblPrice.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(coinDetail?.price ?? "0")"
         /// Set coin image
-        if let logoURI = coinDetail?.logoURI, !logoURI.isEmpty {
-            ivCoinImage.sd_setImage(with: URL(string: logoURI))
+//        if let logoURI = coinDetail?.logoURI, !logoURI.isEmpty {
+//            ivCoinImage.sd_setImage(with: URL(string: logoURI))
+//        } else {
+//            ivCoinImage.image = coinDetail?.chain?.chainDefaultImage
+//        }
+        
+        let logoURI = coinDetail?.logoURI ?? ""
+        if coinDetail?.tokenId == "PLT".lowercased() {
+           
+            if logoURI == "" {
+                ivCoinImage.sd_setImage(with: URL(string: "https://plutope.app/api/images/applogo.png"))
+            } else {
+                ivCoinImage.sd_setImage(with: URL(string: logoURI))
+            }
         } else {
-            ivCoinImage.image = coinDetail?.chain?.chainDefaultImage
+            if logoURI == "" {
+                ivCoinImage.sd_setImage(with: URL(string: logoURI))
+            } else {
+                ivCoinImage.sd_setImage(with: URL(string: logoURI))
+            }
         }
         if coinDetail?.isUserAdded ?? false {
-            btnBuy.isHidden = true
-            lblBuy.isHidden = true
-            btnMore.isHidden = true
-            lblMore.isHidden = true
+            
+//            btnBuy.isHidden = true
+//            lblBuy.isHidden = true
+//            btnMore.isHidden = true
+//            lblMore.isHidden = true
             lblPrice.text = ""
             lblPer.text = ""
         } else {
-            btnBuy.isHidden = false
-            btnMore.isHidden = false
-            lblMore.isHidden = false
-            lblBuy.isHidden = false
+//            btnBuy.isHidden = false
+//            btnMore.isHidden = false
+//            lblMore.isHidden = false
+//            lblBuy.isHidden = false
         }
     }
     
-    @IBAction func actionSendCoin(_ sender: Any) {
-        
-//        if(coinDetail?.chain?.coinType == CoinType.bitcoin) {
-//            self.showToast(message: ToastMessages.btcComingSoon, font: UIFont.systemFont(ofSize: 15))
+//    @IBAction func actionTransaction(_ sender: Any) {
+//        if coinDetail?.address == "" {
+//            cursor = nil
+//           // transactions.removeAll()
+//            tbvTransactions.reloadData()
+//            
+//            // Fetch first page
+//            fetchTransactionHistory(cursor: nil)
 //        } else {
+//            tokenCursor = nil
+//          //  tokenTransactions.removeAll()
+//            tbvTransactions.reloadData()
+//            fetchTransactionHistory(cursor: nil)
+//        }
+//        
+//        self.btnTransaction.backgroundColor = UIColor.label
+//        self.btnInternal.backgroundColor = UIColor.secondarySystemFill
+//        
+//        let btnNewCardTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transaction, comment: "")
+//        let btnNewCardAttributes: [NSAttributedString.Key: Any] = [
+//            .font: AppFont.violetRegular(14).value,
+//            .foregroundColor: UIColor.systemBackground // Adapts to light/dark mode
+//        ]
+//        let btnNewCardAttributTitle = NSAttributedString(string: btnNewCardTitle, attributes: btnNewCardAttributes)
+//        btnTransaction.setAttributedTitle(btnNewCardAttributTitle, for: .normal)
+//        
+//        let btnNftAttributes: [NSAttributedString.Key: Any] = [
+//            .font: AppFont.violetRegular(14).value,
+//            .foregroundColor: UIColor.label
+//        ]
+//        let btnNFTsTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.internalText, comment: "")
+//        
+//        let btnNftAttributTitle = NSAttributedString(string: btnNFTsTitle, attributes: btnNftAttributes)
+//        btnInternal.setAttributedTitle(btnNftAttributTitle, for: .normal)
+//    }
+//    
+//    @IBAction func actionInternal(_ sender: Any) {
+//        selectedSegment = "Internal"
+//        internalCursor = nil
+//        internalTransactions.removeAll()
+//        tbvTransactions.reloadData()
+// 
+//        fetchInternalTransactionHistory(cursor: nil)
+//        tbvTransactions.reloadData()
+//        self.btnInternal.backgroundColor = UIColor.label
+//        self.btnTransaction.backgroundColor = UIColor.secondarySystemFill
+//        
+//        let btnNFTsTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.internalText, comment: "")
+//        let btnNFTsAttributes: [NSAttributedString.Key: Any] = [
+//            .font: AppFont.violetRegular(14).value,
+//            .foregroundColor: UIColor.systemBackground // Adapts to light/dark mode
+//        ]
+//        let btnNFTsAttributTitle = NSAttributedString(string: btnNFTsTitle, attributes: btnNFTsAttributes)
+//        btnInternal.setAttributedTitle(btnNFTsAttributTitle, for: .normal)
+//        
+//        let btnNewCardTitle = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.transaction, comment: "")
+//        let btnAssetAttributes: [NSAttributedString.Key: Any] = [
+//            .font: AppFont.violetRegular(14).value,
+//            .foregroundColor: UIColor.label
+//        ]
+//        let btnAssetAttributTitle = NSAttributedString(string: btnNewCardTitle, attributes: btnAssetAttributes)
+//        btnTransaction.setAttributedTitle(btnAssetAttributTitle, for: .normal)
+//    }
+    
+    @IBAction func actionSendCoin(_ sender: Any) {
+        HapticFeedback.generate(.light)
             let viewToNavigate = SendCoinViewController()
             viewToNavigate.coinDetail = self.coinDetail
             viewToNavigate.refreshWalletDelegate = self
             viewToNavigate.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(viewToNavigate, animated: true)
-      //  }
     }
     
     @IBAction func actionBuy(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let coinData = self.coinDetail
         let buyCoinVC = BuyCoinViewController()
-        //        var minimumAmount: Double = Double()
-        //        buyViewModel.apiGetCoinPrice(coinData?.symbol?.lowercased() ?? "") { data, status, error in
-        //            if status {
-        //                switch coinData?.type {
-        //                case "ERC20" :
-        //                    let minAmount = round(data?.minimumBuyAmount?["0"] ?? 0).rounded(.up)
-        //                    buyCoinVC.lblPrice.text = "\(minAmount)"
-        //                    minimumAmount = minAmount
-        //                case "BEP20":
-        //                    let minAmount = round(data?.minimumBuyAmount?["1"] ?? 0).rounded(.up)
-        //                    buyCoinVC.lblPrice.text = "\(minAmount)"
-        //                    minimumAmount = minAmount
-        //                default: break
-        //
-        //                }
-        //                buyCoinVC.minimumAmount = minimumAmount
-        //                buyCoinVC.lblCoinQuantity.text = "\(((Double(buyCoinVC.lblPrice.text ?? "0") ?? 0.0) / (Double(coinData?.price ?? "") ?? 0.0)).rounded(toPlaces: 5)) \(coinData?.symbol ?? "")"
-        //                if (Double(buyCoinVC.lblPrice.text ?? "0") ?? 0.0) > 0 {
-        //                    buyCoinVC.btnNext.alpha = 1
-        //                    buyCoinVC.btnNext.isUserInteractionEnabled = true
-        //                } else {
-        //                    buyCoinVC.btnNext.alpha = 0.5
-        //                    buyCoinVC.btnNext.isUserInteractionEnabled = false
-        //                }
-        //
-        //            } else {
-        //                print(error)
-        //            }
-        //        }
-        
         buyCoinVC.headerTitle = "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.buy, comment: "")) \(coinData?.symbol ?? "")"
         buyCoinVC.coinDetail = coinData
         //        buyCoinVC.minimumAmount = minimumAmount
@@ -236,6 +404,7 @@ class CoinDetailViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionSwapCoin(_ sender: Any) {
+        HapticFeedback.generate(.light)
         if isIPAD {
             showBottonSheetIniPad()
         } else {
@@ -244,6 +413,7 @@ class CoinDetailViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionReceiveCoin(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = ReceiveCoinViewController()
         viewToNavigate.coinDetail = self.coinDetail
         viewToNavigate.hidesBottomBarWhenPushed = true
@@ -257,264 +427,115 @@ class CoinDetailViewController: UIViewController, Reusable {
         tbvTransactions.register(TransactionViewCell.nib, forCellReuseIdentifier: TransactionViewCell.reuseIdentifier)
         mainScrollView.delegate = self
     }
-    
-@IBAction func actionSegment(_ sender: Any) {
-        
-        if segmentTransactions.selectedSegmentIndex == 0 {
-            selectedSegment = "Transaction"
-            self.page = 1
-            self.getTransactionHistory("\(self.page)")
-            tbvTransactions.reloadData()
-        } else if segmentTransactions.selectedSegmentIndex == 1 {
-            self.pageInternal = 1
-           selectedSegment = "Internal"
-            self.getInternalTransactionHistory("\(self.pageInternal)")
-          
-        }
-        
-    }
-    /// Segment Setup
-    private func segmentSetup() {
-        let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.c767691, NSAttributedString.Key.font: AppFont.bold(16).value, NSAttributedString.Key.backgroundColor: UIColor.clear]
-        let selectedTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: AppFont.bold(16).value]
-        segmentTransactions.setTitleTextAttributes(selectedTextAttributes, for: .selected)
-        segmentTransactions.setTitleTextAttributes(titleTextAttributes, for: .normal)
-        segmentTransactions.layer.cornerRadius = 50
-        segmentTransactions.layer.masksToBounds = true
-        segmentTransactions.clipsToBounds = true
-    }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
-        
-        switch segmentTransactions.selectedSegmentIndex {
-        case 0:
-            if offsetY > contentHeight - scrollView.frame.height && !isFetchingData {
-                // Check if the refresh control is not already refreshing
+        let scrollViewHeight = scrollView.frame.height
 
-                self.page += 1
-                self.getTransactionHistory("\(self.page)")
+        print(" offsetY: \(offsetY), contentHeight: \(contentHeight), viewHeight: \(scrollViewHeight)")
+
+        if selectedSegment == "Transaction" {
+            // Only allow loading more if we have more data
+            guard hasMoreData, !isLoading else {
+                print("No more data to load or already loading")
+                return
             }
-        case 1:
-            if offsetY > contentHeight - scrollView.frame.height && !isInternalFetchingData {
-                // Check if the refresh control is not already refreshing
 
-                self.pageInternal += 1
-                self.getInternalTransactionHistory("\(self.pageInternal)")
+            // Prevent triggering when all data fits on one screen
+            let isShortContent = contentHeight <= scrollViewHeight + 20
+            if isShortContent {
+                print(" Content too short to scroll — skip loading")
+                return
             }
-        default:
-            break
-        }
-        
-//        if offsetY > contentHeight - scrollView.frame.height && !isFetchingData {
-//            // Check if the refresh control is not already refreshing
-//
-//            self.page += 1
-//            self.getTransactionHistory("\(self.page)")
-//        }
-        
-    }
-    
-    func findDuplicatesUsingCountedSet(in array: [String]) -> [String] {
-        let countedSet = NSCountedSet(array: array)
-        var duplicates = [String]()
 
-        for element in countedSet {
-//            if countedSet.count(for: element) > 1 {
-//                duplicates.append(element as! String)
-//            }
-            if let element = element as? String, countedSet.count(for: element) > 1 {
-                duplicates.append(element)
+            // When scrolling near the bottom, trigger next page
+            if offsetY > contentHeight - scrollViewHeight - 100 {
+                print("Loading next page")
+                getTransactionHistory(cursor: cursor)
             }
         }
-
-        return duplicates
     }
-    
-    // getTransactionHistory
-    fileprivate func getTransactionHistory(_ page: String) {
-        DGProgressView.shared.showLoader(to: self.view)
-        viewModel.apiGetTransactionaHistroy(self.coinDetail!, "\(self.page)") { transactionData, status, _ in
-            if status {
-                
-                self.registerUserViewModel.setWalletActiveAPI(walletAddress: WalletData.shared.myWallet?.address ?? "") { resStatus, message in
-                   // if resStatus == 1 {
-                        print(message)
-                    // }
-                }
-                if !(transactionData?.isEmpty ?? false) {
-                    self.arrTransactionData.removeAll()
-                    self.arrTransactionData.append(contentsOf: transactionData ?? [])
-                   
-                    var txIDToIsSwapMap: [String: Bool] = [:]
-                    var uniqueTransactionsByID: [String: TransactionResult] = [:]
-                    var uniqueTransactionsByTime: [String: TransactionResult] = [:]
+    func resetTransactionPagination() {
+        // If data already loaded and there's only one page, do nothing
+        if !hasMoreData && !arrTransactionNewData.isEmpty {
+            print("✅ Only 1 page loaded. No need to reset.")
+            return
+        }
 
-                    for transaction in self.arrTransactionData {
-                        if let txID = transaction.txID {
-                            // Check if the transaction's txID is unique
-                            if !txIDToIsSwapMap.keys.contains(txID) {
-                                txIDToIsSwapMap[txID] = transaction.isSwap ?? false
-                                uniqueTransactionsByID[txID] = transaction
-                            } else {
-                                // If a transaction with the same txID already exists, set isSwap to true
-                                txIDToIsSwapMap[txID] = true
-                            }
-                        }
+        // Clear current transactions data
+        self.arrTransactionNewData.removeAll()
+        
+        // Reset cursor to nil to fetch from the first page
+        self.cursor = nil
+        
+        // Allow more data to be fetched again
+        self.hasMoreData = true
+        
+        // Reload the table view to show empty or refreshed UI
+        self.tbvTransactions.reloadData()
+        
+        // Fetch first page
+        getTransactionHistory(cursor: nil)
+    }
 
-                        if let timeString = transaction.transactionTime {
-                                // Store the transaction based on timeString
-                                uniqueTransactionsByTime[timeString] = transaction
-                            }
+    func getTransactionHistory(cursor: String?) {
+        guard !isLoading else { return }
+        isLoading = true
+        self.tbvTransactions.showLoader()
+        viewModel.getTransactionHistortyNew(self.coinDetail!, cursor: cursor) { [weak self] result, nextCursor, success, errorMessage in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                self.tbvTransactions.hideLoader()
+                self.isLoading = false
+                guard success, let newTransactions = result else {
+                    self.hasMoreData = false
+
+                    // Show "No Transactions" UI only if no local data exists
+                    if self.arrTransactionNewData.isEmpty {
+                        self.lblTransactions.isHidden = true
+                        self.viewNoTransaction.isHidden = false
+                        self.tbvTransactions.isHidden = true
                     }
-                    // Get unique transactions by time
-                    let sortedTransactions = uniqueTransactionsByTime.values.sorted {
-                        guard let timeStamp1 = TimeInterval($0.transactionTime ?? ""),
-                              let timeStamp2 = TimeInterval($1.transactionTime ?? "") else {
-                            return false
-                        }
-                        return timeStamp1 > timeStamp2
-                    }
-                    // Store the unique filtered transactions back in self.arrTransactionData
-                    self.arrTransactionData = Array(sortedTransactions)
-                    
-                    // Update the isSwap value in the arrTransactionData array
-                    for idx in 0..<self.arrTransactionData.count {
-                        if let txID = self.arrTransactionData[idx].txID {
-                            self.arrTransactionData[idx].isSwap = txIDToIsSwapMap[txID]
-                        }
-                    }
-                    if self.coinDetail?.address != "" {
-                        self.arrTransactionData = self.arrTransactionData.filter({ data in
-//                            let result = formattedSymbol == self.arrTransactionData.first?.transactionSymbol?.lowercased()
-                           //  if data.methodID == "" && data.transactionSymbol == self.coinDetail?.symbol ?? "" {
-                            // chnage tokenContractAddress insted of transactionSymbol in condition
-                            
-                            if data.methodID == "" && data.tokenContractAddress == self.coinDetail?.address ?? "" {
-                                return true
-                            } else {
-                                return false
-                            }
-                        })
-                    }
-                   // print("arrTransactionData",self.arrTransactionData)
-                    
-                } else {
-                    self.isFetchingData = true
+                    return
                 }
-                if self.arrTransactionData.count == 0 {
-                    self.viewNoTransaction.isHidden = false
-                    self.tbvTransactions.isHidden = true
-                } else {
-                    self.viewNoTransaction.isHidden = true
-                    self.tbvTransactions.isHidden = false
-                   
+
+                if newTransactions.isEmpty {
+                    self.hasMoreData = false
+
+                    // Only show empty UI if this is the first page and we have no data
+                    if self.arrTransactionNewData.isEmpty {
+                        self.lblTransactions.isHidden = true
+                        self.viewNoTransaction.isHidden = false
+                        self.tbvTransactions.isHidden = true
+                    }
+
+                    return
                 }
-               
-                self.tbvTransactions.restore()
+                // Filter out unwanted types
+                let filteredTransactions = newTransactions.filter { $0.type != "unxswapByOrderId" }
+
+                // Show UI
+                self.lblTransactions.isHidden = false
+                self.viewNoTransaction.isHidden = true
+                self.tbvTransactions.isHidden = false
+
+                // Append or set
+                if cursor == nil {
+                    self.arrTransactionNewData = filteredTransactions
+                } else {
+                    self.arrTransactionNewData.append(contentsOf: filteredTransactions)
+                }
+
+                // Update pagination
+                self.cursor = nextCursor
+                self.hasMoreData = (nextCursor != nil)
                 self.tbvTransactions.reloadData()
-                DGProgressView.shared.hideLoader()
-                
-            } else {
-                self.viewNoTransaction.isHidden = false
-                self.tbvTransactions.isHidden = true
-                DGProgressView.shared.hideLoader()
-                self.isFetchingData = true
+
             }
         }
     }
-    
-    // getInternalTransactionHistory
-    fileprivate func getInternalTransactionHistory(_ page: String) {
-        DGProgressView.shared.showLoader(to: self.view)
-        viewModel.apiGetInternalTransactionaHistroy(self.coinDetail!, "\(self.pageInternal)") { transactionData, status, _ in
-            if status {
-                if !(transactionData?.isEmpty ?? false) {
-                    self.arrInternalTransactionData.removeAll()
-                    self.arrInternalTransactionData.append(contentsOf: transactionData ?? [])
-                   
-                    var txIDToIsSwapMap: [String: Bool] = [:]
-                    var uniqueTransactionsByID: [String: TransactionResult] = [:]
-                    var uniqueTransactionsByTime: [String: TransactionResult] = [:]
 
-                    for transaction in self.arrInternalTransactionData {
-                        if let txID = transaction.txID {
-                            // Check if the transaction's txID is unique
-                            if !txIDToIsSwapMap.keys.contains(txID) {
-                                txIDToIsSwapMap[txID] = transaction.isSwap ?? false
-                                uniqueTransactionsByID[txID] = transaction
-                            } else {
-                                // If a transaction with the same txID already exists, set isSwap to true
-                                txIDToIsSwapMap[txID] = true
-                            }
-                        }
-
-                        if let timeString = transaction.transactionTime {
-                                // Store the transaction based on timeString
-                                uniqueTransactionsByTime[timeString] = transaction
-                            }
-                    }
-                    // Get unique transactions by time
-                    let sortedTransactions = uniqueTransactionsByTime.values.sorted {
-                        guard let timeStamp1 = TimeInterval($0.transactionTime ?? ""),
-                              let timeStamp2 = TimeInterval($1.transactionTime ?? "") else {
-                            return false
-                        }
-                        return timeStamp1 > timeStamp2
-                    }
-                    // Store the unique filtered transactions back in self.arrInternalTransactionData
-                    self.arrInternalTransactionData = Array(sortedTransactions)
-                    
-                    // Update the isSwap value in the arrTransactionData array
-                    for idx in 0..<self.arrInternalTransactionData.count {
-                        if let txID = self.arrInternalTransactionData[idx].txID {
-                            self.arrInternalTransactionData[idx].isSwap = txIDToIsSwapMap[txID]
-                        }
-                    }
-                    if self.coinDetail?.address != "" {
-                        self.arrInternalTransactionData = self.arrInternalTransactionData.filter({ data in
-//                            let result = formattedSymbol == self.arrInternalTransactionData.first?.transactionSymbol?.lowercased()
-                           //  if data.methodID == "" && data.transactionSymbol == self.coinDetail?.symbol ?? "" {
-                            // chnage tokenContractAddress insted of transactionSymbol in condition
-                            
-                            if data.methodID == "" && data.tokenContractAddress == self.coinDetail?.address ?? "" {
-                                return true
-                            } else {
-                                return false
-                            }
-                        })
-                    }
-                   // print("arrInternalTransactionData",self.arrInternalTransactionData)
-                    
-                } else {
-                    self.isInternalFetchingData = true
-                   
-                }
-                if self.arrInternalTransactionData.count == 0 {
-                    self.viewNoTransaction.isHidden = false
-                    self.tbvTransactions.isHidden = true
-                
-                } else {
-                    self.viewNoTransaction.isHidden = true
-                    self.tbvTransactions.isHidden = false
-                    // self.tbvTransactions.restore()
-//                    self.tbvTransactions.reloadData()
-                  
-                }
-              
-                self.tbvTransactions.restore()
-                self.tbvTransactions.reloadData()
-                DGProgressView.shared.hideLoader()
-                
-            } else {
-               
-                self.viewNoTransaction.isHidden = false
-                self.tbvTransactions.isHidden = true
-                DGProgressView.shared.hideLoader()
-                self.isInternalFetchingData = true
-            }
-        }
-    }
 }
 
 // MARK: PrimaryWalletDelegate
@@ -577,18 +598,22 @@ class CustomPopoverViewController: UIViewController {
     }
 
     @objc func action1Pressed() {
+        HapticFeedback.generate(.light)
         // Handle Action 1
         dismiss(animated: true, completion: nil)
     }
 
     @objc func action2Pressed() {
+        HapticFeedback.generate(.light)
         // Handle Action 2
         dismiss(animated: true, completion: nil)
     }
 
     @objc func cancelPressed() {
+        HapticFeedback.generate(.light)
         // Handle Cancel
         dismiss(animated: true, completion: nil)
     }
     
 }
+// swiftlint:enable type_body_length

@@ -140,8 +140,9 @@ public enum CoinType: UInt32, CaseIterable {
     case noble = 18000118
     case scroll = 534353
     case rootstock = 137
+    case base = 999999
 }
-protocol ChainDetails {
+ protocol ChainDetails {
     var coinType: CoinType { get  }
     var walletAddress: String? { get  }
     var rpcURL: String { get  }
@@ -153,19 +154,25 @@ protocol ChainDetails {
     var tokenStandard: String { get  }
     var chainIdHex: String { get  }
     var privateKey: String? { get  }
-    var buyProviders: [BuyCrypto.Domain] { get  }
+  //  var buyProviders: [BuyCrypto.Domain] { get  }
     var sellProviders: [SellCrypto.Domain] { get  }
-    var swapProviders: [SwapCrypto.SwapCryptoDomain] { get  }
+  //  var swapProviders: [SwapCrypto.SwapCryptoDomain] { get  }
     var chainDefaultImage: UIImage { get }
 }
 
-enum Chain: ChainDetails {
+enum Chain: ChainDetails,CaseIterable {
     
     case ethereum
     case binanceSmartChain
     case polygon
     case oKC
     case bitcoin
+    case opMainnet
+    case arbitrum
+    case avalanche
+    case base
+//    case tron
+//    case solana
     var name: String {
         switch self {
         case .ethereum:
@@ -178,6 +185,18 @@ enum Chain: ChainDetails {
             return "OKschain"
         case .bitcoin:
             return "Bitcoin"
+        case .opMainnet:
+            return "OP Mainnet"
+        case .arbitrum:
+            return "Arbitrum One"
+        case .avalanche:
+            return "Avalanche C-Chain"
+        case .base:
+            return "Base"
+//        case .tron:
+//           return "Tron"
+//        case .solana:
+//            return "Solana"
         }
         
     }
@@ -191,9 +210,23 @@ enum Chain: ChainDetails {
         case .polygon:
             return DataStore.networkEnv == .mainnet ? "polygon" : "mumbai"
         case .oKC:
-            return "okc"
+            return DataStore.networkEnv == .mainnet ? "okc" : ""
+//            return "okc"
         case .bitcoin:
             return "btc"
+        case .opMainnet:
+            return DataStore.networkEnv == .mainnet ? "optimism" : "OP Sepolia Testnet"
+//            return DataStore.networkEnv == .mainnet ? "optimism" : "OP Sepolia Testnet"
+        case .arbitrum:
+            return "Arbitrum".lowercased()
+        case .avalanche:
+            return "Avalanche".lowercased()
+        case .base:
+            return "Base".lowercased()
+//        case .tron:
+//            return "TRON"
+//        case .solana:
+//            return "Solana"
         }
         
     }
@@ -205,11 +238,23 @@ enum Chain: ChainDetails {
         case .binanceSmartChain:
             return "BNB"
         case .polygon:
-            return "MATIC"
+            return "POL"
         case .oKC:
             return "OKT"
         case .bitcoin:
-            return "btc"
+            return "BTC"
+        case .opMainnet:
+            return "OP"
+        case .arbitrum:
+            return "ARB"
+        case .avalanche:
+            return "AVAX"
+        case .base:
+            return "BASE"
+//        case .tron:
+//            return "TRX"
+//        case .solana:
+//            return "SOL"
         }
     }
     
@@ -225,6 +270,18 @@ enum Chain: ChainDetails {
             return "KIP20"
         case .bitcoin:
             return "BTC"
+        case .opMainnet:
+            return "OP Mainnet"
+        case .arbitrum:
+            return "Arbitrum"
+        case .avalanche:
+            return "Avalanche"
+        case .base:
+            return "Base"
+//        case .tron:
+//            return "TRC20"
+//        case .solana:
+//            return "SPL"
         }
     }
     
@@ -240,6 +297,19 @@ enum Chain: ChainDetails {
             return DataStore.networkEnv == .mainnet ? "0x42": "0x41"
         case .bitcoin:
             return "0xc6"
+        case .opMainnet:
+            return DataStore.networkEnv == .mainnet ? "0xa":"0xaa37dc"
+
+        case .arbitrum:
+            return DataStore.networkEnv == .mainnet ? "0xa4b1":""
+        case .avalanche:
+            return DataStore.networkEnv == .mainnet ? "0xa86a":""
+        case .base:
+            return DataStore.networkEnv == .mainnet ? "0x2105":""
+//        case .tron:
+//            return DataStore.networkEnv == .mainnet ? "0x2b6653dc":""
+//        case .solana:
+//            return DataStore.networkEnv == .mainnet ? "":""
         }
     }
     
@@ -254,7 +324,21 @@ enum Chain: ChainDetails {
         case .oKC:
             return DataStore.networkEnv == .mainnet ? "66": "65"
         case .bitcoin:
-            return "198"
+            return "0"
+        case .opMainnet:
+            return DataStore.networkEnv == .mainnet ? "10": "11155420"
+
+        case .arbitrum:
+            return DataStore.networkEnv == .mainnet ? "42161": ""
+            
+        case .avalanche:
+            return DataStore.networkEnv == .mainnet ? "43114": ""
+        case .base:
+            return DataStore.networkEnv == .mainnet ? "8453":""
+//        case .tron:
+//            return DataStore.networkEnv == .mainnet ? "1000": ""
+//        case .solana:
+//            return DataStore.networkEnv == .mainnet ? "900": ""
         }
     }
     
@@ -270,13 +354,25 @@ enum Chain: ChainDetails {
             return .okxchain
         case .bitcoin:
             return .bitcoin
+        case .opMainnet:
+            return .optimism
+        case .arbitrum:
+            return .arbitrum
+        case .avalanche:
+            return .avalancheCChain
+        case .base:
+            return .base
+//        case .tron:
+//            return .tron
+//        case .solana:
+//            return .solana
         }
     }
     
     var icon: String {
         switch self {
         case .ethereum:
-            return "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=025"
+            return "https://cryptologos.cc/logos/ethereum-eth-logo.png?"
         case .binanceSmartChain:
             return "https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png?1547034615"
         case .polygon:
@@ -285,6 +381,18 @@ enum Chain: ChainDetails {
             return "https://stakingcrypto.info/static/assets/coins/okt-logo.png"
         case .bitcoin:
             return "https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1696501400"
+        case .opMainnet:
+            return "https://coin-images.coingecko.com/coins/images/25244/large/Optimism.png?1696524385"
+        case .arbitrum:
+            return "https://icons.llamao.fi/icons/chains/rsz_arbitrum.jpg"
+        case .avalanche:
+            return "https://icons.llamao.fi/icons/chains/rsz_avalanche.jpg"
+        case .base:
+            return "https://icons.llamao.fi/icons/chains/rsz_base.jpg"
+//        case .tron:
+//            return "https://s2.coinmarketcap.com/static/img/coins/64x64/1958.png"
+//        case .solana:
+//            return "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png"
         }
     }
     
@@ -312,6 +420,19 @@ enum Chain: ChainDetails {
             return DataStore.networkEnv == .mainnet ? "https://exchainrpc.okex.org": "https://exchaintestrpc.okex.org"
         case .bitcoin:
             return DataStore.networkEnv == .mainnet ? "https://rpc.bitchain.biz" : ""
+        case .opMainnet:
+            return DataStore.networkEnv == .mainnet ? "https://mainnet.optimism.io" : "https://sepolia.optimism.io"
+        case .arbitrum:
+            return DataStore.networkEnv == .mainnet ? "https://arb1.arbitrum.io/rpc" : "https://endpoints.omniatech.io/v1/arbitrum/sepolia/public"
+        case .avalanche:
+            return DataStore.networkEnv == .mainnet ? "https://avalanche-c-chain-rpc.publicnode.com" : "https://avalanche-fuji-c-chain-rpc.publicnode.com"
+        case .base:
+            return "https://base-rpc.publicnode.com"
+//        case .tron:
+//            return DataStore.networkEnv == .mainnet ? "https://tron-rpc.publicnode.com" : ""
+//        case .solana:
+//            return DataStore.networkEnv == .mainnet ? "https://solana-rpc.publicnode.com" : ""
+        
         }
         
     }
@@ -329,35 +450,28 @@ enum Chain: ChainDetails {
             return 21000
         case .bitcoin:
             return 21000
+        case .opMainnet:
+            return 90000
+        case .arbitrum:
+            return 90000
+        case .avalanche:
+            return 90000
+        case .base:
+            return 90000
+//        case .tron:
+//            return 21000
+//        case .solana:
+//            return 200000
+        
         }
         
     }
-    
+    static func from(chainIdHex: String) -> Chain? {
+        return Chain.allCases.first { $0.chainIdHex.lowercased() == chainIdHex.lowercased() }
+    }
     func getCoinType() -> CoinType {
             return coinType
         }
-    
-//    func getCoinType() {
-//            // You can access ethereumChain here or in any other instance method
-//            let coinType = coinType
-//            print("Coin Type: \(coinType)")
-//        }
-//    var tokens: [Token] {
-//        var fileName: String {
-//            switch self {
-//            case .ethereum:
-//                return "eth_tokenlist"
-//            case .binanceSmartChain:
-//                return "bsc_tokenlist"
-//            case .oKC:
-//                return "okx_tokenlist"
-//            case .polygon:
-//                return "polygon_tokenlist"
-//            }
-//        }
-//        return loadJson(filename: fileName)
-//    }
-    
     var decimals: Int {
         return 18
     }
@@ -374,6 +488,18 @@ enum Chain: ChainDetails {
             return UIImage.icOkc
         case .bitcoin:
             return UIImage.icBTC
+        case .opMainnet:
+            return UIImage.icOP
+        case .arbitrum:
+            return UIImage.icArbitrum
+        case .avalanche:
+            return UIImage.icAvalanche
+        case .base:
+            return UIImage.icBase
+//        case .tron:
+//            return UIImage.icTron
+//        case .solana:
+//            return UIImage.icSolana
         }
     }
     
@@ -386,7 +512,8 @@ enum Chain: ChainDetails {
                 .onRamp(),
                 .onMeta(),
                 .changeNow(),
-                .unlimit()
+                .unlimit(),
+                .guardarian()
             ]
         case .oKC:
             return [.meld()]
@@ -396,20 +523,19 @@ enum Chain: ChainDetails {
                 .onRamp(),
                 .onMeta(),
                 .changeNow(),
-                .unlimit()
+                .unlimit(),
+                .guardarian()
+            ]
+        case .arbitrum,.avalanche,.base,.opMainnet:
+            return [
+                .meld(),
+                .onRamp(),
+                .onMeta(),
+                .changeNow(),
+                .unlimit(),
+                .guardarian()
             ]
         }
-    }
-    
-    var swapProviders: [SwapCrypto.SwapCryptoDomain] {
-       
-            return [
-               
-                .changeNow(),
-                .okx(),
-                .rango()
-            ]
-     
     }
     var sellProviders: [SellCrypto.Domain] {
         switch self {
@@ -426,7 +552,14 @@ enum Chain: ChainDetails {
             return [
                 .changeNow()
             ]
+        case .arbitrum,.avalanche,.base,.opMainnet:
+            return [
+                .onRamp(),
+                .onMeta(),
+                .changeNow()
+            ]
         }
     }
     
 }
+

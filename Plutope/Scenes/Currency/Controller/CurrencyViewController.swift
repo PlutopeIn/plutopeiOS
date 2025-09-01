@@ -48,7 +48,7 @@ class CurrencyViewController: UIViewController, Reusable {
         }
         arrFilteredCurrency = filteredCurrencies
         arrCurrency = filteredCurrencies
-        print(arrFilteredCurrency)
+//        print(arrFilteredCurrency)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

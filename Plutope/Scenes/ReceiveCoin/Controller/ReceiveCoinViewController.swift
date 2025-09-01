@@ -21,13 +21,15 @@ class ReceiveCoinViewController: UIViewController, Reusable {
     var amount = ""
     var coinDetail: Token?
     var walletType = ""
+    var prefixValue = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         
         /// Navigation Header
         
-        defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.receive, comment: ""))
-        
+        defineHeader(headerView: headerView, titleText: "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.receive, comment: "")) \(coinDetail?.symbol ?? "")")
+        lblAddress.font = AppFont.regular(14).value
+        lblSetAmount.font = AppFont.regular(12).value
         var address:String = ""
         if(coinDetail?.chain?.coinType == CoinType.bitcoin) {
             address = WalletData.shared.getPublicWalletAddress(coinType: .bitcoin) ?? ""
@@ -36,7 +38,23 @@ class ReceiveCoinViewController: UIViewController, Reusable {
             address = WalletData.shared.getPublicWalletAddress(coinType: .ethereum) ?? ""
         }
         print("Address = ",address)
-        let QRimage = generateQRCode(from: coinDetail?.chain?.walletAddress ?? "", centerImage: UIImage.icQRLogo)
+        if coinDetail?.address == "" && coinDetail?.symbol == "ETH" {
+            prefixValue = "ethereum"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "POL" {
+            prefixValue = "polygon"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "BNB" {
+            prefixValue = "smartchain"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "BTC" {
+            prefixValue = "bitcoin"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "ARB" {
+            prefixValue = "ethereum"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "AVAX" {
+            prefixValue = "ethereum"
+        }
+        
+//        let qrString = "\(prefixValue):\(self.coinDetail?.chain?.walletAddress ?? "")"
+        let qrString = "\(self.coinDetail?.chain?.walletAddress ?? "")"
+        let QRimage = generateQRCode(from: qrString, centerImage: UIImage.icQRLogo)
         self.ivQrCode.image = QRimage
         lblAddress.text = coinDetail?.chain?.walletAddress ?? ""
         
@@ -47,8 +65,7 @@ class ReceiveCoinViewController: UIViewController, Reusable {
       
         // create the image that should be contained in the qr code
         let img = try? ShapeQRCode.Image(withUIImage: centerImage, width: 0.3, height: 0.3, transparencyDetectionEnabled: false)
-        
-        // the actual struct that encapsulates the QR code data
+       // the actual struct that encapsulates the QR code data
         let qrCode = ShapeQRCode(withText: inputString, andImage: img, shape: .square, moduleSpacingPercent: 2, color: .black, errorCorrectionLevel: .high)
         
         // Render the qr code represented by the qr as an UIImage with 500px width/height
@@ -86,54 +103,24 @@ class ReceiveCoinViewController: UIViewController, Reusable {
     }
     
     @IBAction func shareAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         shareQRCode()
     }
     
     @IBAction func setAmountAction(_ sender: Any) {
-       /*
-        showTextFieldAlertAndPerform(Title: StringConstants.enterAmount, Placeholder: "") { text in
-            let amount = Int(text) ?? 0
-            let symbol = self.coinDetail?.symbol ?? ""
-            self.lblSetAmount.text = "\(text) \(symbol) ≈ amount"
-            
-            let qrString = "\(self.coinDetail?.chain?.walletAddress ?? "")?amount=\(amount)"
-            let qrImage = self.generateQRCode(from: qrString, centerImage: UIImage.icQRLogo)
-            DispatchQueue.main.async {
-                self.ivQrCode.image = qrImage
-            }
-        }
-        
-        */
-        
-//        let primaryCurrency = WalletData.shared.primaryCurrency?.sign  ?? ""
-//        showTextFieldAlertAndPerform(Title: "\(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.enteramount, comment: ""))", Placeholder: "") { text in
-//            let amount = Double(text) ?? 0.0
-//            let symbol = self.coinDetail?.symbol ?? ""
-//
-//            let price = Double(self.coinDetail?.price ?? "") ?? 0.0
-//            // Calculate the converted coin balance
-//            let convertedBalance = amount * price
-//            let balanceValue = WalletData.shared.formatDecimalString("\(convertedBalance)", decimalPlaces: 5)
-//            self.lblSetAmount.text = "\(text) \(symbol) ≈  \(primaryCurrency)\(balanceValue)"
-//            // self.lblSetAmount.text = "\(primaryCurrency)\(text) ≈ \(convertedBalance.rounded(toPlaces: 5)) \(symbol)"
-//
-//            let qrString = "\(self.coinDetail?.chain?.walletAddress ?? "")?amount=\(amount)"
-//            let qrImage = self.generateQRCode(from: qrString, centerImage: UIImage.icQRLogo)
-//            DispatchQueue.main.async {
-//                self.ivQrCode.image = qrImage
-//            }
-//        }
+        HapticFeedback.generate(.light)
         let addFiatAmountVC = AddFiatAmountViewController()
         addFiatAmountVC.coinDetail = self.coinDetail
         addFiatAmountVC.delegate = self
-//        addFiatAmountVC.modalTransitionStyle = .crossDissolve
-//        addFiatAmountVC.modalPresentationStyle = .overFullScreen
-//        self.present(addFiatAmountVC, animated: true)
-        self.navigationController?.pushViewController(addFiatAmountVC, animated: true)
+        addFiatAmountVC.modalTransitionStyle = .crossDissolve
+        addFiatAmountVC.modalPresentationStyle = .overFullScreen
+        self.navigationController?.present(addFiatAmountVC, animated: true)
+//        self.navigationController?.pushViewController(addFiatAmountVC, animated: true)
         
     }
     
     @IBAction func btnCopyAddressAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
        UIPasteboard.general.string = coinDetail?.chain?.walletAddress ?? ""
         
 //        UIPasteboard.general.string = "\(self.coinDetail?.chain?.walletAddress ?? "")?amount=\(self.amount)"
@@ -150,20 +137,41 @@ extension ReceiveCoinViewController : AddFiatAmountDelegate {
         let amount = Double(tokenAmount) ?? 0.0
         let symbol = self.coinDetail?.symbol ?? ""
         self.amount = tokenAmount
-        let price = Double(self.coinDetail?.price ?? "") ?? 0.0
+        let price = Double(self.coinDetail?.price ?? "0") ?? 0.0
         // Calculate the converted coin balance
         let convertedBalance = amount * price
         
      //   if self.walletType == "other" {
+        
+        if coinDetail?.address == "" && coinDetail?.symbol == "ETH" {
+            prefixValue = "ethereum:"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "POL" {
+            prefixValue = "polygon:"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "BNB" {
+            prefixValue = "smartchain:"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "BTC" {
+            prefixValue = "bitcoin:"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "ARB" {
+            prefixValue = "ethereum:"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "AVAX" {
+            prefixValue = "ethereum:"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "OP" {
+            prefixValue = "ethereum:"
+        } else if coinDetail?.address == "" && coinDetail?.symbol == "BASE" {
+            prefixValue = "ethereum:"
+        } else {
+            prefixValue = ""
+        }
+        
             if type == "currency" {
                 let balanceValue = value
                 self.lblSetAmount.text = "\(tokenAmount) \(symbol) ≈  \(primaryCurrency)\(balanceValue)"
-                qrString = "\(self.coinDetail?.chain?.walletAddress ?? "")?amount=\(tokenAmount)"
+                qrString = "\(prefixValue)\(self.coinDetail?.chain?.walletAddress ?? "")?amount=\(tokenAmount)"
                 
             } else {
                 let balanceValue = WalletData.shared.formatDecimalString("\(convertedBalance)", decimalPlaces: 5)
                 self.lblSetAmount.text = "\(tokenAmount) \(symbol) ≈  \(primaryCurrency)\(balanceValue)"
-                qrString = "\(self.coinDetail?.chain?.walletAddress ?? "")?amount=\(tokenAmount)"
+                qrString = "\(prefixValue)\(self.coinDetail?.chain?.walletAddress ?? "")?amount=\(tokenAmount)"
             }
             let qrImage = self.generateQRCode(from: qrString, centerImage: UIImage.icQRLogo)
             DispatchQueue.main.async {

@@ -21,7 +21,7 @@ class NavigationView: UIView {
     }
     
     @IBAction func actionNotification(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
         let viewToNavigate = NotificationViewController()
         viewToNavigate.hidesBottomBarWhenPushed = true
         currentViewController?.pushViewController(viewToNavigate, animated: true)
@@ -29,6 +29,7 @@ class NavigationView: UIView {
     }
     
     @IBAction func actionBack(_ sender: Any) {
+        HapticFeedback.generate(.light)
         if !actionActive {
             if popRoot {
                 currentViewController?.popToRootViewController(animated: true)

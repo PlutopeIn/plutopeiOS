@@ -8,6 +8,7 @@ import UIKit
 
 class CoinListViewController: UIViewController {
     
+    @IBOutlet weak var ivBack: UIImageView!
     @IBOutlet weak var tbvCoinList: UITableView!
     @IBOutlet weak var txtSearch: customTextField!
     
@@ -18,7 +19,7 @@ class CoinListViewController: UIViewController {
     var filterTokens: [Token]? = []
     var pairData: [ExchangePairsData] = []
     var fromCurrency,fromNetwork: String?
-    var toNetwork = ["eth","bsc","matic","btc"]
+    var toNetwork = ["eth","bsc","pol","btc","op","arb","avax","base"]
     weak var swapDelegate: SwappingCoinDelegate?
     weak var enabledTokenDelegate: EnabledTokenDelegate?
     var isPayCoin = false
@@ -26,21 +27,17 @@ class CoinListViewController: UIViewController {
     var isFromNFT = false
     var index = 0
     var isSearching: Bool = false
+    var isFromMyTokenVC = false
     lazy var viewModel: SwappingViewModel = {
         SwappingViewModel { _,_ in
-           // self.showToast(message: message, font: .systemFont(ofSize: 15))
-//            DGProgressView.shared.hideLoader()
         }
     }()
     lazy var coinGeckoViewModel: CoinGraphViewModel = {
         CoinGraphViewModel { _ ,_ in
-          //  self.showToast(message: message, font: .systemFont(ofSize: 15))
-          //  DGProgressView.shared.hide()
         }
     }()
     lazy var coinGraphViewModel: CoinGraphViewModel = {
         CoinGraphViewModel { _ ,_ in
-          //  self.showToast(message: message, font: .systemFont(ofSize: 15))
             DGProgressView.shared.hide()
         }
     }()
@@ -57,8 +54,6 @@ class CoinListViewController: UIViewController {
             }
         }
     }
-
-
     var trendingToken: [MarketData]? = []
     var isOkx = false
     override func viewDidLoad() {
@@ -68,16 +63,30 @@ class CoinListViewController: UIViewController {
         
         /// Table Register
         tableRegister()
+        ivBack.addTapGesture {
+            HapticFeedback.generate(.light)
+            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true, completion: nil)
+        }
+        if primaryWallet == nil {
+            let allWallet = DatabaseHelper.shared.retrieveData("Wallets") as? [Wallets]
+            primaryWallet = allWallet?.first(where: { $0.isPrimary })
+        }
         
-        /// getTokensListFromCoredata
-        getTokensListFromCoredata()
         
+        if self.isFromMyTokenVC == true {
+            tbvCoinList.isMultipleTouchEnabled = true
+        } else {
+            tbvCoinList.isMultipleTouchEnabled = false
+        }
         txtSearch.delegate = self
         
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         txtSearch.textAlignment = (LocalizationSystem.sharedInstance.getLanguage() == "ar") ? .right : .left
+        /// getTokensListFromCoredata
+        getTokensListFromCoredata()
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -94,194 +103,205 @@ class CoinListViewController: UIViewController {
     }
     
     /// getTokensListFromCoredata
-    fileprivate func getTokensListFromCoredata() {
-        
-//        print(self.tokensList?.compactMap { $0.tokenId })
-        
+    func getTokensListFromCoredata() {
         if isFrom == "swap" {
-            DGProgressView.shared.showLoader(to: view)
-            self.tokensList = DatabaseHelper.shared.retrieveData("Token") as? [Token]
+            //DGProgressView.shared.showLoader(to: view)
+            
+            // Retrieve tokens and filter efficiently
+            self.tokensList = (DatabaseHelper.shared.retrieveData("Token") as? [Token])?
+                .filter { token in
+                    token.tokenId != "PLT".lowercased() &&  // Exclude PLT token
+                    token.address != "0x0000000000000000000000000000000000001010" && // Exclude specific address
+                    token.symbol != "BNRY" // Ensure symbol check is uppercase
+                }
             allReadySaved()
+        } else if let tokens = AppConstants.tokensList {
+//            DGProgressView.shared.showLoader(to: view)
+
+            // Fetch only required token attributes to reduce Core Data overhead
+            let tokensList = DatabaseHelper.shared.retrieveData("Token") as? [Token] ?? []
+            
+            // Fetch Wallet Tokens once & create a Set for quick lookups
+            let walletTokens = (DatabaseHelper.shared.retrieveData("WalletTokens") as? [WalletTokens] ?? [])
+                .filter { $0.wallet_id == self.primaryWallet?.wallet_id }
+
+            let enabledTokensSet: Set<String> = Set(walletTokens.compactMap { $0.tokens?.tokenId }) // Store only tokenId for O(1) lookup
+            // Convert `trendingIds` to Dictionary for fast indexing
+            let trendingIdsArray = AppConstants.storedTokensList?.compactMap { $0.id } ?? []
+            let trendingIdsDict = Dictionary(uniqueKeysWithValues: trendingIdsArray.enumerated().map { ($1, $0) }) // [tokenId: index]
+
+            //  Efficiently filter & categorize tokens in one pass
+            var matchingTokens: [Token] = []
+            var remainingTokens: [Token] = []
+            
+            for token in tokensList {
+                guard token.address != "0x0000000000000000000000000000000000001010" else { continue } // Exclude immediately
+                
+                if enabledTokensSet.contains(token.tokenId ?? "") || (token.isUserAdded && !enabledTokensSet.contains(token.tokenId ?? "")) {
+                    continue
+                }
+
+                if trendingIdsDict[token.tokenId ?? ""] != nil {
+                    matchingTokens.append(token) // Trending token
+                } else {
+                    remainingTokens.append(token) // Non-trending token
+                }
+            }
+
+            //  Sort trending tokens using precomputed index in O(n log n) time
+            let sortedTrendingTokens = matchingTokens.sorted {
+                let index1 = trendingIdsDict[$0.tokenId ?? ""] ?? Int.max
+                let index2 = trendingIdsDict[$1.tokenId ?? ""] ?? Int.max
+                return index1 < index2
+            }
+
+            //  Merge sorted trending tokens with remaining tokens
+            var finalTokens = sortedTrendingTokens + remainingTokens
+
+            //  Sort final tokens by balance, while keeping trending tokens at the top
+            finalTokens.sort {
+                let isTrending1 = trendingIdsDict[$0.tokenId ?? ""] != nil
+                let isTrending2 = trendingIdsDict[$1.tokenId ?? ""] != nil
+
+                // Trending tokens remain at the top
+                if isTrending1 != isTrending2 {
+                    return isTrending1
+                }
+
+                // Sort by balance (assending)
+                return (Double($0.balance ?? "0") ?? 0) < (Double($1.balance ?? "0") ?? 0)
+            }
+            print("AppConstants.tokensList",self.tokensList)
+            self.tokensList = finalTokens
+            self.filterTokens = finalTokens
+            self.tbvCoinList.reloadData()
+//            DGProgressView.shared.hideLoader()
         } else {
             getTrendingTokens()
         }
-       
-//        if !isFromDash && !isPayCoin {
-//            if payCoinDetail?.type != "KIP20" && !isOkx {
-//                DGProgressView.shared.showLoader(to: self.view)
-//                getExchangePairsToken(fromCurrency: fromCurrency ?? "", fromNetwork: fromNetwork ?? "", toNetwork: toNetwork[self.index])
-//
-//            } else if isOkx {
-//                tokensList = tokensList?.filter { ($0.type == payCoinDetail?.type ?? "") && $0 != payCoinDetail }
-//
-//                self.tokensList = self.tokensList?.filter({ token in
-//                    if token.address != "0x0000000000000000000000000000000000001010" {
-//                        return true
-//                    } else {
-//                        return false
-//                    }
-//                })
-//                if self.tokensList?.count != 0 {
-//                    self.filterTokens = self.tokensList
-//                   tbvCoinList.reloadData()
-//                    DGProgressView.shared.hideLoader()
-//                }
-//            } else {
-//                tokensList = tokensList?.filter { $0.type == "KIP20" && $0 != payCoinDetail}
-//                if self.tokensList?.count != 0 {
-//                    self.filterTokens = self.tokensList
-//                   tbvCoinList.reloadData()
-//                    DGProgressView.shared.hideLoader()
-//                }
-//            }
-//
-//        } else {
-//            /// Action if tapped from dashboard
-//           getTrendingTokens()
-//        }
     }
 }
 
 // MARK: APIS
 extension CoinListViewController {
-    func getExchangePairsToken(fromCurrency: String, fromNetwork: String, toNetwork: String) {
-        viewModel.apiGetExchangePairs(fromCurrency: fromCurrency, fromNetwork: fromNetwork, toNetwork: toNetwork) { tokenPairs, status, _ in
-            if status {
-                self.pairData.append(contentsOf: tokenPairs ?? [])
-                self.index += 1
-                if self.index < self.toNetwork.count {
-                    self.getExchangePairsToken(fromCurrency: self.fromCurrency ?? "", fromNetwork: self.fromNetwork ?? "", toNetwork: self.toNetwork[self.index])
-                } else {
-                    
-                    self.pairData = Array(Set(self.pairData))
-                    
-                    let toCurrencyList = self.pairData.compactMap { $0.toCurrency }
-                    self.tokensList = self.tokensList?.filter({ token in
-                        if toCurrencyList.contains(token.symbol?.lowercased() ?? "") && (token.type == "ERC20" || token.type == "POLYGON" || token.type == "BEP20" || token.type == "BTC") && token != self.payCoinDetail && token.address != "0x0000000000000000000000000000000000001010" {
-                            return true
-                        } else {
-                            return false
-                        }
-                        
-                    })
-                    let sortedFinalTokens = self.tokensList?.sorted { $0.balance ?? "" > $1.balance ?? "" }
-                    
-                    self.tokensList = sortedFinalTokens
-                    self.filterTokens = self.tokensList
-                    self.tbvCoinList.reloadData()
-                    DGProgressView.shared.hideLoader()
-                }
-            } else {
-                self.tbvCoinList.reloadData()
-                DGProgressView.shared.hideLoader()
-            }
-        }
-    }
-    
+
     fileprivate func allReadySaved() {
-        // Retrieve the token list
-        
-        //   if let token = AppConstants.storedTokensList, !token.isEmpty {
-        // `trendingToken` is not nil and not empty
-        // You can use `token` inside this block
-        
-        var allWalletTokens = DatabaseHelper.shared.retrieveData("WalletTokens") as? [WalletTokens]
-        allWalletTokens = allWalletTokens?.filter { $0.wallet_id == self.primaryWallet?.wallet_id }
-        let enabledTokens = allWalletTokens?.compactMap { $0.tokens }
-        self.tokensList = self.tokensList?.filter({ token in
-            if token.address != "0x0000000000000000000000000000000000001010" {
-                if enabledTokens?.contains(token) ?? false || (token.isUserAdded && !(enabledTokens?.contains(token) ?? false)) {
-                    return false
-                } else {
-                    return true
-                    
-                }
-            } else {
-                print("no address")
-                return false
+        DGProgressView.shared.showLoader(to: view)
+        let allWalletTokens = (DatabaseHelper.shared.retrieveData("WalletTokens") as? [WalletTokens] ?? [])
+            .filter { $0.wallet_id == self.primaryWallet?.wallet_id }
+        var filteredTokens: [Token] = []
+        self.tokensList?.forEach { token in
+            // Exclude unwanted tokens
+            guard token.address != "0x0000000000000000000000000000000000001010",
+                  token.symbol?.uppercased() != "BNRY"
+                  else {
+                return
             }
-            
-        })
-        
-        let trendingIds = AppConstants.storedTokensList?.compactMap { $0.id }
-        let matchingTokens = self.tokensList?.filter { trendingIds?.contains($0.tokenId ?? "") ?? false }
-        let remainingTokens = self.tokensList?.filter { !(trendingIds?.contains($0.tokenId ?? "") ?? false) }
-        
-        // Sort matchingTokens based on the order of ids
-        let sortedMatchingTokens = matchingTokens?.sorted { token1, token2 in
-            guard let index1 = trendingIds?.firstIndex(of: token1.tokenId ?? ""),
-                  let index2 = trendingIds?.firstIndex(of: token2.tokenId ?? "") else {
-                return false // Handle the case where tokenId is not found in ids array
-            }
-            return index1 < index2
+                filteredTokens.append(token)
         }
-        
-        // Combine sortedMatching Tokens and remainingTokens
-        let finalTokens = (sortedMatchingTokens ?? []) + (remainingTokens ?? [])
-        let sortedFinalTokens = finalTokens.sorted { $0.balance ?? "" > $1.balance ?? "" }
-        self.tokensList = sortedFinalTokens
-        self.filterTokens = self.tokensList
-        self.tbvCoinList.reloadData()
+
+        // Final sorting: Prioritize "PLT" first, then sort by balance
+        var finalTokens = filteredTokens
+        finalTokens.sort {
+            if $0.tokenId?.lowercased() == "plt" { return true }
+            if $1.tokenId?.lowercased() == "plt" { return false }
+            return (Double($0.balance ?? "0") ?? 0) > (Double($1.balance ?? "0") ?? 0)
+        }
+        // Store results and update UI
         DGProgressView.shared.hideLoader()
+        self.tokensList = finalTokens
+        self.filterTokens = finalTokens
+        self.tbvCoinList.reloadData()
+        
     }
-    
     func getTrendingTokens() {
         DGProgressView.shared.showLoader(to: view)
-        coinGraphViewModel.apiMarketVolumeData(WalletData.shared.primaryCurrency?.symbol ?? "", ids: "") { status,msg,data in
-            if status == true {
-                if data != nil {
-                    DGProgressView.shared.hideLoader()
-                    self.trendingToken = data
-                    // Store the token list
+
+        coinGraphViewModel.apiMarketVolumeData(WalletData.shared.primaryCurrency?.symbol ?? "", ids: "") { status, msg, data in
+            DispatchQueue.global(qos: .userInitiated).async { // Run in background
+                guard status, let trendingData = data else {
                     DispatchQueue.main.async {
-                        AppConstants.storedTokensList = data!
+                        DGProgressView.shared.hideLoader()
+                        self.showToast(message: msg, font: AppFont.regular(15).value)
                     }
-                    self.tokensList = DatabaseHelper.shared.retrieveData("Token") as? [Token]
-                    var allWalletTokens = DatabaseHelper.shared.retrieveData("WalletTokens") as? [WalletTokens]
-                    allWalletTokens = allWalletTokens?.filter { $0.wallet_id == self.primaryWallet?.wallet_id }
-                    let enabledTokens = allWalletTokens?.compactMap { $0.tokens }
-                    self.tokensList = self.tokensList?.filter({ token in
-                        if token.address != "0x0000000000000000000000000000000000001010" {
-                            if enabledTokens?.contains(token) ?? false || (token.isUserAdded && !(enabledTokens?.contains(token) ?? false)) {
-                                return false
-                            } else {
-                                return true
-                                
-                            }
-                        } else {
-                            print("no address")
-                            return false
-                        }
-                        
-                    })
-                    
-                    let trendingIds = self.trendingToken?.compactMap { $0.id }
-                    let matchingTokens = self.tokensList?.filter { trendingIds?.contains($0.tokenId ?? "") ?? false }
-                    let remainingTokens = self.tokensList?.filter { !(trendingIds?.contains($0.tokenId ?? "") ?? false) }
-                    
-                    // Sort matchingTokens based on the order of ids
-                    let sortedMatchingTokens = matchingTokens?.sorted { token1, token2 in
-                        guard let index1 = trendingIds?.firstIndex(of: token1.tokenId ?? ""),
-                              let index2 = trendingIds?.firstIndex(of: token2.tokenId ?? "") else {
-                            return false // Handle the case where tokenId is not found in ids array
-                        }
-                        return index1 < index2
-                    }
-                    
-                    // Combine sortedMatching Tokens and remainingTokens
-                    let finalTokens = (sortedMatchingTokens ?? []) + (remainingTokens ?? [])
-                    let sortedFinalTokens = finalTokens.sorted { $0.balance ?? "" > $1.balance ?? "" }
-                    self.tokensList = sortedFinalTokens
-                    self.filterTokens = self.tokensList
-                    self.tbvCoinList.reloadData()
-                    
-                } else {
-                    DGProgressView.shared.hideLoader()
-                    self.showToast(message: msg, font: AppFont.medium(15).value)
+                    return
                 }
-            } else {
-                DGProgressView.shared.hideLoader()
-                self.showToast(message: msg, font: AppFont.medium(15).value)
+
+                // Store trending data & timestamp
+                self.trendingToken = trendingData
+                AppConstants.storedTokensList = trendingData
+                UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: lastFetchTimestampKey)
+
+                // Convert trending tokens to a Set for quick lookup
+                let trendingIdsSet = Set(trendingData.map { $0.id })
+
+                // Fetch Tokens & WalletTokens efficiently
+                let allTokens = DatabaseHelper.shared.retrieveData("Token") as? [Token] ?? []
+//                let targetAddress = "0xd07379a755a8f11b57610154861d694b2a0f615a"
+//                DatabaseHelper.shared.deleteTokenIfDisabled(withAddress: targetAddress)
+                
+                let walletTokens = (DatabaseHelper.shared.retrieveData("WalletTokens") as? [WalletTokens] ?? [])
+                    .filter { $0.wallet_id == self.primaryWallet?.wallet_id }
+                
+                // Store enabled tokens in a Set for quick lookup
+                let enabledTokensSet = Set(walletTokens.compactMap { $0.tokens })
+
+                // Filter Tokens efficiently
+                let filteredTokens = allTokens.filter { token in
+                    guard let tokenId = token.tokenId,
+                          let symbol = token.symbol?.uppercased(),
+                          let address = token.address
+                    else { return false }
+
+                    return !(enabledTokensSet.contains(token) || (token.isUserAdded && !enabledTokensSet.contains(token))) &&
+                           address != "0x0000000000000000000000000000000000001010" &&
+                           symbol != "BNRY"
+                }
+
+                // **Partitioning Tokens Efficiently**
+                var trendingTokens: [Token] = []
+                var nonTrendingTokens: [Token] = []
+
+                for token in filteredTokens {
+                    if trendingIdsSet.contains(token.tokenId ?? "") {
+                        trendingTokens.append(token)
+                    } else {
+                        nonTrendingTokens.append(token)
+                    }
+                }
+
+                // Sort Trending Tokens in their original order
+                let trendingTokenOrderMap = trendingData.enumerated().reduce(into: [String: Int]()) { dict, pair in
+                    dict[pair.element.id] = pair.offset
+                }
+
+                trendingTokens.sort {
+                    (trendingTokenOrderMap[$0.tokenId ?? ""] ?? Int.max) <
+                    (trendingTokenOrderMap[$1.tokenId ?? ""] ?? Int.max)
+                }
+
+                // **Final Sorting: Prioritize "PLT" & Sort by Balance**
+                var finalTokens = trendingTokens + nonTrendingTokens
+                finalTokens.sort {
+                    if $0.tokenId?.lowercased() == "plt" { return true }
+                    if $1.tokenId?.lowercased() == "plt" { return false }
+                    return (Double($0.balance ?? "0") ?? 0) > (Double($1.balance ?? "0") ?? 0)
+                }
+
+                // Store tokens in UserDefaults in the background thread
+                let tokenDictionaries = finalTokens.map { $0.toDictionary() }
+                UserDefaults.standard.set(tokenDictionaries, forKey: "storedTokens")
+//                print("trndingTokentokensList",finalTokens)
+                AppConstants.tokensList = finalTokens
+                
+                // UI update on main thread
+                DispatchQueue.main.async {
+                    DGProgressView.shared.hideLoader()
+                    self.tokensList = finalTokens
+                    self.filterTokens = finalTokens
+                    self.tbvCoinList.reloadData()
+                 
+                }
             }
         }
     }

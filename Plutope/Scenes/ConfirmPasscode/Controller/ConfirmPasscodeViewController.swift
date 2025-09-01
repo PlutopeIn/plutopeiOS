@@ -18,7 +18,12 @@ class ConfirmPasscodeViewController: UIViewController, Reusable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        lblConfirmPassword.font = AppFont.violetRegular(32).value
+        lblAddsExtra.font = AppFont.regular(14).value
+        let dynamicLightBlueColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? UIColor(red: 1/255, green: 1/255, blue: 1/255, alpha: 0.75) : UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.75)
+              }
+        lblAddsExtra.textColor = dynamicLightBlueColor
         /// Navigation Header
         defineHeader(headerView: headerView, titleText: "")
         self.lblConfirmPassword.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.confirmpasscode, comment: "")

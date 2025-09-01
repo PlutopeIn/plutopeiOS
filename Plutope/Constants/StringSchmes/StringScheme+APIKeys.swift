@@ -9,39 +9,42 @@ import Foundation
 
 struct APIKey {
     // MELD
-    static let meldApiHeader = ["Authorization" : "BASIC WQ5G9zvsK1cKC22iGZ8KXb:2mSZKY8pSiqYckZgDvnH9UNzphpDgosDyi73m"]
-    
+    static let meldApiHeader = ["Authorization" : "meldApiHeader"]
     // ONRAMP
-    static let onRampSecurityKey = "SQ1VFzoM0rhsR3c1raojzawQwU190AG3"
-    static let onRampHeaderKey = "ezJrTUkLwuLOPEtQ278qYreMaRUq7n"
+    static let onRampSecurityKey = "onRampSecurityKey"
+    static let onRampHeaderKey = "onRampHeaderKey"
     
     // ONMETA
-    static let onMeta = "31e2fd7c-0081-435e-ab7f-e6436e68cd52" // "500c417e-5130-4752-b5eb-e03a23c3ef23"
-    static let onMetaHeader = ["x-api-key": "31e2fd7c-0081-435e-ab7f-e6436e68cd52"]
+    static let onMeta = "onMeta"
+    static let onMetaHeader = ["x-api-key": "onMetaHeader"]
     
     // CHANGENOW
-    static let changeNowAPIHeader = ["x-changenow-api-key":"53600a5f3f67bc771bef9f3b0336c740d9c10d9db83e8df1491add59a09b6ccb"]
+    static let changeNowAPIHeader = ["x-changenow-api-key":"5db83e8d6ccb"]
     
     // COINMARKETCAP
-    static let coinMarketAPIHeader = ["X-CMC_PRO_API_KEY":"7d6014cf-9a4e-41bf-8034-bd971c214ee7"]
+    static let coinMarketAPIHeader = ["X-CMC_PRO_API_KEY":"coinMarketAPIHeader"]
     
     // MORALIS
-    static let moralisAPIKey = ["x-api-key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjE4YTViOTIwLThmOWUtNDlmZi1hOGE4LTMzZTEyMWJjOWNkZCIsIm9yZ0lkIjoiMzI5NDkzIiwidXNlcklkIjoiMzM4NzgzIiwidHlwZUlkIjoiZjU2YmIyYzYtMGEzZi00NWNmLTgzNDAtMGE4NjAyZjQ0NDNlIiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE2ODMxODIzNjQsImV4cCI6NDgzODk0MjM2NH0.I2os4dXf1BJsQLWqpN9oGXmwEC0gSeV8mP4nfy9DY58"]
+    static let moralisAPIKey = ["x-api-key":"x-api-key"]
+    
+    static let moralisNewAPIKey = "moralisNewAPIKey"
+    
     
     // OKLINK
-    static let okLinkHeader = ["OK-ACCESS-KEY" : "91db5ffb-a488-4cc6-863b-e81227f96038"]
+
+    static let okLinkHeader = ["OK-ACCESS-KEY" : "OK-ACCESS-KEY"]
     
     /// API Key for currency
-    static let currencyAPIKey = ["X-CMC_PRO_API_KEY" : "7d00fe84-d1ea-47da-b2f6-53287366a15c"]
+    static let currencyAPIKey = ["X-CMC_PRO_API_KEY" : "X-CMC_PRO_API_KEY"]
     
     /// ApiKeys of account
-    static let polygonScanAPiKey = "2QQ6FI7RA8G8R6IBJA52UA97TD9BH3SFG8"
-    static let etherScanAPiKey = "1IT9WXZ9X2AVMUFJHRBP7E8I6W6TXIMHEJ"
-    static let bscScanAPiKey = "G5NXUANXH7RE8ZQXGXRVRJQDZ8RBNMJZ4S"
+    static let polygonScanAPiKey = "polygonScanAPiKey"
+    static let etherScanAPiKey = "etherScanAPiKey"
+    static let bscScanAPiKey = "bscScanAPiKey"
     
     /// OKX
-    static let okxSecretKey = "98B9B815F07D1A67F243FDBF7066EE1E"
-    static let okxApiKey = "f062cbc4-5228-47a8-a02c-8c9989e2244e"
-    static let okxPassphrase = "Plutope@ApiKey1"
+    static let okxSecretKey = "okxSecretKey"
+    static let okxApiKey = "okxApiKey"
+    static let okxPassphrase = "okxPassphrase"
     
 }

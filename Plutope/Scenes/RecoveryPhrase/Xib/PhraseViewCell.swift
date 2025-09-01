@@ -14,5 +14,6 @@ class PhraseViewCell: UICollectionViewCell, Reusable {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        lblPhrase.font = AppFont.violetRegular(16).value
     }
 }

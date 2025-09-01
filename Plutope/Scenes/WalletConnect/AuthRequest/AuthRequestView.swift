@@ -1,5 +1,16 @@
 import SwiftUI
 
+//struct AuthRequestView: View {
+//    @EnvironmentObject var presenter: AuthRequestPresenter
+//    
+//    @State var text = ""
+//    
+//    var body: some View {
+//        ZStack {
+//        }
+//    }
+//}
+
 struct AuthRequestView: View {
     @EnvironmentObject var presenter: AuthRequestPresenter
     
@@ -9,39 +20,49 @@ struct AuthRequestView: View {
         ZStack {
             Color.black.opacity(0.6)
             
-            
             VStack {
                 Spacer()
-                
+
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            presenter.dismiss()
+                        }) {
+                            Image(systemName: "xmark")
+                                .foregroundColor(.white)
+                                .padding()
+                        }
+                    }
+                    .padding()
+                }
+
                 VStack(spacing: 0) {
-                    Image("header")
-                        .resizable()
-                        .scaledToFit()
                     
                     Text(presenter.request.payload.domain)
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color(UIColor.label))
                         .font(.system(size: 22, weight: .bold, design: .rounded))
                         .padding(.top, 10)
                     
                     Text("would like to connect")
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color(UIColor.label))
                         .font(.system(size: 22, weight: .medium, design: .rounded))
                     
                     if case .valid = presenter.validationStatus {
                         HStack {
-                            Image(systemName: "checkmark.seal.fill")
+                            Image(systemName: "ic_Sucess")
                                 .font(.system(size: 14, weight: .semibold, design: .rounded))
                                 .foregroundColor(.blue)
                             
                             Text(presenter.request.payload.domain)
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color(UIColor.label))
                                 .font(.system(size: 13, weight: .semibold, design: .rounded))
                                 .lineSpacing(4)
                         }
                         .padding(.top, 8)
                     } else {
                         Text(presenter.request.payload.domain)
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color(UIColor.label))
                             .font(.system(size: 13, weight: .semibold, design: .rounded))
                             .multilineTextAlignment(.center)
                             .lineSpacing(4)
@@ -80,24 +101,12 @@ struct AuthRequestView: View {
                         }
                     }
                     
-                    if case .scam = presenter.validationStatus {
-                        VStack(spacing: 20) {
-                            declineButton()
-                            allowButton()
-                        }
-                        .padding(.top, 25)
-                    } else {
-                        HStack {
-                            declineButton()
-                            allowButton()
-                        }
-                        .padding(.top, 25)
-                    }
-                    
+                    buttonGroup()
+
                     
                 }
                 .padding(20)
-//                .background(.ultraThinMaterial)
+                .background(Color(UIColor.systemBackground))
                 .cornerRadius(34)
                 .padding(.horizontal, 10)
                 
@@ -116,36 +125,48 @@ struct AuthRequestView: View {
     private func authRequestView() -> some View {
         VStack {
             VStack(alignment: .leading) {
-                Text("Message")
+                Text("Messages")
                     .font(.system(size: 15, weight: .semibold, design: .rounded))
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 5)
-                    .background(Color.gray)
+                    .background(Color.blue)
                     .cornerRadius(28)
                     .padding(.leading, 15)
                     .padding(.top, 9)
-                
-                VStack(spacing: 0) {
-                    ScrollView {
-                        Text(presenter.message)
-                            .foregroundColor(.gray)
-                            .font(.system(size: 13, weight: .semibold, design: .rounded))
+
+                ScrollView {
+                    VStack(spacing: 10) {
+                        ForEach(Array(presenter.messages.enumerated()), id: \.offset) { _, messageTuple in
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("\(messageTuple.0)")
+                                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                                    .foregroundColor(Color(UIColor.label))
+                                    .padding([.top, .horizontal])
+
+                                Text(messageTuple.1)
+                                    .foregroundColor(Color(UIColor.label))
+                                    .font(.system(size: 13, weight: .regular, design: .rounded))
+                                    .padding(.horizontal)
+                                    .padding(.bottom)
+                            }
+                            .background(Color(UIColor.systemBackground))
+                            .cornerRadius(12)
+                            .shadow(radius: 2)
+                        }
                     }
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 10)
-                    .frame(height: 150)
+                    .padding(.horizontal, 5)
+                    .padding(.bottom, 5)
                 }
-                .background(Color.black)
-                .cornerRadius(20)
-                .padding(.horizontal, 5)
-                .padding(.bottom, 5)
+                .frame(maxHeight: .infinity)
             }
-//            .background(.thinMaterial)
+            .background(Color(.systemBackground)) // Adjusted for theme compatibility
             .cornerRadius(25)
         }
         .padding(.vertical, 30)
     }
+
+
     
     private func verifyBadgeView(imageName: String, title: String, color: Color) -> some View {
         HStack(spacing: 5) {
@@ -176,7 +197,7 @@ struct AuthRequestView: View {
                     .font(.system(size: 14, weight: .semibold, design: .rounded))
                 
                 Text(description)
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(UIColor.label))
                     .font(.system(size: 14, weight: .medium, design: .rounded))
             }
         }
@@ -188,58 +209,76 @@ struct AuthRequestView: View {
     
     private func declineButton() -> some View {
         Button {
-            Task(priority: .userInitiated) { try await
-                presenter.onReject()
+            Task(priority: .userInitiated) { await
+                presenter.reject()
             }
         } label: {
             Text("Decline")
                 .frame(maxWidth: .infinity)
-                .foregroundColor(.white)
+                .foregroundColor(Color(UIColor.label))
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                 .padding(.vertical, 11)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            .green,
-                            .orange
-                        ]),
-                        startPoint: .top, endPoint: .bottom)
-                )
+                .background(Color(UIColor.secondarySystemFill))
                 .cornerRadius(20)
         }
-        .shadow(color: .white.opacity(0.25), radius: 8, y: 2)
+       // .shadow(color: .white.opacity(0.25), radius: 8, y: 2)
     }
     
     private func allowButton() -> some View {
         Button {
-            Task(priority: .userInitiated) { try await
-                presenter.onApprove()
+            Task(priority: .userInitiated) { await
+                presenter.signMulti()
             }
         } label: {
-            Text(presenter.validationStatus == .scam ? "Proceed anyway" : "Allow")
+            Text(presenter.validationStatus == .scam ? "Proceed anyway" : "Sign Multi")
                 .frame(maxWidth: .infinity)
-                .foregroundColor(presenter.validationStatus == .scam ? .gray : .white)
+                .foregroundColor( Color(UIColor.systemBackground))
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                 .padding(.vertical, 11)
-                .background(
-                    Group {
-                        if presenter.validationStatus == .scam {
-                            Color.white
-                        } else {
-                            LinearGradient(
-                                gradient: Gradient(colors: [
-                                    .green,
-                                    .orange
-                                ]),
-                                startPoint: .top, endPoint: .bottom
-                            )
-                        }
-                    }
-                )
+                .background(Color(UIColor.label))
                 .cornerRadius(20)
         }
-        .shadow(color: .white.opacity(0.25), radius: 8, y: 2)
+        //.shadow(color: .white.opacity(0.25), radius: 8, y: 2)
     }
+
+    private func signOneButton() -> some View {
+        Button {
+            Task(priority: .userInitiated) {
+                await presenter.signOne()
+            }
+        } label: {
+            Text("Sign One")
+                .frame(maxWidth: .infinity)
+                .foregroundColor(Color(UIColor.systemBackground))
+                .font(.system(size: 20, weight: .semibold, design: .rounded))
+                .padding(.vertical, 11)
+                .background(Color(UIColor.label))
+                .cornerRadius(20)
+        }
+        //.shadow(color: .white.opacity(0.25), radius: 8, y: 2)
+    }
+
+    // Adjusted layout to include the signOneButton
+    private func buttonGroup() -> some View {
+        Group {
+            if case .scam = presenter.validationStatus {
+                VStack(spacing: 20) {
+                    declineButton()
+                    signOneButton() // Place the "Sign One" button between "Decline" and "Allow"
+                    allowButton()
+                }
+                .padding(.top, 25)
+            } else {
+                HStack {
+                    declineButton()
+                    signOneButton() // Include the "Sign One" button in the horizontal stack
+                    allowButton()
+                }
+                .padding(.top, 25)
+            }
+        }
+    }
+
 }
 
 #if DEBUG
@@ -249,3 +288,4 @@ struct AuthRequestView_Previews: PreviewProvider {
     }
 }
 #endif
+

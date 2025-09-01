@@ -17,7 +17,7 @@ extension SecurityViewController: UITableViewDataSource {
         let cell = tbvSecurity.dequeueReusableCell(indexPath: indexPath) as SecurityViewCell
         let data = arrSecurityData[indexPath.row]
         cell.selectionStyle = .none
-        
+        tableView.separatorStyle = .singleLine
         cell.lblTitle.text = data.title
         if data.isSwitch {
             cell.viewForward.isHidden = true
@@ -40,7 +40,7 @@ extension SecurityViewController: UITableViewDataSource {
             }
         }
         
-        cell.switchSecurity.onImage = UIImage.icGraph
+        cell.switchSecurity.onImage = UIImage.icNewgraff
         
         cell.switchSecurity.tag = indexPath.row
         cell.switchSecurity.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
@@ -68,6 +68,7 @@ extension SecurityViewController: UITableViewDataSource {
     
     @objc func switchValueChanged(_ sender: UISwitch) {
         // Handle the switch value change for the specific indexPath
+        HapticFeedback.generate(.light)
         guard let cell = tbvSecurity.cellForRow(at: IndexPath(row: sender.tag, section: 0)) as? SecurityViewCell else { return }
         
         switch sender.tag {
@@ -77,6 +78,7 @@ extension SecurityViewController: UITableViewDataSource {
                 viewToNavigate.isFromSecurity = true
                 self.navigationController?.pushViewController(viewToNavigate, animated: true)
                 print("Do when switch turns on")
+                
             } else {
                 /// Will turn off biometrics
                 UserDefaults.standard.removeObject(forKey: DefaultsKey.appPasscode)

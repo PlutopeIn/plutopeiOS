@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="headerView" destination="pr4-xM-mF2" id="5vs-MU-Har"/>
                 <outlet property="tblLanguages" destination="sbm-LH-nhR" id="Lvk-aC-FMc"/>
+                <outlet property="topView" destination="4zO-Ll-rkr" id="nIm-Oc-arn"/>
                 <outlet property="view" destination="iN0-l3-epB" id="dJs-sY-PVm"/>
             </connections>
         </placeholder>
@@ -28,28 +29,50 @@
                         <constraint firstAttribute="height" constant="70" id="TEs-bp-qqz"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sbm-LH-nhR">
-                    <rect key="frame" x="16" y="129" width="361" height="669"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4zO-Ll-rkr">
+                    <rect key="frame" x="0.0" y="129" width="393" height="350"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="350" id="r9u-C6-EfM"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sbm-LH-nhR">
+                    <rect key="frame" x="0.0" y="552" width="393" height="300"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="300" id="swV-C8-NNN"/>
+                    </constraints>
                 </tableView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" name="#0C0D2D"/>
+            <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
             <constraints>
                 <constraint firstItem="pr4-xM-mF2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="692-Hb-a8X"/>
                 <constraint firstItem="pr4-xM-mF2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Dwm-Jh-DeR"/>
-                <constraint firstItem="sbm-LH-nhR" firstAttribute="top" secondItem="pr4-xM-mF2" secondAttribute="bottom" id="Juu-RE-4iE"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="sbm-LH-nhR" secondAttribute="bottom" constant="20" id="KQg-fy-4Y2"/>
+                <constraint firstAttribute="bottom" secondItem="sbm-LH-nhR" secondAttribute="bottom" id="KQg-fy-4Y2"/>
+                <constraint firstItem="4zO-Ll-rkr" firstAttribute="top" secondItem="pr4-xM-mF2" secondAttribute="bottom" id="KZ4-Ta-EDH"/>
+                <constraint firstItem="sbm-LH-nhR" firstAttribute="top" secondItem="4zO-Ll-rkr" secondAttribute="bottom" id="OTw-KV-NEq"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="pr4-xM-mF2" secondAttribute="trailing" id="aJt-E3-vQ9"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="sbm-LH-nhR" secondAttribute="trailing" constant="16" id="bRb-Oh-O7Z"/>
-                <constraint firstItem="sbm-LH-nhR" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="onT-qe-Ec7"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="4zO-Ll-rkr" secondAttribute="trailing" id="aZJ-XC-3HB"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="sbm-LH-nhR" secondAttribute="trailing" id="bRb-Oh-O7Z"/>
+                <constraint firstItem="4zO-Ll-rkr" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="ixP-Dl-VPS"/>
+                <constraint firstItem="sbm-LH-nhR" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="onT-qe-Ec7"/>
             </constraints>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="pr4-xM-mF2"/>
+                    <exclude reference="4zO-Ll-rkr"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="35.877862595419849" y="-11.267605633802818"/>
         </view>
     </objects>
     <resources>
-        <namedColor name="#0C0D2D">
-            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <systemColor name="quaternarySystemFillColor">
+            <color red="0.45490196078431372" green="0.45490196078431372" blue="0.50196078431372548" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

@@ -39,4 +39,21 @@ class TransactionHistoryViewModel {
             }
         })
     }
+    
+    func getTransactionHistortyNew1(_ coindetail: Token,_ page: String,completion: @escaping (([TransactionHistoryResult]?,Bool,String) -> Void)) {
+        repo?.getTransactionHistortyNew1(coindetail, page, completion: { transactionList, status, err in
+            completion(transactionList,status,err)
+        })
+    }
+    func getTransactionHistortyNew(
+        _ coindetail: Token,
+        cursor: String?,
+        completion: @escaping (([TransactionHistoryResult]?, String?, Bool, String) -> Void)
+    ) {
+        repo?.getTransactionHistortyNew(coindetail, cursor: cursor, completion: { transactionList, status, err,cursor  in
+            completion(transactionList,status,err,cursor)
+        })
+    }
+    
+
 }

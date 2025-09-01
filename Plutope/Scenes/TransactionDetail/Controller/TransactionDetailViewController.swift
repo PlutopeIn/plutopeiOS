@@ -6,22 +6,18 @@
 //
 import UIKit
 import SafariServices
-
+import SDWebImage
 class TransactionDetailViewController: UIViewController {
     
+    @IBOutlet weak var ivCoin: UIImageView!
     @IBOutlet weak var stackViewAmountinFiat: UIStackView!
     @IBOutlet weak var lblCoinPrice: UILabel!
-    @IBOutlet weak var lblGetCoinType: UILabel!
-    @IBOutlet weak var lblGetCoinAmount: UILabel!
-    @IBOutlet weak var ivGetCoin: UIImageView!
-    @IBOutlet weak var lblPayCoinType: UILabel!
-    @IBOutlet weak var lblPayCoinAmount: UILabel!
-    @IBOutlet weak var ivPayCoin: UIImageView!
+   
     @IBOutlet weak var ivEqualSign: UIImageView!
     @IBOutlet weak var lblCoinAmount: UILabel!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var btnMoreDetail: UIButton!
-    @IBOutlet weak var stackViewSwap: UIStackView!
+   
     @IBOutlet weak var lblDate: UILabel!
     @IBOutlet weak var lblDateText: UILabel!
     @IBOutlet weak var lblStatus: UILabel!
@@ -33,9 +29,10 @@ class TransactionDetailViewController: UIViewController {
     @IBOutlet weak var lblNetworkFee: UILabel!
     @IBOutlet weak var lblNetworkFeeText: UILabel!
     
+    var arrTransactionNewData: TransactionHistoryResult?
     lazy var viewModel: TransactionDetailViewModel = {
         TransactionDetailViewModel { _ ,message in
-            self.showToast(message: message, font: .systemFont(ofSize: 15))
+         
             DGProgressView.shared.hideLoader()
         }
     }()
@@ -46,28 +43,73 @@ class TransactionDetailViewController: UIViewController {
     var isSwap = false
     var isToContract :Bool? = false
     var priceSsymbol = ""
+    var price = ""
     var headerTitle = ""
+    var type = ""
+    fileprivate func uiSetUp() {
+        stackViewAmountinFiat.isHidden = false
+        lblCoinAmount.isHidden = false
+        lblCoinAmount.font = AppFont.violetRegular(30).value
+        lblCoinPrice.font = AppFont.violetRegular(24).value
+        lblDateText.font = AppFont.violetRegular(14).value
+        lblDate.font = AppFont.violetRegular(14).value
+        lblStatusText.font = AppFont.violetRegular(14).value
+        lblStatus.font = AppFont.violetRegular(14).value
+        lblReceiptText.font = AppFont.violetRegular(14).value
+        lblReceipt.font = AppFont.violetRegular(14).value
+        lblNetworkFeeText.font = AppFont.violetRegular(14).value
+        lblNetworkFee.font = AppFont.violetRegular(14).value
+        lblNonceText.font = AppFont.violetRegular(14).value
+        lblNonce.font = AppFont.violetRegular(14).value
+        btnMoreDetail.titleLabel?.font = AppFont.violetRegular(24).value
+        
+        self.lblDateText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.date, comment: "")
+        self.lblStatusText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.status, comment: "")
+        self.lblNonceText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.nonce, comment: "")
+        self.lblNetworkFeeText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.networkfee, comment: "")
+        self.lblReceiptText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.recipient, comment: "")
+        self.btnMoreDetail.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.moredetails, comment: ""), for: .normal)
+        if let coinDetail = self.coinDetail {
+            if coinDetail.symbol?.lowercased() == "usdc.e" {
+                coinDetail.symbol = "usdt"
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         var header = headerTitle
         /// Navigation Header
         defineHeader(headerView: headerView, titleText: header,btnRightImage: UIImage.share,btnRightAction: {
+            HapticFeedback.generate(.light)
             // Create a URL to share
             var urlToShare : String {
                 switch self.coinDetail?.chain {
                 case .binanceSmartChain :
-                    return "https://bscscan.com/tx/\(self.transactionDetail?.first?.txid ?? "")"
+                    return "https://bscscan.com/tx/\(self.txId ?? "")"
                 case .ethereum :
-                    return "https://etherscan.io/tx/\(self.transactionDetail?.first?.txid ?? "")"
+                    return "https://etherscan.io/tx/\(self.txId ?? "")"
                 case .oKC :
-                    return "https://www.okx.com/explorer/oktc/tx/\(self.transactionDetail?.first?.txid ?? "")"
+                    return "https://www.okx.com/explorer/oktc/tx/\(self.txId ?? "")"
                 case .polygon :
-                    return "https://polygonscan.com/tx/\(self.transactionDetail?.first?.txid ?? "")"
+                    return "https://polygonscan.com/tx/\(self.txId ?? "")"
                 case .none:
                     return ""
                 case .bitcoin:
-                    return "https://btcscan.org/tx/\(self.transactionDetail?.first?.txid ?? "")"
+                    return "https://btcscan.org/tx/\(self.txId ?? "")"
+                case .opMainnet:
+                    return "https://optimistic.etherscan.io/address/\(self.txId ?? "")"
+                case .arbitrum:
+                    return "https://arbiscan.io/tx/\(self.txId ?? "")"
+                case .avalanche:
+                    return "https://subnets.avax.network/c-chain/tx/\(self.txId ?? "")"
+                case .base:
+                    return "https://basescan.org/tx/\(self.txId ?? "")"
+//                case .tron:
+//                    return  "https://www.oklink.com/trx/tx/\(self.transactionDetail?.first?.txid ?? "")"
+//                case .solana:
+//                    return "https://www.oklink.com/sol/tx/\(self.transactionDetail?.first?.txid ?? "")"
                 }
             }
 
@@ -83,229 +125,166 @@ class TransactionDetailViewController: UIViewController {
                 self.present(activityViewController, animated: true, completion: nil)
             }
         })
-        stackViewSwap.isHidden = true
-        stackViewAmountinFiat.isHidden = true
-        lblCoinAmount.isHidden = true
+       
+        uiSetUp()
         
-        self.lblDateText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.date, comment: "")
-        self.lblStatusText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.status, comment: "")
-        self.lblNonceText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.nonce, comment: "")
-        self.lblNetworkFeeText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.networkfee, comment: "")
-        self.lblReceiptText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.recipient, comment: "")
-        self.btnMoreDetail.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.moredetails, comment: ""), for: .normal)
-        
-        if let coinDetail = self.coinDetail {
-            if coinDetail.symbol?.lowercased() == "usdc.e" {
-                coinDetail.symbol = "usdt"
-            }
-        }
-        /// getTransactionDetail
-        getTransactionDetail(txId ?? "")
-        
+        setTransactionDetail()
     }
     
     // setDetails of transaction
     private func setTransactionDetail() {
-        guard let firstTransaction = transactionDetail?.first else {
-            return
+
+        let logoURI = coinDetail?.logoURI ?? ""
+        if coinDetail?.tokenId == "PLT".lowercased() {
+           
+            if logoURI == "" {
+                ivCoin.sd_setImage(with: URL(string: "https://plutope.app/api/images/applogo.png"))
+            } else {
+                ivCoin.sd_setImage(with: URL(string: logoURI))
+            }
+        } else {
+            if logoURI == "" {
+                ivCoin.sd_setImage(with: URL(string: logoURI))
+            } else {
+                ivCoin.sd_setImage(with: URL(string: logoURI))
+            }
         }
         
-        if firstTransaction.state == "success" {
+        if arrTransactionNewData?.value != "multicall" {
             setTransactionStatus(status: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.completed, comment: ""), color: UIColor.c099817)
         } else {
             setTransactionStatus(status: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.fail, comment: ""), color: .red)
         }
-        let unixTimeStamp: Double = Double(TimeInterval(firstTransaction.transactionTime ?? "") ?? 0) / 1000.0
-        lblDate.text = unixTimeStamp.formatDate("MMM dd yyyy, hh:mm a")
-        lblNonce.text = firstTransaction.nonce ?? ""
-        if firstTransaction.tokenTransferDetails?.count == 0 {
-            if coinDetail?.address != "" {
-                setTokenTransferDetails(firstTransaction: firstTransaction)
+        lblNonce.text = arrTransactionNewData?.nonce
+        if let isoDateString = arrTransactionNewData?.timestamp {
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let date = isoFormatter.date(from: isoDateString) {
+                lblDate.text = date.timeIntervalSince1970.getReadableDate() ?? ""
             } else {
-                self.setCoinAmountDetails(firstTransaction: firstTransaction)
+                lblDate.text = ""
             }
         } else {
-            if (firstTransaction.tokenTransferDetails?.count ?? 0) > 1 {
-                if isSwap {
-                    setSwapAmountDetail(firstTransaction: firstTransaction)
-                } else {
-                    if coinDetail?.address == "" {
-                        self.setCoinAmountDetails(firstTransaction: firstTransaction)
-                    } else {
-                        setTokenTransferDetails(firstTransaction: firstTransaction)
-                    }
-                }
-            //    setSwapAmountDetail(firstTransaction: firstTransaction)
-                
-            } else {
-                setTokenTransferDetails(firstTransaction: firstTransaction)
-            }
+            lblDate.text = ""
         }
-        
-        let convertedGasValue = firstTransaction.txfee ?? ""
-      
-        if coinDetail?.address == "" {
-            let gasPrice = ((Double(convertedGasValue) ?? 0.0) * (Double(coinDetail?.price ?? "") ?? 0.0)) / 1
+        setTokenTransferDetails(firstTransaction: arrTransactionNewData)
+        var estimateGasValue = ""
+        if let gas = Decimal(string: arrTransactionNewData?.transactionFee ?? "") {
+            let totalCost = gas
+            print("Total cost: \(totalCost)")
             
-            let estimateValue = WalletData.shared.formatDecimalString("\(gasPrice)", decimalPlaces: 2)
-            lblNetworkFee.text = "\(convertedGasValue) \(firstTransaction.transactionSymbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue))"
-            DGProgressView.shared.hideLoader()
+            
+            let estimateGasValue = WalletData.shared.formatDecimalString("\(totalCost)", decimalPlaces: 12)
+            if coinDetail?.address == "" {
+                let priceString = coinDetail?.price ?? ""
+                let priceDecimal = Decimal(string: priceString) ?? 0
+                let costDecimal = totalCost
+
+                let gasPrice = costDecimal * priceDecimal
+                let estimateValue = WalletData.shared.formatDecimalString("\(gasPrice)", decimalPlaces: 3)
+                lblNetworkFee.text = "\(estimateGasValue) \(self.coinDetail?.symbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue))"
+                DGProgressView.shared.hideLoader()
+            } else {
+                var allCoin = DatabaseHelper.shared.retrieveData("Token") as? [Token]
+                allCoin = allCoin?.filter { $0.address == "" && $0.type == coinDetail?.type && $0.symbol == self.coinDetail?.chain?.symbol ?? "" }
+                
+                let priceString = allCoin?.first?.price ?? ""
+                let priceDecimal = Decimal(string: priceString) ?? 0
+                let costDecimal = totalCost
+                let gasPrice = costDecimal * priceDecimal
+                let estimateValue = WalletData.shared.formatDecimalString("\(gasPrice)", decimalPlaces: 3)
+                lblNetworkFee.text = "\(estimateGasValue) \(self.coinDetail?.symbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue))"
+                DGProgressView.shared.hideLoader()
+            }
         } else {
-            var allCoin = DatabaseHelper.shared.retrieveData("Token") as? [Token]
-            allCoin = allCoin?.filter { $0.address == "" && $0.type == coinDetail?.type && $0.symbol == self.coinDetail?.chain?.symbol ?? "" }
-            let gasPrice = ((Double(convertedGasValue) ?? 0.0) * (Double(allCoin?.first?.price ?? "") ?? 0.0))
-            
-            let estimateValue = WalletData.shared.formatDecimalString("\(gasPrice)", decimalPlaces: 3)
-            lblNetworkFee.text = "\(convertedGasValue) \(firstTransaction.transactionSymbol ?? "") (\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue))"
-            DGProgressView.shared.hideLoader()
+            print("Invalid number format")
         }
     }
     
-    // SwapDetail set
-    func setSwapDetail() {
-        guard let firstTransaction = transactionDetail?.first else {
-            return
-        }
-        if (firstTransaction.tokenTransferDetails?.count ?? 0) > 1 {
-            if isSwap {
-                stackViewSwap.isHidden = false
-                stackViewAmountinFiat.isHidden = true
-                lblCoinAmount.isHidden = true
-            } else {
-                stackViewSwap.isHidden = true
-                stackViewAmountinFiat.isHidden = false
-                lblCoinAmount.isHidden = false
-            }
-//            stackViewSwap.isHidden = false
-//            stackViewAmountinFiat.isHidden = true
-//            lblCoinAmount.isHidden = true
-            
-        } else {
-            stackViewSwap.isHidden = true
-            stackViewAmountinFiat.isHidden = false
-            lblCoinAmount.isHidden = false
-            
-        }
-
-    }
+  
     
     private func setTransactionStatus(status: String, color: UIColor) {
         lblStatus.text = status
         lblStatus.textColor = color
     }
     
-    private func setTokenTransferDetails(firstTransaction: TransactionDetails) {
-        
-        guard let tokenTransferDetails = firstTransaction.tokenTransferDetails?.first else {
-            return
-        }
- 
-        if coinDetail?.address == "" && Double(firstTransaction.amount ?? "") ?? 0.0 <= 0.0 {
-            
-            let amount = WalletData.shared.formatDecimalString("\(Double(firstTransaction.txfee ?? "") ?? 0.0)", decimalPlaces: 4)
-            setAmountLabel(text: "\(self.priceSsymbol)\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
+    private func setTokenTransferDetails(firstTransaction: TransactionHistoryResult?) {
+        print("priceSsymbol",priceSsymbol)
+        print("price",price)
+        setAmountLabel(text: "\(self.price)", color: UIColor.label)
+    
+        if firstTransaction?.fromAddress == coinDetail?.chain?.walletAddress?.lowercased() {
+            lblReceipt.text = firstTransaction?.toAddress ?? ""
         } else {
-            let amount = WalletData.shared.formatDecimalString("\(Double(tokenTransferDetails.amount ?? "") ?? 0.0)", decimalPlaces: 4)
-            setAmountLabel(text: "\(self.priceSsymbol)\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
-        }
-        if tokenTransferDetails.from == coinDetail?.chain?.walletAddress?.lowercased() {
-            lblReceipt.text = tokenTransferDetails.to ?? ""
-        } else {
-            lblReceipt.text = tokenTransferDetails.from ?? ""
+            lblReceipt.text = firstTransaction?.fromAddress ?? ""
         }
     }
     
-     func setCoinAmountDetails(firstTransaction: TransactionDetails) {
-        if firstTransaction.inputDetails?.first?.inputHash == coinDetail?.chain?.walletAddress?.lowercased() {
-            lblReceipt.text = firstTransaction.outputDetails?.first?.outputHash ?? ""
-          
-        } else {
-            lblReceipt.text = firstTransaction.inputDetails?.first?.inputHash ?? ""
-       
-        }
-        
-        if coinDetail?.address == "" && Double(firstTransaction.amount ?? "") ?? 0.0 <= 0.0 {
-            
-            let amount = WalletData.shared.formatDecimalString("\(Double(firstTransaction.txfee ?? "") ?? 0.0)", decimalPlaces: 4)
-            setAmountLabel(text: "\(self.priceSsymbol)\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
-        } else {
-            let amount = WalletData.shared.formatDecimalString("\(Double(firstTransaction.amount ?? "") ?? 0.0)", decimalPlaces: 4)
-            setAmountLabel(text: "\(self.priceSsymbol)\(amount) \(coinDetail?.symbol ?? "")", color: UIColor.white)
-        }
 
-    }
-    
-    private func setSwapAmountDetail(firstTransaction: TransactionDetails) {
-        
-        let transactions: [TokenTransferDetail] = firstTransaction.tokenTransferDetails ?? []
-        var payTokenDetails: TokenTransferDetail?
-        var getTokenDetails: TokenTransferDetail?
-                for tokenDetails in transactions {
-                    print("From:",tokenDetails.from ?? "")
-                    print("Wallet:",coinDetail?.chain?.walletAddress ?? "")
-                    if tokenDetails.from?.lowercased() == coinDetail?.chain?.walletAddress?.lowercased() {
-                        lblPayCoinAmount.text = "\(tokenDetails.amount ?? "") \(tokenDetails.symbol ?? "")"
-                        payTokenDetails = tokenDetails // Store the selected tokenDetails
-                    }
-                   // print("TO:",tokenDetails.to)
-                    if tokenDetails.to?.lowercased() == coinDetail?.chain?.walletAddress?.lowercased() {
-                        lblGetCoinAmount.text = "\(tokenDetails.amount ?? "") \(tokenDetails.symbol ?? "")"
-                        getTokenDetails = tokenDetails // Store the selected tokenDetails
-                    }
-                    
-                    if let allToken = DatabaseHelper.shared.retrieveData("Token") as? [Token] {
-                        if let payToken = allToken.first(where: { $0.address?.lowercased() == payTokenDetails?.tokenContractAddress?.lowercased() }) {
-                            ivPayCoin.sd_setImage(with: URL(string: payToken.logoURI ?? ""))
-                            lblPayCoinType.text = payToken.type ?? ""
-                        }
-                        if let getToken = allToken.first(where: { $0.address?.lowercased() == getTokenDetails?.tokenContractAddress?.lowercased() }) {
-                            ivGetCoin.sd_setImage(with: URL(string: getToken.logoURI ?? ""))
-                            lblGetCoinType.text = getToken.type ?? ""
-                        }
-                    }
-                }
-        
-        lblReceipt.text = coinDetail?.chain?.walletAddress?.lowercased() ?? ""
-    }
-    
     private func setAmountLabel(text: String, color: UIColor) {
-        
+        print("setAmountLabel")
         lblCoinAmount.textColor = color
         lblCoinPrice.text = ""
-        let convertedValueString = text.replacingOccurrences(of: " \(coinDetail?.symbol ?? "")", with: "")
+
+        let symbol = coinDetail?.symbol ?? ""
+        let convertedValueString = text.replacingOccurrences(of: " \(symbol)", with: "")
+        
+        // Handle signs explicitly
+        let isNegative = convertedValueString.contains("-")
+        
+        // Remove `+` and `-` for calculation
+        let cleanValueString = convertedValueString.replacingOccurrences(of: "+", with: "")
+                                                    .replacingOccurrences(of: "-", with: "")
+        
         if let coinPrice = Double(coinDetail?.price ?? ""),
-           let convertedValue = Double(convertedValueString.replacingOccurrences(of: "-", with: "")) {
+           let convertedValue = Double(cleanValueString) {
             
             if convertedValue != 0.0 {
+                let price = coinPrice * convertedValue
+                let estimateValue = WalletData.shared.formatDecimalString("\(price)", decimalPlaces: 7)
                 
-                let price = (coinPrice * convertedValue)
-                let estimateValue = WalletData.shared.formatDecimalString("\(price)", decimalPlaces: 2)
                 lblCoinPrice.text = "\(WalletData.shared.primaryCurrency?.sign ?? "")\(estimateValue)"
                 lblCoinAmount.text = text
+                print("lblCoinAmount", lblCoinAmount.text ?? "")
                 ivEqualSign.isHidden = false
             } else {
                 lblCoinPrice.text = ""
-                lblCoinAmount.text = "0.00 \(coinDetail?.symbol ?? "")"
+                lblCoinAmount.text = "0.00 \(symbol)"
+                print("lblCoinAmount", "0.00 \(symbol)")
                 ivEqualSign.isHidden = true
             }
         }
     }
+
     
     @IBAction func actionViewMore(_ sender: Any) {
+        HapticFeedback.generate(.light)
         var urlToOpen : String {
             switch coinDetail?.chain {
             case .binanceSmartChain :
-                return "https://bscscan.com/tx/\(transactionDetail?.first?.txid ?? "")"
+                return "https://bscscan.com/tx/\(self.txId ?? "")"
             case .ethereum :
-                return "https://etherscan.io/tx/\(transactionDetail?.first?.txid ?? "")"
+                return "https://etherscan.io/tx/\(self.txId ?? "")"
             case .oKC :
-                return "https://www.okx.com/explorer/oktc/tx/\(transactionDetail?.first?.txid ?? "")"
+                return "https://www.okx.com/explorer/oktc/tx/\(self.txId ?? "")"
             case .polygon :
-                return "https://polygonscan.com/tx/\(transactionDetail?.first?.txid ?? "")"
+                return "https://polygonscan.com/tx/\(self.txId ?? "")"
             case .none:
                 return ""
             case .bitcoin:
-                return "https://btcscan.org/tx/\(self.transactionDetail?.first?.txid ?? "")"
+                return "https://btcscan.org/tx/\(self.txId ?? "")"
+            case .opMainnet:
+                return "https://optimistic.etherscan.io/address/\(self.txId ?? "")"
+            case .arbitrum:
+                return "https://arbiscan.io/tx/ \(self.txId ?? "")"
+            case .avalanche:
+                return "https://subnets.avax.network/c-chain/block/\(self.txId ?? "")"
+            case .base:
+                return "https://basescan.org/tx/\(self.txId ?? "")"
+//            case .tron:
+//                return  "https://www.oklink.com/trx/tx/\(self.txId ?? "")"
+//            case .solana:
+//                return "https://www.oklink.com/sol/tx/\(self.txId ?? "")"
             }
         }
         if let url = URL(string: urlToOpen) {
@@ -318,17 +297,17 @@ class TransactionDetailViewController: UIViewController {
 }
 
 // MARK: APIS
-extension TransactionDetailViewController {
-    private func getTransactionDetail(_ txid: String) {
-        DGProgressView.shared.showLoader(to: self.view)
-        viewModel.getTransactionDetail(coinDetail?.chain?.chainName ?? "", txid) { detail, status, _ in
-            if status {
-                self.transactionDetail = detail
-                self.setTransactionDetail()
-                /// setSwapDetail
-                self.setSwapDetail()
-                
-            }
-        }
-    }
-}
+//extension TransactionDetailViewController {
+//    private func getTransactionDetail(_ txid: String) {
+//        DGProgressView.shared.showLoader(to: self.view)
+//        viewModel.getTransactionDetail(coinDetail?.chain?.chainName ?? "", txid) { detail, status, _ in
+//            if status {
+//                self.transactionDetail = detail
+//                self.setTransactionDetail()
+//                /// setSwapDetail
+//                self.setSwapDetail()
+//                
+//            }
+//        }
+//    }
+//}

@@ -9,7 +9,7 @@ import UIKit
 // MARK: UITableViewDelegate methods
 extension LockMethodViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       
+        HapticFeedback.generate(.light)
         UserDefaults.standard.set(self.arrMethodData[indexPath.row].title, forKey: DefaultsKey.appLockMethod)
         tbvLockMethod.reloadData()
     }

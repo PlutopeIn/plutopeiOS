@@ -7,6 +7,7 @@
 import UIKit
 extension BackupWalletViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        HapticFeedback.generate(.light)
         arrWarnings[indexPath.row].isChecked.toggle()
         tbvWarnings.reloadData()
     }
@@ -14,4 +15,10 @@ extension BackupWalletViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        
+//        tblHeight.constant = tbvWarnings.contentSize.height
+//        
+//    }
 }

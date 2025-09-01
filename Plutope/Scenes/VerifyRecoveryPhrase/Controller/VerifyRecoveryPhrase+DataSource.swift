@@ -36,7 +36,7 @@ extension VerifyRecoveryPhraseViewController: UICollectionViewDataSource {
             
             let cell = clvGuessCorrectPhrase.dequeueReusableCell(indexPath: indexPath) as PhraseViewCell
             let data = arrGuessSecretPhrase[indexPath.row]
-            cell.bgView.backgroundColor = UIColor.c121C3D
+//            cell.bgView.backgroundColor = UIColor.c121C3D
             cell.lblPhrase.textAlignment = .center
             cell.viewNumber.isHidden = true
             cell.lblPhrase.text = data.phrase

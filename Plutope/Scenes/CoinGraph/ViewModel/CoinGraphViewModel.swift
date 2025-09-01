@@ -59,4 +59,12 @@ class CoinGraphViewModel {
             }
         })
     }
+    
+    func checkTokenVersion(completion: @escaping ((Int, String,CheckAppVersonList?) -> Void)) {
+        repo?.checkTokenVersion(completion: { status, message, coinInfo in
+            completion(status, message, coinInfo)
+        })
+        
+       
+    }
 }

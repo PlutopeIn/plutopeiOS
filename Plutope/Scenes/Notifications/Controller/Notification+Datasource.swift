@@ -34,7 +34,7 @@ extension NotificationViewController: UITableViewDelegate, UITableViewDataSource
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 30))
         let lbl = UILabel(frame: CGRect(x: 16, y: 8, width: view.frame.width - 15, height: 15))
         
-        lbl.font = AppFont.medium(12).value
+        lbl.font = AppFont.regular(12).value
         lbl.textColor = UIColor.white
         view.addSubview(lbl)
         

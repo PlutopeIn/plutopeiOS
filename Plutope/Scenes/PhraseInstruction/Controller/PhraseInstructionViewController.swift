@@ -20,7 +20,7 @@ class PhraseInstructionViewController: UIViewController, Reusable {
       
     }
     @IBAction func actionContinue(_ sender: Any) {
-        
+        HapticFeedback.generate(.light)
         self.dismiss(animated: true) {
             guard let proto = self.delegate else {return}
             proto.pushViewController(ConfirmEncryptionPasscodeViewController())

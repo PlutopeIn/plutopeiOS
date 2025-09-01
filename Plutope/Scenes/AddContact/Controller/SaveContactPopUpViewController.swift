@@ -23,6 +23,9 @@ class SaveContactPopUpViewController: UIViewController {
         self.lblEnterAlias.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.enteranalias, comment: "")
         self.btnCancel.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: ""), for: .normal)
         self.btnSave.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.save, comment: ""), for: .normal)
+        
+        lblAddToAddressBook.font = AppFont.violetRegular(20).value
+        lblEnterAlias.font = AppFont.regular(14).value
     }
     
     override func viewDidLoad() {
@@ -47,6 +50,7 @@ class SaveContactPopUpViewController: UIViewController {
         }
 /// btnCancelAction
     @IBAction func btnCancelAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         self.dismiss(animated: true)
     }
     
@@ -58,6 +62,7 @@ class SaveContactPopUpViewController: UIViewController {
     }
     /// btnSaveAction
     @IBAction func btnSaveAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let entity = NSEntityDescription.entity(forEntityName: "Contacts", in: DatabaseHelper.shared.context)!
         let contactEntity = Contacts(entity: entity, insertInto: DatabaseHelper.shared.context)
         contactEntity.name = txtName.text ?? ""

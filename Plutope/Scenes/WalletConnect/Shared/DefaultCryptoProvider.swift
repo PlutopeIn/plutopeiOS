@@ -1,5 +1,6 @@
 import Foundation
-import Auth
+import WalletConnectSigner
+//import Auth
 import Web3
 import CryptoSwift
 

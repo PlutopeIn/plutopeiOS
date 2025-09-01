@@ -73,6 +73,11 @@ struct BuyCrypto {
            
 
         )
+        case guardarian(
+            defaultfromamount : String? = "",
+            defaultfiatcurrency : String? = "",
+            defaultcryptocurrency : String? = ""
+        )
     }
     static func getMeldTokenName( destinationCurrencyCode: String? = "",networkType: String? = "",tokenAddress: String? = "") -> String {
         
@@ -89,6 +94,8 @@ struct BuyCrypto {
                     return  destinationCurrencyCode
                 case "BTC":
                     return destinationCurrencyCode
+                case "OP Mainnet":
+                    return destinationCurrencyCode
                 default:
                     return destinationCurrencyCode
                 }
@@ -103,6 +110,8 @@ struct BuyCrypto {
                 case "KIP20":
                     return destinationCurrencyCode
                 case "BTC":
+                    return destinationCurrencyCode
+                case "OP Mainnet":
                     return destinationCurrencyCode
                 default:
                     return destinationCurrencyCode
@@ -202,11 +211,21 @@ struct BuyCrypto {
                     return baseCurrency
                 case ("BTC", _):
                     return baseCurrency
+                case ("OP Mainnet", _):
+                    return baseCurrency
                 default:
                     return baseCurrency
                 }
             }
             return "https://onramp.gatefi.com/?merchantId=\(merchantId)&cryptoCurrency=\(toCurrency ?? "")&fiatAmount=\(fiatAmount ?? "")&fiatCurrency=\(countryCode ?? "")"
+            
+        case .guardarian(
+            let defaultfromamount,
+            let defaultfiatcurrency,
+            let defaultcryptocurrency
+            
+          ):
+            return "https://guardarian.com/calculator/v1?partner_api_token=7f0df0b9-87d0-488c-bc6f-e4c6f2eb3d87&theme=blue&type=narrow&swap_enabled=true&default_from_amount=\(defaultfromamount)&default_fiat_currency=\(defaultfiatcurrency)&default_crypto_currency=\(defaultcryptocurrency)"
         }
     }
 }

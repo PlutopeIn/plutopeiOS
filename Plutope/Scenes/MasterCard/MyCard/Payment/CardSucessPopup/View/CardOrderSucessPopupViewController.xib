@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_bold.ttf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+        <array key="SFPro_medium.ttf">
+            <string>SFProDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardOrderSucessPopupViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="btnDone" destination="2nT-D5-1Ha" id="LPv-Cm-dPz"/>
+                <outlet property="lblMsg" destination="sXP-4N-oiv" id="A6t-fK-lsb"/>
+                <outlet property="lblTitle" destination="S5U-o4-Vvn" id="J1r-5T-P4z"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S5U-o4-Vvn">
+                    <rect key="frame" x="50" y="222" width="220" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Itk-QB-uJq"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="31"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sXP-4N-oiv">
+                    <rect key="frame" x="50" y="282" width="330" height="42"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="2gy-D9-f8n"/>
+                    </constraints>
+                    <string key="text">Your order was successfully completed.
+The card will be with you soon.</string>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2nT-D5-1Ha">
+                    <rect key="frame" x="50" y="818" width="330" height="50"/>
+                    <color key="backgroundColor" red="0.098036877810000006" green="0.1058830246" blue="0.12548896670000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="OBi-TJ-x4a"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="20"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Done"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="25"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="btnDoneAction:" destination="-1" eventType="touchUpInside" id="Yb9-ys-sjU"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.14081758259999999" green="0.74511009449999999" blue="0.4549082518" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="2nT-D5-1Ha" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="50" id="FNW-u8-fY4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2nT-D5-1Ha" secondAttribute="trailing" constant="50" id="GWf-Vr-sCa"/>
+                <constraint firstItem="S5U-o4-Vvn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="50" id="IIt-8K-g3C"/>
+                <constraint firstAttribute="trailing" secondItem="sXP-4N-oiv" secondAttribute="trailing" constant="50" id="Ie8-77-CWg"/>
+                <constraint firstItem="sXP-4N-oiv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="50" id="JDN-0A-spn"/>
+                <constraint firstItem="sXP-4N-oiv" firstAttribute="top" secondItem="S5U-o4-Vvn" secondAttribute="bottom" constant="20" id="OC9-Bu-oIA"/>
+                <constraint firstItem="2nT-D5-1Ha" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sXP-4N-oiv" secondAttribute="bottom" constant="30" id="Uqb-fI-5Ko"/>
+                <constraint firstItem="S5U-o4-Vvn" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="163" id="atj-Nq-knC"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="2nT-D5-1Ha" secondAttribute="bottom" constant="30" id="chZ-Rf-Dsu"/>
+            </constraints>
+            <point key="canvasLocation" x="90.839694656488547" y="-11.267605633802818"/>
+        </view>
+    </objects>
+</document>

@@ -10,6 +10,7 @@ import CloudKit
 
 class RecoveryPhraseViewController: UIViewController, Reusable {
     
+    @IBOutlet weak var lblReferalCode: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackSecretKey: UIStackView!
     @IBOutlet weak var btnDeleteBackup: UIButton!
@@ -30,6 +31,21 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
     var isFrom: BackupFrom = .wallets
     private var holdTimer: Timer?
     
+    lazy var viewModel: CoinGraphViewModel = {
+        CoinGraphViewModel { _ ,message in
+            self.showToast(message: message, font: .systemFont(ofSize: 15))
+//            self.btnContinue.HideLoader()
+            DGProgressView.shared.hideLoader()
+        }
+    }()
+    lazy var registerUserViewModel: RegisterUserViewModel = {
+        RegisterUserViewModel { _ ,message in
+            self.showToast(message: message, font: .systemFont(ofSize: 15))
+           // self.btnDone.HideLoader()
+            DGProgressView.shared.hideLoader()
+        }
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,7 +59,7 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
                 self.navigationController?.popViewController(animated: true)
             }
         })*/
-        defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.yourrecoveryphrase, comment: ""), btnBackAction: {
+        defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.selectPhrase, comment: ""), btnBackAction: {
             if self.wallet != nil {
                 if let walletRecoveryViewController = self.navigationController?.viewControllers.first(where: { $0 is WalletRecoveryViewController }) {
                     self.navigationController?.popToViewController(walletRecoveryViewController, animated: true)
@@ -52,8 +68,17 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
                 self.navigationController?.popViewController(animated: true)
             }
         })
+       
+//        self.btnContinue.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.continues, comment: ""), for: .normal)
         
-        self.btnContinue.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.continues, comment: ""), for: .normal)
+        let title = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.continues, comment: "")
+                let font = AppFont.violetRegular(18).value
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .font: font
+                ]
+
+                let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+                self.btnContinue.setAttributedTitle(attributedTitle, for: .normal)
         self.lblNeverShare.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.nevershareyoursecretphrasewithanyone, comment: "")
         self.btnCopy.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.copy, comment: ""), for: .normal)
         self.lblNeverShareDetail.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.neverShareSecretkeyWithAnyone, comment: "")
@@ -61,7 +86,7 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
         /// Collection Register
         registerCollection()
         
-        setupLongPressGestureRecognizer()
+//        setupLongPressGestureRecognizer()
         
         stackSecretKey.addTapGesture {
             let viewToNavigate = SecretPharseInfoPopUpViewController()
@@ -87,7 +112,9 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
             }
         }
 
-        self.viewMain.hideContentOnScreenCapture()
+      //  self.viewMain.hideContentOnScreenCapture()
+        lblNeverShare.font = AppFont.regular(11.98).value
+        lblHideshow.font = AppFont.violetRegular(14).value
     }
     
     override func viewDidLayoutSubviews() {
@@ -103,6 +130,11 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if let referralCode = UserDefaults.standard.string(forKey: "referralCode") {
+            
+            NSLog("referralCode: %@", referralCode)
+           // self.lblReferalCode.text = "\(referralCode)"
+        }
     }
     
     private func setupLongPressGestureRecognizer() {
@@ -111,6 +143,66 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
         longPressGestureRecognizer.allowableMovement = 10
         longPressGestureRecognizer.minimumPressDuration = 0.5
         blurView.addGestureRecognizer(longPressGestureRecognizer)
+    }
+    
+    fileprivate func walletCreation(_ coinList: [CoingechoCoinList]?,alreadyAddStaticToken:Bool) {
+        if wallet == nil {
+            let walletCount = (DatabaseHelper.shared.retrieveData("Wallets") as? [Wallets] ?? []).count + 1
+            print("walletCount =",walletCount)
+            var walletName = ""
+            if walletCount >= 0 {
+                walletName = "Main Wallet \(walletCount)"
+            } else {
+                walletName = "Main Wallet"
+            }
+            WalletData.shared.createWallet(walletName: walletName , mnemonicKey: mnemonic, isPrimary: true, isICloudBackup: false, isManualBackup: true,coinList: coinList,alreadyAddStaticToken: alreadyAddStaticToken) { status in
+
+                DGProgressView.shared.hideLoader()
+                if status {
+                    let fcmtoken = UserDefaults.standard.object(forKey: "fcm_Token") as? String ?? ""
+                    
+                    var deviceId = ""
+                    if let uuid = UIDevice.current.identifierForVendor?.uuidString {
+                       print("Device ID: \(uuid)")
+                        deviceId = uuid
+                    } else {
+                       print("Unable to retrieve device ID.")
+                    }
+                    UserDefaults.standard.setValue(true, forKey: DefaultsKey.isTransactionSignin)
+                    
+                    print("isTransactionSignin",UserDefaults.standard.string(forKey: DefaultsKey.isTransactionSignin) ?? false)
+                 
+                    self.registerUserViewModel.registerAPI(walletAddress: WalletData.shared.myWallet?.address ?? "", appType: 1,deviceId: deviceId,fcmToken: fcmtoken, type: "create", referralCode:self.lblReferalCode.text ?? "" ) { resStatus, message in
+                        
+                        UserDefaults.standard.removeObject(forKey: "referralCode")
+                      //  if resStatus == 1 {
+                            if !(UserDefaults.standard.object(forKey: DefaultsKey.homeButtonTip) as? Bool ?? false) {
+                                let viewToNavigate = WelcomeViewController()
+                                self.navigationController?.pushViewController(viewToNavigate, animated: true)
+                               
+                            } else {
+                                guard let appDelegate = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.delegate as? SceneDelegate else { return }
+                                                      
+                                                      let tabBarVC = TabBarViewController(interactor: appDelegate.interactor, app: appDelegate.app, configurationService: appDelegate.app.configurationService)
+                                                      window?.rootViewController = tabBarVC
+                                                      window?.makeKeyAndVisible()
+                            }
+//                        } else {
+//                            print("wallet not register")
+//                        } // resstatus if condition end
+                    }
+                }
+            }
+        } else {
+            DatabaseHelper.shared.updateData(entityName: "Wallets", predicateFormat: "wallet_id == %@", predicateArgs: [wallet?.wallet_id ?? ""]) { object in
+                if let wallet = object as? Wallets {
+                    wallet.isManualBackup = true
+                    if let walletRecoveryViewController = self.navigationController?.viewControllers.first(where: { $0 is WalletRecoveryViewController }) {
+                        self.navigationController?.popToViewController(walletRecoveryViewController, animated: true)
+                    }
+                }
+            }
+        }
     }
     
     @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
@@ -146,18 +238,36 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionContinue(_ sender: Any) {
-        
-        let viewToNavigate = VerifyRecoveryPhraseViewController()
+        HapticFeedback.generate(.light)
+       /* let viewToNavigate = VerifyRecoveryPhraseViewController()
         viewToNavigate.arrGuessSecretPhrase = self.arrSecretPhrase
         viewToNavigate.mnemonic = self.mnemonic
         viewToNavigate.wallet = self.wallet
         viewToNavigate.arrGuessSecretPhrase.shuffle()
-        self.navigationController?.pushViewController(viewToNavigate, animated: true)
+        self.navigationController?.pushViewController(viewToNavigate, animated: true)*/
+        
+        if DatabaseHelper.shared.entityIsEmpty("Token") {
+//            self.btnContinue.ShowLoader()
+            DGProgressView.shared.showLoader(to: view)
+            viewModel.apiCoinList { status, _, coinList in
+                if status {
+                    guard var coinListD = coinList else { return } // Unwrap optional and make it mutable
+
+                       // Remove items where symbol == "bnry"
+                    coinListD.removeAll { $0.symbol == "bnry" }
+                    self.walletCreation(coinListD, alreadyAddStaticToken: false)
+                } else {
+//                    self.btnContinue.HideLoader()
+                    DGProgressView.shared.hideLoader()
+                }
+            }
+        } else {
+            walletCreation([], alreadyAddStaticToken: true)
+        }
         
     }
-    
     @IBAction func actionDeleteiCloudBackup(_ sender: Any) {
-    
+        HapticFeedback.generate(.light)
         guard let iCloudContainerURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") else {
             let error = NSError(domain: "com.trustwallet.error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get iCloud container URL"])
             self.showICloudPopup()
@@ -227,6 +337,7 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
     
     @IBAction func actionCopy(_ sender: Any) {
         /// Copy recovery phrase to the clipboard
+        HapticFeedback.generate(.light)
         UIPasteboard.general.string = arrSecretPhrase.map({ $0.phrase }).joined(separator: " ")
         showToast(message: StringConstants.copied, font: AppFont.regular(15).value)
     }
@@ -249,5 +360,3 @@ class RecoveryPhraseViewController: UIViewController, Reusable {
         }
     }
 }
-
-

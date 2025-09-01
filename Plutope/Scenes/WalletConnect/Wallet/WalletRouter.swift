@@ -1,7 +1,7 @@
 import UIKit
 
-import Web3Wallet
-
+//import Web3Wallet
+import ReownWalletKit
 final class WalletRouter {
     weak var viewController: UIViewController!
 

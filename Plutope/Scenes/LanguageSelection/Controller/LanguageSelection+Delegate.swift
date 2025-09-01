@@ -13,7 +13,10 @@ import UIKit
 extension LanguageSelectionController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 1 {
+        HapticFeedback.generate(.light)
+        let cell = self.tblLanguages.dequeueReusableCell(indexPath: indexPath) as LanguageSelectionCell
+        cell.mainView.borderColor = UIColor.blue
+        if indexPath.row == 0 {
             LocalizationSystem.sharedInstance.setLanguage(languageCode: "hi")
             self.setSelectedLanguage(language: "hi")
         } else if indexPath.row == 2 {
@@ -29,6 +32,11 @@ extension LanguageSelectionController: UITableViewDelegate {
             LocalizationSystem.sharedInstance.setLanguage(languageCode: "en")
             self.setSelectedLanguage(language: "en")
         }
-        self.navigationController?.popViewController(animated: true)
+//        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true) {
+            self.delegate?.dismissPopup()
+            }
+
+//        self.dismiss(animated: true)Orefer
     }
 }

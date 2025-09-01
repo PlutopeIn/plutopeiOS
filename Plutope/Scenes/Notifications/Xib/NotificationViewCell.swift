@@ -13,6 +13,7 @@ class NotificationViewCell: UITableViewCell, Reusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        lblTitle.font = AppFont.regular(15).value
     }
     
 }

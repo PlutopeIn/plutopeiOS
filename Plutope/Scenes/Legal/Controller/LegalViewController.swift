@@ -25,7 +25,18 @@ class LegalViewController: UIViewController, Reusable {
         /// Navigation header
         defineHeader(headerView: headerView, titleText:LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.legal, comment: ""))
         
-        self.btnContinue.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.continues, comment: ""), for: .normal)
+//        self.btnContinue.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.continues, comment: ""), for: .normal)
+        
+        
+        let title = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.continues, comment: "")
+        let font = AppFont.violetRegular(18).value
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font
+        ]
+
+        let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+        self.btnContinue.setAttributedTitle(attributedTitle, for: .normal)
+        
         self.lblReviewPlutoPe.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.pleasereviewtheplutopetermsofservicesandprivacypolicy, comment: "")
         self.lblPrivacy.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.privacypolicy, comment: "")
         self.lblTermsOfService.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.termsofservice, comment: "")
@@ -37,35 +48,51 @@ class LegalViewController: UIViewController, Reusable {
         
         /// Default continue button will remain disabled
         if !isChecked {
+            self.btnContinue.backgroundColor = UIColor.darkGray
+            self.btnContinue.titleLabel?.textColor = UIColor.white
             self.btnContinue.alpha = 0.5
             self.btnContinue.isEnabled = false
         }
+        self.lblReviewPlutoPe.font = AppFont.regular(14).value
+        self.lblPrivacy.font = AppFont.violetRegular(16).value
+        self.lblTermsOfService.font = AppFont.violetRegular(16).value
+        self.lblMsg.font = AppFont.regular(14).value
     }
     
     @objc func agreementViewTapped(_ sender: UITapGestureRecognizer) {
+        HapticFeedback.generate(.light)
         isChecked.toggle()
         if isChecked {
-            self.ivCheckUncheck.image = UIImage.check
+            self.ivCheckUncheck.backgroundColor = UIColor.label
+            self.ivCheckUncheck.image = UIImage.check.sd_tintedImage(with: UIColor.label)
+            self.ivCheckUncheck.imageTintColor = UIColor.systemBackground
             self.btnContinue.alpha = 1
             self.btnContinue.isEnabled = true
+            self.btnContinue.backgroundColor = UIColor.label
+            self.btnContinue.titleLabel?.textColor = UIColor.systemBackground
         } else {
-            self.ivCheckUncheck.image = UIImage.uncheck
+            self.ivCheckUncheck.backgroundColor = UIColor.clear
+            self.ivCheckUncheck.image = UIImage.uncheck.sd_tintedImage(with: UIColor.label)
+//            self.ivCheckUncheck.imageTintColor = .lightText
             self.btnContinue.alpha = 0.5
             self.btnContinue.isEnabled = false
+            self.btnContinue.backgroundColor = UIColor.darkGray
+            self.btnContinue.titleLabel?.textColor = UIColor.white
         }
     }
     
     @objc func privacyPolicyTapped(_ sender: UITapGestureRecognizer) {
-        //showWebView(for: URLs.privacyUrl, onVC: self, title: StringConstants.privacyPolicy)
+        HapticFeedback.generate(.light)
         showWebView(for: URLs.privacyUrl, onVC: self, title:  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.privacypolicy, comment: ""))
     }
     
     @objc func termsConditionTapped(_ sender: UITapGestureRecognizer) {
-        //showWebView(for: URLs.termConditionUrl, onVC: self, title: StringConstants.termCondition)
+        HapticFeedback.generate(.light)
         showWebView(for: URLs.termConditionUrl, onVC: self, title:  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.termsofservice, comment: ""))
     }
     
     @IBAction func actionContinue(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = CreatePasscodeViewController()
         self.navigationController?.pushViewController(viewToNavigate, animated: true)
     }

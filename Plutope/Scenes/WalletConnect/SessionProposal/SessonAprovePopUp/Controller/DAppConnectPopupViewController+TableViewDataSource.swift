@@ -13,14 +13,14 @@ import SDWebImage
 extension DAppConnectPopupViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return  self.chainsArray.count
+        return  self.filteredChainsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tbvChainType.dequeueReusableCell(indexPath: indexPath) as WalletConnectPopupTbvCell
         
         cell.selectionStyle = .none
-        let data = self.chainsArray[indexPath.row]
+        let data = self.filteredChainsArray[indexPath.row]
         cell.ivConnection.isHidden = true
         cell.ivAccessblity.isHidden = true
         cell.lblUrl.text = WalletData.shared.myWallet?.address
@@ -34,6 +34,19 @@ extension DAppConnectPopupViewController : UITableViewDataSource {
             configureCell(for: cell, with: Chain.polygon)
         case "eip155:66":
             configureCell(for: cell, with: Chain.oKC)
+//        case "eip155:10":
+//            configureCell(for: cell, with: Chain.opMainnet)
+        case "eip155:10":
+            configureCell(for: cell, with: Chain.opMainnet)
+        case "eip155:42161":
+            configureCell(for: cell, with: Chain.arbitrum)
+        case "eip155:43114":
+            configureCell(for: cell, with: Chain.avalanche)
+        case "eip155:8453":
+            configureCell(for: cell, with: Chain.base)
+//        case "eip155:97":
+//            configureCell(for: cell, with: Chain.binanceSmartChain)
+
         default:
             break
         }
@@ -45,35 +58,8 @@ extension DAppConnectPopupViewController : UITableViewDataSource {
         cell.lblName.text = chain.name
         cell.ivWallet.sd_setImage(with: URL(string: chain.icon), placeholderImage: UIImage(named:" "))
     }
-
-    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//        let cell = tbvChainType.dequeueReusableCell(indexPath: indexPath) as WalletConnectPopupTbvCell
-//        cell.selectionStyle = .none
-//        let data = self.chainsArray[indexPath.row]
-//        cell.ivConnection.isHidden = true
-//        cell.ivAccessblity.isHidden = true
-//        cell.lblUrl.text = WalletData.shared.myWallet?.address
-//
-//        if data == "eip155:56" {
-//            cell.lblName.text = Chain.binanceSmartChain.name
-//            cell.ivWallet.sd_setImage(with: URL(string: "\(Chain.binanceSmartChain.icon)"), placeholderImage: UIImage.icBnb)
-////            cell.ivWallet.image = UIImage(named: Chain.binanceSmartChain.icon)
-//        } else if data == "eip155:1" {
-//            cell.lblName.text = Chain.ethereum.name
-//            cell.ivWallet.sd_setImage(with: URL(string: "\(Chain.ethereum.icon)"), placeholderImage: UIImage.icEth)
-////            cell.ivWallet.image = UIImage(named:Chain.ethereum.icon)
-//        } else if data == "eip155:137" {
-//            cell.lblName.text = Chain.polygon.name
-//            cell.ivWallet.sd_setImage(with: URL(string: "\(Chain.polygon.icon)"), placeholderImage: UIImage.icPolygon)
-////            cell.ivWallet.image = UIImage(named:Chain.polygon.icon)
-//        } else if data == "eip155:66" {
-//            cell.lblName.text = Chain.oKC.name
-//            cell.ivWallet.sd_setImage(with: URL(string: "\(Chain.oKC.icon)"), placeholderImage: UIImage.icOkc)
-////            cell.ivWallet.image = UIImage(named:Chain.oKC.icon)
-//        }
-//
-//        return cell
-//    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.view.layoutIfNeeded()
+        tbvHeight.constant = tbvChainType.contentSize.height
+    }
 }

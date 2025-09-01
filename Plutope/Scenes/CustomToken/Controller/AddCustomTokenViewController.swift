@@ -13,7 +13,7 @@ class AddCustomTokenViewController: UIViewController {
     @IBOutlet weak var btnSelectChain: UIButton!
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var viewContractAddress: UIView!
-    @IBOutlet weak var btnSave: GradientButton!
+    @IBOutlet weak var btnSave: UIButton!
     @IBOutlet weak var lblChain: UILabel!
     @IBOutlet weak var txtDecimal: customTextField!
     @IBOutlet weak var txtTokenSymbol: customTextField!
@@ -26,6 +26,8 @@ class AddCustomTokenViewController: UIViewController {
     @IBOutlet weak var lblAdd: UILabel!
     @IBOutlet weak var btnPaste: UIButton!
     @IBOutlet weak var lblNetworkText: UILabel!
+    @IBOutlet weak var viewWarning: UIView!
+    @IBOutlet weak var lblNetworkHead: UILabel!
     var primaryWallet: Wallets?
     lazy var coinDetail: Token? = nil
     weak var enabledTokenDelegate: EnabledTokenDelegate?
@@ -38,17 +40,50 @@ class AddCustomTokenViewController: UIViewController {
         defineHeader(headerView: headerView, titleText: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.addcustomtoken, comment: ""))
         self.btnCancel.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: ""), for: .normal)
         self.btnSave.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.save, comment: ""), for: .normal)
-        self.btnWhatIsCustomToken.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.whatiscustomtoken, comment: ""), for: .normal)
+//        self.btnWhatIsCustomToken.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.whatiscustomtoken, comment: ""), for: .normal)
+        
+        let dynamicColor = UIColor { (traits) -> UIColor in
+                    return traits.userInterfaceStyle == .dark ? UIColor.white : UIColor.black
+                }
+        
+        let title = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.whatiscustomtoken, comment: "")
+        let attributes: [NSAttributedString.Key: Any] = [
+                    .underlineStyle: NSUnderlineStyle.single.rawValue,
+                    .foregroundColor: dynamicColor
+                ]
+        let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+
+        // Set the attributed title for the button
+        self.btnWhatIsCustomToken.setAttributedTitle(attributedTitle, for: .normal)
+        
         self.lblWarningAnyoneCan.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.anyOneCanCreateTokenIncludingFakeVersions, comment: "")
-        self.txtDecimal.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.decimals, comment: "")
-        self.txtTokenName.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.name, comment: "")
-        self.txtTokenSymbol.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.symbol, comment: "")
-        self.txtContractAddress.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.contractAddress, comment: "")
-        self.lblAdd.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.add, comment: "")
-        self.lblNetworkText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.network, comment: "")
+        self.txtDecimal.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.tokendecimals, comment: "")
+        self.txtTokenName.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.tokenname, comment: "")
+        self.txtTokenSymbol.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.tokensymbol, comment: "")
+        self.txtContractAddress.placeholder = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.tokencontractAddress, comment: "")
+        self.lblAdd.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.adddetails, comment: "")
+       self.lblNetworkText.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.network, comment: "")
         self.btnPaste.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.paste, comment: ""), for: .normal)
         setTargetAndView()
         
+//        let dynamicRedColor = UIColor { traitCollection in
+//            return traitCollection.userInterfaceStyle == .dark ? UIColor(red: 128/255, green: 0/255, blue: 2/255, alpha: 1.0) : UIColor(red: 255/255, green: 0/255, blue: 4/255, alpha: 1.0)
+//        }
+//        viewWarning.backgroundColor = dynamicRedColor
+        
+        lblNetworkHead.font = AppFont.violetRegular(16).value
+        lblNetworkText.font = AppFont.violetRegular(15).value
+        lblAdd.font = AppFont.violetRegular(15).value
+        lblWarningAnyoneCan.font = AppFont.regular(12).value
+        
+        let dynamicRedColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor(red: 255/255, green: 0/255, blue: 4/255, alpha: 0.06) // Color for dark mode
+                : UIColor(red: 255/255, green: 0/255, blue: 4/255, alpha: 0.06) // Color for light mode
+        }
+
+        viewWarning.backgroundColor = dynamicRedColor
+
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -98,7 +133,8 @@ class AddCustomTokenViewController: UIViewController {
             self.txtTokenName.text = coinDetail?.name ?? ""
             self.txtDecimal.text = "\(coinDetail?.decimals ?? 0)"
             self.txtTokenSymbol.text = coinDetail?.symbol ?? ""
-            self.lblChain.text = coinDetail?.chain?.name ?? ""
+//            self.lblChain.text = coinDetail?.chain?.name ?? ""
+            self.lblNetworkText.text = coinDetail?.chain?.name ?? ""
             for textFields in [self.txtTokenName,self.txtDecimal,self.txtTokenSymbol,self.txtContractAddress] {
                 textFields?.isUserInteractionEnabled = false
                 textFields?.alpha = 0.5
@@ -115,6 +151,7 @@ class AddCustomTokenViewController: UIViewController {
     
     /// actionCustomToken
     @IBAction func actionWhatCustomToken(_ sender: Any) {
+        HapticFeedback.generate(.light)
         // showWebView(for: URLs.customTokenUrl, onVC: self, title: StringConstants.whatIsCustomToken)
         showWebView(for: URLs.customTokenUrl, onVC: self, title:  LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.whatiscustomtoken, comment: ""))
     }
@@ -130,10 +167,12 @@ class AddCustomTokenViewController: UIViewController {
         onVC.present(navVC, animated: true)
     }
     @IBAction func actionCancel(_ sender: Any) {
+        HapticFeedback.generate(.light)
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func actionPaste(_ sender: Any) {
+        HapticFeedback.generate(.light)
         txtContractAddress.text = ""
         if let copiedText = UIPasteboard.general.string, copiedText.validateContractAddress() {
             DGProgressView.shared.showLoader(to: self.view)
@@ -148,6 +187,7 @@ class AddCustomTokenViewController: UIViewController {
     }
     
     @IBAction func actionSave(_ sender: Any) {
+        HapticFeedback.generate(.light)
         if txtContractAddress.text?.validateContractAddress() ?? false {
             
             if viewContractAddress.isUserInteractionEnabled {
@@ -161,7 +201,7 @@ class AddCustomTokenViewController: UIViewController {
                 
                 // Create a new Token entity
                 let tokenEntity = Token(context: DatabaseHelper.shared.context)
-                tokenEntity.address = txtContractAddress.text ?? ""
+                tokenEntity.address = txtContractAddress.text?.lowercased() ?? ""
                 tokenEntity.name = txtTokenName.text ?? ""
                 tokenEntity.symbol = txtTokenSymbol.text
                 tokenEntity.decimals = Int64(txtDecimal.text ?? "") ?? 0
@@ -174,6 +214,14 @@ class AddCustomTokenViewController: UIViewController {
                     logo = "ic_polygon"
                 } else if coinDetail?.type ?? "" == "KIP20" {
                     logo = "ic_kip"
+                } else if coinDetail?.type ?? "" == "OP Mainnet" {
+                    logo = "ic_op"
+                } else if coinDetail?.type ?? "" == "Arbitrum" {
+                    logo = "ic_arbitrum"
+                } else if coinDetail?.type ?? "" == "Avalanche" {
+                    logo = "ic_avalanche"
+                } else if coinDetail?.type ?? "" == "Base" {
+                    logo = "ic_base"
                 }
                 print(logo)
                 tokenEntity.logoURI = logo
@@ -183,7 +231,6 @@ class AddCustomTokenViewController: UIViewController {
                 tokenEntity.lastPriceChangeImpact = "0"
                 tokenEntity.isEnabled = false
                 tokenEntity.tokenId = self.tokenId
-                tokenEntity.tokenId = ""
                 tokenEntity.isUserAdded = true
                 
                 walletTokenEntity.tokens = tokenEntity
@@ -250,12 +297,15 @@ class AddCustomTokenViewController: UIViewController {
 //        self.present(scanner, animated: true, completion: nil)
 //    }
     @IBAction func btnScanAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         switch status {
         case .authorized:
+            DispatchQueue.main.async {
             let scanner = QRScannerViewController()
             scanner.delegate = self
             self.present(scanner, animated: true, completion: nil)
+            }
         case .denied, .restricted:
             self.showCameraSettingsAlert()
         case .notDetermined:
@@ -295,6 +345,7 @@ class AddCustomTokenViewController: UIViewController {
     }
     
     @IBAction func btnSelectChainAction(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let vcToPresent = BuyCoinListViewController()
         vcToPresent.isFrom = .addCustomToken
         vcToPresent.selectNetworkDelegate = self

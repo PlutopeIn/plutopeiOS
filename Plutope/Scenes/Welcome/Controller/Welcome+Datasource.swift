@@ -24,16 +24,16 @@ extension WelcomeViewController: UICollectionViewDelegate, UICollectionViewDataS
         
         if indexPath.row == 0 {
             cell.image.isHidden = false
-            cell.animationView.isHidden = true
+//            cell.animationView.isHidden = true
         } else {
-            cell.image.isHidden = true
-            cell.animationView.isHidden = false
+            cell.image.isHidden = false
+//            cell.animationView.isHidden = false
         }
         
         cell.image.image = data.image
-        cell.animationView.animation = LottieAnimation.named(data.animation)
-        cell.animationView.loopMode = .loop
-        cell.animationView.contentMode = .scaleAspectFit
+//        cell.animationView.animation = LottieAnimation.named(data.animation)
+//        cell.animationView.loopMode = .loop
+//        cell.animationView.contentMode = .scaleAspectFit
         
         return cell
     }
@@ -51,29 +51,35 @@ extension WelcomeViewController: UICollectionViewDelegate, UICollectionViewDataS
         self.pageControl.currentPage = Int(self.clvWelcomeViews.contentOffset.x / width)
         if pageControl.currentPage == arrWelcome.count - 1 {
             lblNext.isHidden = false
-            viewNext.isHidden = false
+            imgNext.superview?.isHidden = true
+            heightBtnNext.constant = 50
+            heightPageCon.constant = 10
+//            viewNext.isHidden = false
         } else {
             lblNext.isHidden = true
-            viewNext.isHidden = true
+            imgNext.superview?.isHidden = false
+            heightBtnNext.constant = 0
+            heightPageCon.constant = 0
+//            viewNext.isHidden = true
         }
     }
 
     /// Play animation when view will be scrolled
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let animatedCell = cell as? WelcomeViewCell {
-            let animationView = animatedCell.animationView
-            animationView?.play()
-            print("DEBUG: PLAY ANIMATION \(animatedCell.lblTitle.text ?? "")")
-        }
+//        if let animatedCell = cell as? WelcomeViewCell {
+//            let animationView = animatedCell.animationView
+//            animationView?.play()
+//            print("DEBUG: PLAY ANIMATION \(animatedCell.lblTitle.text ?? "")")
+//        }
     }
     
     /// Stop animation when view will be scrolled
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let animatedCell = cell as? WelcomeViewCell {
-            let animationView = animatedCell.animationView
-            animationView?.stop()
-            print("DEBUG: STOP ANIMATION \(animatedCell.lblTitle.text ?? "")")
-        }
+//        if let animatedCell = cell as? WelcomeViewCell {
+//            let animationView = animatedCell.animationView
+//            animationView?.stop()
+//            print("DEBUG: STOP ANIMATION \(animatedCell.lblTitle.text ?? "")")
+//        }
     }
 
 }

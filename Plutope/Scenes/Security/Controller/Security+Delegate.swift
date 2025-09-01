@@ -8,6 +8,7 @@ import UIKit
 // MARK: UITableViewDelegate methods
 extension SecurityViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        HapticFeedback.generate(.light)
         switch indexPath.row {
         case 1:
             let destinationVC = LockMethodViewController()

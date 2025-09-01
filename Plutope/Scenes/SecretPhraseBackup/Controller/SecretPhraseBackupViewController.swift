@@ -18,9 +18,19 @@ class SecretPhraseBackupViewController: UIViewController, Reusable {
         super.viewDidLoad()
         
         /// Navigation header
-        defineHeader(headerView: headerView, titleText: "")
+        defineHeader(headerView: headerView, titleText: "Secret Phrase")
         self.lblSecretPhraseBackup.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.secretphrasebackup, comment: "")
-        self.btnBackUpManually.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.backupmanually, comment: ""), for: .normal)
+//        self.btnBackUpManually.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.backupmanually, comment: ""), for: .normal)
+        
+        let title = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.backupmanually, comment: "")
+        let font = AppFont.violetRegular(18).value
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font
+        ]
+
+        let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+        self.btnBackUpManually.setAttributedTitle(attributedTitle, for: .normal)
+        
         self.lblSecretPhraseBackupDetail.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.yourSecretPhraseIsMasterkeytoyourWallet, comment: "")
         
         
@@ -28,6 +38,9 @@ class SecretPhraseBackupViewController: UIViewController, Reusable {
         animationView.loopMode = .loop
         animationView.animationSpeed = 1
         animationView.contentMode = .scaleAspectFill
+        lblSecretPhraseBackup.font = AppFont.violetRegular(32).value
+        lblSecretPhraseBackupDetail.font = AppFont.regular(14).value
+        lblSecretPhraseBackupDetail.addSpacing(LineHeight: 10, CharacterSpacing: nil, range: .none)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,11 +54,13 @@ class SecretPhraseBackupViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionBackUpManually(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = BackupWalletViewController()
         self.navigationController?.pushViewController(viewToNavigate, animated: true)
     }
     
     @IBAction func actionBackupToCloud(_ sender: Any) {
+        HapticFeedback.generate(.light)
         let viewToNavigate = NameYourBackupViewController()
         self.navigationController?.pushViewController(viewToNavigate, animated: true)
     }

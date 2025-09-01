@@ -1,16 +1,16 @@
 import Combine
 
-import Web3Wallet
+import ReownWalletKit
 
 final class ConnectionDetailsInteractor {
-    var requestPublisher: AnyPublisher<(request: AuthRequest, context: VerifyContext?), Never> {
-        return Web3Wallet.instance.authRequestPublisher
-    }
+//    var requestPublisher: AnyPublisher<(request: AuthRequest, context: VerifyContext?), Never> {
+//        return WalletKit.instance.authRequestPublisher
+//    }
         func pair(uri: WalletConnectURI) async throws {
-        try await Web3Wallet.instance.pair(uri: uri)
+        try await WalletKit.instance.pair(uri: uri)
     }
     
     func disconnectSession(session: Session) async throws {
-        try await Web3Wallet.instance.disconnect(topic: session.topic)
+        try await WalletKit.instance.disconnect(topic: session.topic)
     }
 }

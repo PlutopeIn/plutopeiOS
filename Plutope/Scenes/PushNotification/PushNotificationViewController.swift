@@ -33,6 +33,9 @@ class PushNotificationViewController: UIViewController {
         self.btnCancel.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.cancel, comment: ""), for: .normal)
         self.btnDelete.setTitle(LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.deletewallet, comment: ""), for: .normal)
         
+        lblTitle.font = AppFont.regular(20).value
+        lblMessage.font = AppFont.regular(13).value
+        
         configureUIElements()
     }
     
@@ -41,7 +44,7 @@ class PushNotificationViewController: UIViewController {
             lblTitle.text = data.title
             lblTitle.isHidden = data.hideTitle
             
-            lblMessage.textColor =  lblTitle.isHidden ? UIColor.white : UIColor.c75769D
+            lblMessage.textColor =  lblTitle.isHidden ? UIColor.secondaryLabel : UIColor.secondaryLabel
             
             lblMessage.text = data.description
             lblMessage.isHidden = data.hideDesc
@@ -65,10 +68,12 @@ class PushNotificationViewController: UIViewController {
     }
     
     @IBAction func actionCross(_ sender: Any) {
+        HapticFeedback.generate(.light)
         self.dismiss(animated: true)
     }
     
     @IBAction func actionCancel(_ sender: Any) {
+        HapticFeedback.generate(.light)
         if alertData == .swapping {
             self.dismiss(animated: true) {
                 self.okAction?()
@@ -79,6 +84,7 @@ class PushNotificationViewController: UIViewController {
     }
     
     @IBAction func actionDelete(_ sender: Any) {
+        HapticFeedback.generate(.light)
         deleteAction?()
     }
 }

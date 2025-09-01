@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -38,9 +38,8 @@
                     <rect key="frame" x="0.0" y="109" width="393" height="709"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Multi-Coin Wallets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jh-vI-K7d">
-                            <rect key="frame" x="16" y="30" width="92.333333333333329" height="14"/>
+                            <rect key="frame" x="16" y="30" width="98" height="14"/>
                             <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="12"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="o9W-y0-YuL">
@@ -52,15 +51,21 @@
                     <constraints>
                         <constraint firstItem="9jh-vI-K7d" firstAttribute="leading" secondItem="7w6-3j-f8g" secondAttribute="leading" constant="16" id="4No-Pf-Ghy"/>
                         <constraint firstItem="9jh-vI-K7d" firstAttribute="top" secondItem="7w6-3j-f8g" secondAttribute="top" constant="30" id="EDm-qT-4yb"/>
+                        <constraint firstItem="o9W-y0-YuL" firstAttribute="top" secondItem="7w6-3j-f8g" secondAttribute="top" constant="52" id="Fj7-7j-45M"/>
                         <constraint firstItem="o9W-y0-YuL" firstAttribute="top" secondItem="9jh-vI-K7d" secondAttribute="bottom" constant="8" id="STX-zY-fcq"/>
                         <constraint firstAttribute="trailing" secondItem="o9W-y0-YuL" secondAttribute="trailing" id="Ypx-Gi-oAo"/>
                         <constraint firstAttribute="bottom" secondItem="o9W-y0-YuL" secondAttribute="bottom" constant="20" id="hOA-lw-8oa"/>
                         <constraint firstItem="o9W-y0-YuL" firstAttribute="leading" secondItem="7w6-3j-f8g" secondAttribute="leading" id="jUN-Zz-HHt"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="9jh-vI-K7d"/>
+                        </mask>
+                    </variation>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" name="#0C0D2D"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="7w6-3j-f8g" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="3MZ-WU-cmP"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="7w6-3j-f8g" secondAttribute="bottom" id="5sw-Oh-qaV"/>
@@ -74,8 +79,8 @@
         </view>
     </objects>
     <resources>
-        <namedColor name="#0C0D2D">
-            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

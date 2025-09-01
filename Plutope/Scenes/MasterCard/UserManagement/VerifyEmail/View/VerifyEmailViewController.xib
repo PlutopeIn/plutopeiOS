@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_bold.ttf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+        <array key="SFPro_medium.ttf">
+            <string>SFProDisplay-Medium</string>
+        </array>
+        <array key="SFPro_regular.ttf">
+            <string>SFProDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VerifyEmailViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="btnNext" destination="f2b-pw-qdB" id="azC-hf-ZJP"/>
+                <outlet property="headerView" destination="g5S-5b-xUt" id="YZS-Nt-qqQ"/>
+                <outlet property="lblMsg" destination="4tQ-p7-9c7" id="g26-w0-xzU"/>
+                <outlet property="lblTitle" destination="Wfw-8w-ac6" id="D3l-zi-jEc"/>
+                <outlet property="txtEmail" destination="GUf-WQ-iO2" id="yDC-Fj-Itr"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g5S-5b-xUt">
+                    <rect key="frame" x="0.0" y="59" width="393" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="BR8-97-ago"/>
+                    </constraints>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zvk-cu-luc">
+                    <rect key="frame" x="0.0" y="129" width="393" height="689"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bXh-hK-GDI">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="689"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="OMf-gD-MN8">
+                                    <rect key="frame" x="23" y="9.9999999999999964" width="347" height="52.666666666666657"/>
+                                    <subviews>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your email" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wfw-8w-ac6">
+                                            <rect key="frame" x="75.666666666666671" y="0.0" width="195.66666666666663" height="34"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="34" id="Ucm-xX-hDT"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="27"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will send your verification link, verify your email to receive communications about your account or subscriptions." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4tQ-p7-9c7">
+                                            <rect key="frame" x="2" y="0.0" width="343" height="52.666666666666664"/>
+                                            <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="15"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2b-pw-qdB">
+                                    <rect key="frame" x="30" y="589" width="333" height="50"/>
+                                    <color key="backgroundColor" systemColor="labelColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" id="tvq-eI-peJ"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="18"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Continue">
+                                        <color key="titleColor" systemColor="systemBackgroundColor"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornderRadius">
+                                            <real key="value" value="25"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="25"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="actionNext:" destination="-1" eventType="touchUpInside" id="rn4-tV-sLn"/>
+                                    </connections>
+                                </button>
+                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter your email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GUf-WQ-iO2" customClass="customTextField" customModule="Plutope" customModuleProvider="target">
+                                    <rect key="frame" x="23" y="92.666666666666657" width="347" height="54"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="54" id="6M3-Ja-dP6"/>
+                                    </constraints>
+                                    <color key="textColor" systemColor="systemBackgroundColor"/>
+                                    <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="15"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="18"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="leftSpacing">
+                                            <real key="value" value="20"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="rightSpacing">
+                                            <real key="value" value="30"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
+                                            <color key="value" systemColor="placeholderTextColor"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                            <real key="value" value="1"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                            <color key="value" systemColor="systemGray3Color"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </textField>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="OMf-gD-MN8" firstAttribute="top" secondItem="bXh-hK-GDI" secondAttribute="top" constant="10" id="8QN-w4-vAU"/>
+                                <constraint firstItem="GUf-WQ-iO2" firstAttribute="leading" secondItem="bXh-hK-GDI" secondAttribute="leading" constant="23" id="CpG-J9-UQO"/>
+                                <constraint firstAttribute="bottom" secondItem="f2b-pw-qdB" secondAttribute="bottom" constant="50" id="Eer-Um-0QA"/>
+                                <constraint firstAttribute="trailing" secondItem="OMf-gD-MN8" secondAttribute="trailing" constant="23" id="FQc-SX-7wE"/>
+                                <constraint firstItem="GUf-WQ-iO2" firstAttribute="top" secondItem="OMf-gD-MN8" secondAttribute="bottom" constant="30" id="Kio-qg-3gz"/>
+                                <constraint firstAttribute="trailing" secondItem="f2b-pw-qdB" secondAttribute="trailing" constant="30" id="VDz-PM-53V"/>
+                                <constraint firstItem="OMf-gD-MN8" firstAttribute="leading" secondItem="bXh-hK-GDI" secondAttribute="leading" constant="23" id="X3q-or-eqH"/>
+                                <constraint firstItem="f2b-pw-qdB" firstAttribute="leading" secondItem="bXh-hK-GDI" secondAttribute="leading" constant="30" id="cRO-yq-6Do"/>
+                                <constraint firstAttribute="trailing" secondItem="GUf-WQ-iO2" secondAttribute="trailing" constant="23" id="nmW-0r-Lad"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="bXh-hK-GDI" secondAttribute="trailing" id="Caz-XW-euB"/>
+                        <constraint firstAttribute="bottom" secondItem="bXh-hK-GDI" secondAttribute="bottom" id="EcL-FW-Yow"/>
+                        <constraint firstItem="bXh-hK-GDI" firstAttribute="width" secondItem="zvk-cu-luc" secondAttribute="width" id="P3S-Sc-5h0"/>
+                        <constraint firstItem="bXh-hK-GDI" firstAttribute="height" secondItem="zvk-cu-luc" secondAttribute="height" priority="250" id="Qi7-bN-TlI"/>
+                        <constraint firstItem="bXh-hK-GDI" firstAttribute="leading" secondItem="zvk-cu-luc" secondAttribute="leading" id="sxe-3f-Kiu"/>
+                        <constraint firstItem="bXh-hK-GDI" firstAttribute="top" secondItem="zvk-cu-luc" secondAttribute="top" id="uF0-gZ-21m"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="zvk-cu-luc" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="26R-34-nM5"/>
+                <constraint firstItem="zvk-cu-luc" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Okn-Yy-AA1"/>
+                <constraint firstAttribute="trailing" secondItem="g5S-5b-xUt" secondAttribute="trailing" id="Rr1-3C-LPz"/>
+                <constraint firstItem="g5S-5b-xUt" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="X6E-2y-OXA"/>
+                <constraint firstItem="g5S-5b-xUt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="jAD-nN-dEq"/>
+                <constraint firstItem="zvk-cu-luc" firstAttribute="top" secondItem="g5S-5b-xUt" secondAttribute="bottom" id="mWv-Qr-HW6"/>
+                <constraint firstItem="zvk-cu-luc" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="zu2-g6-9qb"/>
+            </constraints>
+            <point key="canvasLocation" x="64.885496183206101" y="-11.267605633802818"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="GUf-WQ-iO2">
+            <size key="intrinsicContentSize" width="108.66666666666667" height="19.333333333333332"/>
+        </designable>
+    </designables>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="placeholderTextColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray3Color">
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

@@ -21,18 +21,27 @@ extension BackupWalletViewController: UITableViewDataSource {
         cell.lblWarning.text = data.warning
         
         if data.isChecked {
+//            cell.ivCheck.image = UIImage.newcheck
             cell.ivCheck.image = UIImage.check
+            cell.ivCheck.imageTintColor = UIColor.systemBackground
+            cell.ivCheck.backgroundColor = UIColor.label
             
         } else {
             cell.ivCheck.image = UIImage.uncheck
+            cell.ivCheck.imageTintColor = UIColor.label
+            cell.ivCheck.backgroundColor = UIColor.clear
         }
         
         if arrWarnings.allSatisfy({ $0.isChecked }) {
             btnContinue.alpha = 1
             btnContinue.isUserInteractionEnabled = true
+            self.btnContinue.backgroundColor = UIColor.label
+            self.btnContinue.titleLabel?.textColor = UIColor.systemBackground
         } else {
             btnContinue.alpha = 0.5
             btnContinue.isUserInteractionEnabled = false
+            self.btnContinue.backgroundColor = UIColor.darkGray
+            self.btnContinue.titleLabel?.textColor = UIColor.white
         }
         
         return cell

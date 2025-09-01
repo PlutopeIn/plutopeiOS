@@ -8,6 +8,7 @@ import UIKit
 extension CurrencyViewController: UITableViewDelegate {
    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        HapticFeedback.generate(.light)
         guard let data = arrCurrency?[indexPath.row] else { return }
         guard let proto = self.delegate else { return }
         

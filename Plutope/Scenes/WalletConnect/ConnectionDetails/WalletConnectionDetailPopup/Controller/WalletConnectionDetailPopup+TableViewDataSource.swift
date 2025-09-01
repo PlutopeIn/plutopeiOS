@@ -11,13 +11,13 @@ import SDWebImage
 // MARK: UITableViewDataSource Methods
 extension WalletConnectionDetailPopup : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.chainsArray.count
+        return self.filteredChainsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tbvAccount.dequeueReusableCell(indexPath: indexPath) as WalletConnectPopupTbvCell
         cell.selectionStyle = .none
-        let data = self.chainsArray[indexPath.row]
+        let data = self.filteredChainsArray[indexPath.row]
         print(data)
         cell.ivConnection.isHidden = true
         cell.ivAccessblity.isHidden = true
@@ -35,6 +35,9 @@ extension WalletConnectionDetailPopup : UITableViewDataSource {
         } else if data == "eip155:66" {
             cell.lblName.text = Chain.oKC.name
             cell.ivWallet.sd_setImage(with: URL(string: "\(Chain.oKC.icon)"), placeholderImage: UIImage.icOkc)
+        } else if data == "eip155:97" {
+            cell.lblName.text = Chain.binanceSmartChain.name
+            cell.ivWallet.sd_setImage(with: URL(string: "\(Chain.binanceSmartChain.icon)"), placeholderImage: UIImage.icBnb)
         }
         
 //        switch data {

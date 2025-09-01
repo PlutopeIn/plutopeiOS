@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_bold.ttf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardViewController" customModule="Plutope" customModuleProvider="target">
+            <connections>
+                <outlet property="animationView" destination="Lfe-JE-hFX" id="lTd-HA-7RP"/>
+                <outlet property="btnGetCard" destination="gCU-SI-4p0" id="S15-52-ntf"/>
+                <outlet property="btnHome" destination="Edo-X7-3FM" id="bDt-RW-3RH"/>
+                <outlet property="constantTbvHeight" destination="MQf-ki-AIU" id="jaS-y0-aNK"/>
+                <outlet property="headerView" destination="58b-il-C8n" id="Ybb-JP-dq2"/>
+                <outlet property="tbvTransactions" destination="LUh-Yv-TKX" id="BYA-Lg-Sco"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="58b-il-C8n">
+                    <rect key="frame" x="0.0" y="59" width="393" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="WR9-bQ-cpe"/>
+                    </constraints>
+                </view>
+                <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dhg-Ka-TVR">
+                    <rect key="frame" x="0.0" y="129" width="393" height="723"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6SH-DY-vkO">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="415"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2vr-ed-80A">
+                                    <rect key="frame" x="18" y="30" width="357" height="215"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cardBackground" translatesAutoresizingMaskIntoConstraints="NO" id="NJ7-gt-gJQ">
+                                            <rect key="frame" x="-20" y="-10" width="397" height="235"/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gCU-SI-4p0" customClass="GradientButton" customModule="Plutope" customModuleProvider="target">
+                                            <rect key="frame" x="114.66666666666666" y="82.666666666666657" width="128" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="128" id="HTB-3j-K14"/>
+                                                <constraint firstAttribute="height" constant="50" id="Oe9-TD-e6A"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="15"/>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" title="Get Card">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
+                                                    <color key="value" name="#121C3D"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
+                                                    <color key="value" name="#00C6FB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornderRadius">
+                                                    <real key="value" value="25"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="actionGetCard:" destination="-1" eventType="touchUpInside" id="S9x-I9-rYr"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstItem="gCU-SI-4p0" firstAttribute="centerX" secondItem="2vr-ed-80A" secondAttribute="centerX" id="9g6-Pp-Nhw"/>
+                                        <constraint firstItem="NJ7-gt-gJQ" firstAttribute="leading" secondItem="2vr-ed-80A" secondAttribute="leading" constant="-20" id="CKy-WP-MqR"/>
+                                        <constraint firstAttribute="bottom" secondItem="NJ7-gt-gJQ" secondAttribute="bottom" constant="-10" id="DAm-Ac-s2D"/>
+                                        <constraint firstAttribute="height" constant="215" id="Ldx-Cl-RJr"/>
+                                        <constraint firstAttribute="trailing" secondItem="NJ7-gt-gJQ" secondAttribute="trailing" constant="-20" id="cub-wa-KrN"/>
+                                        <constraint firstItem="gCU-SI-4p0" firstAttribute="centerY" secondItem="2vr-ed-80A" secondAttribute="centerY" id="kvF-o8-iSZ"/>
+                                        <constraint firstItem="NJ7-gt-gJQ" firstAttribute="top" secondItem="2vr-ed-80A" secondAttribute="top" constant="-10" id="oWb-TI-STK"/>
+                                    </constraints>
+                                </view>
+                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="LUh-Yv-TKX">
+                                    <rect key="frame" x="0.0" y="255" width="393" height="150"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="150" id="MQf-ki-AIU"/>
+                                    </constraints>
+                                </tableView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="LUh-Yv-TKX" firstAttribute="top" secondItem="2vr-ed-80A" secondAttribute="bottom" constant="10" id="5J3-p6-CMX"/>
+                                <constraint firstItem="LUh-Yv-TKX" firstAttribute="leading" secondItem="6SH-DY-vkO" secondAttribute="leading" id="6Ec-ba-R9u"/>
+                                <constraint firstItem="2vr-ed-80A" firstAttribute="leading" secondItem="6SH-DY-vkO" secondAttribute="leading" constant="18" id="D4H-yS-1Rb"/>
+                                <constraint firstAttribute="bottom" secondItem="LUh-Yv-TKX" secondAttribute="bottom" constant="10" id="Qct-Ui-iFx"/>
+                                <constraint firstAttribute="trailing" secondItem="LUh-Yv-TKX" secondAttribute="trailing" id="VW9-Qe-3nL"/>
+                                <constraint firstAttribute="trailing" secondItem="2vr-ed-80A" secondAttribute="trailing" constant="18" id="iBu-u3-rSo"/>
+                                <constraint firstItem="2vr-ed-80A" firstAttribute="top" secondItem="6SH-DY-vkO" secondAttribute="top" constant="30" id="thc-gX-CBk"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="6SH-DY-vkO" secondAttribute="trailing" id="GTo-KO-PKV"/>
+                        <constraint firstAttribute="bottom" secondItem="6SH-DY-vkO" secondAttribute="bottom" id="NJX-cF-vaw"/>
+                        <constraint firstItem="6SH-DY-vkO" firstAttribute="leading" secondItem="Dhg-Ka-TVR" secondAttribute="leading" id="coF-gI-T55"/>
+                        <constraint firstAttribute="width" secondItem="6SH-DY-vkO" secondAttribute="width" id="pYR-6w-CG6"/>
+                        <constraint firstItem="6SH-DY-vkO" firstAttribute="top" secondItem="Dhg-Ka-TVR" secondAttribute="top" id="sDU-PD-aH4"/>
+                    </constraints>
+                </scrollView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lfe-JE-hFX" customClass="LottieAnimationView" customModule="Lottie">
+                    <rect key="frame" x="20" y="326" width="353" height="200"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="Rmc-A5-cYo"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="ComingSoon1"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edo-X7-3FM">
+                    <rect key="frame" x="166.66666666666666" y="732" width="60" height="60"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="Oyo-Mk-t3U"/>
+                        <constraint firstAttribute="height" constant="60" id="eu8-Kq-M3l"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="icTransfer"/>
+                    <connections>
+                        <action selector="actionHome:" destination="-1" eventType="touchUpInside" id="zyZ-fp-Qbb"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Dhg-Ka-TVR" secondAttribute="bottom" id="EDV-2w-EjN"/>
+                <constraint firstItem="Edo-X7-3FM" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="NJo-w4-XBS"/>
+                <constraint firstItem="Lfe-JE-hFX" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="PBW-0c-cH8"/>
+                <constraint firstItem="Dhg-Ka-TVR" firstAttribute="top" secondItem="58b-il-C8n" secondAttribute="bottom" id="Q2P-yd-rPF"/>
+                <constraint firstItem="58b-il-C8n" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="QhL-CA-XHV"/>
+                <constraint firstItem="Dhg-Ka-TVR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Ra2-cV-afk"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="58b-il-C8n" secondAttribute="trailing" id="ZL0-b6-Y9K"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Lfe-JE-hFX" secondAttribute="trailing" constant="20" id="dQS-8s-0EF"/>
+                <constraint firstItem="58b-il-C8n" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="djL-AZ-KVV"/>
+                <constraint firstItem="Lfe-JE-hFX" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="hfU-2t-iLc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Dhg-Ka-TVR" secondAttribute="trailing" id="tge-Vv-ZRe"/>
+                <constraint firstAttribute="bottom" secondItem="Edo-X7-3FM" secondAttribute="bottom" constant="60" id="wCi-EC-vJK" customClass="NotchedConstraintConstant" customModule="Plutope" customModuleProvider="target">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="NonNotchedConst">
+                            <real key="value" value="35"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="NotchedConst">
+                            <real key="value" value="50"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="EnableDynamicHeight" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </constraint>
+            </constraints>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="Edo-X7-3FM"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="55.725190839694655" y="-32.394366197183103"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="Lfe-JE-hFX"/>
+        <designable name="gCU-SI-4p0">
+            <size key="intrinsicContentSize" width="61" height="30"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="cardBackground" width="241.33332824707031" height="167.33332824707031"/>
+        <image name="icTransfer" width="60" height="60"/>
+        <namedColor name="#00C6FB">
+            <color red="0.0" green="0.77600002288818359" blue="0.98400002717971802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#121C3D">
+            <color red="0.071000002324581146" green="0.10999999940395355" blue="0.23899999260902405" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

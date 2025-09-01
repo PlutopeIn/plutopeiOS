@@ -8,62 +8,82 @@
 import UIKit
 import BigInt
 import Web3
-
 // MARK: Swapping APIS
 extension SwapViewController {
     
-    func getExchangePairsToken(fromCurrency: String, fromNetwork: String, toNetwork: String) {
-        
-        viewModel.apiGetExchangePairs(fromCurrency: fromCurrency, fromNetwork: fromNetwork, toNetwork: toNetwork) { tokenPairs, status, _ in
-            if status {
-               // self.index += 1
-                self.pairData.append(contentsOf: tokenPairs ?? [])
-                self.pairData = Array(Set(self.pairData))
-                
-                let toCurrencyList = self.pairData.compactMap { $0.toCurrency }
-                
-                self.tokensList = self.tokensList?.filter({ token in
-                    if toCurrencyList.contains(token.symbol?.lowercased() ?? "") && (token.type == "ERC20" || token.type == "POLYGON" || token.type == "BEP20" || token.type == "BTC") && token != self.payCoinDetail {
-                        return true
+    private func apiGetTransactionStatus(transactionID: String?,providerName:String? = "") {
+        DispatchQueue.main.async {
+           
+                self.viewModel.apiGetTransactionStatus(transactionID ?? "") { status, statuserr, resp in
+                    if status {
+                        let transactionStatus = resp?["status"] as? String
+                        if transactionStatus == "finished" {
+                            for views in self.viewProgress {
+                                views.backgroundColor = UIColor.c00C6FB
+                            }
+                            self.lblInitiate.textColor = UIColor.c75769D
+                            self.lblSwapping.textColor = UIColor.c75769D
+                            self.lblSuccessFail.textColor = .white
+                            DispatchQueue.main.async {
+                                self.showToast(message: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.success, comment: ""), font: AppFont.regular(15).value)
+                                self.btnSwap.HideLoader()
+                                DGProgressView.shared.hideLoader()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    self.dismiss(animated: true, completion: nil)
+                                    self.refreshData()
+                                }
+                            }
+                        } else if transactionStatus == "failed" {
+                            DispatchQueue.main.async {
+                                for views in self.viewProgress {
+                                    views.backgroundColor = .red
+                                }
+                                self.showToast(message: transactionStatus ?? "", font: .systemFont(ofSize: 15))
+                                self.lblInitiate.textColor = UIColor.c75769D
+                                self.lblSwapping.textColor = UIColor.c75769D
+                                self.lblSuccessFail.textColor = .red
+                                self.lblSuccessFail.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.fail, comment: "")
+                                self.btnSwap.HideLoader()
+                                DGProgressView.shared.hideLoader()
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                        } else {
+                            if transactionStatus == "confirming" || transactionStatus == "exchanging" {
+                            } else if transactionStatus == "waiting" {
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                self.apiGetTransactionStatus(transactionID: transactionID)
+                            }
+                        }
                     } else {
-                        return false
+                        
                     }
-                    
-                })
-               
-                if self.tokensList?.count != 0 {
-                    self.getCoinDetail = self.tokensList?[0]
-                    self.setCoinDetail()
                 }
-                DGProgressView.shared.hideLoader()
-            } else {
-                DGProgressView.shared.hideLoader()
-                self.setOkxToken()
-            }
+            
         }
     }
     
-    private func apiGetTransactionStatus(transactionID: String?) {
-        DispatchQueue.main.async {
-            
-            self.viewModel.apiGetTransactionStatus(transactionID ?? "") { status, statuserr, resp in
-                
-                if status {
-                    
-                    let transactionStatus = resp?["status"] as? String
-                    
-                    if transactionStatus == "finished" {
+    func getExodusTransactionStatus(id:String) {
+        self.viewModel.apiGetExodusTransactionStatus(id) { status, statuserr, resp in
+            if status {
+                if let dictionary = resp,
+                   let data = dictionary["data"] as? [String: Any],
+                   let status = data["status"] as? String {
+                    print("Status: \(status)")
+                    let transactionStatus = status
+                        print(transactionStatus)
+                    if transactionStatus == "complete" {
+                        
                         for views in self.viewProgress {
                             views.backgroundColor = UIColor.c00C6FB
                         }
                         self.lblInitiate.textColor = UIColor.c75769D
                         self.lblSwapping.textColor = UIColor.c75769D
                         self.lblSuccessFail.textColor = .white
-//                        self.registerUserViewModel.setWalletActiveAPI(walletAddress: WalletData.shared.myWallet?.address ?? "") { resStatus, message in
-//
-//                        }
+                        //                        self.registerUserViewModel.setWalletActiveAPI(walletAddress: WalletData.shared.myWallet?.address ?? "") { resStatus, message in
+                        //                        }
                         DispatchQueue.main.async {
-                            self.showToast(message: "Successfully Swap", font: .systemFont(ofSize: 15))
+                            self.showToast(message: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.success, comment: ""), font: AppFont.regular(15).value)
                             self.btnSwap.HideLoader()
                             DGProgressView.shared.hideLoader()
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -71,7 +91,6 @@ extension SwapViewController {
                                 self.refreshData()
                             }
                         }
-                        
                     } else if transactionStatus == "failed" {
                         DispatchQueue.main.async {
                             for views in self.viewProgress {
@@ -87,44 +106,51 @@ extension SwapViewController {
                             self.dismiss(animated: true, completion: nil)
                         }
                     } else {
-                        
-                        if transactionStatus == "confirming" || transactionStatus == "exchanging" {
-                        } else if transactionStatus == "waiting" {
+                        if transactionStatus == "inProgress" || transactionStatus == "refunded" {
+                        } else if transactionStatus == "expired" {
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            self.apiGetTransactionStatus(transactionID: transactionID)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            self.getExodusTransactionStatus(id:id)
                         }
                     }
                 } else {
-                   
+                    print("Status not found")
                 }
+            
+            } else {
+                
             }
         }
     }
-    
+    func apiGetExodusTransactionStatus(transactionID: String?,providerName:String? = "") {
+        self.viewModel.apiUpdateExodusTransactionStatus(transactionID ?? "", id: self.id) { status, statuserr, resp in
+            self.getExodusTransactionStatus(id: self.id)
+        }
+    }
     func refreshData() {
         guard let walletDash = self.navigationController?.viewControllers.first(where: { $0 is WalletDashboardViewController }) as? WalletDashboardViewController else {
-            // WalletDashboardViewController not found in the navigation stack
             return
         }
         
+        
+        
         updatebalDelegate = walletDash
         updatebalDelegate?.refreshData()
-        
         if let tabBarController = self.tabBarController, tabBarController.selectedIndex != 1 && tabBarController.selectedIndex < tabBarController.viewControllers?.count ?? 0 {
             tabBarController.selectedIndex = 1
         }
-        
         self.navigationController?.popToViewController(walletDash, animated: false)
     }
     fileprivate func sendBtc(_ toAmount: Double?, _ payInAdd: String?,_ transactionID: String? = nil) {
         self.sendViewModel.sendBTCApi(privateKey: self.encryptedKey, value: "\(toAmount ?? 0.0)", toAddress:"\(payInAdd ?? "")" , env: "testnet", fromAddress: self.payCoinDetail?.chain?.walletAddress ?? "") { statusResult, message, resData in
             if statusResult == 1 {
                 self.transactionID = transactionID
+               
                 DispatchQueue.main.async {
                     self.setCoinDetail()
                     self.btnSwap.HideLoader()
                     DGProgressView.shared.hideLoader()
+                   
                     let presentInfoVc = PushNotificationViewController()
                     presentInfoVc.alertData = .swapping
                     presentInfoVc.modalTransitionStyle = .crossDissolve
@@ -146,28 +172,98 @@ extension SwapViewController {
         }
     }
     
-    func swappingPreview() {
-        
-        var fromNetwork: String? {
-            switch payCoinDetail?.chain {
-                
-            case .ethereum :
-                return "eth"
-            case .binanceSmartChain :
-                return "bsc"
-            case .oKC:
-                return "okc"
-            case .polygon:
-                return "matic"
-            case .bitcoin:
-                return "btc"
-            case .none:
-                return ""
+    fileprivate func swapApiResponseSet(_ status: Bool, _ data: [String : Any]?, _ swaperr: String) {
+        if status {
+            let payInAdd = data?["payinAddress"] as? String
+            let transactionID = data?["id"] as? String
+            let errorMessage = data?["message"] as? String
+            let toAmount = data?["toAmount"] as? Double
+            let payoutAddress = data?["payoutAddress"] as? String
+            if errorMessage == nil {
+                if self.payCoinDetail?.chain?.coinType == CoinType.bitcoin {
+                    self.sendBtc(toAmount, payInAdd,transactionID ?? "")
+                } else {
+                    self.payCoinDetail?.callFunction.sendTokenOrCoin(payInAdd, tokenAmount: Double(self.txtPay.text ?? "") ?? 0.0) { status, transfererror, data in
+                        if status {
+                            print("data: \(data?.hex() ?? "")")
+                            self.transHex = data?.hex() ?? ""
+                            self.transactionID = transactionID
+                            self.walletActivityLog(providerType: ProvidersType.changeNow.rawValue) {
+                            }
+                                DispatchQueue.main.async {
+                                    self.setCoinDetail()
+                                    self.btnSwap.HideLoader()
+                                    DGProgressView.shared.hideLoader()
+                                    let presentInfoVc = PushNotificationViewController()
+                                    presentInfoVc.alertData = .swapping
+                                    presentInfoVc.modalTransitionStyle = .crossDissolve
+                                    presentInfoVc.modalPresentationStyle = .overFullScreen
+                                    presentInfoVc.okAction = {
+                                        self.navigationController?.popToRootViewController(animated: true)
+                                    }
+                                    self.present(presentInfoVc, animated: true, completion: nil)
+                                    self.apiGetTransactionStatus(transactionID: self.transactionID)
+                                }
+                           // }
+                            
+                        } else {
+                            DispatchQueue.main.async {
+                                self.showToast(message: transfererror ?? "", font: .systemFont(ofSize: 15))
+                                self.btnSwap.HideLoader()
+                                DGProgressView.shared.hideLoader()
+                            } } }
+                }// else
+            } else {
+                DispatchQueue.main.async {
+                    self.showToast(message: errorMessage ?? "", font: .systemFont(ofSize: 15))
+                    self.btnSwap.HideLoader()
+                    DGProgressView.shared.hideLoader()
+                }
             }
+        } else {
+            DispatchQueue.main.async {
+                self.showToast(message: swaperr, font: .systemFont(ofSize: 15))
+                self.btnSwap.HideLoader()
+                DGProgressView.shared.hideLoader()
+            }
+        }
+    }
+    func fromNetworkStr() -> String? {
+        switch payCoinDetail?.chain {
+        case .ethereum :
+            return "eth"
+        case .binanceSmartChain :
+            return "bsc"
+        case .oKC:
+            return "okc"
+        case .polygon:
+            return "matic"
+        case .bitcoin:
+            return "btc"
+        case .opMainnet:
+            return "op"
+        
+        case .avalanche:
+            return "AVAX".lowercased()
+        case .arbitrum:
+            return "ARBITRUM".lowercased()
+        case.base:
+            return "base"
+//        case .tron:
+//            return "TRON".lowercased()
+//        case .solana:
+//            return "Solana"
+        case .none:
+            return ""
+        }
+    }
+    func swappingPreview() {
+
+        var fromNetwork: String? {
+            return fromNetworkStr()
         }
         var toNetwork: String? {
             switch getCoinDetail?.chain {
-                
             case .ethereum :
                 return "eth"
             case .binanceSmartChain :
@@ -178,29 +274,44 @@ extension SwapViewController {
                 return "matic"
             case .bitcoin:
                 return "btc"
+            case .opMainnet:
+                return "op"
+           
+            case .avalanche:
+                return "AVAX".lowercased()
+            case .arbitrum:
+                return "ARBITRUM".lowercased()
+            case.base:
+                return "base"
+//            case .tron:
+//                return "TRON".lowercased()
+//            case .solana:
+//                return "Solana"
             case .none:
                 return ""
             }
         }
-//         viewModel.apiSwapping(address: WalletData.shared.wallet?.getAddressForCoin(coin: .ethereum) ?? "", fromCurrency: lblCoinName.text?.lowercased() ?? "", toCurrency: lblGetCoinName.text?.lowercased() ?? "", fromNetwork: fromNetwork ?? "", toNetwork: toNetwork ?? "", fromAmount: txtPay.text ?? "", toAmount: "")
         viewModel.apiSwapping(address: WalletData.shared.myWallet?.address ?? "", fromCurrency: lblCoinName.text?.lowercased() ?? "", toCurrency: lblGetCoinName.text?.lowercased() ?? "", fromNetwork: fromNetwork ?? "", toNetwork: toNetwork ?? "", fromAmount: txtPay.text ?? "", toAmount: "") { status, swaperr, data in
             
-            if status {
-                let payInAdd = data?["payinAddress"] as? String
-                let transactionID = data?["id"] as? String
-                let errorMessage = data?["message"] as? String
-                let toAmount = data?["toAmount"] as? Double
-                
-                let payoutAddress = data?["payoutAddress"] as? String
-                print(data!)
-                
-                if errorMessage == nil {
-                    if self.payCoinDetail?.chain?.coinType == CoinType.bitcoin {
-                        self.sendBtc(toAmount, payInAdd,transactionID ?? "")
-                    } else {
-                    self.payCoinDetail?.callFunction.sendTokenOrCoin(payInAdd, tokenAmount: Double(self.txtPay.text ?? "") ?? 0.0) { status, transfererror, data in
-                        if status {
-                            self.transactionID = transactionID
+            self.swapApiResponseSet(status, data, swaperr)
+        }
+    }
+    
+    func exodusSwap() {
+        let payInAdd = self.payInAddress
+        let transactionID = self.id
+        let errorMessage = self.message
+        let formattedPrice = WalletData.shared.formatDecimalString("\(self.bestQuote)", decimalPlaces: 10)
+        let toAmount = Double(formattedPrice)
+//        let payoutAddress = data?["payoutAddress"] as? String
+        if errorMessage == "" {
+            if self.payCoinDetail?.chain?.coinType == CoinType.bitcoin {
+                self.sendBtc(toAmount, payInAdd,transactionID)
+            } else {
+                self.payCoinDetail?.callFunction.sendTokenOrCoin(payInAdd, tokenAmount: Double(self.txtPay.text ?? "") ?? 0.0) { status, transfererror, data in
+                    if status {
+                        self.transHex = data?.hex() ?? ""
+                        self.walletActivityLog(providerType: ProvidersType.exodus.rawValue) { }
                             DispatchQueue.main.async {
                                 self.setCoinDetail()
                                 self.btnSwap.HideLoader()
@@ -213,34 +324,28 @@ extension SwapViewController {
                                     self.navigationController?.popToRootViewController(animated: true)
                                 }
                                 self.present(presentInfoVc, animated: true, completion: nil)
-                                self.apiGetTransactionStatus(transactionID: self.transactionID)
+                                self.apiGetExodusTransactionStatus(transactionID: self.transHex,providerName: ProvidersType.exodus.rawValue)
                             }
-                        } else {
-                            DispatchQueue.main.async {
-                                self.showToast(message: transfererror ?? "", font: .systemFont(ofSize: 15))
-                                self.btnSwap.HideLoader()
-                                DGProgressView.shared.hideLoader()
-                            }
-                        }
-                    }
-                  }// else
-                } else {
-                    DispatchQueue.main.async {
-                        self.showToast(message: errorMessage ?? "", font: .systemFont(ofSize: 15))
-                        self.btnSwap.HideLoader()
-                        DGProgressView.shared.hideLoader()
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.showToast(message: swaperr, font: .systemFont(ofSize: 15))
-                    self.btnSwap.HideLoader()
-                    DGProgressView.shared.hideLoader()
-                }
+//                        }
+                        
+                    } else {
+                        DispatchQueue.main.async {
+                            print("fail2: \(transfererror)")
+                            self.showToast(message: transfererror ?? "", font: .systemFont(ofSize: 15))
+                            self.btnSwap.HideLoader()
+                            DGProgressView.shared.hideLoader()
+                        } } }
+            }// else
+        } else {
+            DispatchQueue.main.async {
+                print("failFinal: \(errorMessage)")
+                self.showToast(message: errorMessage, font: .systemFont(ofSize: 15))
+                self.btnSwap.HideLoader()
+                DGProgressView.shared.hideLoader()
             }
         }
+
     }
-    
     fileprivate func openPopUp() {
         DispatchQueue.main.async {
             let presentInfoVc = PushNotificationViewController()
@@ -255,22 +360,22 @@ extension SwapViewController {
         }
     }
     fileprivate func closePopUpOnSucess() {
-       // DispatchQueue.main.async {
-            self.btnSwap.HideLoader()
+      self.btnSwap.HideLoader()
             DGProgressView.shared.hideLoader()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.dismiss(animated: true) {
                     self.showToast(message: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.success, comment: ""), font: .systemFont(ofSize: 15))
                     self.refreshData()
                 }
             }
-       // }
     }
-    fileprivate func closePopUpOnFailler() {
+    fileprivate func closePopUpOnFailler(_ error : String? = nil) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.btnSwap.HideLoader()
             DGProgressView.shared.hideLoader()
-            self.showToast(message: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.fail, comment: ""), font: .systemFont(ofSize: 15))
+            print(error)
+            error == "" ? self.showToast(message: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.fail, comment: ""), font: .systemFont(ofSize: 15))  : self.showToast(message:error ?? "" , font: .systemFont(ofSize: 15))
+            
             self.lblSuccessFail.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.fail, comment: "")
             self.btnSwap.HideLoader()
             self.dismiss(animated: true, completion: nil)
@@ -298,7 +403,7 @@ extension SwapViewController {
                         do {
                             let jsonResponse = try JSONSerialization.data(withJSONObject: response)
                             let swapData = try JSONDecoder().decode(SwapData.self, from: jsonResponse)
-                            
+                            print("swapData: \(swapData)")
                             let firstItem = swapData.data?.first
                             let tx = firstItem?.tx
                             let payInAdd = tx?.to ?? ""
@@ -311,53 +416,41 @@ extension SwapViewController {
                             let gasPrice = tx?.gasPrice ?? ""
                             
                             if errorCode == "0" {
+                                print("Noerror: \(errorCode)")
                                 self.openPopUp()
-                                self.payCoinDetail?.callFunction.swapTokenOrCoin(payInAdd, gas: gas, gasPrice: gasPrice, rawData: rawData,tokenAmount: self.txtPay.text ?? "") { status,transfererror,_ in
+                                self.payCoinDetail?.callFunction.swapTokenOrCoin(payInAdd, gas: gas, gasPrice: gasPrice, rawData: rawData,tokenAmount: self.txtPay.text ?? "") { status,transfererror,data in
                                      
                                     if status {
+                                        print("transHex: \(data?.hex() ?? "")")
+                                        self.transHex = data?.hex() ?? ""
+                                        self.walletActivityLog(providerType: ProvidersType.okx.rawValue) { }
                                         DispatchQueue.main.async {
+                                            self.showToast(message: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.success, comment: ""), font: AppFont.regular(15).value)
                                             for views in self.viewProgress {
                                                 views.backgroundColor = UIColor.c00C6FB
                                             }
                                             self.lblInitiate.textColor = UIColor.c75769D
                                             self.lblSwapping.textColor = UIColor.c75769D
                                             self.lblSuccessFail.textColor = .white
-//                                            self.registerUserViewModel.setWalletActiveAPI(walletAddress: WalletData.shared.myWallet?.address ?? "") { resStatus, message in
-//
-//                                            }
                                             self.closePopUpOnSucess()
-//                                            DispatchQueue.main.async {
-//                                               // self.showToast(message: "Successfully Swap", font: .systemFont(ofSize: 15))
-//                                               // self.btnSwap.HideLoader()
-//                                              //  DGProgressView.shared.hideLoader()
-//                                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                                                    self.dismiss(animated: true, completion: nil)
-//                                                    self.updatebalDelegate?.refreshData()
-//                                                }
-//                                            }
                                         }
+//                                    }
                                     } else {
                                         DispatchQueue.main.async {
+                                            print("Fail: \(transfererror)")
                                             for views in self.viewProgress {
                                                 views.backgroundColor = .red
                                             }
-                                           // self.showToast(message: "Failed", font: .systemFont(ofSize: 15))
                                             self.lblInitiate.textColor = UIColor.c75769D
                                             self.lblSwapping.textColor = UIColor.c75769D
                                             self.lblSuccessFail.textColor = .red
-                                            
                                             self.closePopUpOnFailler()
-                                          //  self.lblSuccessFail.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.fail, comment: "")
-                                          //  self.btnSwap.HideLoader()
-                                          //  DGProgressView.shared.hideLoader()
-//                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                                                self.dismiss(animated: true, completion: nil)
-//                                            }
                                         }
                                     }
                                 }
                             } else {
                                 DispatchQueue.main.async {
+                                    print("Fail2: \(errorMessage)")
                                     self.showToast(message: errorMessage , font: .systemFont(ofSize: 15))
                                     self.btnSwap.HideLoader()
                                     DGProgressView.shared.hideLoader()
@@ -369,6 +462,7 @@ extension SwapViewController {
                         }
                     } else {
                         DispatchQueue.main.async {
+                            print("Fail: \(swaperr)")
                             self.showToast(message: swaperr, font: .systemFont(ofSize: 15))
                             self.btnSwap.HideLoader()
                             DGProgressView.shared.hideLoader()
@@ -380,8 +474,8 @@ extension SwapViewController {
     }
     
     func apiOkxSwapApprove() {
-        
         let payTokenAddress = (payCoinDetail?.address ?? "") == "" ? StringConstants.defaultAddress : payCoinDetail?.address ?? ""
+        print("payTokenAddress",payTokenAddress)
         var decimaamountToTransfer = ""
         self.payCoinDetail?.callFunction.getDecimal(completion: { decimal in
             decimaamountToTransfer = decimal ?? ""
@@ -400,6 +494,7 @@ extension SwapViewController {
                         let data = response?["data"] as? [[String: Any]]
                         let firstItem = data?.first
                         let dexContractAddress = firstItem?["dexContractAddress"] as? String
+                        print("dexContractAddress",dexContractAddress)
                         let gasPrice = firstItem?["gasPrice"] as? String ?? ""
                         let gasLimit = firstItem?["gasLimit"] as? String ?? ""
                         let errorCode = response?["code"] as? String
@@ -408,6 +503,7 @@ extension SwapViewController {
                             self.payCoinDetail?.callFunction.approveTransactionForSwap(gasLimit,gasPrice,dexContractAddress, tokenAmount: Double(self.txtPay.text ?? "") ?? 0.90) { status,transfererror,_ in
                                 if status {
                                     DispatchQueue.main.async {
+                                        print("SuccessAprove",status)
                                         for views in [self.viewProgress[0],self.viewProgress[1],self.viewProgress[2]] {
                                             views.backgroundColor = UIColor.c00C6FB
                                         }
@@ -442,354 +538,6 @@ extension SwapViewController {
             }
         })
     }
-    
-    /// oKTswappingPreview
-    func oKTswappingQuote() {
-        let payTokenAddress = (payCoinDetail?.address ?? "") == "" ? StringConstants.defaultAddress : payCoinDetail?.address ?? ""
-        let getTokenAddress = (getCoinDetail?.address ?? "") == "" ? StringConstants.defaultAddress : getCoinDetail?.address ?? ""
-        var decimaamountToTransfer = ""
-        self.payCoinDetail?.callFunction.getDecimal(completion: { decimal in
-            print("decimal",decimal ?? 0.0)
-            decimaamountToTransfer = decimal ?? ""
-            var amountToPay: BigInt = 0
-            DispatchQueue.main.async {
-                if let doubleValue = Double(decimaamountToTransfer) {
-                    // Successfully converted the string to a double
-                    amountToPay = UnitConverter.convertToWei(Double(self.txtPay.text ?? "") ?? 0.0, Double(doubleValue))
-                } else {
-                    // Conversion failed, handle the error or provide a default value
-                    print("Failed to convert the string to a double")
-                }
-                self.viewModel.apiOKTSwapping(fromTokenAddress: payTokenAddress, toTokenAddress: getTokenAddress, amount: "\(amountToPay)", chainId: self.payCoinDetail?.chain?.chainId ?? "", userWalletAddress: self.payCoinDetail?.chain?.walletAddress ?? "", slippage: "0.1") { status, swaperr, response in
-                    if status {
-                        do {
-                            let jsonResponse = try JSONSerialization.data(withJSONObject: response)
-                            let swapData = try JSONDecoder().decode(SwapData.self, from: jsonResponse)
-                            let firstItem = swapData.data?.first
-                            let routerResult = firstItem?.routerResult
-                            
-                            let errorCode = swapData.code ?? ""
-                            _ = swapData.msg ?? ""
-                            self.swapQouteDetail = swapData.data ?? []
-                            print(response ?? [:])
-                            
-                            if errorCode == "0" {
-                                // Get Dynamic Decimals
-                                var decimalAmount = ""
-                                self.getCoinDetail?.callFunction.getDecimal(completion: { decimal in
-                                    print("decimal",decimal ?? "")
-                                    decimalAmount = decimal ?? ""
-                                    let number: Int64? = Int64(decimalAmount)
-                                    let amountToGet = UnitConverter.convertWeiToEther(routerResult?.toTokenAmount ?? "",Int(number ?? 0)) ?? ""
-                                    if let providerIndex = self.allProviders.indices.first(where: { self.allProviders[$0].name == StringConstants.okx }) {
-                                        let bestPrice = Double(amountToGet)
-                                        self.allProviders[providerIndex].bestPrice = "\(bestPrice ?? 0.0)"
-                                        self.checkAllAPIsCompleted()
-                                    }
-                                })
-                                
-                            } else {
-                                if let providerIndex = self.allProviders.indices.first(where: { self.allProviders[$0].name == StringConstants.okx }) {
-                                    self.allProviders[providerIndex].bestPrice = "0.0"
-                                    self.checkAllAPIsCompleted()
-                                }
-                            }
-                        } catch(let error) {
-                            print(error)
-                            self.checkAllAPIsCompleted()
-                        }
-                    } else {
-                        self.checkAllAPIsCompleted()
-                    }
-                }
-            }
-        })
-    }
-
-    func changeNowSwapQuote() {
-        
-        var fromNetwork: String? {
-            switch payCoinDetail?.chain {
-                
-            case .ethereum :
-                return "eth"
-            case .binanceSmartChain :
-                return "bsc"
-            case .oKC:
-                return "okc"
-            case .polygon:
-                return "matic"
-            case .bitcoin:
-                return "btc"
-            case .none:
-                return ""
-           
-            }
-        }
-        var toNetwork: String? {
-            switch getCoinDetail?.chain {
-                
-            case .ethereum :
-                return "eth"
-            case .binanceSmartChain :
-                return "bsc"
-            case .oKC:
-                return "okc"
-            case .polygon:
-                return "matic"
-            case .bitcoin:
-                return "btc"
-            case .none:
-                return ""
-           
-            }
-        }
-        
-//        viewModel.apiSwapping(address: WalletData.shared.wallet?.getAddressForCoin(coin: .ethereum) ?? "", fromCurrency: lblCoinName.text?.lowercased() ?? "", toCurrency: lblGetCoinName.text?.lowercased() ?? "", fromNetwork: fromNetwork ?? "", toNetwork: toNetwork ?? "", fromAmount: txtPay.text ?? "", toAmount: "")
-//        let address = (payCoinDetail?.address ?? "") == "" ? StringConstants.defaultAddress : payCoinDetail?.address ?? ""
-        if getCoinDetail?.chain?.coinType == CoinType.bitcoin {
-            viewModel.apiSwapping(address: WalletData.shared.walletBTC?.address ?? "", fromCurrency: lblCoinName.text?.lowercased() ?? "", toCurrency: lblGetCoinName.text?.lowercased() ?? "", fromNetwork: fromNetwork ?? "", toNetwork: toNetwork ?? "", fromAmount: txtPay.text ?? "", toAmount: "") { status, swaperr, data in
-                
-                if status {
-                    let toAmount = data?["toAmount"] as? Double
-                    let errorMessage = data?["message"] as? String
-                    if errorMessage == nil {
-                        
-                        if let providerIndex = self.allProviders.indices.first(where: { self.allProviders[$0].name == StringConstants.changeNow }) {
-                            let bestPrice = Double(toAmount ?? 0.0)
-                            self.allProviders[providerIndex].bestPrice = "\(bestPrice )"
-                            self.allProviders[providerIndex].swapperFee = ""
-                            self.checkAllAPIsCompleted()
-    }
-                    } else {
-                        self.checkAllAPIsCompleted()
-                    }
-                 
-                } else {
-                    self.checkAllAPIsCompleted()
-                }
-            }
-        } else {
-            viewModel.apiSwapping(address: WalletData.shared.myWallet?.address ?? "", fromCurrency: lblCoinName.text?.lowercased() ?? "", toCurrency: lblGetCoinName.text?.lowercased() ?? "", fromNetwork: fromNetwork ?? "", toNetwork: toNetwork ?? "", fromAmount: txtPay.text ?? "", toAmount: "") { status, swaperr, data in
-                
-                if status {
-                    let toAmount = data?["toAmount"] as? Double
-                    let errorMessage = data?["message"] as? String
-                    if errorMessage == nil {
-                        
-                        if let providerIndex = self.allProviders.indices.first(where: { self.allProviders[$0].name == StringConstants.changeNow }) {
-                            let bestPrice = Double(toAmount ?? 0.0)
-                            self.allProviders[providerIndex].bestPrice = "\(bestPrice )"
-                            self.allProviders[providerIndex].swapperFee = ""
-                            self.checkAllAPIsCompleted()
-    }
-                    } else {
-                        self.checkAllAPIsCompleted()
-                    }
-                 
-                } else {
-                    self.checkAllAPIsCompleted()
-                }
-            }
-        }
-        
-        
-        
-    }
-   // rango Swap Quote
-    fileprivate func rangoSwapQuoteForBTC(_ amount: String, _ fromAddress: String, _ toAddress: String) {
-        viewModel.apiRangoQuoteSwapping(address: WalletData.shared.walletBTC?.address ?? "", fromToken: self.payCoinDetail!, toToken:self.getCoinDetail!,  fromAmount: amount,fromWalletAddress: fromAddress,toWalletAddress: toAddress) { status, swaperr,reqType,data in
-            
-            if status {
-                do {
-                    //                            let jsonResponse = try JSONSerialization.data(withJSONObject: data)
-                    //                            let swapData = try JSONDecoder().decode(RangoSwapData.self, from: jsonResponse)
-                    let firstItem = data
-                    let routerResult = firstItem?.outputAmount
-                    
-                    let errorCode = reqType
-                    _ = swaperr
-                    self.rangoSwapQouteDetail = data
-                    print(data ?? [:])
-                    
-                    if errorCode == "OK" {
-                        
-                        // Get Dynamic Decimals
-                        var decimalAmount = ""
-                        self.getCoinDetail?.callFunction.getDecimal(completion: { decimal in
-                            print("decimal",decimal ?? 0.0)
-                            decimalAmount = decimal ?? ""
-                            let number: Int64? = Int64(decimalAmount)
-                            let amountToGet = UnitConverter.convertWeiToEther(routerResult ?? "",Int(number ?? 0)) ?? ""
-                            //                                    // Calculate the sum of the "amount" values
-                            //                                    let sum = firstItem?.fee?.reduce(0) { total, feeItem in
-                            //                                        total + (Int(feeItem.amount ?? "") ?? 0)
-                            //                                        }
-                            
-                            if let fees = firstItem?.fee {
-                                // Calculate the sum of the "amount" values
-                                let sum = fees.reduce(Decimal(0)) { total, feeItem in
-                                    var feesAmount: Decimal = 0
-                                    
-                                    if feeItem.expenseType == "FROM_SOURCE_WALLET" && feeItem.name == "Swapper Fee" {
-                                        feesAmount = Decimal(string: feeItem.amount ?? "") ?? 0
-                                        print("feeItem.amount",feeItem.amount ?? "")
-                                        
-                                        if let tokenDecimals = feeItem.token?.decimals {
-                                            self.decimalsValue =    tokenDecimals
-                                        }
-                                    } else {
-                                        feesAmount = 0
-                                    }
-                                    
-                                    return total + feesAmount
-                                }
-                                
-                                print("Sum of amounts: \(sum)")
-                                
-                                //                                        let tokenDecimals = firstItem?.fee?.first?.token?.decimals
-                                let swapperFees = UnitConverter.convertWeiToEther("\(sum )", Int(self.decimalsValue)) ?? ""
-                                print("swapperFee =", swapperFees)
-                                self.swapperFee = swapperFees
-                                
-                                if let providerIndex = self.allProviders.indices.first(where: { self.allProviders[$0].name == StringConstants.rangoSwap }) {
-                                   
-                                    let bestPrices = Double(amountToGet) ?? 0.0
-
-                                    let numberFormatter = NumberFormatter()
-                                    numberFormatter.numberStyle = .decimal
-                                    numberFormatter.maximumFractionDigits = 15 // Adjust this as needed
-
-                                    if let formattedString = numberFormatter.string(from: NSNumber(value: bestPrices)) {
-                                        print(formattedString) // Prints: 0.000000000000558978
-                                        let bestPrice = Double(formattedString)
-                                        self.allProviders[providerIndex].bestPrice = "\(bestPrice ?? 0.0)"
-                                        self.allProviders[providerIndex].swapperFee = "\(swapperFees)"
-                                        self.checkAllAPIsCompleted()
-                                    }
-                                }
-                            }
-                            // Now feesAmount contains the sum of all amounts in the loop
-                        })
-                        
-                    } else {
-                        self.checkAllAPIsCompleted()
-                    }
-                } catch(let error) {
-                    print(error)
-                    self.checkAllAPIsCompleted()
-                }
-            } else {
-                self.checkAllAPIsCompleted()
-            }
-        }
-    }
-    
-    func rangoSwapQuote() {
-        var decimaamountToTransfer = ""
-        self.payCoinDetail?.callFunction.getDecimal(completion: { decimal in
-            print("decimal",decimal ?? 0.0)
-            decimaamountToTransfer = decimal ?? ""
-            var amountToPay: BigInt = 0
-            DispatchQueue.main.async { [self] in
-                if let doubleValue = Double(decimaamountToTransfer) {
-                    // Successfully converted the string to a double
-                    print("Double value: \(doubleValue)")
-                    amountToPay = UnitConverter.convertToWei(Double(self.txtPay.text ?? "") ?? 0.0, Double(doubleValue))
-                } else {
-                    // Conversion failed, handle the error or provide a default value
-                    print("Failed to convert the string to a double")
-                }
-                
-                let amount = "\(amountToPay)"
-                
-                let fromAddress = (payCoinDetail?.address ?? "") == "" ? StringConstants.defaultAddress : payCoinDetail?.address ?? ""
-                let toAddress = (getCoinDetail?.address ?? "") == "" ? StringConstants.defaultAddress : getCoinDetail?.address ?? ""
-                //                viewModel.apiRangoQuoteSwapping(address: WalletData.shared.wallet?.getAddressForCoin(coin: .ethereum) ?? "", fromToken: self.payCoinDetail!, toToken:self.getCoinDetail!,  fromAmount: amount)
-               // if getCoinDetail?.chain?.coinType == CoinType.bitcoin {
-                   // rangoSwapQuoteForBTC(amount, fromAddress, toAddress)
-               // } else {
-                    viewModel.apiRangoQuoteSwapping(address: WalletData.shared.myWallet?.address ?? "", fromToken: self.payCoinDetail!, toToken:self.getCoinDetail!,  fromAmount: amount,fromWalletAddress: fromAddress,toWalletAddress: toAddress) { status, swaperr,reqType,data in
-                        
-                        if status {
-                            do {
-                                //                            let jsonResponse = try JSONSerialization.data(withJSONObject: data)
-                                //                            let swapData = try JSONDecoder().decode(RangoSwapData.self, from: jsonResponse)
-                                let firstItem = data
-                                let routerResult = firstItem?.outputAmount
-                                
-                                let errorCode = reqType
-                                _ = swaperr
-                                self.rangoSwapQouteDetail = data
-                                print(data ?? [:])
-                                
-                                if errorCode == "OK" {
-                                    
-                                    // Get Dynamic Decimals
-                                    var decimalAmount = ""
-                                    self.getCoinDetail?.callFunction.getDecimal(completion: { decimal in
-                                        print("decimal",decimal ?? 0.0)
-                                        decimalAmount = decimal ?? ""
-                                        let number: Int64? = Int64(decimalAmount)
-                                        let amountToGet = UnitConverter.convertWeiToEther(routerResult ?? "",Int(number ?? 0)) ?? ""
-                                        //                                    // Calculate the sum of the "amount" values
-                                        //                                    let sum = firstItem?.fee?.reduce(0) { total, feeItem in
-                                        //                                        total + (Int(feeItem.amount ?? "") ?? 0)
-                                        //                                        }
-                                        
-                                        if let fees = firstItem?.fee {
-                                            // Calculate the sum of the "amount" values
-                                            let sum = fees.reduce(Decimal(0)) { total, feeItem in
-                                                var feesAmount: Decimal = 0
-                                                
-                                                if feeItem.expenseType == "FROM_SOURCE_WALLET" && feeItem.name == "Swapper Fee" {
-                                                    feesAmount = Decimal(string: feeItem.amount ?? "") ?? 0
-                                                    print("feeItem.amount",feeItem.amount ?? "")
-                                                    
-                                                    if let tokenDecimals = feeItem.token?.decimals {
-                                                        self.decimalsValue =    tokenDecimals
-                                                    }
-                                                } else {
-                                                    feesAmount = 0
-                                                }
-                                                
-                                                return total + feesAmount
-                                            }
-                                            
-                                            print("Sum of amounts: \(sum)")
-                                            
-                                            //                                        let tokenDecimals = firstItem?.fee?.first?.token?.decimals
-                                            let swapperFees = UnitConverter.convertWeiToEther("\(sum )", Int(self.decimalsValue)) ?? ""
-                                            print("swapperFee =", swapperFees)
-                                            self.swapperFee = swapperFees
-                                            
-                                            if let providerIndex = self.allProviders.indices.first(where: { self.allProviders[$0].name == StringConstants.rangoSwap }) {
-                                                let bestPrice = Double(amountToGet)
-                                                self.allProviders[providerIndex].bestPrice = "\(bestPrice ?? 0.0)"
-                                                self.allProviders[providerIndex].swapperFee = "\(swapperFees)"
-                                                self.checkAllAPIsCompleted()
-                                            }
-                                        }
-                                        // Now feesAmount contains the sum of all amounts in the loop
-                                        
-                                    })
-                                    
-                                } else {
-                                    self.checkAllAPIsCompleted()
-                                }
-                            } catch(let error) {
-                                print(error)
-                                self.checkAllAPIsCompleted()
-                            }
-                        } else {
-                            self.checkAllAPIsCompleted()
-                        }
-                    }
-            //}
-            }
-        })
-    }
-    
     func rangoSwapExchange(completion: @escaping ((Bool,String,String,String,String) -> Void)) {
         
         var decimaamountToTransfer = ""
@@ -813,6 +561,7 @@ extension SwapViewController {
                             let jsonResponse = try JSONSerialization.data(withJSONObject: data ?? [:])
                             let swapData = try JSONDecoder().decode(RangoSwapingData.self, from: jsonResponse)
                             let firstItem = swapData
+                            self.requestId = firstItem.requestID ?? ""
                             let routerResult = firstItem.route?.outputAmount
                             let errorCode = firstItem.resultType
                             let errorMsg = firstItem.error
@@ -827,13 +576,8 @@ extension SwapViewController {
                                     let number: Int64? = Int64(decimalAmount)
                                    let amountToGet = UnitConverter.convertWeiToEther(routerResult ?? "",Int(number ?? 0)) ?? ""
                                     self.amountToGet = amountToGet
-//                                    // Calculate the sum of the "amount" values
-//                                    let sum = firstItem?.fee?.reduce(0) { total, feeItem in
-//                                        total + (Int(feeItem.amount ?? "") ?? 0)
-//                                        }
-                                    
                                     if let fees = firstItem.route?.fee {
-                                                // Calculate the sum of the "amount" values
+                                // Calculate the sum of the "amount" values
                                                 let sum = fees.reduce(Decimal(0)) { total, feeItem in
                                                     var feesAmount: Decimal = 0
 
@@ -867,36 +611,26 @@ extension SwapViewController {
 
                                             return networkfeeTotal + networkFesAmount
                                         }
-                                        
-                                        print("Sum1 of amounts: \(sum1)")
-                                        
-//                                        let tokenDecimals = firstItem?.fee?.first?.token?.decimals
                                         let swapperFees = UnitConverter.convertWeiToEther("\(sum )", Int(self.decimalsValue)) ?? ""
                                         let networkFee =  UnitConverter.convertWeiToEther("\(sum1 )", Int(self.decimalsValue)) ?? ""
-                                        print("swapperFee =", swapperFees)
-                                        print("networkFee =", networkFee)
                                         self.newSwapperFee = swapperFees
                                         self.networkFee = networkFee
                                         completion(true,swapperFees,amountToGet, errorMsg ?? "",networkFee)
                                     } else {
                                         completion(false,"0",self.amountToGet,errorMsg ?? "",self.networkFee)
                                     }
-                                    // Now feesAmount contains the sum of all amounts in the loop
-
                                 })
                                
                             } else {
                                 completion(false,"0",self.amountToGet,errorMsg ?? "",self.networkFee)
                             }
-                            
                             if let allToken = DatabaseHelper.shared.retrieveData("Token") as? [Token] {
                                 _ = allToken.filter { $0.address == "" && $0.type == self.payCoinDetail?.type && $0.symbol == self.payCoinDetail?.chain?.symbol ?? "" }
-                                
-                             }
+                           }
                             DGProgressView.shared.hideLoader()
-                            
                         } catch(let error) {
-                            print(error)
+                            print("errorMsg =" ,error)
+                            self.showToast(message: swaperr, font: .systemFont(ofSize: 15))
                             DGProgressView.shared.hideLoader()
                            // self.btnSwap.HideLoader()
                         }
@@ -904,6 +638,7 @@ extension SwapViewController {
                         
                     } else {
                         DispatchQueue.main.async {
+                            print("errorMsg1 = ",swaperr)
                             self.showToast(message: swaperr, font: .systemFont(ofSize: 15))
                           //  self.btnSwap.HideLoader()
                             DGProgressView.shared.hideLoader()
@@ -914,7 +649,6 @@ extension SwapViewController {
             }
         })
     }
-   
     // rango Swap
      func rangoSwap() {
          
@@ -933,8 +667,6 @@ extension SwapViewController {
                      print("Failed to convert the string to a double")
                  }
                  let amount = "\(amountToPay)"
-                 
-//                  viewModel.apiRangoSwapping(address: WalletData.shared.wallet?.getAddressForCoin(coin: .ethereum) ?? "", fromToken: payCoinDetail!, toToken:getCoinDetail!,  fromAmount: amount )
                  viewModel.apiRangoSwapping(address: WalletData.shared.myWallet?.address ?? "", fromToken: payCoinDetail!, toToken:getCoinDetail!,  fromAmount: amount,fromWalletAddress:self.payCoinDetail?.chain?.walletAddress ?? "",toWalletAddress:self.getCoinDetail?.chain?.walletAddress ?? "") { status, swaperr, data in
                      if status {
                          do {
@@ -946,8 +678,8 @@ extension SwapViewController {
                              let approveData = tx?.approveData ?? ""
                              let txData = tx?.txData ?? ""
                              if let allToken = DatabaseHelper.shared.retrieveData("Token") as? [Token] {
-                                 _ = allToken.filter { $0.address == "" && $0.type == self.payCoinDetail?.type && $0.symbol == self.payCoinDetail?.chain?.symbol ?? "" }
-                             
+//                                 let allChain = allToken.filter { $0.address == "" && $0.type == self.payCoinDetail?.type && $0.symbol == self.payCoinDetail?.chain?.symbol ?? "" }
+//                                 print("allChain",allChain)
                               self.payCoinDetail?.callFunction.getGasPrice(completion: { status,gasFee,gasPrice,gasLimit,data  in
                                          if status {
                                              print(gasFee ?? "")
@@ -996,80 +728,14 @@ extension SwapViewController {
              }
          })
      }
-    
-    func checkAllAPIsCompleted() {
-        // Determine the supported providers based on your logic
-       
-        apiCount += 1
-        print(apiCount)
-        DispatchQueue.main.async {
-            if self.apiCount >= self.supportedProviders.count {
-                self.getBestPriceFromAllBestPrices()
-            } else {
-                self.viewFindProvider.isHidden = true
-            }
-        }
-       
-    }
-    func callAPIsAfterTaskCompletion() {
-        
-//        Task {
-//            await callAPIsAsyncFunction()
-//        }
-        guard let getCoinDetail = getCoinDetail, let payCoinDetail  = payCoinDetail else {
-            return
-        }
-        for provider in supportedProviders {
-            switch provider {
-            case .okx:
-                if(getCoinDetail.type == payCoinDetail.type && getCoinDetail.address != "" && payCoinDetail.address != "") {
-//                    oKTswappingQuote()
-                    if let providerIndex = self.allProviders.indices.first(where: { self.allProviders[$0].name == StringConstants.okx }) {
-                        self.allProviders[providerIndex].bestPrice = "0.0"
-                        self.checkAllAPIsCompleted()
-                    }
-                } else {
-                    if let providerIndex = self.allProviders.indices.first(where: { self.allProviders[$0].name == StringConstants.okx }) {
-                        self.allProviders[providerIndex].bestPrice = "0.0"
-                        self.checkAllAPIsCompleted()
-                    }
-                }
-            case .changeNow:
-                changeNowSwapQuote()
-            case .rango:
-                rangoSwapQuote()
-            }
-        }
-    }
-    
-    func callAPIsAsyncFunction() async {
-        guard let getCoinDetail = getCoinDetail, let payCoinDetail  = payCoinDetail else {
-            return
-        }
-        for provider in supportedProviders {
-            switch provider {
-            case .okx:
-                if getCoinDetail.chain == payCoinDetail.chain {
-                    await oKTswappingQuote()
-                } else {
-                    if let providerIndex = self.allProviders.indices.first(where: { self.allProviders[$0].name == StringConstants.okx }) {
-                        self.allProviders[providerIndex].bestPrice = "0.0"
-                        self.checkAllAPIsCompleted()
-                    }
-                }
-            case .changeNow:
-                await changeNowSwapQuote()
-            case .rango:
-                await rangoSwapQuote()
-            }
-        }
-    }
-
     func rangoApproveTranscation( amount:String, gasLimit: String?,_ gasPrice: String?, approveTo: String?,txTo: String?,txData: String  , txValue: String ) {
         DispatchQueue.main.async {
             self.payCoinDetail?.callFunction.approveTransactionForSwap(gasLimit,gasPrice,approveTo, tokenAmount: Double(amount) ?? 0.90) { status,transfererror,_ in
                 if status {
+                    print("RangoAprove",status)
+                    print("RangoAproveEWrr",transfererror)
                     DispatchQueue.main.async {
+                        
                         for views in [self.viewProgress[0],self.viewProgress[1],self.viewProgress[2]] {
                             views.backgroundColor = UIColor.c00C6FB
                         }
@@ -1078,9 +744,7 @@ extension SwapViewController {
                         self.rangoSendTranscation(receiverAddress: txTo, txData: txData,gas: gasLimit ?? "",gasPrice: gasPrice ?? "", txValue: txValue)
                     }
                 } else {
-                   // self.btnSwap.HideLoader()
-                   // DGProgressView.shared.hideLoader()
-                    self.closePopUpOnFailler()
+                    self.closePopUpOnFailler(transfererror)
                 }
             }
         }
@@ -1090,28 +754,30 @@ extension SwapViewController {
             let txGasLimit: BigInt =   UnitConverter.hexStringToBigInteger(hex: gas) ??  BigInt(2500000)  // ?? BigUInt(2500000)
             let gasPrice: BigUInt = BigUInt(gasPrice) ?? BigUInt(30000)
             let tValue: BigInt =  UnitConverter.hexStringToBigInteger(hex: txValue)  ?? BigInt(2500000)
-           
+            var sendAmout = 0.0
             if self.payCoinDetail?.chain?.coinType == CoinType.bitcoin {
-                self.sendBtc(0.0011, receiverAddress)
+                sendAmout = Double(tValue)
+                self.sendBtc(sendAmout, receiverAddress)
             }
             
-            self.payCoinDetail?.callFunction.signAndSendTranscation(receiverAddress,gasLimit: BigUInt( txGasLimit) , gasPrice: gasPrice , txValue: BigUInt(tValue) , rawData: txData ) { status,transfererror,_ in
+            self.payCoinDetail?.callFunction.signAndSendTranscation(receiverAddress,gasLimit: BigUInt( txGasLimit) , gasPrice: gasPrice , txValue: BigUInt(tValue) , rawData: txData ) { status,transfererror,ethereumData in
+                print("RangoResponseStatus = ",status)
+                print("RangoResponsetransfererror = ",transfererror)
                 if status {
+                    
                     DispatchQueue.main.async {
+                        self.showToast(message: LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.success, comment: ""), font: AppFont.regular(15).value)
                         for views in self.viewProgress {
                             views.backgroundColor = UIColor.c00C6FB
                         }
                         self.lblInitiate.textColor = UIColor.c75769D
                         self.lblSwapping.textColor = UIColor.c75769D
                         self.lblSuccessFail.textColor = UIColor.white
-//                        self.registerUserViewModel.setWalletActiveAPI(walletAddress: WalletData.shared.myWallet?.address ?? "") { resStatus, message in
-//                        }
-                       // DispatchQueue.main.async {
-//                            self.showToast(message: "Successfully Swap", font: .systemFont(ofSize: 15))
-                          //  self.btnSwap.HideLoader()
-                           // DGProgressView.shared.hideLoader()
-                            self.closePopUpOnSucess()
-                       // }
+                        
+                        self.transHex = ethereumData?.hex() ?? ""
+                       // print("rangotransHex = ",self.transHex)
+                        self.walletActivityLog(requestId:"",providerType: ProvidersType.rango.rawValue) {}
+                        self.closePopUpOnSucess()
                     }
                 } else {
                     
@@ -1119,13 +785,10 @@ extension SwapViewController {
                         for views in self.viewProgress {
                             views.backgroundColor = UIColor.red
                         }
-                        self.showToast(message: "Failed", font: .systemFont(ofSize: 15))
+                        self.showToast(message: "\(transfererror ?? "Failed")", font: .systemFont(ofSize: 15))
                         self.lblInitiate.textColor = UIColor.c75769D
                         self.lblSwapping.textColor = UIColor.c75769D
                         self.lblSuccessFail.textColor = UIColor.red
-                       // self.lblSuccessFail.text = LocalizationSystem.sharedInstance.localizedStringForKey(key: LocalizationLanguageStrings.fail, comment: "")
-                       // self.btnSwap.HideLoader()
-                     //   DGProgressView.shared.hideLoader()
                         self.closePopUpOnFailler()
                     }
                 }
@@ -1134,3 +797,81 @@ extension SwapViewController {
     }
 }
 
+extension SwapViewController {
+    func walletActivityLog(requestId:String? = nil,providerType:String,completion: @escaping () -> Void) {
+        if self.payCoinDetail?.chain?.coinType == .bitcoin {
+            self.walletAddress = WalletData.shared.getPublicWalletAddress(coinType: .bitcoin) ?? ""
+        } else {
+            self.walletAddress = WalletData.shared.getPublicWalletAddress(coinType: .ethereum) ?? ""
+        }
+             // Define the URL
+        guard let url = URL(string: "https://plutope.app/api/wallet-activity-log") else {
+            print("Invalid URL")
+            return
+        }
+        // Define the request body
+        let json: [String: Any] = [
+            "requestId" : "\(requestId ?? "")",
+            "walletAddress": "\(self.walletAddress)",
+            "transactionType": TransactionType.swap.rawValue,
+            "transactionHash": "\(self.transHex)",
+            "providerType": "\(providerType)",
+            "tokenDetailArrayList": [
+                [
+                    "from": [
+                        "chainId": "\(self.payCoinDetail?.chain?.chainId ?? "")",
+                        "symbol": "\(self.payCoinDetail?.chain?.symbol ?? "")",
+                        "address":"\(self.payCoinDetail?.chain?.walletAddress ?? "")"
+                    ],
+                    "to": [
+                        "chainId": "\(self.getCoinDetail?.chain?.chainId ?? "")",
+                        "symbol": "\(self.getCoinDetail?.chain?.symbol ?? "")",
+                        "address":"\(self.getCoinDetail?.chain?.walletAddress ?? "")"
+                    ]
+                ]
+            ]
+        ]
+        
+        print(json)
+        // Convert the JSON to Data
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
+            print("Failed to serialize JSON data")
+            return
+        }
+        // Create the request
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        // Create the URLSession
+        let session = URLSession.shared
+
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error)")
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            guard (200...299).contains(httpResponse.statusCode) else {
+                print("HTTP response code: \(httpResponse.statusCode)")
+                return
+            }
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            do {
+                let jsonResponse = try JSONSerialization.jsonObject(with: data, options: [])
+                print("Response: \(jsonResponse)")
+            } catch {
+                print("Failed to parse JSON response: \(error)")
+            }
+            completion()
+        }
+        // Start the task
+        task.resume()
+    }
+}

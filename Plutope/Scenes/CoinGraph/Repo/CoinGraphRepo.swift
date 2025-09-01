@@ -39,7 +39,7 @@ class CoinGraphRepo {
 //        let apiUrl = "https://plutope.app/api/markets-price?currency=\(vsCurrency)&ids=\(ids)"
      //   let apiUrl = "https://plutope.app/api/markets-price-new?currency=\(vsCurrency)&ids=\(ids)"
         let apiUrl = "https://plutope.app/api/markets-price-v2-filter?currency=\(vsCurrency)&ids=\(ids)"
-        
+//        print(apiUrl)
         DGNetworkingServices.main.dataRequest(Service: NetworkURL(withURL: apiUrl), HttpMethod: .get, parameters: nil, headers: nil) { status, error, data in
             if status {
                 do {
@@ -64,6 +64,7 @@ class CoinGraphRepo {
                 DispatchQueue.main.async {
                     do {
                         let data = try JSONDecoder().decode([CoingechoCoinList].self, from: data!)
+                        print("getallcoin:",data)
                         completion(true,"",data)
                     } catch(let error) {
                         print(error)
@@ -96,4 +97,34 @@ class CoinGraphRepo {
             }
         }
     }
+    func checkTokenVersion(completion: @escaping ((Int, String,CheckAppVersonList?) -> Void)) {
+       
+        let appUrl = "https://plutope.app/api/get-generate-token"
+        DGNetworkingServices.main.MakeApiCall(Service: NetworkURL(withURL: appUrl), HttpMethod: .get, parameters: nil, headers: nil) { result in
+            switch result {
+                
+            case .success((_,let response)):
+                do {
+                    let decodeData = try JSONDecoder().decode(CheckAppVersonData.self, from: response)
+                    if decodeData.status == 200 {
+                        print("decodeData.data",decodeData.data)
+                        completion(1,decodeData.message ?? "",decodeData.data)
+                    } else {
+                        completion(0,decodeData.message ?? "",nil)
+                    }
+                   
+                } catch(let error) {
+                    completion(0,error.localizedDescription.debugDescription,nil)
+                    print(error)
+                }
+            case .failure(let error):
+                
+                print(error)
+                completion(0,error.readableDescription,nil)
+            }
+            
+        }
+    }
+    
+    
 }

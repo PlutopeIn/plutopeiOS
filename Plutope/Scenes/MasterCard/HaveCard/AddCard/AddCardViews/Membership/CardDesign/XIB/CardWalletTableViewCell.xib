@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFPro_medium.ttf">
+            <string>SFProDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CardWalletTableViewCell" rowHeight="29" id="KGk-i7-Jjw" customClass="CardWalletTableViewCell" customModule="Plutope" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="228" height="29"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="228" height="29"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogI-Sd-Qbx">
+                        <rect key="frame" x="0.0" y="7" width="228" height="15"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NFT3" translatesAutoresizingMaskIntoConstraints="NO" id="MQG-4n-NiP">
+                                <rect key="frame" x="0.0" y="-3.3333333333333339" width="21.666666666666668" height="21.666666666666671"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21.649999999999999" id="EVh-nz-ex9"/>
+                                    <constraint firstAttribute="width" constant="21.649999999999999" id="rcb-BP-Bt8"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10.82"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="US Dollar ($)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5cO-Jn-8so">
+                                <rect key="frame" x="31.666666666666671" y="0.0" width="186.33333333333331" height="15"/>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="5cO-Jn-8so" secondAttribute="trailing" constant="10" id="BmW-qw-iiL"/>
+                            <constraint firstItem="5cO-Jn-8so" firstAttribute="leading" secondItem="MQG-4n-NiP" secondAttribute="trailing" constant="10.15" id="ELy-Wl-2aI"/>
+                            <constraint firstItem="MQG-4n-NiP" firstAttribute="centerY" secondItem="ogI-Sd-Qbx" secondAttribute="centerY" id="Gnj-lL-GkV"/>
+                            <constraint firstItem="MQG-4n-NiP" firstAttribute="leading" secondItem="ogI-Sd-Qbx" secondAttribute="leading" id="bMG-MH-fg9"/>
+                            <constraint firstItem="5cO-Jn-8so" firstAttribute="top" secondItem="ogI-Sd-Qbx" secondAttribute="top" id="fvt-DH-1ER"/>
+                            <constraint firstAttribute="bottom" secondItem="5cO-Jn-8so" secondAttribute="bottom" id="zr9-hp-5zG"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="ogI-Sd-Qbx" secondAttribute="trailing" id="CVp-Od-bW6"/>
+                    <constraint firstAttribute="bottom" secondItem="ogI-Sd-Qbx" secondAttribute="bottom" constant="7" id="TgM-OF-Rzo"/>
+                    <constraint firstItem="ogI-Sd-Qbx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="X5A-ug-0V9"/>
+                    <constraint firstItem="ogI-Sd-Qbx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ndQ-tS-loQ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="ivSymbol" destination="MQG-4n-NiP" id="xbi-zF-Cl1"/>
+                <outlet property="lblType" destination="5cO-Jn-8so" id="roj-YA-CUp"/>
+            </connections>
+            <point key="canvasLocation" x="10.687022900763358" y="-16.549295774647888"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="NFT3" width="164" height="164"/>
+    </resources>
+</document>

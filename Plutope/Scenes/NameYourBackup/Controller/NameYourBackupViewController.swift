@@ -58,6 +58,7 @@ class NameYourBackupViewController: UIViewController, Reusable {
     }
     
     @IBAction func actionContinue(_ sender: Any) {
+        HapticFeedback.generate(.light)
         if txtWalletName.text?.trimmingCharacters(in: .whitespaces).isEmpty ?? false {
             self.showToast(message: "Please enter wallet backup name", font: .systemFont(ofSize: 15))
         } else {

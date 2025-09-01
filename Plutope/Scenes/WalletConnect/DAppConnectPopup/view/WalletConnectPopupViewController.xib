@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="SFPro_regular.ttf">
-            <string>SFProDisplay-Regular</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WalletConnectPopupViewController" customModule="Plutope" customModuleProvider="target">
             <connections>
                 <outlet property="btnConnectWallet" destination="1aH-xm-4fb" id="Qg4-xO-pi2"/>
                 <outlet property="headerView" destination="cUL-gX-jfl" id="U7e-7Z-41m"/>
+                <outlet property="imgNoData" destination="ACD-g8-Djb" id="GIf-K1-km0"/>
+                <outlet property="lblNoData" destination="lrQ-ap-M23" id="y9t-pU-iHY"/>
+                <outlet property="stackNoData" destination="0r1-m8-soI" id="Vuv-za-T25"/>
                 <outlet property="tbvHeight" destination="DXY-fP-zgU" id="2t6-7I-zT6"/>
                 <outlet property="tbvSession" destination="6hl-GM-gFh" id="bNo-aY-acx"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -36,7 +34,7 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="6hl-GM-gFh">
-                    <rect key="frame" x="16" y="129" width="361" height="527"/>
+                    <rect key="frame" x="20" y="129" width="353" height="527"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="527" id="DXY-fP-zgU"/>
@@ -44,59 +42,75 @@
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1aH-xm-4fb">
                     <rect key="frame" x="71.666666666666686" y="758" width="250" height="40"/>
+                    <color key="backgroundColor" systemColor="labelColor"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="250" id="SJh-6c-6QI"/>
                         <constraint firstAttribute="height" constant="40" id="WUQ-8g-vEE"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="19"/>
+                    <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="19"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" title="Add new connection">
-                        <color key="titleColor" name="#00C6FB"/>
+                        <color key="titleColor" systemColor="systemBackgroundColor"/>
                     </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                             <real key="value" value="20"/>
                         </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                            <real key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                            <color key="value" name="#00C6FB"/>
-                        </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="btnConnectWalletAction:" destination="-1" eventType="touchUpInside" id="eLk-si-yGq"/>
                     </connections>
                 </button>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="0r1-m8-soI">
+                    <rect key="frame" x="144.66666666666666" y="377" width="104" height="98"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user-robot" translatesAutoresizingMaskIntoConstraints="NO" id="ACD-g8-Djb">
+                            <rect key="frame" x="17" y="0.0" width="70" height="70"/>
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="0kp-Rc-WV1"/>
+                                <constraint firstAttribute="width" constant="70" id="1WG-j7-dmd"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Available!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lrQ-ap-M23">
+                            <rect key="frame" x="0.0" y="77" width="104" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="104" id="7hz-Ox-G1c"/>
+                                <constraint firstAttribute="height" constant="21" id="g3w-LE-bwS"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" name="#0C0D2D"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="0r1-m8-soI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="A1i-Tx-85m"/>
                 <constraint firstAttribute="trailing" secondItem="cUL-gX-jfl" secondAttribute="trailing" id="By0-7j-aDy"/>
                 <constraint firstItem="6hl-GM-gFh" firstAttribute="top" secondItem="cUL-gX-jfl" secondAttribute="bottom" constant="20" id="MR3-NY-Aut"/>
                 <constraint firstItem="1aH-xm-4fb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6hl-GM-gFh" secondAttribute="bottom" constant="20" id="Pca-El-XIp"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="1aH-xm-4fb" secondAttribute="bottom" constant="20" id="Vs9-KF-ML9"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6hl-GM-gFh" secondAttribute="trailing" constant="16" id="Ypu-kn-Rpc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6hl-GM-gFh" secondAttribute="trailing" constant="20" id="Ypu-kn-Rpc"/>
                 <constraint firstItem="1aH-xm-4fb" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="dMs-pK-1cY"/>
                 <constraint firstItem="cUL-gX-jfl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="do2-Hb-07u"/>
                 <constraint firstItem="cUL-gX-jfl" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="iUm-Nh-VHU"/>
-                <constraint firstItem="6hl-GM-gFh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="pUQ-bp-u3m"/>
+                <constraint firstItem="0r1-m8-soI" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="mQB-Pv-aYn"/>
+                <constraint firstItem="6hl-GM-gFh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="pUQ-bp-u3m"/>
             </constraints>
             <point key="canvasLocation" x="78.625954198473281" y="-39.436619718309863"/>
         </view>
     </objects>
-    <designables>
-        <designable name="1aH-xm-4fb">
-            <size key="intrinsicContentSize" width="163" height="35"/>
-        </designable>
-    </designables>
     <resources>
-        <namedColor name="#00C6FB">
-            <color red="0.0" green="0.77600002288818359" blue="0.98400002717971802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="#0C0D2D">
-            <color red="0.046999998390674591" green="0.050999999046325684" blue="0.17599999904632568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <image name="user-robot" width="34" height="40.799999237060547"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
